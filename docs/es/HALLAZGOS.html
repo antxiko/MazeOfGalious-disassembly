@@ -1,0 +1,115 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hallazgos — The Maze of Galious (Konami, 1987)</title>
+<style>
+:root{--tinta:#cfd0d4;--suave:#83868f;--fondo:#000;--panel:#0c0e13;--linea:#23262e;
+  --rojo:#ff897d;--cyan:#65dbef;--verde:#3eb849;--oro:#ded087}
+@media (prefers-color-scheme:light){:root{--tinta:#191a1e;--suave:#5a5d66;--fondo:#e9e7e1;
+  --panel:#f7f6f2;--linea:#d0cdc5;--rojo:#b23f34;--cyan:#1c6b7c;--verde:#2b7734;--oro:#8a7420}}
+:root[data-theme="dark"]{--tinta:#cfd0d4;--suave:#83868f;--fondo:#000;--panel:#0c0e13;
+  --linea:#23262e;--rojo:#ff897d;--cyan:#65dbef;--verde:#3eb849;--oro:#ded087}
+:root[data-theme="light"]{--tinta:#191a1e;--suave:#5a5d66;--fondo:#e9e7e1;--panel:#f7f6f2;
+  --linea:#d0cdc5;--rojo:#b23f34;--cyan:#1c6b7c;--verde:#2b7734;--oro:#8a7420}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fondo);color:var(--tinta);padding:0 1.25rem 6rem;
+  font:15px/1.7 ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+.w{max-width:1120px;margin:0 auto}
+.n{max-width:68ch}
+h1,h2,h3,h4{font-weight:400;text-wrap:balance}
+a{color:var(--cyan)}
+img{image-rendering:pixelated;max-width:100%;height:auto;display:block}
+header.top{display:flex;flex-direction:column;align-items:center;gap:1.5rem;
+  padding:4rem 0 2rem;text-align:center}
+header.top img{width:min(100%,642px)}
+.claim{max-width:60ch;color:var(--suave);font-size:1.05rem}
+.claim b{color:var(--tinta);font-weight:400}
+.ficha{display:flex;flex-wrap:wrap;justify-content:center;gap:0 1.5rem;width:100%;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--suave);
+  border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);padding:.85rem 0}
+.ficha b{color:var(--rojo);font-weight:400}
+nav{display:flex;flex-wrap:wrap;gap:1.25rem;justify-content:center;padding:1.25rem 0;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+nav a{color:var(--suave);text-decoration:none;border-bottom:1px solid transparent}
+nav a:hover,nav a:focus{color:var(--tinta);border-bottom-color:var(--rojo)}
+nav.docs{border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);
+  margin-bottom:1rem}
+section{margin-top:4.5rem;scroll-margin-top:1rem}
+section>h2{font-size:1rem;letter-spacing:.1em;text-transform:uppercase;
+  border-left:3px solid var(--rojo);padding-left:.9rem;margin:0 0 1.5rem}
+.cifras{display:grid;gap:1px;background:var(--linea);border:1px solid var(--linea);
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.cifra{background:var(--panel);padding:1.1rem}
+.cifra b{display:block;font-size:1.7rem;color:var(--oro);font-weight:400;
+  font-variant-numeric:tabular-nums;line-height:1.2}
+.cifra span{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--suave)}
+.hall{border-top:1px solid var(--linea);padding-top:1.75rem;margin-top:2.5rem}
+.hall:first-of-type{border-top:0;padding-top:0;margin-top:0}
+.hall h3{margin:0 0 .75rem;font-size:1.15rem;color:var(--rojo)}
+.hall h4{color:var(--oro);margin:1.5rem 0 .5rem;font-size:.95rem}
+.hall p{margin:0 0 1rem}
+pre.asm{background:var(--panel);border-left:2px solid var(--verde);margin:1.25rem 0;
+  padding:1rem 1.1rem;overflow-x:auto;font-size:13px;line-height:1.6;color:var(--tinta)}
+.par{display:grid;gap:1.25rem;grid-template-columns:1fr}
+@media(min-width:820px){.par{grid-template-columns:1fr 1fr}}
+.par figure{margin:0}
+table{border-collapse:collapse;width:100%;margin:1.25rem 0;font-size:13px;display:block;
+  overflow-x:auto}
+th,td{text-align:left;padding:.5rem .75rem;border-bottom:1px solid var(--linea)}
+th{color:var(--suave);font-weight:400;font-size:11px;letter-spacing:.07em;text-transform:uppercase}
+td.num{font-variant-numeric:tabular-nums;color:var(--oro)}
+.nivel{margin-top:2rem}
+.nivel h3{margin:0 0 .9rem;font-size:.95rem;letter-spacing:.06em;text-transform:uppercase}
+.nivel em{color:var(--cyan);font-style:normal}
+.sep{color:var(--suave);margin:0 .6rem}
+.rejilla{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.rejilla figure{margin:0;background:var(--panel);box-shadow:0 0 0 1px var(--linea)}
+.rejilla figcaption{display:flex;justify-content:space-between;padding:.45rem .65rem;
+  font-size:11px;color:var(--suave);border-top:1px solid var(--linea)}
+.dir{font-variant-numeric:tabular-nums;color:var(--verde)}
+footer{margin-top:5rem;padding-top:1.5rem;border-top:1px solid var(--linea);
+  color:var(--suave);font-size:12px}
+
+/* Aviso de trabajo en curso: tiene que verse antes que las cifras, porque un
+   100% mal leido hace mas dano que no ponerlo. */
+.aviso{background:#3a2a10;border-left:3px solid var(--oro);margin:1.5rem auto;
+  padding:1rem 1.2rem;max-width:900px;border-radius:4px}
+.aviso p{margin:0;color:var(--tinta);font-size:15px;line-height:1.65}
+.galeria{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1.5rem;margin:1.5rem 0}
+.galeria figure{margin:0}
+.galeria img{width:100%;height:auto;image-rendering:pixelated;
+  border:1px solid var(--linea);border-radius:3px}
+.galeria figcaption{color:var(--suave);font-size:13px;margin-top:.5rem}
+audio{display:block;width:100%;max-width:640px;margin:.75rem 0 1.5rem}
+</style>
+<div class="w"><nav class="top"><a href="index.html">Portada</a><a href="EMPEZAR.html">Empezar</a><a href="EL-JUEGO.html">El juego</a><a href="EL-CARTUCHO.html">El cartucho</a><a href="EL-CODIGO.html">El código</a><a href="HALLAZGOS.html" style=color:var(--tinta)>Hallazgos</a><a href="EN-EL-EMULADOR.html">En el emulador</a><a href="PREGUNTAS-ABIERTAS.html">Preguntas abiertas</a><a href="../FINDINGS.html" style="margin-left:auto;color:var(--oro)">English</a></nav>
+<h1 id="hallazgos">Hallazgos</h1>
+<p>Lo que apareció al desmontar el cartucho. Cada cosa lleva la dirección donde se puede comprobar y dice si se ha visto en openMSX o solo se ha leído en el código. Las salas van con el número que llevan en los mapas de esta web; el mapa 1 es el castillo y los mapas 2 a 11 son los diez mundos.</p>
+<h2 id="f2-el-personaje-se-sienta-en-una-taza">F2: el personaje se sienta en una taza</h2>
+<p>F2 en plena partida (p02:9E07) pone el estado 9: p00:5917 carga unos dibujos del banco 15 y el personaje sale sentado en una taza blanca, con una pose fija durante 600 cuadros y luego dos que se alternan cada 8 (p03:BE36). Comprobado en openMSX.</p>
+<h2 id="zeus-en-la-pausa-continuar">ZEUS en la pausa: continuar</h2>
+<p>En la pausa de F2, en la sala 1 del castillo, se puede teclear ZEUS (p01:7E57; lo único que la llama es p00:474A). Pone 0xE027 a 1, y al perder la pantalla dice GAME OVER y debajo F5 CONTINUE; sin la palabra solo sale GAME OVER. F5 (p01:7EF1) sigue en la sala 1 del castillo con la vida en 8 y la experiencia a 0 (p01:7E8C). Comprobado en openMSX.</p>
+<h2 id="con-otro-cartucho-al-lado">Con otro cartucho al lado</h2>
+<p>Al empezar, p00:4CF1 mira la otra ranura (p00:5F0C lee 0x7FFA y 0xBFFA):</p>
+<table><tr><th>Cartucho</th><th>Lo que hace</th></tr><tr><td>Q\*bert</td><td>100 flechas, 100 monedas, 100 llaves y vida 0x30</td></tr><tr><td>Knightmare</td><td>pone 99 en 0xE05A y 0xE05B; para qué, sin mirar</td></tr><tr><td>Game Master</td><td>pone el bit 2 de 0xF0F8; p00:4CF1 no hace nada con él</td></tr></table>
+<p>Leído en el código, sin probar con los cartuchos.</p>
+<h2 id="las-salas-negras-son-pistas-y-tiendas">Las salas negras son pistas y tiendas</h2>
+<p>Nueve mundos tienen una sala especial (tabla 0x8F0A del banco 2) que el juego no monta como las demás: sale en negro, porque p00:514D se salta el montaje. No son jefes. La sala 15 del mundo 1 es Demeter con una pista, y la 18 del mundo 5 es la tienda de Demeter. El mensaje sale en inglés o en japonés según la máquina: p02:94F0 lee el byte 0x002B de la BIOS. Las dos salas y los dos idiomas, comprobados en openMSX.</p>
+<h2 id="el-jefe-se-llama-por-su-nombre">El jefe se llama por su nombre</h2>
+<p>En la sala del jefe se teclea su nombre (p02:9B18, tabla 0x9B4F). El juego pasa al estado 0x0F, sale un humo y, unos 800 cuadros después, el jefe, con el fondo de la sala en negro. Vencerlo pone el bit 2 de 0xE061 más el número del mapa (p00:4B89). Visto en openMSX forzando la marca en la RAM; tecleando el nombre, sin probar.</p>
+<h2 id="mas-palabras-y-atajos">Más palabras y atajos</h2>
+<ul><li><b>UMBRELLA</b>, con el objeto 0x26 (p02:9BEE): acaba con todos los enemigos de tipo 0x0E de la sala (p03:B604).</li><li><b>Una cifra del 1 al 9 en el castillo</b>, con el objeto 0x27 (p02:9A99): a la puerta de ese mundo.</li><li><b>El objeto 0x15 y RETURN</b>: a la sala 72 del castillo.</li><li><b>En el mundo 8 sin el objeto 0x13</b> van cambiadas izquierda y derecha (p00:5353 y p00:535D llaman a p03:A8A0).</li></ul>
+<p>Leído en el código, sin probar.</p>
+<h2 id="objetos-escondidos-en-el-castillo">Objetos escondidos en el castillo</h2>
+<p>p02:9F82 esconde cinco objetos. Salen al vencer a las figuras de la sala (p03:B6AA), y algunos piden algo más:</p>
+<table><tr><th>Sala</th><th>Objeto</th><th>Además</th></tr><tr><td>48</td><td>0x13</td><td></td></tr><tr><td>75</td><td>0x16</td><td></td></tr><tr><td>40</td><td>0x1B</td><td>el jefe del mapa 5 vencido y 9 pasos</td></tr><tr><td>24</td><td>0x25</td><td>el jefe del mapa 7 vencido</td></tr><tr><td>43</td><td>0x26</td><td>derecha, abajo, izquierda y arriba (tabla p03:A056)</td></tr></table>
+<p>Leído en el código.</p>
+<h2 id="popolon-y-afrodita">Popolon y Afrodita</h2>
+<p>Comparten todos los dibujos; Afrodita lleva el color 9 donde Popolon lleva el</p>
+<ol><li>Comprobado en openMSX. En el agua 0xB6 y 0xB7 Popolon pierde vida cada</li></ol>
+<p>cuadro y Afrodita cada 255; en la 0xB8, los dos cada 4 (p03:B068). Leído en el código.</p>
+<h2 id="las-bolas-rosas-del-castillo">Las bolas rosas del castillo</h2>
+<p>116 salas del castillo tienen bolas rosas, en las casillas de la tabla 0xB8A2. Cada golpe les quita 1, o 5 si golpea Popolon o se lleva el objeto 0x1F (p03:B83C); al romperse quedan rotas en las marcas de la sala (p03:B85C). Dónde están, comprobado en openMSX; los golpes, leídos en el código.</p>
+<h2 id="la-marca-de-konami">La marca de Konami</h2>
+<p>Al final del banco 3, como en los otros cartuchos de la casa, va la marca oculta: ガリウス ノ メイキュウ y RC-749 (tools/marca_konami.py). El formato de la marca lo destapó Manuel Pazos.</p>
+<footer><p><em>The Maze of Galious</em> (<em>Knightmare II</em>) lo public&oacute; Konami para MSX en 1987; su n&uacute;mero de cat&aacute;logo es RC-749 y son 128 KB. Todos los derechos sobre el juego siguen siendo de sus titulares. Este trabajo es de preservaci&oacute;n, estudio y documentaci&oacute;n, y la imagen del cartucho no se distribuye.</p></footer></div>

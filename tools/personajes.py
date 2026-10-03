@@ -154,7 +154,7 @@ def hoja_jefes():
     dr = ImageDraw.Draw(im)
     y = 2
     for m, v, ms in filas:
-        dr.text((4, y + 2), "WORLD %d" % (m - 1), fill=(160, 160, 190))
+        dr.text((4, y + 2), "%d" % (m - 1), fill=(160, 160, 190))
         x = 70
         for c, f, cs, k in ms:
             dr.text((x, y), "%d" % k, fill=(110, 110, 140))

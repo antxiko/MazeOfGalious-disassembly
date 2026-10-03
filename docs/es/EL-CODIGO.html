@@ -1,0 +1,109 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>El código — The Maze of Galious (Konami, 1987)</title>
+<style>
+:root{--tinta:#cfd0d4;--suave:#83868f;--fondo:#000;--panel:#0c0e13;--linea:#23262e;
+  --rojo:#ff897d;--cyan:#65dbef;--verde:#3eb849;--oro:#ded087}
+@media (prefers-color-scheme:light){:root{--tinta:#191a1e;--suave:#5a5d66;--fondo:#e9e7e1;
+  --panel:#f7f6f2;--linea:#d0cdc5;--rojo:#b23f34;--cyan:#1c6b7c;--verde:#2b7734;--oro:#8a7420}}
+:root[data-theme="dark"]{--tinta:#cfd0d4;--suave:#83868f;--fondo:#000;--panel:#0c0e13;
+  --linea:#23262e;--rojo:#ff897d;--cyan:#65dbef;--verde:#3eb849;--oro:#ded087}
+:root[data-theme="light"]{--tinta:#191a1e;--suave:#5a5d66;--fondo:#e9e7e1;--panel:#f7f6f2;
+  --linea:#d0cdc5;--rojo:#b23f34;--cyan:#1c6b7c;--verde:#2b7734;--oro:#8a7420}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fondo);color:var(--tinta);padding:0 1.25rem 6rem;
+  font:15px/1.7 ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+.w{max-width:1120px;margin:0 auto}
+.n{max-width:68ch}
+h1,h2,h3,h4{font-weight:400;text-wrap:balance}
+a{color:var(--cyan)}
+img{image-rendering:pixelated;max-width:100%;height:auto;display:block}
+header.top{display:flex;flex-direction:column;align-items:center;gap:1.5rem;
+  padding:4rem 0 2rem;text-align:center}
+header.top img{width:min(100%,642px)}
+.claim{max-width:60ch;color:var(--suave);font-size:1.05rem}
+.claim b{color:var(--tinta);font-weight:400}
+.ficha{display:flex;flex-wrap:wrap;justify-content:center;gap:0 1.5rem;width:100%;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--suave);
+  border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);padding:.85rem 0}
+.ficha b{color:var(--rojo);font-weight:400}
+nav{display:flex;flex-wrap:wrap;gap:1.25rem;justify-content:center;padding:1.25rem 0;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+nav a{color:var(--suave);text-decoration:none;border-bottom:1px solid transparent}
+nav a:hover,nav a:focus{color:var(--tinta);border-bottom-color:var(--rojo)}
+nav.docs{border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);
+  margin-bottom:1rem}
+section{margin-top:4.5rem;scroll-margin-top:1rem}
+section>h2{font-size:1rem;letter-spacing:.1em;text-transform:uppercase;
+  border-left:3px solid var(--rojo);padding-left:.9rem;margin:0 0 1.5rem}
+.cifras{display:grid;gap:1px;background:var(--linea);border:1px solid var(--linea);
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.cifra{background:var(--panel);padding:1.1rem}
+.cifra b{display:block;font-size:1.7rem;color:var(--oro);font-weight:400;
+  font-variant-numeric:tabular-nums;line-height:1.2}
+.cifra span{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--suave)}
+.hall{border-top:1px solid var(--linea);padding-top:1.75rem;margin-top:2.5rem}
+.hall:first-of-type{border-top:0;padding-top:0;margin-top:0}
+.hall h3{margin:0 0 .75rem;font-size:1.15rem;color:var(--rojo)}
+.hall h4{color:var(--oro);margin:1.5rem 0 .5rem;font-size:.95rem}
+.hall p{margin:0 0 1rem}
+pre.asm{background:var(--panel);border-left:2px solid var(--verde);margin:1.25rem 0;
+  padding:1rem 1.1rem;overflow-x:auto;font-size:13px;line-height:1.6;color:var(--tinta)}
+.par{display:grid;gap:1.25rem;grid-template-columns:1fr}
+@media(min-width:820px){.par{grid-template-columns:1fr 1fr}}
+.par figure{margin:0}
+table{border-collapse:collapse;width:100%;margin:1.25rem 0;font-size:13px;display:block;
+  overflow-x:auto}
+th,td{text-align:left;padding:.5rem .75rem;border-bottom:1px solid var(--linea)}
+th{color:var(--suave);font-weight:400;font-size:11px;letter-spacing:.07em;text-transform:uppercase}
+td.num{font-variant-numeric:tabular-nums;color:var(--oro)}
+.nivel{margin-top:2rem}
+.nivel h3{margin:0 0 .9rem;font-size:.95rem;letter-spacing:.06em;text-transform:uppercase}
+.nivel em{color:var(--cyan);font-style:normal}
+.sep{color:var(--suave);margin:0 .6rem}
+.rejilla{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.rejilla figure{margin:0;background:var(--panel);box-shadow:0 0 0 1px var(--linea)}
+.rejilla figcaption{display:flex;justify-content:space-between;padding:.45rem .65rem;
+  font-size:11px;color:var(--suave);border-top:1px solid var(--linea)}
+.dir{font-variant-numeric:tabular-nums;color:var(--verde)}
+footer{margin-top:5rem;padding-top:1.5rem;border-top:1px solid var(--linea);
+  color:var(--suave);font-size:12px}
+
+/* Aviso de trabajo en curso: tiene que verse antes que las cifras, porque un
+   100% mal leido hace mas dano que no ponerlo. */
+.aviso{background:#3a2a10;border-left:3px solid var(--oro);margin:1.5rem auto;
+  padding:1rem 1.2rem;max-width:900px;border-radius:4px}
+.aviso p{margin:0;color:var(--tinta);font-size:15px;line-height:1.65}
+.galeria{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1.5rem;margin:1.5rem 0}
+.galeria figure{margin:0}
+.galeria img{width:100%;height:auto;image-rendering:pixelated;
+  border:1px solid var(--linea);border-radius:3px}
+.galeria figcaption{color:var(--suave);font-size:13px;margin-top:.5rem}
+audio{display:block;width:100%;max-width:640px;margin:.75rem 0 1.5rem}
+</style>
+<div class="w"><nav class="top"><a href="index.html">Portada</a><a href="EMPEZAR.html">Empezar</a><a href="EL-JUEGO.html">El juego</a><a href="EL-CARTUCHO.html">El cartucho</a><a href="EL-CODIGO.html" style=color:var(--tinta)>El código</a><a href="HALLAZGOS.html">Hallazgos</a><a href="EN-EL-EMULADOR.html">En el emulador</a><a href="PREGUNTAS-ABIERTAS.html">Preguntas abiertas</a><a href="../THE-CODE.html" style="margin-left:auto;color:var(--oro)">English</a></nav>
+<h1 id="el-codigo">El código</h1>
+<h2 id="todo-corre-en-la-interrupcion">Todo corre en la interrupción</h2>
+<p>INIT (0x4095) pone el cartucho también en la página 2, engancha <b>H.KEYI</b> (0xFD9A = <code>jp 0x40EF</code>), deja la pila debajo de 0xF0F0, borra la RAM del juego (0xE000-0xF0EF), pone la VRAM y el sonido a cero, busca otros cartuchos en las ranuras (p00:5F0C) y pone los bancos 1-2-3. Desde ahí se queda en un <code>jr</code> sobre sí mismo (p00:40D1), y todo el juego corre en <b>p00:40EF</b>, una vez por cuadro:</p>
+<ol><li>Si ya estaba dentro (el semáforo de 0xE006), solo suelta el VDP.</li><li>Lo de la VRAM que toca según el estado (tabla 0x543B).</li><li>El sonido, con los bancos 13 y 14 puestos (p13:6004). Luego vuelven los bancos del juego desde 0xF0F1-0xF0F3, y si hay una música esperando, se pide.</li><li>Si el cuadro anterior ya acabó (el semáforo de 0xE005), el <b>juego del cuadro</b> (p00:4277). La interrupción se abre antes, para que el sonido no espere al juego.</li></ol>
+<h2 id="el-despachador">El despachador</h2>
+<p>p00:4140 es el despachador de Konami: la tabla de destinos va <b>pegada detrás del <code>call</code></b>. Saca de la pila la dirección de vuelta, que es la base de la tabla, y salta al destino número A. El listado marca cada una de esas tablas como datos y nombra sus destinos.</p>
+<h2 id="los-estados-del-juego">Los estados del juego</h2>
+<p>0xE000 es el estado y 0xE001 su paso (tabla de 0x428E):</p>
+<table><tr><th>estado</th><th>qué es</th></tr><tr><td>0</td><td>el logotipo de Konami</td></tr><tr><td>1</td><td>el título</td></tr><tr><td>2</td><td>la demo o la historia, una vuelta cada una</td></tr><tr><td>3</td><td>empieza la partida</td></tr><tr><td>4</td><td>entra en la sala</td></tr><tr><td>5</td><td>la partida</td></tr><tr><td>6</td><td>se acaba una vida</td></tr><tr><td>7</td><td>GAME OVER, y con ZEUS, F5 para continuar</td></tr><tr><td>8</td><td>entra en un mundo por su puerta</td></tr><tr><td>9</td><td>la pausa de F2</td></tr><tr><td>0x0A</td><td>pasa a la sala vecina</td></tr><tr><td>0x0B</td><td>la pantalla de objetos (F1)</td></tr><tr><td>0x0C</td><td>lee el monumento de la sala (el arma 6 junto a él)</td></tr><tr><td>0x0D</td><td>vuelve al castillo</td></tr><tr><td>0x0E</td><td>la sala especial: una pista o una tienda</td></tr><tr><td>0x0F</td><td>el jefe: el nombre acertado, el humo y el jefe</td></tr><tr><td>0x10</td><td>por una puerta, a la sala especial de 0xE680</td></tr><tr><td>0x11</td><td>el final</td></tr><tr><td>0x12</td><td>teclear la contraseña</td></tr><tr><td>0x13</td><td>el jefe vencido</td></tr><tr><td>0x14</td><td>nueve saltos de alegría (p03:BE5F)</td></tr></table>
+<p>Los estados con pocos pasos se reparten con <code>djnz</code> sobre el paso: la primera caída es el paso 1 y el último destino de la cadena, el paso 0. Se ve en el logotipo: el paso 0 lo prepara, el 1 lo va pintando y el 2 espera (comprobado en openMSX, <code>tools/omsx_titulo.tcl</code>).</p>
+<h2 id="una-sala">Una sala</h2>
+<p>Al entrar en una sala, el juego carga sus gráficos (p00:568E) y monta la pantalla (p00:55C6). Lo mismo hace <code>tools/vram.py</code>, paso a paso:</p>
+<ol><li>la fuente y el marcador (banco 14);</li><li>las fichas de caracteres del sitio: las comunes (p10:6000), las de la zona del castillo (0x60D7) o las de los mundos (0x6044);</li><li>el dibujo de la cosa de la sala, si la hay (0x6E34 y 0x6E80);</li><li>en la sala del jefe, el sello (p10:6121);</li><li>la planta: 8 × 5 bloques de la sala (banco 7), cada uno de 4 × 4 caracteres (0x6000 + 16 × bloque);</li><li>encima, escaleras, puertas, objetos, bolas rosas y lo animado (agua y colores), con sus marcas de partida;</li><li>los dibujos de sprite de la sala (p00:592F): la base de 0x790D y el juego de la sala.</li></ol>
+<p>Las 321 salas montadas así dan 0 diferencias contra openMSX en la tabla de nombres y en los caracteres que usan.</p>
+<h2 id="las-figuras">Las figuras</h2>
+<p>Las figuras viven en 0xE800, 32 bytes cada una: tipo en (ix+0), su paso en (ix+1), y la ficha de cada tipo (p04:67BB) da su dibujo y su color. Los bancos 4, 5 y 6 llevan el movimiento de cada tipo. Los dibujos no son de cada tipo sino de cada sala: todas sus figuras comparten el juego de sprites que carga la sala.</p>
+<h2 id="los-jefes">Los jefes</h2>
+<p>Un jefe no es un sprite: es un <b>mosaico</b> de caracteres que se pinta en la pantalla y se cambia por otro para moverlo (61 mosaicos en 0x9E0A del banco 14). p00:5856 carga sus gráficos según 0xE0D3, que es el jefe de cada mapa (0x5E05 + mapa). El del mundo 3 va por pasos (0xE61B): siete fichas de p10:617C, una por cuadro, y luego, si el bit 5 de 0xE709 está puesto, las 37 copias de p10:621A.</p>
+<h2 id="el-sonido">El sonido</h2>
+<p>Todo está en el banco 13, y lo llama la interrupción en cada cuadro. Hay <b>23 músicas</b> (0x743E, seis bytes cada una: un puntero por canal del PSG) y <b>48 efectos</b> (0x73DC). p13:6197 lee las partituras, que están en el banco 14: notas, silencios, saltos, llamadas y repeticiones. La música del jefe acelera cuando le queda poca vida.</p>
+<h2 id="como-esta-hecho-el-listado">Cómo está hecho el listado</h2>
+<ul><li><code>tools/bancos.py</code> traza <b>el cartucho entero</b> llevando la cuenta de qué banco hay en cada hueco. De ahí salen las llamadas que cruzan el mapper (<code>src/pNN.entries</code>) y las tablas del despachador (<code>src/pNN.nocode</code>).</li><li><code>tools/z80trace.py</code> sigue el flujo de cada banco desde esas entradas.</li><li><code>tools/bloques.py</code> declara los datos recorriéndolos como los lectores del banco 0 (rle, fichas, copias, listas, salas, partituras).</li><li><code>src/pNN.notes</code> guarda las etiquetas, los comentarios y los rangos de datos, anclados a dirección. <code>tools/mkasm.py</code> los mezcla con el trazado y escribe <code>src/galious_pNN.asm</code>.</li><li><code>make verify</code> reensambla los dieciséis bancos con Pasmo y la ROM entera, y compara los sha256.</li><li><code>make sanity</code> comprueba que ningún dato se lea como código y que no quede ni un byte sin asignar.</li></ul>
+<p>La densidad: <b>40,1 %</b> de las 25.226 instrucciones llevan comentario, y las 3.423 rutinas pasan todas del 10 % (<code>make densidad</code>).</p>
+<footer><p><em>The Maze of Galious</em> (<em>Knightmare II</em>) lo public&oacute; Konami para MSX en 1987; su n&uacute;mero de cat&aacute;logo es RC-749 y son 128 KB. Todos los derechos sobre el juego siguen siendo de sus titulares. Este trabajo es de preservaci&oacute;n, estudio y documentaci&oacute;n, y la imagen del cartucho no se distribuye.</p></footer></div>

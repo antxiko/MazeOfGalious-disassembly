@@ -1,0 +1,129 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The game — The Maze of Galious (Konami, 1987)</title>
+<style>
+:root{--tinta:#cfd0d4;--suave:#83868f;--fondo:#000;--panel:#0c0e13;--linea:#23262e;
+  --rojo:#ff897d;--cyan:#65dbef;--verde:#3eb849;--oro:#ded087}
+@media (prefers-color-scheme:light){:root{--tinta:#191a1e;--suave:#5a5d66;--fondo:#e9e7e1;
+  --panel:#f7f6f2;--linea:#d0cdc5;--rojo:#b23f34;--cyan:#1c6b7c;--verde:#2b7734;--oro:#8a7420}}
+:root[data-theme="dark"]{--tinta:#cfd0d4;--suave:#83868f;--fondo:#000;--panel:#0c0e13;
+  --linea:#23262e;--rojo:#ff897d;--cyan:#65dbef;--verde:#3eb849;--oro:#ded087}
+:root[data-theme="light"]{--tinta:#191a1e;--suave:#5a5d66;--fondo:#e9e7e1;--panel:#f7f6f2;
+  --linea:#d0cdc5;--rojo:#b23f34;--cyan:#1c6b7c;--verde:#2b7734;--oro:#8a7420}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fondo);color:var(--tinta);padding:0 1.25rem 6rem;
+  font:15px/1.7 ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+.w{max-width:1120px;margin:0 auto}
+.n{max-width:68ch}
+h1,h2,h3,h4{font-weight:400;text-wrap:balance}
+a{color:var(--cyan)}
+img{image-rendering:pixelated;max-width:100%;height:auto;display:block}
+header.top{display:flex;flex-direction:column;align-items:center;gap:1.5rem;
+  padding:4rem 0 2rem;text-align:center}
+header.top img{width:min(100%,642px)}
+.claim{max-width:60ch;color:var(--suave);font-size:1.05rem}
+.claim b{color:var(--tinta);font-weight:400}
+.ficha{display:flex;flex-wrap:wrap;justify-content:center;gap:0 1.5rem;width:100%;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--suave);
+  border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);padding:.85rem 0}
+.ficha b{color:var(--rojo);font-weight:400}
+nav{display:flex;flex-wrap:wrap;gap:1.25rem;justify-content:center;padding:1.25rem 0;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+nav a{color:var(--suave);text-decoration:none;border-bottom:1px solid transparent}
+nav a:hover,nav a:focus{color:var(--tinta);border-bottom-color:var(--rojo)}
+nav.docs{border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);
+  margin-bottom:1rem}
+section{margin-top:4.5rem;scroll-margin-top:1rem}
+section>h2{font-size:1rem;letter-spacing:.1em;text-transform:uppercase;
+  border-left:3px solid var(--rojo);padding-left:.9rem;margin:0 0 1.5rem}
+.cifras{display:grid;gap:1px;background:var(--linea);border:1px solid var(--linea);
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.cifra{background:var(--panel);padding:1.1rem}
+.cifra b{display:block;font-size:1.7rem;color:var(--oro);font-weight:400;
+  font-variant-numeric:tabular-nums;line-height:1.2}
+.cifra span{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--suave)}
+.hall{border-top:1px solid var(--linea);padding-top:1.75rem;margin-top:2.5rem}
+.hall:first-of-type{border-top:0;padding-top:0;margin-top:0}
+.hall h3{margin:0 0 .75rem;font-size:1.15rem;color:var(--rojo)}
+.hall h4{color:var(--oro);margin:1.5rem 0 .5rem;font-size:.95rem}
+.hall p{margin:0 0 1rem}
+pre.asm{background:var(--panel);border-left:2px solid var(--verde);margin:1.25rem 0;
+  padding:1rem 1.1rem;overflow-x:auto;font-size:13px;line-height:1.6;color:var(--tinta)}
+.par{display:grid;gap:1.25rem;grid-template-columns:1fr}
+@media(min-width:820px){.par{grid-template-columns:1fr 1fr}}
+.par figure{margin:0}
+table{border-collapse:collapse;width:100%;margin:1.25rem 0;font-size:13px;display:block;
+  overflow-x:auto}
+th,td{text-align:left;padding:.5rem .75rem;border-bottom:1px solid var(--linea)}
+th{color:var(--suave);font-weight:400;font-size:11px;letter-spacing:.07em;text-transform:uppercase}
+td.num{font-variant-numeric:tabular-nums;color:var(--oro)}
+.nivel{margin-top:2rem}
+.nivel h3{margin:0 0 .9rem;font-size:.95rem;letter-spacing:.06em;text-transform:uppercase}
+.nivel em{color:var(--cyan);font-style:normal}
+.sep{color:var(--suave);margin:0 .6rem}
+.rejilla{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.rejilla figure{margin:0;background:var(--panel);box-shadow:0 0 0 1px var(--linea)}
+.rejilla figcaption{display:flex;justify-content:space-between;padding:.45rem .65rem;
+  font-size:11px;color:var(--suave);border-top:1px solid var(--linea)}
+.dir{font-variant-numeric:tabular-nums;color:var(--verde)}
+footer{margin-top:5rem;padding-top:1.5rem;border-top:1px solid var(--linea);
+  color:var(--suave);font-size:12px}
+
+/* Aviso de trabajo en curso: tiene que verse antes que las cifras, porque un
+   100% mal leido hace mas dano que no ponerlo. */
+.aviso{background:#3a2a10;border-left:3px solid var(--oro);margin:1.5rem auto;
+  padding:1rem 1.2rem;max-width:900px;border-radius:4px}
+.aviso p{margin:0;color:var(--tinta);font-size:15px;line-height:1.65}
+.galeria{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1.5rem;margin:1.5rem 0}
+.galeria figure{margin:0}
+.galeria img{width:100%;height:auto;image-rendering:pixelated;
+  border:1px solid var(--linea);border-radius:3px}
+.galeria figcaption{color:var(--suave);font-size:13px;margin-top:.5rem}
+audio{display:block;width:100%;max-width:640px;margin:.75rem 0 1.5rem}
+</style>
+<div class="w"><nav class="top"><a href="index.html">Home</a><a href="GETTING-STARTED.html">Start</a><a href="THE-GAME.html" style=color:var(--tinta)>The game</a><a href="THE-CARTRIDGE.html">The cartridge</a><a href="THE-CODE.html">The code</a><a href="FINDINGS.html">Findings</a><a href="IN-THE-EMULATOR.html">In the emulator</a><a href="OPEN-QUESTIONS.html">Open questions</a><a href="es/EL-JUEGO.html" style="margin-left:auto;color:var(--oro)">Castellano</a></nav>
+<h1 id="the-game">The game</h1>
+<p>Popolon and Aphrodite explore <b>the castle and ten worlds: 321 rooms</b>. The castle has 147; the worlds have 15 to 27, and the tenth, GALIOUS&#x27;s, has 6. On this site map 1 is the castle and maps 2 to 11 are worlds 1 to 10.</p>
+<p>Every picture on this page is <b>drawn from the bytes of the ROM</b> with the tools in <code>tools/</code>, which follow the cartridge&#x27;s own steps, and checked against openMSX dumps (<code>C-BIOS_MSX1_JP</code>). Each caption says which table it comes from.</p>
+<h2 id="the-title-screen">The title screen</h2>
+<p><img src="imagenes/logotipo.png" alt="The Konami logo"></p>
+<p><em>The logo: 6 rows of 21 characters from 0x40 (p01:6957), with the patterns at 0xBCEF in bank 9. It appears from top to bottom, one line of every row every two frames (p01:6985), over the blue of register 7 (0xE4).</em></p>
+<p><img src="imagenes/titulo.png" alt="The title screen"></p>
+<p><em>The sign at 0x933F (14 × 12 characters), the letters of the list at 0x7D51 and four sprites from 0x93E7. A sparkle runs down the sword and goes out (p01:6267).</em></p>
+<p>Both match openMSX in all 16 KB of VRAM (<code>titulo.py coteja</code>).</p>
+<h2 id="the-castle">The castle</h2>
+<p><img src="imagenes/mapa_1.png" alt="The castle"></p>
+<p><em>The castle&#x27;s 147 rooms, each with its number, laid out by their neighbours (table 0xA9EF in bank 9). Each room is 8 × 5 blocks of 4 × 4 characters.</em></p>
+<p>The order of the neighbours (up, down, left, right) is checked in openMSX: leaving by the left and right edges leads to the room the table says, and the four rooms the game loads at 0xE648 are the table&#x27;s; up and down are used by p03:A7F8. Rooms are numbered in reading order except those at the entrance. Room 94 has no neighbours: it goes in the only gap left between 93 and 95, and how to reach it is in <a href="OPEN-QUESTIONS.html">Open questions</a>.</p>
+<p>On top of the floor plan the game places ladders, the world doors and the way-back doors, items and pink orbs. All 321 rooms, with all of that, match openMSX character for character.</p>
+<h2 id="the-ten-worlds">The ten worlds</h2>
+<table><tr><th>World</th><th>Rooms</th><th>The boss&#x27;s name</th></tr><tr><td><a href="imagenes/mapa_2.png">1</a></td><td>15</td><td>YOMAR</td></tr><tr><td><a href="imagenes/mapa_3.png">2</a></td><td>15</td><td>ELOHIM</td></tr><tr><td><a href="imagenes/mapa_4.png">3</a></td><td>16</td><td>HAHAKLA</td></tr><tr><td><a href="imagenes/mapa_5.png">4</a></td><td>17</td><td>BARECHET</td></tr><tr><td><a href="imagenes/mapa_6.png">5</a></td><td>18</td><td>HEOTYMEO</td></tr><tr><td><a href="imagenes/mapa_7.png">6</a></td><td>19</td><td>LEPHA</td></tr><tr><td><a href="imagenes/mapa_8.png">7</a></td><td>20</td><td>NAWABRA</td></tr><tr><td><a href="imagenes/mapa_9.png">8</a></td><td>21</td><td>ASCHER</td></tr><tr><td><a href="imagenes/mapa_10.png">9</a></td><td>27</td><td>XYWOLEH</td></tr><tr><td><a href="imagenes/mapa_11.png">10</a></td><td>6</td><td>HAMALECH</td></tr></table>
+<p><em>Each number links to its map. The names come from the table at 0x9B4F in bank 2, three bytes per map: where the text is and how many letters it has.</em></p>
+<p>The black rooms on the maps are the hint and shop rooms: the game does not build them like the others (see <a href="FINDINGS.html">Findings</a>).</p>
+<h2 id="popolon-and-aphrodite">Popolon and Aphrodite</h2>
+<p><img src="imagenes/poses.png" alt="The poses"></p>
+<p><em>The player&#x27;s 32 poses (table 0x7529 in bank 1), Popolon above and Aphrodite below. From 18 to 27 the character sinks (p00:5832). Checked against openMSX in 2748 in-game situations.</em></p>
+<p>Both use the same patterns; Aphrodite has colour 9 where Popolon has 15.</p>
+<h2 id="the-enemies">The enemies</h2>
+<p><img src="imagenes/juegos.png" alt="The sprite sets"></p>
+<p><em>The sprite sets each room loads (base 0x790D and tables 0x9737 and 0x7C72), in white: each figure sets its own colour when it appears.</em></p>
+<p>Patterns go by room, not by enemy: each room loads its set and its figures share it. Those of all 321 rooms match openMSX.</p>
+<h2 id="the-bosses">The bosses</h2>
+<p><img src="imagenes/sala_del_jefe.png" alt="The boss room of world 1"></p>
+<p><em>The boss room of world 1 before the boss appears: the seal is the 8 × 8 character frame at 0x9BE2. Its left half is the patterns at 0xB760 (30 characters from 0x5A, entry p10:6121) and the right half, the same characters flipped (copies at p10:6128). p00:56FA loads it while the boss has not come out.</em></p>
+<p>The boss does not appear on its own: in its room you have to type its name (p02:9B18 compares the last letters typed). Then smoke comes out and, after it, the boss, with the room&#x27;s background in black.</p>
+<p><img src="imagenes/jefes.png" alt="The ten bosses"></p>
+<p><em>The ten bosses in full, with the number of their world. They are not sprites: they are character mosaics (61 in the table at 0x9E0A in bank 14) swapped to move them. p00:5856 loads their graphics; world 3&#x27;s goes in steps, one piece per frame.</em></p>
+<p>Which mosaics each boss uses was measured in game, frame by frame, over 6000 frames; the 18 seen whole match openMSX.</p>
+<h2 id="the-items">The items</h2>
+<p><img src="imagenes/objetos.png" alt="The items"></p>
+<p><em>The 47 item types (1 to 0x2F), each with its number and how many there are in the rooms. Types 7 to 0x2C have their own picture (0x6E34 and 0x6E80 in bank 10); the last three are arrows, coins and keys.</em></p>
+<p>The game never names them: it only draws them. That is why they go by number here. What each one does comes from who reads its flag (0xE06F plus the type); some of them:</p>
+<ul><li><b>0x07:</b> the world boss&#x27;s life starts at half.</li><li><b>0x08:</b> the boss takes off half when it touches you.</li><li><b>0x0B:</b> without it GALIOUS cannot be hurt.</li><li><b>0x11:</b> you walk faster.</li><li><b>0x19:</b> the figures take off half.</li><li><b>0x1B:</b> every enemy gives double experience.</li><li><b>0x20:</b> with CTRL the figures and the boss stop, up to 16 times.</li><li><b>0x25:</b> every hit takes off double.</li></ul>
+<p>The rest, with their addresses, are in <code>tools/objetos.py</code>.</p>
+<h2 id="the-shops">The shops</h2>
+<p>There are 13 shop entries (0x9255 in bank 2), of up to three items each, with the price in coins:</p>
+<table><tr><th>What is sold</th><th>Price</th></tr><tr><td>100 arrows (0x2D)</td><td>20</td></tr><tr><td>a key (0x2F)</td><td>5</td></tr><tr><td>0x05, 0x06</td><td>30, 20</td></tr><tr><td>0x0D, 0x23</td><td>25</td></tr><tr><td>0x10, 0x18, 0x21, 0x28</td><td>30</td></tr><tr><td>0x2B</td><td>40</td></tr><tr><td>0x19, 0x2C</td><td>50</td></tr></table>
+<p>The feather shop (0x10, entry 12), in room 18 of world 5, is checked in openMSX.</p>
+<footer><p><em>The Maze of Galious</em> (<em>Knightmare II</em>) was published by Konami for the MSX in 1987; its catalogue number is RC-749 and it is 128 KB. All rights in the game remain with their holders. This is preservation, study and documentation work, and the cartridge image is not distributed.</p></footer></div>

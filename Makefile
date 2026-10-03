@@ -159,15 +159,23 @@ test:
 	@python3 -m unittest discover -s tests -v
 
 # Las imagenes de docs/imagenes, dibujadas desde la ROM con las tablas del
-# cartucho (ninguna es una captura), y su cotejo contra los volcados de
-# openMSX de work/ (tools/lanza_*.sh los hacen, un emulador cada vez).
+# cartucho (ninguna es una captura). Su cotejo contra openMSX esta en los
+# tests, con las huellas de los volcados guardadas en tests/.
+IMG = docs/imagenes
 imagenes: $(ROM)
+	@mkdir -p $(IMG)
+	$(PYIMG) tools/titulo.py png logotipo $(IMG)/logotipo.png
+	$(PYIMG) tools/titulo.py png titulo $(IMG)/titulo.png
+	@for m in 1 2 3 4 5 6 7 8 9 10 11; do $(PYIMG) tools/dibuja.py mapa $$m $(IMG)/mapa_$$m.png --numeros || exit 1; done
+	$(PYIMG) tools/dibuja.py sala 2 13 $(IMG)/sala_del_jefe.png
+	$(PYIMG) tools/personajes.py poses $(IMG)/poses.png
+	$(PYIMG) tools/personajes.py juegos $(IMG)/juegos.png
+	$(PYIMG) tools/personajes.py jefes $(IMG)/jefes.png
+	$(PYIMG) tools/objetos.py hoja $(IMG)/objetos.png
 
 # Los cotejos que dibujan necesitan PIL (en esta maquina, el python de
 # Programs, no el python3 de la Store).
 PYIMG ?= python
-
-coteja: $(ROM)
 
 # La web: las paginas se escriben en markdown y se convierten con md2html.py;
 # la portada la monta make_web.py con lo de tools/contenido_web.py.
@@ -183,4 +191,4 @@ clean:
 	      $(WORK)/galious_reensamblada.rom $(WORK)/pasmo.err
 
 .PHONY: all comprueba reconoce paginas semillas trace listado verify \
-        sanity densidad test imagenes coteja web clean
+        sanity densidad test imagenes web clean

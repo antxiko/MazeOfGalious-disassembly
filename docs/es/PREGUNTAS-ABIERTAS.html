@@ -1,0 +1,99 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Preguntas abiertas — The Maze of Galious (Konami, 1987)</title>
+<style>
+:root{--tinta:#cfd0d4;--suave:#83868f;--fondo:#000;--panel:#0c0e13;--linea:#23262e;
+  --rojo:#ff897d;--cyan:#65dbef;--verde:#3eb849;--oro:#ded087}
+@media (prefers-color-scheme:light){:root{--tinta:#191a1e;--suave:#5a5d66;--fondo:#e9e7e1;
+  --panel:#f7f6f2;--linea:#d0cdc5;--rojo:#b23f34;--cyan:#1c6b7c;--verde:#2b7734;--oro:#8a7420}}
+:root[data-theme="dark"]{--tinta:#cfd0d4;--suave:#83868f;--fondo:#000;--panel:#0c0e13;
+  --linea:#23262e;--rojo:#ff897d;--cyan:#65dbef;--verde:#3eb849;--oro:#ded087}
+:root[data-theme="light"]{--tinta:#191a1e;--suave:#5a5d66;--fondo:#e9e7e1;--panel:#f7f6f2;
+  --linea:#d0cdc5;--rojo:#b23f34;--cyan:#1c6b7c;--verde:#2b7734;--oro:#8a7420}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fondo);color:var(--tinta);padding:0 1.25rem 6rem;
+  font:15px/1.7 ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+.w{max-width:1120px;margin:0 auto}
+.n{max-width:68ch}
+h1,h2,h3,h4{font-weight:400;text-wrap:balance}
+a{color:var(--cyan)}
+img{image-rendering:pixelated;max-width:100%;height:auto;display:block}
+header.top{display:flex;flex-direction:column;align-items:center;gap:1.5rem;
+  padding:4rem 0 2rem;text-align:center}
+header.top img{width:min(100%,642px)}
+.claim{max-width:60ch;color:var(--suave);font-size:1.05rem}
+.claim b{color:var(--tinta);font-weight:400}
+.ficha{display:flex;flex-wrap:wrap;justify-content:center;gap:0 1.5rem;width:100%;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--suave);
+  border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);padding:.85rem 0}
+.ficha b{color:var(--rojo);font-weight:400}
+nav{display:flex;flex-wrap:wrap;gap:1.25rem;justify-content:center;padding:1.25rem 0;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+nav a{color:var(--suave);text-decoration:none;border-bottom:1px solid transparent}
+nav a:hover,nav a:focus{color:var(--tinta);border-bottom-color:var(--rojo)}
+nav.docs{border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);
+  margin-bottom:1rem}
+section{margin-top:4.5rem;scroll-margin-top:1rem}
+section>h2{font-size:1rem;letter-spacing:.1em;text-transform:uppercase;
+  border-left:3px solid var(--rojo);padding-left:.9rem;margin:0 0 1.5rem}
+.cifras{display:grid;gap:1px;background:var(--linea);border:1px solid var(--linea);
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.cifra{background:var(--panel);padding:1.1rem}
+.cifra b{display:block;font-size:1.7rem;color:var(--oro);font-weight:400;
+  font-variant-numeric:tabular-nums;line-height:1.2}
+.cifra span{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--suave)}
+.hall{border-top:1px solid var(--linea);padding-top:1.75rem;margin-top:2.5rem}
+.hall:first-of-type{border-top:0;padding-top:0;margin-top:0}
+.hall h3{margin:0 0 .75rem;font-size:1.15rem;color:var(--rojo)}
+.hall h4{color:var(--oro);margin:1.5rem 0 .5rem;font-size:.95rem}
+.hall p{margin:0 0 1rem}
+pre.asm{background:var(--panel);border-left:2px solid var(--verde);margin:1.25rem 0;
+  padding:1rem 1.1rem;overflow-x:auto;font-size:13px;line-height:1.6;color:var(--tinta)}
+.par{display:grid;gap:1.25rem;grid-template-columns:1fr}
+@media(min-width:820px){.par{grid-template-columns:1fr 1fr}}
+.par figure{margin:0}
+table{border-collapse:collapse;width:100%;margin:1.25rem 0;font-size:13px;display:block;
+  overflow-x:auto}
+th,td{text-align:left;padding:.5rem .75rem;border-bottom:1px solid var(--linea)}
+th{color:var(--suave);font-weight:400;font-size:11px;letter-spacing:.07em;text-transform:uppercase}
+td.num{font-variant-numeric:tabular-nums;color:var(--oro)}
+.nivel{margin-top:2rem}
+.nivel h3{margin:0 0 .9rem;font-size:.95rem;letter-spacing:.06em;text-transform:uppercase}
+.nivel em{color:var(--cyan);font-style:normal}
+.sep{color:var(--suave);margin:0 .6rem}
+.rejilla{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.rejilla figure{margin:0;background:var(--panel);box-shadow:0 0 0 1px var(--linea)}
+.rejilla figcaption{display:flex;justify-content:space-between;padding:.45rem .65rem;
+  font-size:11px;color:var(--suave);border-top:1px solid var(--linea)}
+.dir{font-variant-numeric:tabular-nums;color:var(--verde)}
+footer{margin-top:5rem;padding-top:1.5rem;border-top:1px solid var(--linea);
+  color:var(--suave);font-size:12px}
+
+/* Aviso de trabajo en curso: tiene que verse antes que las cifras, porque un
+   100% mal leido hace mas dano que no ponerlo. */
+.aviso{background:#3a2a10;border-left:3px solid var(--oro);margin:1.5rem auto;
+  padding:1rem 1.2rem;max-width:900px;border-radius:4px}
+.aviso p{margin:0;color:var(--tinta);font-size:15px;line-height:1.65}
+.galeria{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1.5rem;margin:1.5rem 0}
+.galeria figure{margin:0}
+.galeria img{width:100%;height:auto;image-rendering:pixelated;
+  border:1px solid var(--linea);border-radius:3px}
+.galeria figcaption{color:var(--suave);font-size:13px;margin-top:.5rem}
+audio{display:block;width:100%;max-width:640px;margin:.75rem 0 1.5rem}
+</style>
+<div class="w"><nav class="top"><a href="index.html">Portada</a><a href="EMPEZAR.html">Empezar</a><a href="EL-JUEGO.html">El juego</a><a href="EL-CARTUCHO.html">El cartucho</a><a href="EL-CODIGO.html">El código</a><a href="HALLAZGOS.html">Hallazgos</a><a href="EN-EL-EMULADOR.html">En el emulador</a><a href="PREGUNTAS-ABIERTAS.html" style=color:var(--tinta)>Preguntas abiertas</a><a href="../OPEN-QUESTIONS.html" style="margin-left:auto;color:var(--oro)">English</a></nav>
+<h1 id="preguntas-abiertas">Preguntas abiertas</h1>
+<p>Lo que no se sabe, o se ha leído en el código y no se ha comprobado en el emulador.</p>
+<h2 id="lo-que-nadie-nombra">Lo que nadie nombra</h2>
+<p>Ninguna instrucción ni palabra de la ROM apunta a estos trozos. Eso no prueba que no se usen: una dirección calculada no deja rastro, y ya pasó con los gráficos del jefe del mundo 3, que se eligen con 0x6175 + 7 × paso. Nada de esto se ha medido en openMSX:</p>
+<ul><li><b>Código:</b> p00:405F y p00:4077; p02:8153; p03:A871, A904, AAC1, ADF7, AE23, B16F y B17E; p06:A1F8, ACE2, ADE5 y B183. Los dos primeros son entradas de un vector de saltos que nadie llama; los demás van detrás de un <code>jp</code>, un <code>jr</code> o un <code>ret</code>.</li><li><b>p04:6DC6:</b> 56 bytes (16 parejas de pasos y tres ordenaciones de 0-7), los mismos que p05:88FD.</li><li><b>p12:B850:</b> 240 bytes iguales, byte a byte, al rle de 0xB760 (el sello de la sala del jefe), justo detrás de él.</li></ul>
+<h2 id="la-sala-94-del-castillo">La sala 94 del castillo</h2>
+<p>No tiene vecinas: ninguna sala lleva a ella y ella no lleva a ninguna. En el mapa va en el único hueco que queda entre la 93 y la 95, pero eso es una deducción por el número, no una vecina. p04:62A4 la usa como generador. Cómo se entra, si se entra, está sin ver.</p>
+<h2 id="las-demos">Las demos</h2>
+<p>La tabla de p01:7DD9 tiene cinco demos. Cuántas llegan a salir, sin medir.</p>
+<h2 id="leido-en-el-codigo-sin-probar">Leído en el código, sin probar</h2>
+<ul><li><b>Teclear el nombre del jefe.</b> Visto en openMSX poniendo a mano la marca de acertado (0xE020); tecleándolo, no.</li><li><b>UMBRELLA</b>, las <b>cifras del castillo</b> con el objeto 0x27, el objeto <b>0x15 con RETURN</b> y el <b>mundo 8 sin el objeto 0x13</b>.</li><li><b>Los objetos escondidos del castillo</b> (p02:9F82) y lo que pide cada uno.</li><li><b>La contraseña</b> (p02:95A0): 43 letras de 5 bits más 2 de suma, en 11 grupos de 4 y uno de 1, y se teclea en el estado 0x12 (p02:9716). Desde dónde se llega a esa pantalla, sin comprobar.</li><li><b>Con Knightmare en la otra ranura</b> pone 99 en 0xE05A y 0xE05B; p02:908D los pasa a 0xE053 y 0xE057 (los topes de vida). Sin probar con el cartucho.</li><li><b>Con el Game Master</b> pone el bit 2 de 0xF0F8; qué hacen p00:5EE6 y p00:5F00 con él, sin mirar.</li></ul>
+<h2 id="lo-que-no-se-ha-mirado">Lo que no se ha mirado</h2>
+<ul><li><b>Los objetos 0x12 y 0x14:</b> el 0x12 abre algo en la sala 11 del mundo 2 (p08:9F87) y el 0x14 hace pintar algo en el castillo según 0xE06C (p00:5D24).</li><li><b>La vida, el arma y el daño de cada jefe.</b> La tabla de vida (p01:7F97) va por tipo de jefe y no por mundo, y el tipo 5 no existe: falta casar cada tipo con su mapa antes de dar las cifras por mundo.</li><li><b>Una máquina de verdad.</b> Todo está probado en openMSX con C-BIOS.</li></ul>
+<footer><p><em>The Maze of Galious</em> (<em>Knightmare II</em>) lo public&oacute; Konami para MSX en 1987; su n&uacute;mero de cat&aacute;logo es RC-749 y son 128 KB. Todos los derechos sobre el juego siguen siendo de sus titulares. Este trabajo es de preservaci&oacute;n, estudio y documentaci&oacute;n, y la imagen del cartucho no se distribuye.</p></footer></div>

@@ -12,16 +12,19 @@ bancos con codigo en tools/densidad.py (make densidad). Un test las vuelve a
 medir.
 """
 
-NOMBRE = "Ganbare Goemon!"
-CATALOGO = "RC-748"
+NOMBRE = "The Maze of Galious"
+CATALOGO = "RC-749"
 ANIO = 1987
-REPOSITORIO = "https://github.com/antxiko/GanbareGoemon-disassembly"
+REPOSITORIO = "https://github.com/antxiko/MazeOfGalious-disassembly"
 
-CODIGO = 28724
-DATOS = 102348
-RUTINAS = 1678
-INSTRUCCIONES = 14355
-COMENTARIOS = 6103
+CODIGO = 53613
+DATOS = 77459
+RUTINAS = 3423
+INSTRUCCIONES = 25226
+COMENTARIOS = 10114
+
+# Los bancos con codigo, para volver a medir la densidad (tests/test_web.py)
+BANCOS_CON_CODIGO = ("00", "01", "02", "03", "04", "05", "06", "08", "09", "13", "15")
 
 
 def densidad(idioma):
@@ -33,13 +36,13 @@ def densidad(idioma):
 # El pie legal de cada pagina. El cartucho lleva la marca oculta de la casa al
 # final del banco 3 (tools/marca_konami.py).
 PIE_LEGAL = {
-    "es": "<em>Ganbare Goemon! Karakuri D&#333;ch&#363;</em> lo public&oacute; "
-          "Konami para MSX2 en 1987; su n&uacute;mero de cat&aacute;logo es "
-          "RC-748 y son 128 KB. Todos los derechos sobre el juego siguen siendo "
+    "es": "<em>The Maze of Galious</em> (<em>Knightmare II</em>) lo public&oacute; "
+          "Konami para MSX en 1987; su n&uacute;mero de cat&aacute;logo es "
+          "RC-749 y son 128 KB. Todos los derechos sobre el juego siguen siendo "
           "de sus titulares. Este trabajo es de preservaci&oacute;n, estudio y "
           "documentaci&oacute;n, y la imagen del cartucho no se distribuye.",
-    "en": "<em>Ganbare Goemon! Karakuri D&#333;ch&#363;</em> was published by "
-          "Konami for the MSX2 in 1987; its catalogue number is RC-748 and it "
+    "en": "<em>The Maze of Galious</em> (<em>Knightmare II</em>) was published "
+          "by Konami for the MSX in 1987; its catalogue number is RC-749 and it "
           "is 128 KB. All rights in the game remain with their holders. This "
           "is preservation, study and documentation work, and the cartridge "
           "image is not distributed.",
@@ -48,148 +51,126 @@ PIE_LEGAL = {
 # La cabecera de la portada
 PORTADA = {
     "es": dict(
-        titulo="Ganbare Goemon! - desensamblado comentado",
-        claim="Siete fases de siete zonas, 124 pantallas, 21 interiores con "
-              "sus precios y 42 pasadizos secretos en primera persona, todo "
-              "dibujado desde la ROM.",
+        titulo="The Maze of Galious - desensamblado comentado",
+        claim="El castillo y diez mundos, 321 salas montadas desde sus tablas, "
+              "los diez jefes hechos de caracteres, 47 objetos y las tiendas, "
+              "todo dibujado desde la ROM.",
         ficha=["Konami - <b>(c) Konami 1987</b>",
-               "Cartucho <b>RC-748</b>, MegaROM de 128 KB (Konami4)",
-               "<b>MSX2</b>", "Volcado <b>a436addc...</b>"],
+               "Cartucho <b>RC-749</b>, MegaROM de 128 KB (Konami4)",
+               "<b>MSX</b>", "Volcado <b>420c42c1...</b>"],
         aviso="<b>Aqu&iacute; no hay ninguna captura.</b> Todas las im&aacute;genes "
               "est&aacute;n <b>dibujadas desde los bytes de la ROM</b>: el "
-              "t&iacute;tulo, las 49 zonas, Goemon y Ebisumaru, los enemigos, "
-              "los 21 interiores y los 42 pasadizos secretos, con las tablas del "
-              "cartucho, y <b>cotejadas contra openMSX</b> en una m&aacute;quina "
-              "MSX2 japonesa, sin una diferencia. El listado y las cifras se "
-              "reproducen con <code>make</code>, y el reensamblado devuelve la "
-              "ROM <b>byte a byte</b>.",
+              "logotipo y el t&iacute;tulo, las 321 salas del castillo y de los "
+              "diez mundos, Popolon y Afrodita, los juegos de sprites, los jefes "
+              "y los objetos, con las tablas del cartucho, y <b>cotejadas contra "
+              "openMSX</b> en una m&aacute;quina MSX1 japonesa, sin una "
+              "diferencia. El listado y las cifras se reproducen con "
+              "<code>make</code>, y el reensamblado devuelve la ROM <b>byte a "
+              "byte</b>.",
     ),
     "en": dict(
-        titulo="Ganbare Goemon! - a commented disassembly",
-        claim="Seven stages of seven areas, 124 screens, 21 interiors with "
-              "their prices and 42 first-person secret passages, all drawn "
-              "from the ROM.",
+        titulo="The Maze of Galious - a commented disassembly",
+        claim="The castle and ten worlds, 321 rooms built from their tables, "
+              "the ten bosses made of characters, 47 items and the shops, all "
+              "drawn from the ROM.",
         ficha=["Konami - <b>(c) Konami 1987</b>",
-               "An <b>RC-748</b> cartridge, a 128 KB MegaROM (Konami4)",
-               "<b>MSX2</b>", "Dump <b>a436addc...</b>"],
+               "An <b>RC-749</b> cartridge, a 128 KB MegaROM (Konami4)",
+               "<b>MSX</b>", "Dump <b>420c42c1...</b>"],
         aviso="<b>Not one capture here.</b> Every picture is <b>drawn from the "
-              "bytes of the ROM</b>: the title, the 49 areas, Goemon and "
-              "Ebisumaru, the enemies, the 21 interiors and the 42 secret "
-              "passages, with the cartridge's own tables, and <b>checked "
-              "against openMSX</b> on a Japanese MSX2 machine, without a single "
-              "difference. The listing and the numbers are reproducible with "
-              "<code>make</code>, and reassembling gives back the ROM <b>byte "
-              "for byte</b>.",
+              "bytes of the ROM</b>: the logo and the title, the 321 rooms of "
+              "the castle and the ten worlds, Popolon and Aphrodite, the sprite "
+              "sets, the bosses and the items, with the cartridge's own tables, "
+              "and <b>checked against openMSX</b> on a Japanese MSX1 machine, "
+              "without a single difference. The listing and the numbers are "
+              "reproducible with <code>make</code>, and reassembling gives back "
+              "the ROM <b>byte for byte</b>.",
     ),
 }
 
 HALLAZGOS = {
     "es": [
-        ("Los pasadizos secretos",
-         "<p>En cada zona menos la 5 de cada fase, el interior 16 cobra 900 ryo "
-         "por llevarte al pasadizo secreto del fondo: <b>42 pasadizos</b> hechos "
-         "con 16 dibujos (<code>0xA86D</code>), que se recorren en primera "
-         "persona (<code>p03:B8C3</code>).</p><p>Dentro hay 200 ryo, una vida, "
-         "el mapa y la salida, que da 10.000 puntos. Los 42 cotejados a cero "
-         "contra openMSX.</p>"),
-        ("Con Q*bert o el Game Master al lado, un men&uacute; para elegir fase",
-         "<p><code>p01:7EAB</code> mira la otra ranura; si encuentra Q*bert o "
-         "el Game Master, el t&iacute;tulo saca un men&uacute; m&aacute;s "
-         "(<code>p01:7F1A</code>) para elegir la fase y las vidas.</p><p>Visto "
-         "en openMSX con los dos cartuchos.</p>"),
-        ("Cuatro claves en la contrase&ntilde;a",
-         "<p>&#12367;&#12427;&#12367;&#12427;&#12390;&#12435;&#12390;&#12435; "
-         "(jugador 2), &#12365;&#12415;&#12385;&#12420;&#12435;&#12370;&#12435;&#12365; "
-         "(vida m&aacute;xima 0x20), &#12354;&#12369;&#12415;&#12373;&#12435;&#12398;&#12373;&#12356;&#12405; "
-         "(2000 ryo) y &#12388;&#12389;&#12365;&#12364;&#12375;&#12383;&#12356; "
-         "(continuar), en <code>0xBE8A</code>.</p><p>Las cuatro comprobadas en "
+        ("F2: el personaje se sienta en una taza",
+         "<p>F2 en plena partida (<code>p02:9E07</code>) pone el estado 9 y el "
+         "personaje sale sentado en una taza blanca, con los dibujos del banco "
+         "15 (<code>p00:5917</code>, <code>p03:BE36</code>).</p><p>Visto en "
          "openMSX.</p>"),
-        ("Dos palabras en la pausa",
-         "<p>En la pausa se teclean cinco letras (<code>p03:BDF6</code>): "
-         "&#12362;&#12420;&#12406;&#12435; dentro de un pasadizo secreto da su "
-         "mapa; &#12377;&#12365;&#12420;&#12397;&#12435; fuera hace que tocar a "
-         "los tipos 8 y 0x21 d&eacute; 10 ryo.</p><p>Los dos bits, vistos en "
-         "openMSX tecle&aacute;ndolas.</p>"),
-        ("F2 ense&ntilde;a la contrase&ntilde;a, F5 contin&uacute;a",
-         "<p>F2 en la pausa ense&ntilde;a la contrase&ntilde;a del sitio "
-         "(<code>p01:6B5F</code>); sin vidas, F5 sigue la partida si se ha "
-         "ganado &laquo;continuar&raquo; (<code>p00:5F8E</code>).</p><p>Los dos, "
-         "vistos en openMSX.</p>"),
-        ("Al morir, la mitad del dinero",
-         "<p><code>p01:701E</code> divide el dinero entre dos en BCD, cifra a "
-         "cifra.</p><p>En openMSX, 4800 ryo se quedaron en 2400.</p>"),
-        ("Las tiendas abren seg&uacute;n el reloj",
-         "<p>Los interiores 8 a 15 cierran cuando la cifra de las decenas del "
-         "tiempo es impar (<code>p03:AD57</code>).</p><p>Visto en openMSX, "
-         "abiertos y cerrados.</p>"),
-        ("Cuatro finales",
-         "<p><code>p01:6546</code> elige el final seg&uacute;n si se han pasado "
-         "las 7 fases y si estaba el vecino. Con las 7, el juego anuncia "
-         "Hinotori y Maj&#333; Densetsu 2.</p>"),
-        ("Cuatro fallos del c&oacute;digo",
-         "<p>Una escritura que va a la ROM de la BIOS (<code>p03:AAFE</code>), "
-         "una vida que se llena entera por pasar DE en vez de A "
-         "(<code>p03:B4F1</code>), un <code>ld hl,(nn)</code> por "
-         "<code>ld hl,nn</code> (<code>p03:A5BB</code>) y una tabla que se "
-         "ejecuta como c&oacute;digo (<code>p03:ADB4</code>).</p>"),
-        ("La marca de Konami, en hiragana",
-         "<p>Al final del banco 3, en la fuente del propio juego: "
-         "&#12364;&#12435;&#12400;&#12428;&#12372;&#12360;&#12418;&#12435; y el "
-         "RC-748. El formato de la marca lo destap&oacute; Manuel Pazos.</p>"),
+        ("ZEUS en la pausa: continuar",
+         "<p>Tecleado en la pausa de F2 en la sala 1 del castillo "
+         "(<code>p01:7E57</code>), al perder sale GAME OVER y F5 CONTINUE; F5 "
+         "sigue en la sala 1 con la vida en 8 (<code>p01:7EF1</code>).</p><p>Visto "
+         "en openMSX.</p>"),
+        ("Las salas negras son pistas y tiendas",
+         "<p>Nueve mundos tienen una sala especial (<code>0x8F0A</code>) que "
+         "el juego no monta: sale en negro. No son jefes: son Demeter con una "
+         "pista o su tienda, con el mensaje en ingl&eacute;s o en japon&eacute;s "
+         "seg&uacute;n la m&aacute;quina (<code>p02:94F0</code>).</p><p>Las dos "
+         "salas y los dos idiomas, vistos en openMSX.</p>"),
+        ("El jefe se llama por su nombre",
+         "<p>En su sala se teclea su nombre (<code>p02:9B18</code>, tabla "
+         "<code>0x9B4F</code>): YOMAR, ELOHIM... HAMALECH. Sale un humo y "
+         "despu&eacute;s el jefe, con el fondo en negro.</p><p>Visto en openMSX "
+         "forzando la marca de acertado.</p>"),
+        ("Los jefes no son sprites",
+         "<p>Son mosaicos de caracteres (61 en <code>0x9E0A</code>) que se "
+         "cambian para moverlos. Los gr&aacute;ficos del jefe del mundo 3 se "
+         "cargan por pasos con una direcci&oacute;n calculada, y por eso "
+         "ninguna palabra de la ROM los nombra.</p><p>Medido en partida, "
+         "cuadro a cuadro.</p>"),
+        ("Con otro cartucho al lado",
+         "<p><code>p00:5F0C</code> mira la otra ranura: con Q*bert se empieza "
+         "con 100 flechas, 100 monedas y 100 llaves; con Knightmare cambia "
+         "0xE05A y 0xE05B; con el Game Master, un bit.</p><p>Le&iacute;do en el "
+         "c&oacute;digo.</p>"),
+        ("Objetos escondidos en el castillo",
+         "<p>Cinco objetos salen al vencer a las figuras de ciertas salas "
+         "(<code>p02:9F82</code>); el 0x26 pide adem&aacute;s derecha, abajo, "
+         "izquierda y arriba (<code>p03:A056</code>).</p><p>Le&iacute;do en el "
+         "c&oacute;digo.</p>"),
+        ("La marca de Konami",
+         "<p>Al final del banco 3: &#12460;&#12522;&#12454;&#12473; &#12494; "
+         "&#12513;&#12452;&#12461;&#12517;&#12454; y el RC-749. El formato de "
+         "la marca lo destap&oacute; Manuel Pazos.</p>"),
     ],
     "en": [
-        ("The secret passages",
-         "<p>In every area except area 5 of each stage, interior 16 charges 900 "
-         "ryo to take you to the secret passage at the back: <b>42 passages</b> "
-         "made from 16 drawings (<code>0xA86D</code>), walked in first person "
-         "(<code>p03:B8C3</code>).</p><p>Inside there are 200 ryo, a life, the "
-         "map and the exit, which gives 10,000 points. All 42 checked down to "
-         "zero against openMSX.</p>"),
-        ("With Q*bert or the Game Master next to it, a menu to pick the stage",
-         "<p><code>p01:7EAB</code> looks at the other slot; if it finds Q*bert "
-         "or the Game Master, the title screen shows an extra menu "
-         "(<code>p01:7F1A</code>) to choose the stage and the lives.</p><p>Seen "
-         "in openMSX with both cartridges.</p>"),
-        ("Four keywords on the password screen",
-         "<p>&#12367;&#12427;&#12367;&#12427;&#12390;&#12435;&#12390;&#12435; "
-         "(player 2), &#12365;&#12415;&#12385;&#12420;&#12435;&#12370;&#12435;&#12365; "
-         "(maximum life 0x20), &#12354;&#12369;&#12415;&#12373;&#12435;&#12398;&#12373;&#12356;&#12405; "
-         "(2000 ryo) and &#12388;&#12389;&#12365;&#12364;&#12375;&#12383;&#12356; "
-         "(continue), at <code>0xBE8A</code>.</p><p>All four checked in "
+        ("F2: the character sits on a cup",
+         "<p>F2 in the middle of a game (<code>p02:9E07</code>) sets state 9 "
+         "and the character appears sitting on a white cup, with patterns from "
+         "bank 15 (<code>p00:5917</code>, <code>p03:BE36</code>).</p><p>Seen in "
          "openMSX.</p>"),
-        ("Two words in the pause",
-         "<p>During the pause five letters can be typed (<code>p03:BDF6</code>): "
-         "&#12362;&#12420;&#12406;&#12435; inside a secret passage gives its "
-         "map; &#12377;&#12365;&#12420;&#12397;&#12435; outside makes touching "
-         "types 8 and 0x21 give 10 ryo.</p><p>Both bits seen in openMSX by "
-         "typing them.</p>"),
-        ("F2 shows the password, F5 continues",
-         "<p>F2 in the pause shows the password for the current place "
-         "(<code>p01:6B5F</code>); out of lives, F5 carries on if "
-         "&ldquo;continue&rdquo; has been earned (<code>p00:5F8E</code>).</p>"
-         "<p>Both seen in openMSX.</p>"),
-        ("Dying halves the money",
-         "<p><code>p01:701E</code> divides the money by two in BCD, digit by "
-         "digit.</p><p>In openMSX, 4800 ryo became 2400.</p>"),
-        ("The shops open by the clock",
-         "<p>Interiors 8 to 15 are closed when the tens digit of the timer is "
-         "odd (<code>p03:AD57</code>).</p><p>Seen in openMSX, open and "
-         "closed.</p>"),
-        ("Four endings",
-         "<p><code>p01:6546</code> picks the ending from whether all 7 stages "
-         "have been played and whether the neighbour was there. With the 7, "
-         "the game announces Hinotori and Maj&#333; Densetsu 2.</p>"),
-        ("Four bugs in the code",
-         "<p>A write that goes to BIOS ROM (<code>p03:AAFE</code>), a life that "
-         "fills completely because DE is passed instead of A "
-         "(<code>p03:B4F1</code>), an <code>ld hl,(nn)</code> instead of "
-         "<code>ld hl,nn</code> (<code>p03:A5BB</code>) and a table run as code "
-         "(<code>p03:ADB4</code>).</p>"),
-        ("Konami's mark, in hiragana",
-         "<p>At the end of bank 3, in the game's own font: "
-         "&#12364;&#12435;&#12400;&#12428;&#12372;&#12360;&#12418;&#12435; and "
-         "the RC-748. The format of the mark was uncovered by Manuel "
-         "Pazos.</p>"),
+        ("ZEUS in the pause: continue",
+         "<p>Typed in the F2 pause in room 1 of the castle "
+         "(<code>p01:7E57</code>), losing shows GAME OVER and F5 CONTINUE; F5 "
+         "carries on in room 1 with life at 8 (<code>p01:7EF1</code>).</p><p>Seen "
+         "in openMSX.</p>"),
+        ("The black rooms are hints and shops",
+         "<p>Nine worlds have a special room (<code>0x8F0A</code>) the game "
+         "does not build: it comes out black. They are not bosses: they are "
+         "Demeter with a hint or her shop, with the message in English or "
+         "Japanese depending on the machine (<code>p02:94F0</code>).</p><p>Both "
+         "rooms and both languages, seen in openMSX.</p>"),
+        ("The boss is called by its name",
+         "<p>In its room you type its name (<code>p02:9B18</code>, table "
+         "<code>0x9B4F</code>): YOMAR, ELOHIM... HAMALECH. Smoke comes out and "
+         "then the boss, with the background in black.</p><p>Seen in openMSX "
+         "by forcing the guessed flag.</p>"),
+        ("The bosses are not sprites",
+         "<p>They are character mosaics (61 at <code>0x9E0A</code>) swapped to "
+         "move them. World 3's boss graphics are loaded in steps through a "
+         "computed address, which is why no word in the ROM names them.</p>"
+         "<p>Measured in game, frame by frame.</p>"),
+        ("With another cartridge next to it",
+         "<p><code>p00:5F0C</code> looks at the other slot: with Q*bert you "
+         "start with 100 arrows, 100 coins and 100 keys; with Knightmare it "
+         "changes 0xE05A and 0xE05B; with the Game Master, a bit.</p><p>Read in "
+         "the code.</p>"),
+        ("Hidden items in the castle",
+         "<p>Five items come out when the figures of certain rooms are defeated "
+         "(<code>p02:9F82</code>); 0x26 also asks for right, down, left and up "
+         "(<code>p03:A056</code>).</p><p>Read in the code.</p>"),
+        ("Konami's mark",
+         "<p>At the end of bank 3: &#12460;&#12522;&#12454;&#12473; &#12494; "
+         "&#12513;&#12452;&#12461;&#12517;&#12454; and the RC-749. The format "
+         "of the mark was uncovered by Manuel Pazos.</p>"),
     ],
 }
 
@@ -198,52 +179,43 @@ HALLAZGOS = {
 LOGOTIPO = "titulo.png"
 GALERIA = [
     ("titulo.png",
-     "La pantalla de t&iacute;tulo, montada desde la ROM. Coincide con openMSX "
-     "sin un punto distinto (<code>titulo.py coteja</code>).",
-     "The title screen, built from the ROM. It matches openMSX with not a "
-     "single pixel different (<code>titulo.py coteja</code>)."),
-    ("zona_1_0.png",
-     "La zona 0 de la fase 1, calle a calle (<code>p00:4188</code>); las "
-     "flechas dicen adonde llevan las salidas de arriba y de abajo "
-     "(<code>0xB7D0</code>). Las 49 entradas de zona, cotejadas contra "
-     "openMSX.",
-     "Area 0 of stage 1, street by street (<code>p00:4188</code>); the arrows "
-     "say where the up and down exits lead (<code>0xB7D0</code>). All 49 "
-     "area entrances checked against openMSX."),
-    ("goemon.png",
-     "Las 20 poses de Goemon: dibujos, sprites y colores cotejados con la pose "
-     "de cada volcado.",
-     "Goemon's 20 poses: patterns, sprites and colours checked against the "
-     "pose in each dump."),
-    ("ebisumaru.png",
-     "Ebisumaru, el jugador 2, con sus 20 poses.",
-     "Ebisumaru, player 2, with his 20 poses."),
-    ("enemigos.png",
-     "Los 30 tipos que salen en las casillas (listas de <code>0x9BF0</code> y "
-     "<code>0x5BB2</code>), con la paleta de la primera zona donde sale cada "
-     "uno. 107 figuras de los volcados, cotejadas a cero.",
-     "The 30 types that appear in the cells (lists at <code>0x9BF0</code> and "
-     "<code>0x5BB2</code>), each with the palette of the first area where it "
-     "appears. 107 figures from the dumps, checked down to zero."),
-    ("interior_00.png",
-     "Un interior: cada uno tiene sus figuras y lo que vende "
-     "(<code>0x9567</code>), con los precios de <code>0x9371</code>. Los 21, "
-     "cotejados a cero.",
-     "An interior: each has its figures and what it sells "
-     "(<code>0x9567</code>), with the prices at <code>0x9371</code>. All 21 "
-     "checked down to zero."),
-    ("pasadizo_1_0.png",
-     "El mapa del pasadizo secreto de la zona 1-0, como lo ense&ntilde;a el "
-     "juego (<code>p03:BB1B</code>). Hay 42, cotejados contra openMSX.",
-     "The map of the secret passage in area 1-0, as the game shows it "
-     "(<code>p03:BB1B</code>). There are 42, checked against openMSX."),
-    ("menu_vecino.png",
-     "El men&uacute; que sale con Q*bert o el Game Master en la otra ranura "
-     "(<code>p01:7F1A</code>), dibujado desde la ROM y a cero contra openMSX.",
-     "The menu that shows up with Q*bert or the Game Master in the other slot "
-     "(<code>p01:7F1A</code>), drawn from the ROM and down to zero against "
-     "openMSX."),
-    ("konami.png",
+     "La pantalla de t&iacute;tulo, montada desde la ROM: coincide con openMSX "
+     "en los 16 KB de la VRAM (<code>titulo.py coteja</code>).",
+     "The title screen, built from the ROM: it matches openMSX in all 16 KB of "
+     "VRAM (<code>titulo.py coteja</code>)."),
+    ("mapa_1.png",
+     "El castillo: sus 147 salas con su n&uacute;mero, colocadas por sus "
+     "vecinas (<code>0xA9EF</code>). Las 321 salas del juego, cotejadas "
+     "car&aacute;cter a car&aacute;cter contra openMSX.",
+     "The castle: its 147 rooms with their numbers, laid out by their "
+     "neighbours (<code>0xA9EF</code>). All 321 rooms in the game, checked "
+     "character for character against openMSX."),
+    ("mapa_10.png",
+     "El mundo 9, sus 27 salas. Las negras son pistas y tiendas; la del sello, "
+     "la del jefe.",
+     "World 9, its 27 rooms. The black ones are hints and shops; the one with "
+     "the seal, the boss's."),
+    ("sala_del_jefe.png",
+     "La sala del jefe del mundo 1 con el sello: una mitad de "
+     "<code>0xB760</code> y la otra, la misma dada la vuelta.",
+     "The boss room of world 1 with the seal: one half from "
+     "<code>0xB760</code> and the other, the same flipped."),
+    ("jefes.png",
+     "Los diez jefes enteros: mosaicos de caracteres (<code>0x9E0A</code>), "
+     "medidos en partida y a cero contra openMSX.",
+     "The ten bosses in full: character mosaics (<code>0x9E0A</code>), "
+     "measured in game and down to zero against openMSX."),
+    ("poses.png",
+     "Las 32 poses de Popolon y de Afrodita (<code>0x7529</code>), que comparten "
+     "dibujos y cambian de color.",
+     "Popolon's and Aphrodite's 32 poses (<code>0x7529</code>), which share "
+     "patterns and change colour."),
+    ("objetos.png",
+     "Los 47 objetos (<code>0x6E34</code>, <code>0x6E80</code>). El juego no "
+     "los nombra: solo los dibuja.",
+     "The 47 items (<code>0x6E34</code>, <code>0x6E80</code>). The game never "
+     "names them: it only draws them."),
+    ("logotipo.png",
      "El logotipo de Konami, a cero contra openMSX.",
      "The Konami logo, down to zero against openMSX."),
 ]
