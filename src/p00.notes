@@ -1347,6 +1347,7 @@ C 0x4951 guarda estado 0x10 pedido
 C 0x4956 al_estado: al estado A con el paso 0 y 0x20 cuadros de espera
 C 0x4966 paso_siguiente: sube el paso 0xE001
 C 0x496B a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
+C 0x496E humo_del_jefe: el humo del jefe: los graficos aparecen o se deshacen con una mascara
 C 0x4971 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x4974 lee el humo del jefe en marcha
 C 0x497F hl_mas_a: HL += A
@@ -1368,6 +1369,7 @@ C 0x49F4 sala_a_vram: la pantalla de la sala (0xED80) a las filas 4-23
 C 0x49FC esconde_sprites: la copia de la tabla de sprites (0xEC80) con y = 0xE0
 C 0x49FF pantalla_a_cero: la copia de la tabla de nombres a cero y a la VRAM
 C 0x4A02 graficos_del_final: los graficos del final
+C 0x4A08 empieza_el_final: el dibujo y los sprites del final
 C 0x4A0B a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x4A0F guarda el final (estado 0x11)
 C 0x4A13 guarda un paso de varios cuadros en marcha
@@ -1375,6 +1377,7 @@ C 0x4A18 pide_sonido_ya: como pide_sonido, sin mirar la pausa
 C 0x4A1B paso_siguiente: sube el paso 0xE001
 C 0x4A21 nombres_a_vram: la copia de la tabla de nombres (0xED00) a 0x3800
 C 0x4A24 a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
+C 0x4A27 cuadro_del_final: un cuadro del final, por su paso
 C 0x4A2A a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x4A2D lee un paso de varios cuadros en marcha
 C 0x4A38 esconde_sprites: la copia de la tabla de sprites (0xEC80) con y = 0xE0
@@ -1410,6 +1413,7 @@ C 0x4B36 figuras_quietas: 0xE602 = 1: no se tocan los sprites
 C 0x4B3F rle_a_vram: descomprime el rle de DE en la VRAM de HL
 C 0x4B42 figuras_sueltas: 0xE602 = 0
 C 0x4B5D a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
+C 0x4B60 humo_del_jefe: el humo del jefe: los graficos aparecen o se deshacen con una mascara
 C 0x4B63 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x4B6E sala_a_vram: la pantalla de la sala (0xED80) a las filas 4-23
 C 0x4B74 guarda el estado del jefe y el byte siguiente (16 bits)
@@ -1519,6 +1523,8 @@ C 0x5123 jefe_otra_vez: si hay jefe, 0xE0D2 = 1
 C 0x5126 cosa_del_jefe_otra_vez: si estaba puesta, la cosa del jefe vencido
 C 0x512F vecinas_de_la_sala: las vecinas de la sala (tabla 0xA9EF, banco 9) a 0xE648; con jefe, ninguna
 C 0x5132 marcas_de_la_sala: 0xE60C y 0xE60E: los bytes de la sala en el tramo del mapa (0xAF09)
+C 0x5138 sala_de_agua: 0xE617 en las salas con agua que se mueve (0xBCD3)
+C 0x513B sala_de_colores: 0xE619 en las salas con colores que cambian (0xBD72)
 C 0x513E a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x5144 sonido_fc: con 0xE0D5, una vez, el sonido 0xFC
 C 0x514A monta_la_planta: la planta y lo que la cambia (objeto 0x18, mapa 4); no en salas especiales
@@ -1645,6 +1651,8 @@ C 0x5417 abre_la_puerta: la puerta del mundo se abre poco a poco; abierta, se ga
 C 0x541A sale_del_mundo: con abajo delante de la puerta de vuelta: estado 0x10
 C 0x541D vida_y_experiencia: cada 4 cuadros, lo pendiente de vida y experiencia de los dos
 C 0x5420 repinta_barras: las barras de los bits de 0xE062
+C 0x5429 agua_que_se_mueve: los dibujos del agua rotan cada 2, 4 y 8 cuadros
+C 0x542C colores_que_cambian: cada 4 cuadros los colores del paso siguiente (0xBDCE)
 C 0x542F a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x5432 figuras_sueltas: 0xE602 = 0
 C 0x5438 despacha: salta a la entrada A de la tabla de palabras que va detras del call

@@ -709,7 +709,7 @@ L_648C:
 L_6491:
 	bit 5,(ix+002h)		;6491   ; ...al PSG
 	ret nz			;6495
-	call periodo		;6496   ; periodo: el periodo D, E en los registros del canal
+	call periodo		;6496   ; al PSG
 	xor a			;6499
 L_649A:
 	ld (ix+018h),a		;649a

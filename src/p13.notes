@@ -224,7 +224,6 @@ C 0x6255 periodo: el periodo D, E en los registros del canal
 C 0x6277 mezcla_tono: el canal con tono y sin ruido
 C 0x632B lee lo herido que esta el jefe (0, 1, 2)
 C 0x6345 volumen: el volumen E del canal
-C 0x6496 periodo: el periodo D, E en los registros del canal
 C 0x64AD canal_vacio: el programa vacio: calla el canal
 C 0x6506 lee el volumen general (baja al apagarse)
 C 0x6515 lee la musica que suena

@@ -31,6 +31,85 @@ F 0xBDCE 2
 D 0xBDE2 0xBE1C escrituras_bdce  las 10 escrituras de 0xBDCE: [direccion 0x15C0-0x15C4][2-4][bytes]
 F 0xBEC8 2
 D 0xBEC8 0xBED4 tabla_bec8  6 palabras (0x2000, 0x2800, 0x3000, 0x0000, 0x0800 y 0x1000: los tercios de la tabla de colores y de la de dibujos) que p15:BE85 elige con 0xE69A y a las que suma 0xE69B x 8
+C 0xb7c0 el final: el dibujo de 0xB989 (20 x 14) en la pantalla...
+C 0xb7c3 ...0xBF cuadros...
+C 0xb7c8 ...los sprites de partida...
+C 0xb7d1 ...los pasos a cero
+C 0xb7e3 4 sprites en fila y 2 de 0xBAE1 en 0xECA8
+C 0xb7e9 2 sprites (8 bytes) de HL a 0xECA8
+C 0xb7f2 4 sprites en y 0x40, desde x 0x60 de 16 en 16, dibujos de 0xBAF1, color 1
+C 0xb810 el dibujo de 0xB989 en 0xED86 (14 filas de 20)
+C 0xb81c el dibujo de sprite 0x1E00 todo a 0xFF...
+C 0xb827 ...y cuatro sprites iguales de 0xB97B en 0xEC90
+C 0xb83b 2 sprites de 0xBAF5 en 0xECA0
+C 0xb847 cada cuadro del final: cada 2 cuadros cuenta 0xF02B...
+C 0xb85a ...por el paso 0xF031 (tabla que sigue)
+C 0xb868 se acabo el paso de varios cuadros
+C 0xb86d paso: cada 4 cuadros los sprites de 0xECA0 suben...
+C 0xb87a ...hasta la y 0x5F...
+C 0xb883 ...luego 0x40 cuadros y el paso siguiente
+C 0xb890 paso: cuenta...
+C 0xb89a ...lo de cada 16 cuadros...
+C 0xb8a2 ...cada 64 cuadros, uno de dos dibujos al azar (0xBAA1 o 0xBAC1)...
+C 0xb8b4 ...en dos trozos de la pantalla...
+C 0xb8c6 ...y dos caracteres sueltos
+C 0xb8d0 paso: cada 4 cuadros los sprites de 0xECA8 bajan hasta 0x3F...
+C 0xb8ea ...luego otros (0xBAE9)...
+C 0xb8f5 ...y suben hasta 0x2E
+C 0xb905 cada 16 cuadros dos caracteres alternan (0xB985, 0xB987)
+C 0xb925 paso: cuenta 0xF02B...
+C 0xb92b ...cada 16 cuadros un sprite de 0xB97F en (0x2B, 0x18), color 15...
+C 0xb957 ...y 0xF022 = 1
+C 0xb963 el paso siguiente
+C 0xb968 cada 8 cuadros...
+C 0xb970 ...el sprite de 0xECB0 escondido
+C 0xbcb9 el agua que se mueve: las salas del mapa en 0xBCD3...
+C 0xbccf ...0xE617 = 1
+C 0xbd06 cada cuadro, con 0xE617: los dibujos del agua (0x2DB0-0x2DB7) rotan un bit...
+C 0xbd17 ...unos cada 2 cuadros...
+C 0xbd25 ...otros cada 4...
+C 0xbd33 ...otro cada 8
+C 0xbd3e B bytes de dibujo rotados en dos tercios
+C 0xbd58 los colores que cambian: las salas del mapa en 0xBD72...
+C 0xbd6e ...0xE619 = 1
+C 0xbda1 cada 4 cuadros, con 0xE619: el paso siguiente (0-9)...
+C 0xbdb7 ...sus colores de la tabla 0xBDCE: [destino][cuantos][bytes]...
+C 0xbdc5 ...a la VRAM
+C 0xbe1c el humo del jefe: por el paso 0xE699
+C 0xbe2e paso 0: los graficos desde el caracter 0x9C, 10 de ellos, mascara 0xF0
+C 0xbe3c los tres tercios...
+C 0xbe49 ...luego la mascara 0xFE y 8 pasos
+C 0xbe57 el paso siguiente
+C 0xbe5c un tercio cada cuadro...
+C 0xbe67 ...al acabar los tres, la mascara corre un bit...
+C 0xbe6e ...8 veces...
+C 0xbe73 ...hasta el paso 5: se acabo el humo
+C 0xbe7f los dibujos del tercio 0xE69A (tabla 0xBEC8)...
+C 0xbe88 ...desde el caracter 0xE69B...
+C 0xbe95 ...0xE69C caracteres...
+C 0xbea3 ...a 0xE800...
+C 0xbeb3 ...con la mascara...
+C 0xbeba ...y de vuelta
+C 0xbed4 pasos pares: AND con la mascara...
+C 0xbee4 ...impares: la mascara corre 3 bits en cada byte
+C 0xbef4 otro humo: desde el caracter 0x5A, 0x40 de ellos
+C 0xbf05 otro: desde el 0xBA, 0x36
+C 0xb7fb [y 0x40]...
+C 0xb7ff ...[x]...
+C 0xb805 ...[dibujo de la tabla]...
+C 0xb809 ...[color 1]
+C 0xbee8 la mascara corre 3 bits
+C 0xbeee los C bytes
+C 0xbeda AND con la mascara...
+C 0xbede ...los C bytes
+C 0xb82f 4 bytes de sprite...
+C 0xb836 ...cuatro veces los mismos
+C 0xbcc5 la sala en la lista?...
+C 0xbccb ...la siguiente
+C 0xbd64 la sala en la lista?...
+C 0xbd6a ...la siguiente
+C 0xb916 los dos caracteres de la tabla...
+C 0xb91b ...en la pantalla
 
 # --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
 D 0xA000 0xA038 mosaico_13_cola  el mosaico 13: 10 x 6 caracteres por filas (p01:6D87; el 0 no se pinta) (sigue del banco anterior, 0x9FFC); lo leen p01:6D87 (56 bytes)
@@ -150,29 +229,55 @@ F 0xBFCA 16
 # --- fin de los bloques de bloques.py ---
 
 # --- ANOTACIONES AUTOMATICAS (seccion que reescribe tools/anota.py; no editar a mano) ---
+L 0xB7C0 empieza_el_final el dibujo y los sprites del final
+L 0xB7E3 sprites_del_final los sprites de partida del final
+L 0xB7E9 dos_sprites_eca8 2 sprites de HL a 0xECA8
+L 0xB7F2 fila_de_sprites_del_final 4 sprites en fila en y 0x40
+L 0xB810 dibujo_del_final el dibujo de 0xB989 en la pantalla
+L 0xB81C sprites_ec90 el dibujo de sprite 0x1E00 lleno y cuatro sprites en 0xEC90
+L 0xB83B sprites_eca0 2 sprites de 0xBAF5 en 0xECA0
+L 0xB847 cuadro_del_final un cuadro del final, por su paso
+L 0xB905 parpadeo_del_final cada 16 cuadros dos caracteres alternan
+L 0xB963 paso_del_final el paso siguiente del final
+L 0xB970 esconde_ecb0 el sprite de 0xECB0 escondido
+L 0xBCB9 sala_de_agua 0xE617 en las salas con agua que se mueve (0xBCD3)
+L 0xBD06 agua_que_se_mueve los dibujos del agua rotan cada 2, 4 y 8 cuadros
+L 0xBD3E rota_dibujos B bytes de dibujo rotados en dos tercios
+L 0xBD58 sala_de_colores 0xE619 en las salas con colores que cambian (0xBD72)
+L 0xBDA1 colores_que_cambian cada 4 cuadros los colores del paso siguiente (0xBDCE)
+L 0xBE1C humo_del_jefe el humo del jefe: los graficos aparecen o se deshacen con una mascara
+L 0xBE7F humo_un_tercio los dibujos de un tercio con la mascara
+L 0xBED4 aplica_mascara AND con la mascara (corrida en los pasos impares)
+C 0xB7CB sprites_del_final: los sprites de partida del final
+C 0xB7CE sprites_eca0: 2 sprites de 0xBAF5 en 0xECA0
 C 0xB7D5 guarda el paso del titulo
 C 0xB7F5 apunta a la copia de la tabla de sprites (128 bytes)
 C 0xB84D lee el contador de cuadros
 C 0xB85D despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
 C 0xB869 guarda un paso de varios cuadros en marcha
-C 0xB86D lee el contador de cuadros
-C 0xB8A2 lee el contador de cuadros
-C 0xB8D0 lee el contador de cuadros
-C 0xB905 lee el contador de cuadros
+C 0xB88D paso_del_final: el paso siguiente del final
+C 0xB8ED dos_sprites_eca8: 2 sprites de HL a 0xECA8
+C 0xB8FC paso_del_final: el paso siguiente del final
 C 0xB90B apunta a el paso del titulo
 C 0xB931 lee el contador de cuadros
 C 0xB94A de_mas_a (por 0x4065): DE += A
-C 0xB968 lee el contador de cuadros
-C 0xBCB9 lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0xB960 esconde_ecb0: el sprite de 0xECB0 escondido
 C 0xBCC1 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
-C 0xBD58 lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0xBCD1 guarda hay agua que se mueve en la sala
+C 0xBD14 rota_dibujos: B bytes de dibujo rotados en dos tercios
+C 0xBD22 rota_dibujos: B bytes de dibujo rotados en dos tercios
+C 0xBD30 rota_dibujos: B bytes de dibujo rotados en dos tercios
 C 0xBD60 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0xBD70 guarda hay colores que cambian en la sala
 C 0xBDA6 lee el contador de cuadros
 C 0xBDBA palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 C 0xBE1F despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0xBE3F humo_un_tercio: los dibujos de un tercio con la mascara
+C 0xBE4F guarda la mascara del humo
+C 0xBE69 apunta a la mascara del humo
 C 0xBE7B guarda el humo del jefe en marcha
 C 0xBE85 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
-C 0xBEA3 apunta a los huecos de figura (32 bytes cada uno)
 C 0xBEB0 apunta a los huecos de figura (32 bytes cada uno)
+C 0xBEB7 aplica_mascara: AND con la mascara (corrida en los pasos impares)
 C 0xBEC2 apunta a los huecos de figura (32 bytes cada uno)
 # --- fin de las anotaciones de anota.py ---

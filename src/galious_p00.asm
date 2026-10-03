@@ -1317,7 +1317,7 @@ L_4959:
 L_4969:
 	djnz L_4991		;4969   ; paso 1: el humo (p15:BE1C) mientras 0xE698
 	call a000_banco_15		;496b   ; a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
-	call 0be1ch		;496e
+	call 0be1ch		;496e   ; humo_del_jefe: el humo del jefe: los graficos aparecen o se deshacen con una mascara
 	call a000_banco_3		;4971   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 	ld a,(0e698h)		;4974   ; lee el humo del jefe en marcha
 	or a			;4977
@@ -1403,7 +1403,7 @@ L_49F9:
 	call pantalla_a_cero		;49ff   ; pantalla_a_cero: la copia de la tabla de nombres a cero y a la VRAM
 	call graficos_del_final		;4a02   ; graficos_del_final: los graficos del final
 	call a000_banco_15		;4a05   ; p15:B7C0 con el banco 15
-	call 0b7c0h		;4a08
+	call 0b7c0h		;4a08   ; empieza_el_final: el dibujo y los sprites del final
 	call a000_banco_3		;4a0b   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 	xor a			;4a0e   ; 0xE024 a 0 y 0xE608 a 1
 	ld (0e024h),a		;4a0f   ; guarda el final (estado 0x11)
@@ -1416,7 +1416,7 @@ L_4A1E:
 	call sprites_a_vram		;4a1e   ; paso 5: p15:B847 mientras 0xE608
 	call nombres_a_vram		;4a21   ; nombres_a_vram: la copia de la tabla de nombres (0xED00) a 0x3800
 	call a000_banco_15		;4a24   ; a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
-	call 0b847h		;4a27
+	call 0b847h		;4a27   ; cuadro_del_final: un cuadro del final, por su paso
 	call a000_banco_3		;4a2a   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 	ld a,(0e608h)		;4a2d   ; lee un paso de varios cuadros en marcha
 	or a			;4a30
@@ -1569,7 +1569,7 @@ DATA_rle_4B4E:
 L_4B5B:
 	djnz L_4B8E		;4b5b   ; estado 0x13, el jefe vencido: paso 0, el humo (p15:BE1C)
 	call a000_banco_15		;4b5d   ; a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
-	call 0be1ch		;4b60
+	call 0be1ch		;4b60   ; humo_del_jefe: el humo del jefe: los graficos aparecen o se deshacen con una mascara
 	call a000_banco_3		;4b63   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 	ld a,(0e698h)		;4b66   ; mientras 0xE698
 	or a			;4b69
@@ -2381,8 +2381,8 @@ monta_lo_de_la_sala:		; lo que va encima de la sala: figuras, cosas, puertas, es
 	call vecinas_de_la_sala		;512f   ; vecinas_de_la_sala: las vecinas de la sala (tabla 0xA9EF, banco 9) a 0xE648; con jefe, ninguna
 	call marcas_de_la_sala		;5132   ; marcas_de_la_sala: 0xE60C y 0xE60E: los bytes de la sala en el tramo del mapa (0xAF09)
 	call a000_banco_15		;5135   ; p15:BCB9 y p15:BD58
-	call 0bcb9h		;5138
-	call 0bd58h		;513b
+	call 0bcb9h		;5138   ; sala_de_agua: 0xE617 en las salas con agua que se mueve (0xBCD3)
+	call 0bd58h		;513b   ; sala_de_colores: 0xE619 en las salas con colores que cambian (0xBD72)
 	call a000_banco_3		;513e   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 	call 09ae5h		;5141   ; p02:9AE5 y p02:8EEF (la sala especial)
 	call sonido_fc		;5144   ; sonido_fc: con 0xE0D5, una vez, el sonido 0xFC
@@ -2689,8 +2689,8 @@ cuadro_de_partida:		; un cuadro de la partida: todas las rutinas de cada banco
 fin_del_cuadro:		; p15:BD06 y p15:BDA1 con las figuras quietas
 	call figuras_quietas		;5423   ; al final, con las figuras quietas...
 	call a000_banco_15		;5426   ; ...p15:BD06 y p15:BDA1
-	call 0bd06h		;5429
-	call 0bda1h		;542c
+	call 0bd06h		;5429   ; agua_que_se_mueve: los dibujos del agua rotan cada 2, 4 y 8 cuadros
+	call 0bda1h		;542c   ; colores_que_cambian: cada 4 cuadros los colores del paso siguiente (0xBDCE)
 	call a000_banco_3		;542f   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 	jp figuras_sueltas		;5432   ; figuras_sueltas: 0xE602 = 0
 vram_del_estado:		; lo de la VRAM en la interrupcion segun el estado (tabla 0x543B)
