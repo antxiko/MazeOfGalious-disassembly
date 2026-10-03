@@ -431,7 +431,7 @@ DATA_tabla_428E:
 
 
 L_42B8:
-	djnz L_42C7		;42b8   ; estado 0: el paso 0...
+	djnz L_42C7		;42b8   ; estado 0, paso 1: el logotipo aparece...
 	ld a,(0e003h)		;42ba   ; ...cada dos cuadros...
 	rra			;42bd
 	ret nc			;42be
@@ -440,7 +440,7 @@ L_42B8:
 	xor a			;42c3
 	jp L_435B		;42c4
 L_42C7:
-	djnz L_42D5		;42c7   ; paso 1: espera 0xE004 cuadros
+	djnz L_42D5		;42c7   ; paso 2: espera 0xE004 cuadros
 	ld hl,0e004h		;42c9   ; apunta a la espera del paso, en cuadros
 	dec (hl)			;42cc
 	ret nz			;42cd
@@ -448,7 +448,7 @@ L_42C7:
 	xor a			;42d1   ; al estado siguiente con espera 0
 	jp L_443B		;42d2
 L_42D5:
-	call registros_del_vdp		;42d5   ; paso 2
+	call registros_del_vdp		;42d5   ; paso 0: el VDP, la pantalla negra y el logotipo de Konami (p01:6957)
 	call pantalla_negra		;42d8   ; pantalla_negra: la tabla de nombres a 0, sin sprites
 	call fuente_del_titulo		;42db   ; fuente_del_titulo: la fuente del titulo y los colores de los primeros caracteres
 	call a000_banco_9		;42de   ; a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
@@ -600,7 +600,7 @@ L_43EC:
 	xor a			;43ec
 	jp pide_sonido		;43ed   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_43F0:
-	djnz L_4404		;43f0   ; estado 3, paso 0: cuenta 0xE004 hacia atras
+	djnz L_4404		;43f0   ; estado 3, paso 1: cuenta 0xE004 hacia atras
 	ld hl,0e004h		;43f2   ; apunta a la espera del paso, en cuadros
 	dec (hl)			;43f5
 	jp z,paso_siguiente		;43f6   ; al acabar, paso siguiente
@@ -609,7 +609,7 @@ L_43F0:
 	jp z,lista_a_vram		;43fe   ; lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
 	jp borra_lista_vram		;4401   ; borra_lista_vram: como lista_a_vram pero escribiendo ceros
 L_4404:
-	djnz L_4416		;4404   ; paso 1
+	djnz L_4416		;4404   ; paso 2
 	call pantalla_a_cero		;4406   ; pantalla_a_cero: la copia de la tabla de nombres a cero y a la VRAM
 	call sin_sprites		;4409   ; sin_sprites: 0xD0 en la tabla de sprites: no se ve ninguno
 	call partida_nueva		;440c   ; partida_nueva: RAM a cero, sala 1 del castillo, Popolon y las vidas de 0x4CE6
@@ -617,12 +617,12 @@ L_4404:
 	ld (0e007h),a		;4411
 	jr estado_siguiente		;4414
 L_4416:
-	ld a,087h		;4416   ; paso 2: la musica 0x87 con p00:5CAF...
+	ld a,087h		;4416   ; paso 0: la musica 0x87 con p00:5CAF...
 	call musica		;4418   ; musica: la musica A (0xE021 = 1 salvo 0x87-0x8B)
 	ld a,02dh		;441b   ; ...y 0x2D cuadros de espera
 	jp L_435B		;441d
 L_4420:
-	djnz L_4447		;4420   ; estado 4, paso 0: entra en la sala
+	djnz L_4447		;4420   ; estado 4, paso 1: entra en la sala
 	call 0604dh		;4422   ; p01:604D y p00:510B
 	call monta_la_sala		;4425   ; monta_la_sala: la sala entera con todo lo que lleva
 	xor a			;4428   ; 0xE01A a 0 y 0xE019 a 1
@@ -645,7 +645,7 @@ paso_a:		; el paso A
 	ld (0e001h),a		;4443   ; y el paso a A (0 casi siempre)
 	ret			;4446
 L_4447:
-	call cortinilla		;4447   ; paso 1: cuando vence p00:4D1E...
+	call cortinilla		;4447   ; paso 0: cuando vence p00:4D1E...
 	ret p			;444a
 	ld hl,0e007h		;444b   ; ...la primera vez (0xE007 a 0)...
 	ld a,(hl)			;444e
@@ -732,7 +732,7 @@ personaje_4_a_7:		; C si el estado del personaje es 4-7
 	cp 004h		;44ef
 	ret			;44f1
 L_44F2:
-	djnz L_4502		;44f2   ; estado 6, paso 0: espera 0xE004 cuadros
+	djnz L_4502		;44f2   ; estado 6, paso 1: espera 0xE004 cuadros
 	ld hl,0e004h		;44f4   ; apunta a la espera del paso, en cuadros
 	dec (hl)			;44f7
 	ret nz			;44f8
@@ -741,7 +741,7 @@ L_44F2:
 	ld a,004h		;44fd   ; y al estado 4 (la sala otra vez)
 	jp al_estado		;44ff   ; al_estado: al estado A con el paso 0 y 0x20 cuadros de espera
 L_4502:
-	call sin_sprites		;4502   ; paso 1: cuando vence p00:4D1E...
+	call sin_sprites		;4502   ; paso 0: cuando vence p00:4D1E...
 	call cortinilla		;4505   ; cortinilla: baja la espera y borra una columna; P mientras quede
 	ret p			;4508
 	ld a,(0e501h)		;4509   ; ...las vidas del que juega (0xE058 + 0xE501)
@@ -785,7 +785,7 @@ L_4547:
 	call pide_sonido		;4549   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	jp estado_siguiente		;454c   ; estado_siguiente: al estado siguiente con el paso 0 y 0x20 cuadros de espera
 L_454F:
-	djnz L_4582		;454f   ; estado 7, paso 0: lo de ZEUS (p01:7E8C)
+	djnz L_4582		;454f   ; estado 7, paso 1: lo de ZEUS (p01:7E8C)
 	call 07e8ch		;4551
 	call suena		;4554   ; hasta que p00:50F5 de cero
 	ret nz			;4557
@@ -812,7 +812,7 @@ hay_jefe:		; NZ si hay jefe en la sala (0xE0D2 o 0xE0D4)
 	or b			;4580
 	ret			;4581
 L_4582:
-	call cortinilla		;4582   ; paso 1: cuando vence p00:4D1E
+	call cortinilla		;4582   ; paso 0: cuando vence p00:4D1E
 	ret p			;4585
 	ld de,07d44h		;4586   ; GAME OVER (lista 0x7D44)
 	call lista_a_vram		;4589   ; lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
@@ -822,7 +822,7 @@ L_4582:
 	call nz,lista_a_vram		;4593   ; lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
 	jp paso_siguiente		;4596   ; paso_siguiente: sube el paso 0xE001
 L_4599:
-	djnz L_45E8		;4599   ; estado 8, paso 0: p02:9E6F
+	djnz L_45E8		;4599   ; estado 8, paso 1: p02:9E6F
 	call 09e6fh		;459b
 	ld a,(0e608h)		;459e   ; mientras 0xE608 este puesto, nada
 	or a			;45a1
@@ -857,7 +857,7 @@ L_4599:
 	ld a,060h		;45e3
 	jp L_435B		;45e5
 L_45E8:
-	djnz L_4603		;45e8   ; paso 1: espera
+	djnz L_4603		;45e8   ; paso 2: espera
 	ld hl,0e004h		;45ea   ; apunta a la espera del paso, en cuadros
 	dec (hl)			;45ed
 	ret nz			;45ee
@@ -870,7 +870,7 @@ L_45E8:
 	ld a,005h		;45fe   ; y al estado 5, la partida
 	jp al_estado		;4600   ; al_estado: al estado A con el paso 0 y 0x20 cuadros de espera
 L_4603:
-	call esconde_sprites		;4603   ; paso 2: vacia los huecos de figura
+	call esconde_sprites		;4603   ; paso 0: vacia los huecos de figura
 	call vacia_figuras		;4606   ; vacia_figuras: los huecos de figura 0xE800-0xE9FF a cero
 	call 09e3bh		;4609   ; p02:9E3B y 0xE608 = 1
 	ld a,001h		;460c
@@ -976,7 +976,7 @@ vacia_figuras:		; los huecos de figura 0xE800-0xE9FF a cero
 	ldir		;46aa
 	ret			;46ac
 L_46AD:
-	djnz L_46EC		;46ad   ; estado 0x0D, paso 0: la vuelta al castillo
+	djnz L_46EC		;46ad   ; estado 0x0D, paso 1: la vuelta al castillo
 	call suena		;46af   ; suena: NZ mientras suena algo
 	ret nz			;46b2
 	ld a,(0e041h)		;46b3   ; desde el mapa 11, a la sala de 0xE06D
@@ -1009,7 +1009,7 @@ L_46D3:
 	ld (0e608h),a		;46e6   ; guarda un paso de varios cuadros en marcha
 	jp paso_siguiente		;46e9   ; paso_siguiente: sube el paso 0xE001
 L_46EC:
-	djnz L_470D		;46ec   ; paso 1: hasta que 0xE608 vuelve a 0 (p02:9E97)
+	djnz L_470D		;46ec   ; paso 2: hasta que 0xE608 vuelve a 0 (p02:9E97)
 	call sala_a_vram		;46ee   ; sala_a_vram: la pantalla de la sala (0xED80) a las filas 4-23
 	call 09e97h		;46f1
 	ld a,(0e608h)		;46f4   ; lee un paso de varios cuadros en marcha
@@ -1024,7 +1024,7 @@ L_46EC:
 	ld a,005h		;4708   ; y a la partida
 	jp al_estado		;470a   ; al_estado: al estado A con el paso 0 y 0x20 cuadros de espera
 L_470D:
-	call esconde_sprites		;470d   ; paso 2
+	call esconde_sprites		;470d   ; paso 0
 	call borra_la_sala		;4710   ; borra_la_sala: sin sprites y las filas 4-23 de la pantalla a 0
 	ld de,07d28h		;4713   ; borra la lista de 0x7D28 y pinta la de 0x7D1D
 	call borra_lista_vram		;4716   ; borra_lista_vram: como lista_a_vram pero escribiendo ceros
@@ -1043,14 +1043,14 @@ sin_objetos_del_mundo:		; los objetos 0x07-0x0A a cero
 	ld (0e078h),hl		;4736   ; guarda tiene el objeto 0x09 y el byte siguiente (16 bits)
 	ret			;4739
 L_473A:
-	djnz L_474A		;473a   ; estado 9, la pausa de F2: paso 0, a la partida otra vez
+	djnz L_474A		;473a   ; estado 9, la pausa de F2: paso 1, a la partida otra vez
 	ld a,005h		;473c
 	call al_estado		;473e   ; al_estado: al estado A con el paso 0 y 0x20 cuadros de espera
 	call 073d6h		;4741   ; p01:73D6 y p00:5474...
 	call sprites_a_vram		;4744   ; sprites_a_vram: la copia de la tabla de sprites (0xEC80) a 0x3B00
 	jp sprites_del_personaje		;4747   ; ...y los dibujos de sprite de la sala (p00:590E)
 L_474A:
-	call 09e07h		;474a   ; paso 1: F2 otra vez acaba la pausa
+	call 09e07h		;474a   ; paso 0: F2 otra vez acaba la pausa
 	jr c,L_475E		;474d
 	call 0be36h		;474f   ; la taza (p03:BE36)
 	call 073d6h		;4752
@@ -1118,7 +1118,7 @@ L_47B9:
 	ld a,02eh		;47ca
 	jp pide_sonido		;47cc   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_47CF:
-	djnz L_4835		;47cf   ; estado 0x0B, paso 0: las cifras del castillo (p02:9A99)
+	djnz L_4835		;47cf   ; estado 0x0B, paso 1: las cifras del castillo (p02:9A99)
 	xor a			;47d1
 	ld (0f000h),a		;47d2
 	call 09a99h		;47d5
@@ -1162,7 +1162,7 @@ L_4830:
 	ld a,005h		;4830   ; y a la partida
 	jp al_estado		;4832   ; al_estado: al estado A con el paso 0 y 0x20 cuadros de espera
 L_4835:
-	djnz L_4843		;4835   ; paso 1: espera 0xE004 cuadros
+	djnz L_4843		;4835   ; paso 2: espera 0xE004 cuadros
 	ld hl,0e004h		;4837   ; apunta a la espera del paso, en cuadros
 	dec (hl)			;483a
 	ret nz			;483b
@@ -1170,12 +1170,12 @@ L_4835:
 	call musica		;483e   ; musica: la musica A (0xE021 = 1 salvo 0x87-0x8B)
 	jr L_4807		;4841
 L_4843:
-	call borra_la_sala		;4843   ; paso 2: p00:5711 y p04:65A8
+	call borra_la_sala		;4843   ; paso 0: p00:5711 y p04:65A8
 	call graficos_del_estado_0b		;4846   ; graficos_del_estado_0b: los graficos del estado 0x0B (el objeto de 0xE097 en el caracter 0xF1)
 	call 065a8h		;4849
 	jp paso_siguiente		;484c   ; paso_siguiente: sube el paso 0xE001
 L_484F:
-	djnz L_486E		;484f   ; estado 0x0C, paso 0: p00:4C68...
+	djnz L_486E		;484f   ; estado 0x0C, paso 1: p00:4C68...
 	call lee_el_mando		;4851   ; lee_el_mando: el mando en 0xE009 (apretado) y 0xE008 (recien apretado)
 	ld a,(0e008h)		;4854   ; ...hasta el bit 5 del mando
 	bit 5,a		;4857
@@ -1189,7 +1189,7 @@ L_484F:
 	ld a,005h		;4869
 	jp al_estado		;486b   ; al_estado: al estado A con el paso 0 y 0x20 cuadros de espera
 L_486E:
-	call sin_sprites		;486e   ; paso 1
+	call sin_sprites		;486e   ; paso 0
 	call borra_la_sala		;4871   ; borra_la_sala: sin sprites y las filas 4-23 de la pantalla a 0
 	call esconde_sprites		;4874   ; esconde_sprites: la copia de la tabla de sprites (0xEC80) con y = 0xE0
 	ld a,08ch		;4877   ; la musica 0x8C
@@ -1201,7 +1201,7 @@ L_486E:
 	call a000_banco_3		;4888   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 	jp paso_siguiente		;488b   ; paso_siguiente: sube el paso 0xE001
 L_488E:
-	djnz L_48B7		;488e   ; estado 0x0E, la sala especial, paso 0: lo de la sala (p02:8F43)
+	djnz L_48B7		;488e   ; estado 0x0E, la sala especial, paso 1: lo de la sala (p02:8F43)
 	call lee_el_mando		;4890   ; lee_el_mando: el mando en 0xE009 (apretado) y 0xE008 (recien apretado)
 	call 08f43h		;4893
 	call 0938eh		;4896   ; y p02:938E
@@ -1219,7 +1219,7 @@ L_488E:
 	ld a,00ah		;48b2
 	jp al_estado		;48b4   ; al_estado: al estado A con el paso 0 y 0x20 cuadros de espera
 L_48B7:
-	ld a,08dh		;48b7   ; paso 1: la musica 0x8D, p00:57E1 y p02:8F1E
+	ld a,08dh		;48b7   ; paso 0: la musica 0x8D, p00:57E1 y p02:8F1E
 	call musica_despues		;48b9   ; musica_despues: apaga lo que suena y deja esperando la musica A
 	call graficos_de_sala_especial		;48bc   ; graficos_de_sala_especial: los graficos de la sala especial y lo que vende
 	call 08f1eh		;48bf
@@ -1307,7 +1307,7 @@ L_493D:
 	ld a,005h		;4954
 	jp al_estado		;4956   ; al_estado: al estado A con el paso 0 y 0x20 cuadros de espera
 L_4959:
-	djnz L_4969		;4959   ; estado 0x0F, el jefe: paso 0, p02:9F68 hasta que 0xE64C vuelve a 0
+	djnz L_4969		;4959   ; estado 0x0F, el jefe: paso 1, p02:9F68 hasta que 0xE64C vuelve a 0
 	call 09f68h		;495b
 	ld a,(0e64ch)		;495e
 	or a			;4961
@@ -1315,7 +1315,7 @@ L_4959:
 	call pon_e698		;4963   ; 0xE698 = 1 y al paso siguiente
 	jp paso_siguiente		;4966   ; paso_siguiente: sube el paso 0xE001
 L_4969:
-	djnz L_4991		;4969   ; paso 1: el humo (p15:BE1C) mientras 0xE698
+	djnz L_4991		;4969   ; paso 2: el humo (p15:BE1C) mientras 0xE698
 	call a000_banco_15		;496b   ; a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
 	call 0be1ch		;496e   ; humo_del_jefe: el humo del jefe: los graficos aparecen o se deshacen con una mascara
 	call a000_banco_3		;4971   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
@@ -1332,12 +1332,12 @@ L_4969:
 	call sala_a_vram		;498b   ; sala_a_vram: la pantalla de la sala (0xED80) a las filas 4-23
 	jp paso_siguiente		;498e   ; paso_siguiente: sube el paso 0xE001
 L_4991:
-	djnz L_499B		;4991   ; paso 2: los graficos del jefe (p00:5848) y a la partida
+	djnz L_499B		;4991   ; paso 3: los graficos del jefe (p00:5848) y a la partida
 	call graficos_del_jefe_si_hay		;4993   ; graficos_del_jefe_si_hay: con jefe, sus graficos
 	ld a,005h		;4996
 	jp al_estado		;4998   ; al_estado: al estado A con el paso 0 y 0x20 cuadros de espera
 L_499B:
-	xor a			;499b   ; paso 3: 0xE615 y el nombre acertado a 0
+	xor a			;499b   ; paso 0: 0xE615 y el nombre acertado a 0
 	ld (0e615h),a		;499c   ; guarda en la sala del jefe sin jefe (el recuadro)
 	ld (0e020h),a		;499f   ; guarda el nombre del jefe acertado
 	call sala_sin_salidas		;49a2   ; la sala sin salidas
@@ -1567,7 +1567,7 @@ DATA_rle_4B4E:
 
 
 L_4B5B:
-	djnz L_4B8E		;4b5b   ; estado 0x13, el jefe vencido: paso 0, el humo (p15:BE1C)
+	djnz L_4B8E		;4b5b   ; estado 0x13, el jefe vencido: paso 1, el humo (p15:BE1C)
 	call a000_banco_15		;4b5d   ; a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
 	call 0be1ch		;4b60   ; humo_del_jefe: el humo del jefe: los graficos aparecen o se deshacen con una mascara
 	call a000_banco_3		;4b63   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
@@ -1590,7 +1590,7 @@ L_4B5B:
 L_4B8B:
 	jp paso_siguiente		;4b8b   ; paso_siguiente: sube el paso 0xE001
 L_4B8E:
-	djnz L_4BCA		;4b8e   ; paso 1: en el mapa 11...
+	djnz L_4BCA		;4b8e   ; paso 2: en el mapa 11...
 	ld a,(0e041h)		;4b90   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	cp 00bh		;4b93
 	jr z,L_4BA2		;4b95
@@ -1623,7 +1623,7 @@ cosa_del_jefe_vencido:		; pone la cosa 0x0C en el sitio de la tabla 0x4BCD del m
 	ld (0e0d4h),a		;4bc6   ; guarda la cosa del jefe vencido puesta
 	ret			;4bc9
 L_4BCA:
-	call pon_e698		;4bca   ; paso 2: 0xE698 = 1
+	call pon_e698		;4bca   ; paso 0: 0xE698 = 1
 L_4BCD:
 	jr L_4B8B		;4bcd
 
@@ -1641,7 +1641,7 @@ DATA_sitio_por_mundo:
 
 
 L_4BD8:
-	djnz L_4BF0		;4bd8   ; estado 0x14, paso 0: p15:BE81 hasta que 0xE53F vuelve a 0
+	djnz L_4BF0		;4bd8   ; estado 0x14, paso 1: p15:BE81 hasta que 0xE53F vuelve a 0
 	call 0be81h		;4bda
 	ld a,(0e53fh)		;4bdd   ; lee los saltos de alegria
 	and a			;4be0
@@ -1652,7 +1652,7 @@ L_4BD8:
 	ld a,005h		;4beb
 	jp al_estado		;4bed   ; al_estado: al estado A con el paso 0 y 0x20 cuadros de espera
 L_4BF0:
-	xor a			;4bf0   ; paso 1: 0xE031 a 0 y p15:BE5F
+	xor a			;4bf0   ; paso 0: 0xE031 a 0 y p15:BE5F
 	ld (0e031h),a		;4bf1   ; guarda estado 0x14 pedido
 	call 0be5fh		;4bf4
 	jp paso_siguiente		;4bf7   ; paso_siguiente: sube el paso 0xE001

@@ -50,13 +50,13 @@ C 0x427e en los estados 0, 1 y 2...
 C 0x4282 ...al acabar vuelve por p00:4BFA
 C 0x4286 C = el estado, B = el paso
 C 0x428b el estado despacha por la tabla que sigue
-C 0x42b8 estado 0: el paso 0...
+C 0x42b8 estado 0, paso 1: el logotipo aparece...
 C 0x42ba ...cada dos cuadros...
 C 0x42bf ...mira p01:6985; cuando da cero, paso siguiente con espera 0
-C 0x42c7 paso 1: espera 0xE004 cuadros
+C 0x42c7 paso 2: espera 0xE004 cuadros
 C 0x42ce y prepara el titulo
 C 0x42d1 al estado siguiente con espera 0
-C 0x42d5 paso 2
+C 0x42d5 paso 0: el VDP, la pantalla negra y el logotipo de Konami (p01:6957)
 C 0x42e1 p09:6957 con el banco 9 en 0xA000
 C 0x42e7 el sonido 0: calla
 C 0x42ee y al paso siguiente
@@ -101,21 +101,21 @@ C 0x43d8 da la vuelta al bit 0 de 0xE00D
 C 0x43df a 1: calla (sonido 0)
 C 0x43e1 a 0: si 0xE033...
 C 0x43e6 ...vuelve a pedir la musica que tocaba (p00:5D1A)
-C 0x43f0 estado 3, paso 0: cuenta 0xE004 hacia atras
+C 0x43f0 estado 3, paso 1: cuenta 0xE004 hacia atras
 C 0x43f6 al acabar, paso siguiente
 C 0x43f9 el texto de 0x7D71 parpadea con el bit 2 de la cuenta
-C 0x4404 paso 1
+C 0x4404 paso 2
 C 0x440f 0xE007 = 1
-C 0x4416 paso 2: la musica 0x87 con p00:5CAF...
+C 0x4416 paso 0: la musica 0x87 con p00:5CAF...
 C 0x441b ...y 0x2D cuadros de espera
-C 0x4420 estado 4, paso 0: entra en la sala
+C 0x4420 estado 4, paso 1: entra en la sala
 C 0x4422 p01:604D y p00:510B
 C 0x4428 0xE01A a 0 y 0xE019 a 1
 C 0x4433 en una sala especial, al estado 0x0E
 C 0x4439 al estado siguiente con 0x20 cuadros de espera
 C 0x443e sube el estado
 C 0x4443 y el paso a A (0 casi siempre)
-C 0x4447 paso 1: cuando vence p00:4D1E...
+C 0x4447 paso 0: cuando vence p00:4D1E...
 C 0x444b ...la primera vez (0xE007 a 0)...
 C 0x4454 ...si no hay jefe (p00:4579)...
 C 0x4459 ...vuelve la musica de la sala
@@ -143,9 +143,9 @@ C 0x44d9 p02:9E21...
 C 0x44dd ...con acarreo, el sonido 0x2B...
 C 0x44e5 ...y al estado 0x0B
 C 0x44ea acarreo si el estado del personaje es 4-7
-C 0x44f2 estado 6, paso 0: espera 0xE004 cuadros
+C 0x44f2 estado 6, paso 1: espera 0xE004 cuadros
 C 0x44fd y al estado 4 (la sala otra vez)
-C 0x4502 paso 1: cuando vence p00:4D1E...
+C 0x4502 paso 0: cuando vence p00:4D1E...
 C 0x4509 ...las vidas del que juega (0xE058 + 0xE501)
 C 0x4511 ...si le quedan, uno menos (BCD)...
 C 0x4519 ...se repinta...
@@ -155,7 +155,7 @@ C 0x4524 ...si tampoco le quedan, se acabo
 C 0x452e y pasa a jugar el otro
 C 0x4538 la lista de 0x7CF6 (Afrodita) o 0x7D06 (Popolon)
 C 0x4547 se acabo: la musica 0x95 y al estado 7
-C 0x454f estado 7, paso 0: lo de ZEUS (p01:7E8C)
+C 0x454f estado 7, paso 1: lo de ZEUS (p01:7E8C)
 C 0x4554 hasta que p00:50F5 de cero
 C 0x4558 si se ha seguido con F5...
 C 0x455f si no, quita el bit 6 de 0xE002...
@@ -164,10 +164,10 @@ C 0x4567 0xE026 a 0 otra vez
 C 0x4569 estado 4, paso 0: la partida sigue
 C 0x456f sin jefe, vuelve la musica
 C 0x4579 NZ si hay jefe (0xE0D2 o 0xE0D4)
-C 0x4582 paso 1: cuando vence p00:4D1E
+C 0x4582 paso 0: cuando vence p00:4D1E
 C 0x4586 GAME OVER (lista 0x7D44)
 C 0x4590 y con ZEUS, F5 CONTINUE debajo
-C 0x4599 estado 8, paso 0: p02:9E6F
+C 0x4599 estado 8, paso 1: p02:9E6F
 C 0x459e mientras 0xE608 este puesto, nada
 C 0x45a9 borra la lista de 0x7D28...
 C 0x45af ...y pinta la de 0x7D14
@@ -176,12 +176,12 @@ C 0x45bc ...en 0xF000...
 C 0x45c2 ...con una cifra o con dos...
 C 0x45cd ...y un caracter 0x28 detras
 C 0x45de el sonido 0x8E y 0x60 cuadros
-C 0x45e8 paso 1: espera
+C 0x45e8 paso 2: espera
 C 0x45ef p00:528E y p00:51CD
 C 0x45f5 la musica 0x8A
 C 0x45fa 0xE01F a 0
 C 0x45fe y al estado 5, la partida
-C 0x4603 paso 2: vacia los huecos de figura
+C 0x4603 paso 0: vacia los huecos de figura
 C 0x4609 p02:9E3B y 0xE608 = 1
 C 0x4614 el mundo elegido (0xE688) + 1 es el mapa...
 C 0x4619 ...y se empieza en su sala 1
@@ -197,26 +197,26 @@ C 0x4666 ...de largo 0xAF20 + mapa...
 C 0x4679 ...a cero
 C 0x467d y en el de 0x150 mas alla solo queda el bit 0 de cada byte
 C 0x469f los huecos de figura, 0xE800-0xE9FF, a cero
-C 0x46ad estado 0x0D, paso 0: la vuelta al castillo
+C 0x46ad estado 0x0D, paso 1: la vuelta al castillo
 C 0x46b3 desde el mapa 11, a la sala de 0xE06D
 C 0x46c0 desde un mundo: la vecina 0xE647 + 0xE01A...
 C 0x46c9 ...elige en 0x998E la sala del castillo
 C 0x46d3 mapa 1, la sala de H
 C 0x46d8 p00:51CD, p01:6C95 y p02:9E8F
 C 0x46e1 0xE01A a 0 y 0xE608 a 1
-C 0x46ec paso 1: hasta que 0xE608 vuelve a 0 (p02:9E97)
+C 0x46ec paso 2: hasta que 0xE608 vuelve a 0 (p02:9E97)
 C 0x46fc 0xE01F a 0
 C 0x4700 la musica 0x88
 C 0x4708 y a la partida
-C 0x470d paso 2
+C 0x470d paso 0
 C 0x4713 borra la lista de 0x7D28 y pinta la de 0x7D1D
 C 0x471c sin los cuatro objetos del mundo
 C 0x4722 el sonido 0xFA
 C 0x4730 los objetos 0x07-0x0A a cero (al entrar en otro mundo)
-C 0x473a estado 9, la pausa de F2: paso 0, a la partida otra vez
+C 0x473a estado 9, la pausa de F2: paso 1, a la partida otra vez
 C 0x4741 p01:73D6 y p00:5474...
 C 0x4747 ...y los dibujos de sprite de la sala (p00:590E)
-C 0x474a paso 1: F2 otra vez acaba la pausa
+C 0x474a paso 0: F2 otra vez acaba la pausa
 C 0x474f la taza (p03:BE36)
 C 0x4755 y las letras de ZEUS
 C 0x475e el sonido 0xFE y al paso siguiente
@@ -235,7 +235,7 @@ C 0x47b9 por arriba, si 0xE0A1 aun no esta...
 C 0x47bf ...una vez mas en 0xE0A0...
 C 0x47c2 ...y a la quinta...
 C 0x47c5 ...0xE0A1 = 1 y el sonido 0x2E
-C 0x47cf estado 0x0B, paso 0: las cifras del castillo (p02:9A99)
+C 0x47cf estado 0x0B, paso 1: las cifras del castillo (p02:9A99)
 C 0x47d8 si han puesto 0xF000, a su puerta
 C 0x47de lo tecleado (p02:9AC9)
 C 0x47e3 en el castillo, a la sala 0x48 del mapa 1
@@ -246,22 +246,22 @@ C 0x4816 p01:6903 y p00:51E8
 C 0x481e p02:9E21; sin acarreo, p01:67E2
 C 0x482a p01:6903 y p00:51DF
 C 0x4830 y a la partida
-C 0x4835 paso 1: espera 0xE004 cuadros
+C 0x4835 paso 2: espera 0xE004 cuadros
 C 0x483c la musica 0x88 y al castillo, sala 0x48
-C 0x4843 paso 2: p00:5711 y p04:65A8
-C 0x484f estado 0x0C, paso 0: p00:4C68...
+C 0x4843 paso 0: p00:5711 y p04:65A8
+C 0x484f estado 0x0C, paso 1: p00:4C68...
 C 0x4854 ...hasta el bit 5 del mando
 C 0x4860 0xE01B a 0, la musica 0x8A y a la partida
-C 0x486e paso 1
+C 0x486e paso 0
 C 0x4877 la musica 0x8C
 C 0x4882 p09:69B9 con el banco 9
-C 0x488e estado 0x0E, la sala especial, paso 0: lo de la sala (p02:8F43)
+C 0x488e estado 0x0E, la sala especial, paso 1: lo de la sala (p02:8F43)
 C 0x4896 y p02:938E
 C 0x4899 hasta el bit 1 del mando
 C 0x489f al salir, 0xE690 a 0...
 C 0x48a5 ...0xE502 = 0x10, por el lado 2...
 C 0x48ad ...la musica 0x8A y al estado 0x0A
-C 0x48b7 paso 1: la musica 0x8D, p00:57E1 y p02:8F1E
+C 0x48b7 paso 0: la musica 0x8D, p00:57E1 y p02:8F1E
 C 0x48c5 estado 0x10: por el paso
 C 0x48d3 paso 0: p02:9F0F y 0xE608 = 1
 C 0x48e4 paso 1: p02:9F2E hasta que 0xE608 vuelve a 0
@@ -276,14 +276,14 @@ C 0x4935 0xE608 = 1
 C 0x493d paso 4: hasta que 0xE608 vuelve a 0 (p02:9F56)
 C 0x4948 la musica 0x88 y los sprites de la sala
 C 0x4950 0xE01C a 0 y a la partida
-C 0x4959 estado 0x0F, el jefe: paso 0, p02:9F68 hasta que 0xE64C vuelve a 0
+C 0x4959 estado 0x0F, el jefe: paso 1, p02:9F68 hasta que 0xE64C vuelve a 0
 C 0x4963 0xE698 = 1 y al paso siguiente
-C 0x4969 paso 1: el humo (p15:BE1C) mientras 0xE698
+C 0x4969 paso 2: el humo (p15:BE1C) mientras 0xE698
 C 0x4979 luego el jefe del mapa (0x5E05 + mapa)...
 C 0x4983 ...en 0xE0D3, con 0xE0D2 = 1
 C 0x4988 p00:5561 y p00:54BF
-C 0x4991 paso 2: los graficos del jefe (p00:5848) y a la partida
-C 0x499b paso 3: 0xE615 y el nombre acertado a 0
+C 0x4991 paso 3: los graficos del jefe (p00:5848) y a la partida
+C 0x499b paso 0: 0xE615 y el nombre acertado a 0
 C 0x49a2 la sala sin salidas
 C 0x49a5 la musica 0x81
 C 0x49b0 las cuatro vecinas a 0xFF: la sala del jefe no tiene salida
@@ -327,12 +327,12 @@ C 0x4b22 y al estado 4: entrar en la sala
 C 0x4b27 paso 4
 C 0x4b39 el rle de 0x4B4E a los dibujos de sprite (0x1800)
 C 0x4b45 p02:9704 y p02:98ED
-C 0x4b5b estado 0x13, el jefe vencido: paso 0, el humo (p15:BE1C)
+C 0x4b5b estado 0x13, el jefe vencido: paso 1, el humo (p15:BE1C)
 C 0x4b66 mientras 0xE698
 C 0x4b6b p01:79F4 y p00:54BF
 C 0x4b71 sin jefe: 0xE0D2, 0xE0D3, el hueco 0xE700 y 0xE02C a cero
 C 0x4b80 y en las marcas del mapa, el bit 2: jefe vencido
-C 0x4b8e paso 1: en el mapa 11...
+C 0x4b8e paso 2: en el mapa 11...
 C 0x4b97 en los demas, p00:58D3 y la puerta de p00:4BA9
 C 0x4b9d y a la partida
 C 0x4ba2 en el mapa 11 la vecina de abajo pasa a ser la sala 6
@@ -341,10 +341,10 @@ C 0x4bb4 ...menos 8...
 C 0x4bb7 ...x en el bajo
 C 0x4bbf la cosa 0x0C en ese sitio (p00:5D88)
 C 0x4bc4 0xE0D4 = 1
-C 0x4bca paso 2: 0xE698 = 1
-C 0x4bd8 estado 0x14, paso 0: p15:BE81 hasta que 0xE53F vuelve a 0
+C 0x4bca paso 0: 0xE698 = 1
+C 0x4bd8 estado 0x14, paso 1: p15:BE81 hasta que 0xE53F vuelve a 0
 C 0x4be2 p00:5218, p00:5561 y p03:AE9A, y a la partida
-C 0x4bf0 paso 1: 0xE031 a 0 y p15:BE5F
+C 0x4bf0 paso 0: 0xE031 a 0 y p15:BE5F
 C 0x4bfa el mando...
 C 0x4c00 ...con 0xE012/0xE013 como lo apretado y lo recien apretado
 C 0x4c04 sin tecla, nada

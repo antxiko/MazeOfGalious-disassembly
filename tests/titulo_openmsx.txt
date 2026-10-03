@@ -1,0 +1,6 @@
+# Huella (sha1) de los primeros 16 KB de VRAM volcados en openMSX (C-BIOS_MSX1_JP,
+# tools/lanza_titulo.sh v_titulo 25), con los bytes x, dibujo y color de los
+# sprites 4-31 a cero (restos de 0xEC80). Volcados t030 (estado 0, paso 2) y t051
+# (estado 1).
+logotipo 60996b5e8e64291faea2e8aed3adba0db8ca647e
+titulo 4891c933c757a8d238f8967335c775ff7b011ffe
