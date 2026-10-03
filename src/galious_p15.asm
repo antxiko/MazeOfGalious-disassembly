@@ -1045,7 +1045,7 @@ L_B847:
 	jr z,$+16		;b858
 L_B85A:
 	ld a,(0f031h)		;b85a
-	call 04050h		;b85d
+	call 04050h		;b85d   ; despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_B860: 4 destinos del despachador de 0x4140 (call en p15:B85D):
@@ -1185,7 +1185,7 @@ L_B925:
 	ld de,0b97fh		;b942
 	ld a,(0f023h)		;b945
 	and 001h		;b948
-	call 04065h		;b94a
+	call 04065h		;b94a   ; de_mas_a (por 0x4065): DE += A
 	ld a,(de)			;b94d
 	ld (hl),a			;b94e
 	inc hl			;b94f
@@ -1552,10 +1552,10 @@ DATA_demo_1:
 
 
 L_BCB9:
-	ld bc,(0e041h)		;bcb9
+	ld bc,(0e041h)		;bcb9   ; lee el mapa (0xE041) y la sala (0xE042) de un tiron
 	ld a,c			;bcbd
 	ld hl,0bcd3h		;bcbe
-	call 04053h		;bcc1
+	call 04053h		;bcc1   ; palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 	ex de,hl			;bcc4
 L_BCC5:
 	ld a,(hl)			;bcc5
@@ -1647,10 +1647,10 @@ L_BD41:
 	djnz L_BD3E		;bd55
 	ret			;bd57
 L_BD58:
-	ld bc,(0e041h)		;bd58
+	ld bc,(0e041h)		;bd58   ; lee el mapa (0xE041) y la sala (0xE042) de un tiron
 	ld a,c			;bd5c
 	ld hl,0bd72h		;bd5d
-	call 04053h		;bd60
+	call 04053h		;bd60   ; palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 	ex de,hl			;bd63
 L_BD64:
 	ld a,(hl)			;bd64
@@ -1712,7 +1712,7 @@ L_BDA1:
 	ld (hl),a			;bdb6
 L_BDB7:
 	ld hl,0bdceh		;bdb7
-	call 04053h		;bdba
+	call 04053h		;bdba   ; palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 	ex de,hl			;bdbd
 	ld e,(hl)			;bdbe
 	inc hl			;bdbf
@@ -1762,7 +1762,7 @@ DATA_escrituras_bdce:
 
 L_BE1C:
 	ld a,(0e699h)		;be1c
-	call 04050h		;be1f
+	call 04050h		;be1f   ; despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_BE22: 6 destinos del despachador de 0x4140 (call en p15:BE1F):
@@ -1832,7 +1832,7 @@ L_BE5C:
 L_BE7F:
 	ld a,(0e69ah)		;be7f
 	ld hl,0bec8h		;be82
-	call 04053h		;be85
+	call 04053h		;be85   ; palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 	ld a,(0e69bh)		;be88
 	ld l,a			;be8b
 	ld h,000h		;be8c
@@ -1850,17 +1850,17 @@ L_BE7F:
 	ld (0f002h),hl		;be9e
 	ld b,h			;bea1
 	ld c,l			;bea2
-	ld de,0e800h		;bea3
+	ld de,0e800h		;bea3   ; apunta a los huecos de figura (32 bytes cada uno)
 	ld hl,(0f000h)		;bea6
 	call 00059h		;bea9   ; BIOS LDIRMV - Block transfers to memory from VRAM
 	ld bc,(0f002h)		;beac
-	ld hl,0e800h		;beb0
+	ld hl,0e800h		;beb0   ; apunta a los huecos de figura (32 bytes cada uno)
 	ld a,(0e69dh)		;beb3
 	ld e,a			;beb6
 	call L_BED4		;beb7
 	ld bc,(0f002h)		;beba
 	ld de,(0f000h)		;bebe
-	ld hl,0e800h		;bec2
+	ld hl,0e800h		;bec2   ; apunta a los huecos de figura (32 bytes cada uno)
 	jp 0005ch		;bec5   ; BIOS LDIRVM - Block transfers to VRAM from memory
 
 ; ----------------------------------------------------------------------

@@ -73,7 +73,7 @@ L_A04B:
 	and a			;a04e
 	ret z			;a04f
 	ld a,(ix+001h)		;a050
-	call 04050h		;a053
+	call 04050h		;a053   ; despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_A056: 4 destinos del despachador de 0x4140 (call en p09:A053):
@@ -91,14 +91,14 @@ DATA_tabla_A056:
 
 
 L_A05E:
-	ld de,(0e04ah)		;a05e
+	ld de,(0e04ah)		;a05e   ; lee las llaves (BCD, 16 bits)
 	ld a,d			;a062
 	or e			;a063
 	ret z			;a064
 	ld a,(ix+002h)		;a065
 	add a,018h		;a068
 	ld c,a			;a06a
-	ld a,(0e505h)		;a06b
+	ld a,(0e505h)		;a06b   ; lee la y del personaje
 	cp c			;a06e
 	ret nz			;a06f
 	ld a,(0e503h)		;a070
@@ -112,12 +112,12 @@ L_A05E:
 L_A081:
 	add a,b			;a081
 	ld b,a			;a082
-	ld a,(0e507h)		;a083
+	ld a,(0e507h)		;a083   ; lee la x del personaje
 	cp b			;a086
 	ret nz			;a087
 	call L_A109		;a088
 	ret nz			;a08b
-	ld a,(0e009h)		;a08c
+	ld a,(0e009h)		;a08c   ; lee el mando (la otra copia que cambia p03:A8BE)
 	and c			;a08f
 	jr z,L_A0F7		;a090
 	dec (ix+007h)		;a092
@@ -127,13 +127,13 @@ L_A081:
 	xor a			;a09c
 	ld (0e529h),a		;a09d
 	ld a,022h		;a0a0
-	call 04059h		;a0a2
+	call 04059h		;a0a2   ; pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	jr L_A0CA		;a0a5
 L_A0A7:
 	call L_A1F2		;a0a7
 L_A0AA:
 	ld a,007h		;a0aa
-	ld (0e500h),a		;a0ac
+	ld (0e500h),a		;a0ac   ; guarda el estado del personaje (5 = hundirse)
 	xor a			;a0af
 	ld (0e533h),a		;a0b0
 	ld (0e508h),a		;a0b3
@@ -161,7 +161,7 @@ L_A0CE:
 L_A0DB:
 	add a,b			;a0db
 	ld b,a			;a0dc
-	ld a,(0e507h)		;a0dd
+	ld a,(0e507h)		;a0dd   ; lee la x del personaje
 	cp b			;a0e0
 	ret nz			;a0e1
 	call L_A101		;a0e2
@@ -171,7 +171,7 @@ L_A0EA:
 	ld (ix+001h),000h		;a0ea
 	ld (ix+004h),003h		;a0ee
 	ld a,021h		;a0f2
-	call 04059h		;a0f4
+	call 04059h		;a0f4   ; pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_A0F7:
 	ld (ix+007h),01eh		;a0f7
 	ret			;a0fb
@@ -180,11 +180,11 @@ L_A0FC:
 	ret			;a100
 L_A101:
 	xor a			;a101
-	ld (0e500h),a		;a102
+	ld (0e500h),a		;a102   ; guarda el estado del personaje (5 = hundirse)
 	ld (0e518h),a		;a105
 	ret			;a108
 L_A109:
-	ld a,(0e500h)		;a109
+	ld a,(0e500h)		;a109   ; lee el estado del personaje (5 = hundirse)
 	and a			;a10c
 	ret			;a10d
 L_A10E:
@@ -228,14 +228,14 @@ L_A143:
 	dec a			;a14b
 	jr z,L_A1AF		;a14c
 	jp p,L_A1C6		;a14e
-	ld de,(0e04ah)		;a151
+	ld de,(0e04ah)		;a151   ; lee las llaves (BCD, 16 bits)
 	ld a,d			;a155
 	or e			;a156
 	ret z			;a157
 	ld a,(ix+002h)		;a158
 	add a,018h		;a15b
 	ld b,a			;a15d
-	ld a,(0e505h)		;a15e
+	ld a,(0e505h)		;a15e   ; lee la y del personaje
 	cp b			;a161
 	ret nz			;a162
 	ld a,(0e503h)		;a163
@@ -252,12 +252,12 @@ L_A143:
 L_A179:
 	add a,b			;a179
 	ld b,a			;a17a
-	ld a,(0e507h)		;a17b
+	ld a,(0e507h)		;a17b   ; lee la x del personaje
 	cp b			;a17e
 	ret nz			;a17f
 	call L_A109		;a180
 	ret nz			;a183
-	ld a,(0e009h)		;a184
+	ld a,(0e009h)		;a184   ; lee el mando (la otra copia que cambia p03:A8BE)
 	and c			;a187
 	jp z,L_A205		;a188
 	dec (ix+005h)		;a18b
@@ -269,7 +269,7 @@ L_A179:
 	ld (0e529h),a		;a195
 	ld (ix+004h),d		;a198
 	ld a,021h		;a19b
-	call 04059h		;a19d
+	call 04059h		;a19d   ; pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_A1A0:
 	inc (ix+001h)		;a1a0
 	bit 0,e		;a1a3
@@ -287,7 +287,7 @@ L_A1AF:
 	add a,010h		;a1b9
 L_A1BB:
 	ld b,a			;a1bb
-	ld a,(0e507h)		;a1bc
+	ld a,(0e507h)		;a1bc   ; lee la x del personaje
 	cp b			;a1bf
 	ret nz			;a1c0
 	inc (ix+004h)		;a1c1
@@ -301,7 +301,7 @@ L_A1C6:
 	add a,018h		;a1d0
 L_A1D2:
 	ld b,a			;a1d2
-	ld a,(0e507h)		;a1d3
+	ld a,(0e507h)		;a1d3   ; lee la x del personaje
 	cp b			;a1d6
 	ret nz			;a1d7
 	ld (ix+004h),000h		;a1d8
@@ -316,7 +316,7 @@ L_A1EB:
 	ld (ix+001h),a		;a1ee
 	ret			;a1f1
 L_A1F2:
-	ld hl,0e04ah		;a1f2
+	ld hl,0e04ah		;a1f2   ; apunta a las llaves (BCD)
 	ld c,001h		;a1f5
 	ld a,(hl)			;a1f7
 	sub 001h		;a1f8
@@ -373,7 +373,7 @@ L_A22D:
 	ld a,(hl)			;a23b
 	add a,018h		;a23c
 	ld b,a			;a23e
-	ld a,(0e505h)		;a23f
+	ld a,(0e505h)		;a23f   ; lee la y del personaje
 	cp b			;a242
 	ret nz			;a243
 	ld a,(0e503h)		;a244
@@ -391,12 +391,12 @@ L_A22D:
 L_A257:
 	add a,b			;a257
 	ld b,a			;a258
-	ld a,(0e507h)		;a259
+	ld a,(0e507h)		;a259   ; lee la x del personaje
 	cp b			;a25c
 	ret nz			;a25d
 	call L_A109		;a25e
 	ret nz			;a261
-	ld a,(0e009h)		;a262
+	ld a,(0e009h)		;a262   ; lee el mando (la otra copia que cambia p03:A8BE)
 	and c			;a265
 	jr z,L_A299		;a266
 	inc hl			;a268
@@ -409,7 +409,7 @@ L_A257:
 	ld hl,0ea51h		;a274
 	inc (hl)			;a277
 	ld a,023h		;a278
-	jp 04059h		;a27a
+	jp 04059h		;a27a   ; pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_A27D:
 	ld hl,0ea56h		;a27d
 	dec (hl)			;a280
@@ -465,7 +465,7 @@ L_A2C9:
 	jp p,L_A3D3		;a2d5
 	xor a			;a2d8
 	ld (iy+009h),a		;a2d9
-	ld ix,0e500h		;a2dc
+	ld ix,0e500h		;a2dc   ; apunta a el estado del personaje (5 = hundirse)
 	call L_A345		;a2e0
 	jr z,L_A30E		;a2e3
 	ld a,001h		;a2e5
@@ -473,7 +473,7 @@ L_A2C9:
 	ld a,(0e62eh)		;a2ea
 	or a			;a2ed
 	ret z			;a2ee
-	ld ix,0e800h		;a2ef
+	ld ix,0e800h		;a2ef   ; apunta a los huecos de figura (32 bytes cada uno)
 	exx			;a2f3
 	ld de,00020h		;a2f4
 	ld b,010h		;a2f7
@@ -519,13 +519,13 @@ L_A33F:
 	ld a,c			;a343
 	ret			;a344
 L_A345:
-	ld hl,0e098h		;a345
-	call 04089h		;a348
+	ld hl,0e098h		;a345   ; apunta a tiene el objeto 0x29
+	call 04089h		;a348   ; tiene_o_popolon (por 0x4089): NZ si la marca de HL esta puesta o se lleva a Popolon (0xE501)
 	jr z,L_A373		;a34b
 	ld a,(iy+002h)		;a34d
 	add a,018h		;a350
 	ld b,a			;a352
-	ld a,(0e505h)		;a353
+	ld a,(0e505h)		;a353   ; lee la y del personaje
 	cp b			;a356
 	ret nz			;a357
 	ld a,(0e503h)		;a358
@@ -539,7 +539,7 @@ L_A345:
 L_A369:
 	add a,b			;a369
 	ld b,a			;a36a
-	ld a,(0e507h)		;a36b
+	ld a,(0e507h)		;a36b   ; lee la x del personaje
 	cp b			;a36e
 	ld a,(0e503h)		;a36f
 	ret			;a372
@@ -568,7 +568,7 @@ L_A398:
 	jr nz,L_A38E		;a39b
 	call L_A109		;a39d
 	ret nz			;a3a0
-	ld a,(0e009h)		;a3a1
+	ld a,(0e009h)		;a3a1   ; lee el mando (la otra copia que cambia p03:A8BE)
 	and c			;a3a4
 	jr z,L_A38E		;a3a5
 	dec (iy+006h)		;a3a7
@@ -579,7 +579,7 @@ L_A3B1:
 	ld (iy+006h),006h		;a3b1
 	inc (iy+001h)		;a3b5
 	ld a,023h		;a3b8
-	jp 04059h		;a3ba
+	jp 04059h		;a3ba   ; pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_A3BD:
 	res 4,(ix+002h)		;a3bd
 	ld (ix+014h),000h		;a3c1
@@ -649,12 +649,12 @@ L_A43A:
 	and a			;a442
 	jr nz,L_A461		;a443
 	ld hl,0eaa2h		;a445
-	ld a,(0e505h)		;a448
+	ld a,(0e505h)		;a448   ; lee la y del personaje
 	sub (hl)			;a44b
 	cp 019h		;a44c
 	ret nc			;a44e
 	inc hl			;a44f
-	ld a,(0e507h)		;a450
+	ld a,(0e507h)		;a450   ; lee la x del personaje
 	sub 008h		;a453
 	sub (hl)			;a455
 	cp 003h		;a456
@@ -666,7 +666,7 @@ L_A461:
 	dec a			;a461
 	jr nz,L_A498		;a462
 	ld hl,0eaa2h		;a464
-	ld a,(0e505h)		;a467
+	ld a,(0e505h)		;a467   ; lee la y del personaje
 	sub (hl)			;a46a
 	cp 019h		;a46b
 	ret nc			;a46d
@@ -684,7 +684,7 @@ L_A461:
 L_A480:
 	add a,b			;a480
 	ld b,a			;a481
-	ld a,(0e507h)		;a482
+	ld a,(0e507h)		;a482   ; lee la x del personaje
 	sub b			;a485
 	cp 003h		;a486
 	ret nc			;a488
@@ -722,14 +722,14 @@ L_A4BC:
 	ld a,(hl)			;a4bf
 	add a,018h		;a4c0
 	ld b,a			;a4c2
-	ld a,(0e505h)		;a4c3
+	ld a,(0e505h)		;a4c3   ; lee la y del personaje
 	cp b			;a4c6
 	jr nz,L_A4EC		;a4c7
 	inc hl			;a4c9
 	ld a,(hl)			;a4ca
 	add a,004h		;a4cb
 	ld b,a			;a4cd
-	ld a,(0e507h)		;a4ce
+	ld a,(0e507h)		;a4ce   ; lee la x del personaje
 	sub b			;a4d1
 	jr nc,L_A4E2		;a4d2
 	neg		;a4d4
@@ -737,16 +737,16 @@ L_A4BC:
 	jr nc,L_A4EC		;a4d8
 	ld a,(hl)			;a4da
 	sub 008h		;a4db
-	ld (0e507h),a		;a4dd
+	ld (0e507h),a		;a4dd   ; guarda la x del personaje
 	jr L_A4EC		;a4e0
 L_A4E2:
 	cp 004h		;a4e2
 	jr nc,L_A4EC		;a4e4
 	ld a,(hl)			;a4e6
 	add a,010h		;a4e7
-	ld (0e507h),a		;a4e9
+	ld (0e507h),a		;a4e9   ; guarda la x del personaje
 L_A4EC:
-	ld ix,0e800h		;a4ec
+	ld ix,0e800h		;a4ec   ; apunta a los huecos de figura (32 bytes cada uno)
 	exx			;a4f0
 	ld b,010h		;a4f1
 	ld de,00020h		;a4f3
@@ -808,16 +808,16 @@ L_A541:
 	ld a,(hl)			;a548
 	and a			;a549
 	jr nz,L_A58C		;a54a
-	ld a,(0e505h)		;a54c
+	ld a,(0e505h)		;a54c   ; lee la y del personaje
 	sub 078h		;a54f
 	ret nz			;a551
 	ld b,a			;a552
-	ld a,(0e507h)		;a553
+	ld a,(0e507h)		;a553   ; lee la x del personaje
 	sub 018h		;a556
 	cp 008h		;a558
 	jr c,L_A565		;a55a
 	inc b			;a55c
-	ld a,(0e507h)		;a55d
+	ld a,(0e507h)		;a55d   ; lee la x del personaje
 	sub 0e0h		;a560
 	cp 008h		;a562
 	ret nc			;a564
@@ -855,11 +855,11 @@ L_A59C:
 	cp 005h		;a59c
 	jr z,L_A601		;a59e
 	ld hl,0eab7h		;a5a0
-	ld a,(0e505h)		;a5a3
+	ld a,(0e505h)		;a5a3   ; lee la y del personaje
 	cp (hl)			;a5a6
 	ret nz			;a5a7
 	inc hl			;a5a8
-	ld a,(0e507h)		;a5a9
+	ld a,(0e507h)		;a5a9   ; lee la x del personaje
 	sub (hl)			;a5ac
 	add a,007h		;a5ad
 	cp 01fh		;a5af
@@ -893,7 +893,7 @@ L_A5DB:
 	ld (0eab8h),a		;a5e3
 L_A5E6:
 	ld a,004h		;a5e6
-	call 04059h		;a5e8
+	call 04059h		;a5e8   ; pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	jr L_A5F3		;a5eb
 L_A5ED:
 	ld hl,00000h		;a5ed
@@ -909,7 +909,7 @@ L_A5F3:
 L_A601:
 	ld a,(0eab2h)		;a601
 	and a			;a604
-	ld a,(0e507h)		;a605
+	ld a,(0e507h)		;a605   ; lee la x del personaje
 	jr z,L_A60F		;a608
 	cp 018h		;a60a
 	ret nc			;a60c
@@ -967,7 +967,7 @@ L_A634:
 	and 00fh		;a652
 	ex de,hl			;a654
 	ld hl,0a65dh		;a655
-	call 04083h		;a658
+	call 04083h		;a658   ; byte_de_tabla (por 0x4083): A = el byte HL + A
 	ld (de),a			;a65b
 	ret			;a65c
 
@@ -989,8 +989,8 @@ L_A661:
 	and a			;a665
 	ret z			;a666
 	ex de,hl			;a667
-	ld hl,0e08bh		;a668
-	call 04089h		;a66b
+	ld hl,0e08bh		;a668   ; apunta a tiene el objeto 0x1C
+	call 04089h		;a66b   ; tiene_o_popolon (por 0x4089): NZ si la marca de HL esta puesta o se lleva a Popolon (0xE501)
 	ret z			;a66e
 	ex de,hl			;a66f
 	ld a,(0e526h)		;a670
@@ -999,7 +999,7 @@ L_A661:
 	xor a			;a675
 	ld (0e526h),a		;a676
 	inc hl			;a679
-	ld a,(0e505h)		;a67a
+	ld a,(0e505h)		;a67a   ; lee la y del personaje
 	sub (hl)			;a67d
 	sub 005h		;a67e
 	cp 01ch		;a680
@@ -1007,7 +1007,7 @@ L_A661:
 	inc hl			;a683
 	ld a,(0e503h)		;a684
 	and a			;a687
-	ld a,(0e507h)		;a688
+	ld a,(0e507h)		;a688   ; lee la x del personaje
 	jr z,L_A695		;a68b
 	sub (hl)			;a68d
 	sub 028h		;a68e
@@ -1023,7 +1023,7 @@ L_A695:
 L_A69D:
 	push hl			;a69d
 	ld a,01eh		;a69e
-	call 04059h		;a6a0
+	call 04059h		;a6a0   ; pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	pop hl			;a6a3
 	inc hl			;a6a4
 	dec (hl)			;a6a5
@@ -1033,7 +1033,7 @@ L_A69D:
 	xor a			;a6ac
 	ld (0ea20h),a		;a6ad
 	ld a,02eh		;a6b0
-	jp 04059h		;a6b2
+	jp 04059h		;a6b2   ; pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_A6B5:
 	ld hl,0e0b0h		;a6b5
 	ld b,00fh		;a6b8
@@ -1057,8 +1057,8 @@ L_A6CB:
 	ld a,00fh		;a6d4
 	sub b			;a6d6
 	ld hl,0a6ebh		;a6d7
-	call 04053h		;a6da
-	ld hl,(0e041h)		;a6dd
+	call 04053h		;a6da   ; palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+	ld hl,(0e041h)		;a6dd   ; lee el mapa (0xE041) y la sala (0xE042) de un tiron
 	xor a			;a6e0
 	sbc hl,de		;a6e1
 	jr nz,L_A6E6		;a6e3
@@ -1130,8 +1130,8 @@ L_A761:
 	ld a,00fh		;a761
 	sub b			;a763
 	ld hl,0a6ebh		;a764
-	call 04053h		;a767
-	ld hl,(0e041h)		;a76a
+	call 04053h		;a767   ; palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+	ld hl,(0e041h)		;a76a   ; lee el mapa (0xE041) y la sala (0xE042) de un tiron
 	xor a			;a76d
 	sbc hl,de		;a76e
 	ret nz			;a770
@@ -1163,7 +1163,7 @@ L_A761:
 	ld l,a			;a797
 	ld a,(0ec02h)		;a798
 	ld h,a			;a79b
-	call 04056h		;a79c
+	call 04056h		;a79c   ; casilla_de_yx (por 0x4056): HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	ld (0ec05h),hl		;a79f
 	exx			;a7a2
 	ret			;a7a3

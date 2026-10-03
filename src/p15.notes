@@ -148,3 +148,18 @@ F 0xBF16 16
 D 0xBFCA 0xC000 relleno_p15  relleno: 54 bytes 0xFF hasta el final del banco, sin nada que los lea ni los ejecute (54 bytes)
 F 0xBFCA 16
 # --- fin de los bloques de bloques.py ---
+
+# --- ANOTACIONES AUTOMATICAS (seccion que reescribe tools/anota.py; no editar a mano) ---
+C 0xB85D despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0xB94A de_mas_a (por 0x4065): DE += A
+C 0xBCB9 lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0xBCC1 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0xBD58 lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0xBD60 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0xBDBA palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0xBE1F despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0xBE85 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0xBEA3 apunta a los huecos de figura (32 bytes cada uno)
+C 0xBEB0 apunta a los huecos de figura (32 bytes cada uno)
+C 0xBEC2 apunta a los huecos de figura (32 bytes cada uno)
+# --- fin de las anotaciones de anota.py ---

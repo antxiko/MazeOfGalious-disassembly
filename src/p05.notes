@@ -51,3 +51,103 @@ F 0x9D62 2
 D 0x9DCF 0x9DD5 tabla_9DCF  3 destinos del despachador de 0x4140 (call en p05:9DCC): 0x9DD5, 0x9DFE, 0x9E2A; lo leen p05:9DCC (6 bytes)
 F 0x9DCF 2
 # --- fin de los bloques de bloques.py ---
+
+# --- ANOTACIONES AUTOMATICAS (seccion que reescribe tools/anota.py; no editar a mano) ---
+C 0x8096 casilla_de_yx (por 0x4056): HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x80DA pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x810C hl_mas_a (por 0x4062): HL += A
+C 0x8182 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0x818E de_mas_a (por 0x4065): DE += A
+C 0x8254 lee la sala
+C 0x8264 lee la x del personaje
+C 0x826C lee la y del personaje
+C 0x8280 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x82D1 byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0x83A5 byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0x83F9 lee la x del personaje
+C 0x840C lee la x del personaje
+C 0x8424 lee la y del personaje
+C 0x846A pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x84D2 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x84F1 lee la x del personaje
+C 0x855F lee la y del personaje
+C 0x8590 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x8706 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x8749 apunta a los huecos de figura (32 bytes cada uno)
+C 0x874D lee el tipo de la figura
+C 0x877E apunta a los huecos de figura (32 bytes cada uno)
+C 0x8788 de_mas_a (por 0x4065): DE += A
+C 0x8799 de_mas_a (por 0x4065): DE += A
+C 0x87AC hl_mas_a (por 0x4062): HL += A
+C 0x894B pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x898E lee la y del personaje
+C 0x89A1 lee la x del personaje
+C 0x89E3 de_negado (por 0x4068): DE = -DE
+C 0x89EC lee la y del personaje
+C 0x89F3 lee la x del personaje
+C 0x8A94 de_negado (por 0x4068): DE = -DE
+C 0x8AE7 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x8B14 apunta a los huecos de figura (32 bytes cada uno)
+C 0x8B1D lee el tipo de la figura
+C 0x8B42 despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0x8BE9 byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0x8C26 lee la x del personaje
+C 0x8CF1 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x8DC2 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x8FC7 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x902C hl_mas_a (por 0x4062): HL += A
+C 0x9038 byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0x908E lee la y del personaje
+C 0x909A lee la x del personaje
+C 0x90D7 lee la y del personaje
+C 0x90E5 lee la x del personaje
+C 0x9156 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x916A lee la x del personaje
+C 0x916E lee la y del personaje
+C 0x91A3 lee la x del personaje
+C 0x91FB pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x9222 despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0x9282 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x9374 byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0x9395 byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0x93FA lee la x del personaje
+C 0x9411 lee la x del personaje
+C 0x941E lee la x del personaje
+C 0x94B6 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0x9523 de_negado (por 0x4068): DE = -DE
+C 0x9565 lee la x del personaje
+C 0x95B2 lee la x del personaje
+C 0x962D pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x9690 de_negado (por 0x4068): DE = -DE
+C 0x96BA byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0x9732 de_negado (por 0x4068): DE = -DE
+C 0x9757 despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0x9779 lee el estado del personaje (5 = hundirse)
+C 0x977F lee la y del personaje
+C 0x97A3 lee la x del personaje
+C 0x97E2 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x982B de_negado (por 0x4068): DE = -DE
+C 0x9839 lee el estado del personaje (5 = hundirse)
+C 0x9842 lee la x del personaje
+C 0x98DA de_negado (por 0x4068): DE = -DE
+C 0x991C despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0x99A2 de_negado (por 0x4068): DE = -DE
+C 0x99E9 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x99FA palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0x9A8E casilla_de_yx (por 0x4056): HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x9AA5 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0x9BB9 despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0x9C16 de_negado (por 0x4068): DE = -DE
+C 0x9C2F byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0x9C72 lee la x del personaje
+C 0x9C83 apunta a la y del personaje
+C 0x9C9B lee el estado del personaje (5 = hundirse)
+C 0x9D0C casilla_de_yx (por 0x4056): HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x9D3E de_negado (por 0x4068): DE = -DE
+C 0x9D5F despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0x9DCC despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0x9DEB byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0x9EE7 lee la x del personaje
+C 0x9F34 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x9F4B byte_de_tabla (por 0x4083): A = el byte HL + A
+# --- fin de las anotaciones de anota.py ---

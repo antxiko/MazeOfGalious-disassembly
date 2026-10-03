@@ -114,7 +114,7 @@ L_A0A2:
 	ld c,004h		;a0b8
 L_A0BA:
 	ld hl,0a0d1h		;a0ba
-	call 04053h		;a0bd
+	call 04053h		;a0bd   ; palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 	ld (ix+008h),c		;a0c0
 	jp 0736fh		;a0c3
 L_A0C6:
@@ -209,7 +209,7 @@ L_A15A:
 	and 00fh		;a163
 	ret nz			;a165
 	ld a,00ah		;a166
-	jp 04059h		;a168
+	jp 04059h		;a168   ; pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_A16B:
 	ld a,(0e604h)		;a16b
 	and 007h		;a16e
@@ -248,7 +248,7 @@ L_A198:
 	jp 096f5h		;a1b5
 L_A1B8:
 	ld a,(ix+001h)		;a1b8
-	call 04050h		;a1bb
+	call 04050h		;a1bb   ; despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_A1BE: 3 destinos del despachador de 0x4140 (call en p06:A1BB):
@@ -315,7 +315,7 @@ L_A226:
 	ret nc			;a22c
 	ld a,(ix+018h)		;a22d
 	or a			;a230
-	ld a,(0e507h)		;a231
+	ld a,(0e507h)		;a231   ; lee la x del personaje
 	jr z,L_A23F		;a234
 	cp (ix+007h)		;a236
 	ld de,0ffc0h		;a239
@@ -343,7 +343,7 @@ L_A256:
 L_A258:
 	ld a,(ix+016h)		;a258
 	ld b,011h		;a25b
-	ld hl,0e505h		;a25d
+	ld hl,0e505h		;a25d   ; apunta a la y del personaje
 	ret			;a260
 L_A261:
 	ld (ix+018h),001h		;a261
@@ -356,7 +356,7 @@ L_A26D:
 	ld de,00040h		;a274
 L_A277:
 	ld b,006h		;a277
-	ld hl,0e507h		;a279
+	ld hl,0e507h		;a279   ; apunta a la x del personaje
 	ret			;a27c
 L_A27D:
 	ld a,(ix+017h)		;a27d
@@ -377,7 +377,7 @@ L_A292:
 L_A2A4:
 	call L_A3B0		;a2a4
 	ld a,(ix+001h)		;a2a7
-	call 04050h		;a2aa
+	call 04050h		;a2aa   ; despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_A2AD: 3 destinos del despachador de 0x4140 (call en p06:A2AA):
@@ -398,17 +398,17 @@ L_A2B3:
 	and 007h		;a2b6
 	push af			;a2b8
 	ld hl,0a3d2h		;a2b9
-	call 04083h		;a2bc
+	call 04083h		;a2bc   ; byte_de_tabla (por 0x4083): A = el byte HL + A
 	ld (ix+017h),a		;a2bf
 	pop af			;a2c2
 	ld hl,0a3dah		;a2c3
-	call 04083h		;a2c6
+	call 04083h		;a2c6   ; byte_de_tabla (por 0x4083): A = el byte HL + A
 	bit 0,(ix+015h)		;a2c9
 	ld hl,0a3ceh		;a2cd
 	jr z,L_A2D5		;a2d0
 	ld hl,0a3cah		;a2d2
 L_A2D5:
-	call 04083h		;a2d5
+	call 04083h		;a2d5   ; byte_de_tabla (por 0x4083): A = el byte HL + A
 	ld (ix+016h),a		;a2d8
 	call L_A36A		;a2db
 	call c,L_A37A		;a2de
@@ -421,14 +421,14 @@ L_A2E7:
 	call L_B129		;a2ee
 	bit 0,(ix+014h)		;a2f1
 	ld de,00100h		;a2f5
-	call nz,04068h		;a2f8
+	call nz,04068h		;a2f8   ; de_negado (por 0x4068): DE = -DE
 	call L_B13E		;a2fb
 	ld (ix+019h),000h		;a2fe
 	jp 09a07h		;a302
 L_A305:
 	ld a,(ix+019h)		;a305
 	ld hl,0a3bah		;a308
-	call 04083h		;a30b
+	call 04083h		;a30b   ; byte_de_tabla (por 0x4083): A = el byte HL + A
 	bit 0,(ix+015h)		;a30e
 	ld (ix+01ah),a		;a312
 	call nz,L_A3A1		;a315
@@ -443,7 +443,7 @@ L_A305:
 	ld a,002h		;a32e
 	ld (ix+019h),a		;a330
 	ld hl,0a3bah		;a333
-	call 04083h		;a336
+	call 04083h		;a336   ; byte_de_tabla (por 0x4083): A = el byte HL + A
 	ld (ix+01ah),a		;a339
 	call L_A3A1		;a33c
 L_A33F:
@@ -461,7 +461,7 @@ L_A354:
 	call L_B12E		;a35a
 	bit 0,(ix+015h)		;a35d
 	ld de,00200h		;a361
-	call nz,04068h		;a364
+	call nz,04068h		;a364   ; de_negado (por 0x4068): DE = -DE
 	jp L_B137		;a367
 L_A36A:
 	ld a,(ix+007h)		;a36a
@@ -557,7 +557,7 @@ L_A401:
 	or a			;a408
 	jp nz,09e54h		;a409
 	ld a,(ix+001h)		;a40c
-	call 04050h		;a40f
+	call 04050h		;a40f   ; despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_A412: 3 destinos del despachador de 0x4140 (call en p06:A40F):
@@ -622,7 +622,7 @@ L_A458:
 	ld a,r		;a46a
 	and 003h		;a46c
 	ld hl,0a558h		;a46e
-	call 04053h		;a471
+	call 04053h		;a471   ; palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 	ld (ix+00fh),e		;a474
 	ld (ix+00dh),d		;a477
 L_A47A:
@@ -728,7 +728,7 @@ L_A54D:
 	call L_B18F		;a54d
 	call L_B133		;a550
 	ld a,00fh		;a553
-	jp 04059h		;a555
+	jp 04059h		;a555   ; pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 
 ; ----------------------------------------------------------------------
 ; DATOS cuatro_palabras_a558: 4 palabras que p06:A46E elige al azar (R) para
@@ -746,7 +746,7 @@ DATA_cuatro_palabras_a558:
 
 
 L_A560:
-	ld hl,0e507h		;a560
+	ld hl,0e507h		;a560   ; apunta a la x del personaje
 	ld a,(0e707h)		;a563
 	cp (hl)			;a566
 	jr c,L_A56C		;a567
@@ -761,7 +761,7 @@ L_A56C:
 	ld a,006h		;a576
 L_A578:
 	ld (ix+014h),a		;a578
-	ld hl,0e505h		;a57b
+	ld hl,0e505h		;a57b   ; apunta a la y del personaje
 	ld a,(0e705h)		;a57e
 	cp (hl)			;a581
 	jr nc,L_A58F		;a582
@@ -774,15 +774,15 @@ L_A58C:
 L_A58F:
 	ld a,(ix+014h)		;a58f
 	ld hl,0a5d7h		;a592
-	call 04083h		;a595
+	call 04083h		;a595   ; byte_de_tabla (por 0x4083): A = el byte HL + A
 	ld (ix+00ah),a		;a598
 	ld a,(ix+014h)		;a59b
 	ld hl,0a5b3h		;a59e
-	call 04053h		;a5a1
+	call 04053h		;a5a1   ; palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 	call L_B13E		;a5a4
 	ld a,(ix+014h)		;a5a7
 	ld hl,0a5c5h		;a5aa
-	call 04053h		;a5ad
+	call 04053h		;a5ad   ; palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 	jp L_B137		;a5b0
 
 ; ----------------------------------------------------------------------
@@ -839,7 +839,7 @@ L_A5F3:
 	jr z,L_A5FE		;a5fa
 	ld a,003h		;a5fc
 L_A5FE:
-	call 04050h		;a5fe
+	call 04050h		;a5fe   ; despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_A601: 5 destinos del despachador de 0x4140 (call en p06:A5FE):
@@ -897,7 +897,7 @@ L_A65A:
 	call L_A791		;a65a
 	ld a,(ix+001h)		;a65d
 	ld hl,0e72eh		;a660
-	call 04062h		;a663
+	call 04062h		;a663   ; hl_mas_a (por 0x4062): HL += A
 	bit 0,(hl)		;a666
 	jr nz,L_A678		;a668
 	push hl			;a66a
@@ -926,7 +926,7 @@ L_A678:
 L_A68F:
 	ld a,(ix+001h)		;a68f
 	ld hl,0e726h		;a692
-	call 04062h		;a695
+	call 04062h		;a695   ; hl_mas_a (por 0x4062): HL += A
 	inc (hl)			;a698
 	ld a,(hl)			;a699
 	cp 011h		;a69a
@@ -987,11 +987,11 @@ L_A6EC:
 L_A714:
 	pop af			;a714
 	ld hl,0a798h		;a715
-	call 04083h		;a718
+	call 04083h		;a718   ; byte_de_tabla (por 0x4083): A = el byte HL + A
 	push af			;a71b
 	ld a,(ix+001h)		;a71c
 	ld hl,0e72ah		;a71f
-	call 04062h		;a722
+	call 04062h		;a722   ; hl_mas_a (por 0x4062): HL += A
 	pop af			;a725
 	ld (hl),a			;a726
 L_A727:
@@ -1078,7 +1078,7 @@ L_A7B6:
 	ld a,r		;a7b6
 	bit 0,a		;a7b8
 	ld de,00100h		;a7ba
-	call nz,04068h		;a7bd
+	call nz,04068h		;a7bd   ; de_negado (por 0x4068): DE = -DE
 	jp L_B13E		;a7c0
 L_A7C3:
 	ld a,(ix+001h)		;a7c3
@@ -1122,7 +1122,7 @@ L_A7F7:
 	dec (ix+001h)		;a822
 	ld (ix+008h),03ch		;a825
 	ld a,00bh		;a829
-	call 04059h		;a82b
+	call 04059h		;a82b   ; pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	scf			;a82e
 	ret			;a82f
 L_A830:
@@ -1177,7 +1177,7 @@ L_A879:
 	ld de,00160h		;a8a1
 L_A8A4:
 	bit 7,(ix+00fh)		;a8a4
-	call nz,04068h		;a8a8
+	call nz,04068h		;a8a8   ; de_negado (por 0x4068): DE = -DE
 	jp L_B13E		;a8ab
 L_A8AE:
 	ld a,(ix+016h)		;a8ae
@@ -1260,7 +1260,7 @@ L_A958:
 L_A95E:
 	and 03fh		;a95e
 	ld hl,0b374h		;a960
-	call 04062h		;a963
+	call 04062h		;a963   ; hl_mas_a (por 0x4062): HL += A
 	ld e,(hl)			;a966
 	ld h,(ix+017h)		;a967
 	call 0406bh		;a96a
@@ -1338,7 +1338,7 @@ L_A9F8:
 	ld (ix+01fh),011h		;aa04
 	bit 7,(ix+00fh)		;aa08
 	ld de,00200h		;aa0c
-	call nz,04068h		;aa0f
+	call nz,04068h		;aa0f   ; de_negado (por 0x4068): DE = -DE
 	call L_B13E		;aa12
 	ld a,002h		;aa15
 L_AA17:
@@ -1481,7 +1481,7 @@ L_AB2E:
 	call 0406eh		;ab2f
 	ret			;ab32
 L_AB33:
-	ld a,(0e507h)		;ab33
+	ld a,(0e507h)		;ab33   ; lee la x del personaje
 	sub (ix+007h)		;ab36
 	jr nc,L_AB3D		;ab39
 	neg		;ab3b
@@ -1497,7 +1497,7 @@ L_AB3D:
 	jr nc,L_AB55		;ab50
 	ld de,00280h		;ab52
 L_AB55:
-	ld a,(0e505h)		;ab55
+	ld a,(0e505h)		;ab55   ; lee la y del personaje
 	sub (ix+005h)		;ab58
 	jr nc,L_AB5F		;ab5b
 	neg		;ab5d
@@ -1533,7 +1533,7 @@ L_AB88:
 	ld (ix+007h),a		;ab97
 	rla			;ab9a
 	ld de,00180h		;ab9b
-	call c,04068h		;ab9e
+	call c,04068h		;ab9e   ; de_negado (por 0x4068): DE = -DE
 	call L_B13E		;aba1
 	jp L_B129		;aba4
 L_ABA7:
@@ -1551,7 +1551,7 @@ L_ABBE:
 	cp 0b0h		;abc4
 	call c,L_B129		;abc6
 	ld a,009h		;abc9
-	jp 04059h		;abcb
+	jp 04059h		;abcb   ; pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_ABCE:
 	call L_ABF1		;abce
 	call c,L_B15F		;abd1
@@ -1642,7 +1642,7 @@ L_AC81:
 	ld (ix+011h),066h		;ac8b
 	ld (ix+008h),018h		;ac8f
 	ld a,00bh		;ac93
-	call 04059h		;ac95
+	call 04059h		;ac95   ; pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_AC98:
 	jp 09a07h		;ac98
 L_AC9B:
@@ -1670,11 +1670,11 @@ L_ACB5:
 	ccf			;acc6
 	ret			;acc7
 L_ACC8:
-	ld a,(0e505h)		;acc8
+	ld a,(0e505h)		;acc8   ; lee la y del personaje
 	add a,0e8h		;accb
 	cp (ix+005h)		;accd
 	ret nz			;acd0
-	ld a,(0e507h)		;acd1
+	ld a,(0e507h)		;acd1   ; lee la x del personaje
 	add a,0fah		;acd4
 	sub (ix+007h)		;acd6
 	jr nc,L_ACDD		;acd9
@@ -1684,7 +1684,7 @@ L_ACDD:
 	ret nc			;acdf
 	jr L_AC98		;ace0
 L_ACE2:
-	call 04083h		;ace2
+	call 04083h		;ace2   ; byte_de_tabla (por 0x4083): A = el byte HL + A
 	jp 07083h		;ace5
 L_ACE8:
 	call L_AD1C		;ace8
@@ -1767,10 +1767,10 @@ L_AD62:
 	ld (ix+01ch),009h		;ad73
 L_AD77:
 	ld a,01ch		;ad77
-	call 04059h		;ad79
+	call 04059h		;ad79   ; pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	ld l,(ix+005h)		;ad7c
 	ld h,(ix+007h)		;ad7f
-	call 04056h		;ad82
+	call 04056h		;ad82   ; casilla_de_yx (por 0x4056): HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 L_AD85:
 	ld (ix+012h),l		;ad85
 	ld (ix+013h),h		;ad88
@@ -1825,7 +1825,7 @@ L_ADE5:
 	call 081f1h		;ade6
 	and 007h		;ade9
 	ld hl,0adfbh		;adeb
-	call 04083h		;adee
+	call 04083h		;adee   ; byte_de_tabla (por 0x4083): A = el byte HL + A
 	add a,b			;adf1
 	inc c			;adf2
 	ret			;adf3
@@ -1853,13 +1853,13 @@ L_AE03:
 	push af			;ae0a
 	ld b,a			;ae0b
 	ld hl,0ae2ch		;ae0c
-	call 04053h		;ae0f
+	call 04053h		;ae0f   ; palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 	call L_B137		;ae12
 	ld a,b			;ae15
 	ld hl,0ae3ch		;ae16
-	call 04053h		;ae19
+	call 04053h		;ae19   ; palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 	pop af			;ae1c
-	call c,04068h		;ae1d
+	call c,04068h		;ae1d   ; de_negado (por 0x4068): DE = -DE
 	call L_B13E		;ae20
 	ld de,00080h		;ae23
 	jp L_B145		;ae26
@@ -1907,7 +1907,7 @@ L_AE58:
 	ret			;ae58
 L_AE59:
 	ld a,(ix+001h)		;ae59
-	call 04050h		;ae5c
+	call 04050h		;ae5c   ; despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_AE5F: 3 destinos del despachador de 0x4140 (call en p06:AE5C):
@@ -1976,7 +1976,7 @@ L_AECC:
 	ld a,(0e627h)		;aecc
 	or a			;aecf
 	ret z			;aed0
-	ld hl,0e800h		;aed1
+	ld hl,0e800h		;aed1   ; apunta a los huecos de figura (32 bytes cada uno)
 	ld b,008h		;aed4
 L_AED6:
 	ld d,h			;aed6
@@ -2139,7 +2139,7 @@ L_AFE8:
 	ld a,(0e62dh)		;afe8
 	or a			;afeb
 	ret z			;afec
-	ld ix,0e800h		;afed
+	ld ix,0e800h		;afed   ; apunta a los huecos de figura (32 bytes cada uno)
 	ld b,008h		;aff1
 L_AFF3:
 	push bc			;aff3
@@ -2176,7 +2176,7 @@ L_B027:
 	push ix		;b027
 	pop hl			;b029
 	ld b,010h		;b02a
-	ld de,0e800h		;b02c
+	ld de,0e800h		;b02c   ; apunta a los huecos de figura (32 bytes cada uno)
 L_B02F:
 	ld a,(de)			;b02f
 	cp 019h		;b030
@@ -2184,7 +2184,7 @@ L_B02F:
 L_B034:
 	ld a,020h		;b034
 L_B036:
-	call 04065h		;b036
+	call 04065h		;b036   ; de_mas_a (por 0x4065): DE += A
 	djnz L_B02F		;b039
 	xor a			;b03b
 	ret			;b03c
@@ -2197,7 +2197,7 @@ L_B03D:
 	jr z,L_B034		;b043
 L_B045:
 	ld a,018h		;b045
-	call 04065h		;b047
+	call 04065h		;b047   ; de_mas_a (por 0x4065): DE += A
 	ld a,(de)			;b04a
 	cp (ix+018h)		;b04b
 	jr nz,L_B063		;b04e
@@ -2209,7 +2209,7 @@ L_B045:
 L_B057:
 	ex de,hl			;b057
 	ld a,005h		;b058
-	call 04062h		;b05a
+	call 04062h		;b05a   ; hl_mas_a (por 0x4062): HL += A
 	ld d,(hl)			;b05d
 	inc hl			;b05e
 	inc hl			;b05f
@@ -2251,7 +2251,7 @@ L_B094:
 	rra			;b094
 	rra			;b095
 	and 03fh		;b096
-	call 04083h		;b098
+	call 04083h		;b098   ; byte_de_tabla (por 0x4083): A = el byte HL + A
 	ld (ix+011h),a		;b09b
 	ret			;b09e
 
@@ -2362,14 +2362,14 @@ L_B14C:
 L_B15F:
 	ld e,(ix+00eh)		;b15f
 	ld d,(ix+00fh)		;b162
-	call 04068h		;b165
+	call 04068h		;b165   ; de_negado (por 0x4068): DE = -DE
 	ld (ix+00eh),e		;b168
 	ld (ix+00fh),d		;b16b
 	ret			;b16e
 L_B16F:
 	ld e,(ix+00ch)		;b16f
 	ld d,(ix+00dh)		;b172
-	call 04068h		;b175
+	call 04068h		;b175   ; de_negado (por 0x4068): DE = -DE
 	ld (ix+00ch),e		;b178
 	ld (ix+00dh),d		;b17b
 	ret			;b17e
@@ -2417,14 +2417,14 @@ L_B1A6:
 	call L_B262		;b1bb
 	ld a,(0f010h)		;b1be
 	and a			;b1c1
-	call nz,04068h		;b1c2
+	call nz,04068h		;b1c2   ; de_negado (por 0x4068): DE = -DE
 	ld (0f012h),de		;b1c5
 	ld a,(0f016h)		;b1c9
 	ld e,a			;b1cc
 	call L_B262		;b1cd
 	ld a,(0f011h)		;b1d0
 	and a			;b1d3
-	call nz,04068h		;b1d4
+	call nz,04068h		;b1d4   ; de_negado (por 0x4068): DE = -DE
 	ld hl,(0f012h)		;b1d7
 	ret			;b1da
 L_B1DB:
@@ -2477,10 +2477,10 @@ L_B21F:
 	ld (0f017h),a		;b21f
 	ret			;b222
 L_B223:
-	ld a,(0e505h)		;b223
+	ld a,(0e505h)		;b223   ; lee la y del personaje
 	sub 010h		;b226
 	ld (0f000h),a		;b228
-	ld a,(0e507h)		;b22b
+	ld a,(0e507h)		;b22b   ; lee la x del personaje
 	sub 008h		;b22e
 	ld (0f001h),a		;b230
 L_B233:
@@ -2509,7 +2509,7 @@ L_B250:
 	and 00fh		;b254
 	add a,e			;b256
 	ld hl,0b274h		;b257
-	call 04062h		;b25a
+	call 04062h		;b25a   ; hl_mas_a (por 0x4062): HL += A
 	ld a,(hl)			;b25d
 	ld (0f017h),a		;b25e
 	ret			;b261
@@ -2578,10 +2578,10 @@ L_B3B4:
 	dec l			;b3bd
 	ld (hl),000h		;b3be
 	ld a,0fch		;b3c0
-	jp 04059h		;b3c2
+	jp 04059h		;b3c2   ; pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_B3C5:
-	ld ix,0e800h		;b3c5
-	ld a,(0e635h)		;b3c9
+	ld ix,0e800h		;b3c5   ; apunta a los huecos de figura (32 bytes cada uno)
+	ld a,(0e635h)		;b3c9   ; lee cuantos huecos de figura hay
 	ld (0e623h),a		;b3cc
 L_B3CF:
 	call L_B3F7		;b3cf
@@ -2678,7 +2678,7 @@ L_B45E:
 	ld a,b			;b46d
 L_B46E:
 	dec a			;b46e
-	call 04050h		;b46f
+	call 04050h		;b46f   ; despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_B472: 107 destinos del despachador de 0x4140 (call en p06:B46F):
@@ -2802,7 +2802,7 @@ DATA_tabla_B472:
 L_B548:
 	ld a,(0e6c7h)		;b548
 	ld hl,0647bh		;b54b
-	call 04083h		;b54e
+	call 04083h		;b54e   ; byte_de_tabla (por 0x4083): A = el byte HL + A
 	cp 004h		;b551
 	scf			;b553
 	ret z			;b554
@@ -2811,7 +2811,7 @@ L_B548:
 	ret c			;b559
 	ld a,(0e6c7h)		;b55a
 	ld hl,064e5h		;b55d
-	call 04083h		;b560
+	call 04083h		;b560   ; byte_de_tabla (por 0x4083): A = el byte HL + A
 	ld b,000h		;b563
 	cp 003h		;b565
 	jr c,L_B574		;b567
@@ -2862,9 +2862,9 @@ L_B59A:
 	jr c,L_B5C5		;b5a9
 	ld de,00406h		;b5ab
 	jr z,L_B5C5		;b5ae
-	ld hl,0e800h		;b5b0
+	ld hl,0e800h		;b5b0   ; apunta a los huecos de figura (32 bytes cada uno)
 	ld de,00020h		;b5b3
-	ld a,(0e635h)		;b5b6
+	ld a,(0e635h)		;b5b6   ; lee cuantos huecos de figura hay
 	ld b,a			;b5b9
 	ld a,(0e6c7h)		;b5ba
 L_B5BD:

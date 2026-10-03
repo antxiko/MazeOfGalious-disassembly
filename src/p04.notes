@@ -109,3 +109,112 @@ F 0x7F78 2
 D 0x7FFF 0x8000 partida_7FFF  la instruccion de p04:7FFF (DD | 35 18) empieza al final del banco 4 y acaba al principio del 5, que el cartucho pone siempre a continuacion: aqui el primer byte; lo leen p04:7FFF (1 bytes)
 F 0x7FFF 4
 # --- fin de los bloques de bloques.py ---
+
+# --- ANOTACIONES AUTOMATICAS (seccion que reescribe tools/anota.py; no editar a mano) ---
+C 0x6003 lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x6009 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0x600D lee la sala
+C 0x6058 lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x6063 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0x6095 lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x609E palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0x61A8 lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x61E4 lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x6200 lee tiene el objeto 0x18
+C 0x6205 lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x6239 lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x6249 lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x6291 lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x62A4 lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x62B9 lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x6326 de_mas_a (por 0x4065): DE += A
+C 0x635A lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x6416 de_mas_a (por 0x4065): DE += A
+C 0x659F lee el nivel de los objetos 0x28/0x2B/0x2C
+C 0x65A7 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0x65EE lee cuantos huecos de figura hay
+C 0x66B1 despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0x6794 apunta a los huecos de figura (32 bytes cada uno)
+C 0x6797 lee cuantos huecos de figura hay
+C 0x67A8 lee cuantos huecos de figura hay
+C 0x6A2B byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0x6A57 byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0x6AB4 casilla_de_yx (por 0x4056): HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x6AF3 de_negado (por 0x4068): DE = -DE
+C 0x6BB5 lee la x del personaje
+C 0x6BBE de_negado (por 0x4068): DE = -DE
+C 0x6C25 lee la y del personaje
+C 0x6CBE palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0x6D53 casilla_de_yx (por 0x4056): HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x6D8F hl_mas_a (por 0x4062): HL += A
+C 0x6D96 byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0x6DAC de_negado (por 0x4068): DE = -DE
+C 0x6DB7 de_negado (por 0x4068): DE = -DE
+C 0x6E98 lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x6EC2 lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x6ED2 byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0x6F6F casilla_de_yx (por 0x4056): HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x6FF6 lee la y del personaje
+C 0x7001 lee la y del personaje
+C 0x701A de_negado (por 0x4068): DE = -DE
+C 0x702A pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x70AF despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0x70E7 byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0x70FF lee la y del personaje
+C 0x71EA lee la x del personaje
+C 0x71F3 de_negado (por 0x4068): DE = -DE
+C 0x720F de_negado (por 0x4068): DE = -DE
+C 0x725C despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0x7281 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x729B byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0x7323 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x7368 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0x73C5 de_negado (por 0x4068): DE = -DE
+C 0x748D de_negado (por 0x4068): DE = -DE
+C 0x74A8 lee la x del personaje
+C 0x74BB lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x74FE de_negado (por 0x4068): DE = -DE
+C 0x750B de_negado (por 0x4068): DE = -DE
+C 0x7527 de_negado (por 0x4068): DE = -DE
+C 0x758A lee la x del personaje
+C 0x75B0 lee la x del personaje
+C 0x7608 byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0x7614 hl_mas_a (por 0x4062): HL += A
+C 0x765B apunta a los huecos de figura (32 bytes cada uno)
+C 0x7665 lee el tipo de la figura
+C 0x76AC byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0x76CA pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x76D7 despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0x76E7 hl_mas_a (por 0x4062): HL += A
+C 0x76ED byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0x7761 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x779A byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0x77A9 byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0x77DE byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0x7862 lee la x del personaje
+C 0x7869 lee la y del personaje
+C 0x7890 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0x789A palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0x78CA pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x78FA palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0x7957 de_negado (por 0x4068): DE = -DE
+C 0x79D5 de_negado (por 0x4068): DE = -DE
+C 0x7A37 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x7A56 lee la x del personaje
+C 0x7A5F apunta a la y del personaje
+C 0x7A76 lee la y del personaje
+C 0x7A81 lee la x del personaje
+C 0x7B2D de_negado (por 0x4068): DE = -DE
+C 0x7C42 casilla_de_yx (por 0x4056): HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x7C84 lee la y del personaje
+C 0x7CA0 de_negado (por 0x4068): DE = -DE
+C 0x7CA9 lee la x del personaje
+C 0x7CD7 casilla_de_yx (por 0x4056): HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x7CE9 casilla_de_yx (por 0x4056): HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x7D3D despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0x7E29 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0x7E3C palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0x7F75 despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0x7F8A byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0x7FC6 de_negado (por 0x4068): DE = -DE
+# --- fin de las anotaciones de anota.py ---

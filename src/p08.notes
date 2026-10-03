@@ -14,3 +14,17 @@ F 0x9D6A 2
 D 0x9FFF 0xA000 partida_9FFF  la instruccion de p08:9FFF (3A | AB E0) empieza al final del banco 8 y acaba al principio del 9, que el cartucho pone siempre a continuacion: aqui el primer byte; lo leen p08:9FFF (1 bytes)
 F 0x9FFF 4
 # --- fin de los bloques de bloques.py ---
+
+# --- ANOTACIONES AUTOMATICAS (seccion que reescribe tools/anota.py; no editar a mano) ---
+C 0x9D0C lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x9D12 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0x9D16 lee la sala
+C 0x9D4E despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0x9D5F lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x9D67 despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0x9D9F pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x9E52 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0x9E67 lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x9F1A lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x9F87 lee tiene el objeto 0x12
+# --- fin de las anotaciones de anota.py ---

@@ -74,3 +74,75 @@ F 0xBFAE 8
 D 0xBFD8 0xC000 relleno_p06  relleno: 40 bytes 0xFF hasta el final del banco, sin nada que los lea ni los ejecute (40 bytes)
 F 0xBFD8 16
 # --- fin de los bloques de bloques.py ---
+
+# --- ANOTACIONES AUTOMATICAS (seccion que reescribe tools/anota.py; no editar a mano) ---
+C 0xA0BD palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0xA168 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0xA1BB despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0xA231 lee la x del personaje
+C 0xA25D apunta a la y del personaje
+C 0xA279 apunta a la x del personaje
+C 0xA2AA despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0xA2BC byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0xA2C6 byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0xA2D5 byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0xA2F8 de_negado (por 0x4068): DE = -DE
+C 0xA30B byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0xA336 byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0xA364 de_negado (por 0x4068): DE = -DE
+C 0xA40F despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0xA471 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0xA555 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0xA560 apunta a la x del personaje
+C 0xA57B apunta a la y del personaje
+C 0xA595 byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0xA5A1 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0xA5AD palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0xA5FE despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0xA663 hl_mas_a (por 0x4062): HL += A
+C 0xA695 hl_mas_a (por 0x4062): HL += A
+C 0xA718 byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0xA722 hl_mas_a (por 0x4062): HL += A
+C 0xA7BD de_negado (por 0x4068): DE = -DE
+C 0xA82B pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0xA8A8 de_negado (por 0x4068): DE = -DE
+C 0xA963 hl_mas_a (por 0x4062): HL += A
+C 0xAA0F de_negado (por 0x4068): DE = -DE
+C 0xAB33 lee la x del personaje
+C 0xAB55 lee la y del personaje
+C 0xAB9E de_negado (por 0x4068): DE = -DE
+C 0xABCB pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0xAC95 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0xACC8 lee la y del personaje
+C 0xACD1 lee la x del personaje
+C 0xACE2 byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0xAD79 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0xAD82 casilla_de_yx (por 0x4056): HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0xADEE byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0xAE0F palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0xAE19 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0xAE1D de_negado (por 0x4068): DE = -DE
+C 0xAE5C despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0xAED1 apunta a los huecos de figura (32 bytes cada uno)
+C 0xAFED apunta a los huecos de figura (32 bytes cada uno)
+C 0xB02C apunta a los huecos de figura (32 bytes cada uno)
+C 0xB036 de_mas_a (por 0x4065): DE += A
+C 0xB047 de_mas_a (por 0x4065): DE += A
+C 0xB05A hl_mas_a (por 0x4062): HL += A
+C 0xB098 byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0xB165 de_negado (por 0x4068): DE = -DE
+C 0xB175 de_negado (por 0x4068): DE = -DE
+C 0xB1C2 de_negado (por 0x4068): DE = -DE
+C 0xB1D4 de_negado (por 0x4068): DE = -DE
+C 0xB223 lee la y del personaje
+C 0xB22B lee la x del personaje
+C 0xB25A hl_mas_a (por 0x4062): HL += A
+C 0xB3C2 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0xB3C5 apunta a los huecos de figura (32 bytes cada uno)
+C 0xB3C9 lee cuantos huecos de figura hay
+C 0xB46F despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0xB54E byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0xB560 byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0xB5B0 apunta a los huecos de figura (32 bytes cada uno)
+C 0xB5B6 lee cuantos huecos de figura hay
+# --- fin de las anotaciones de anota.py ---

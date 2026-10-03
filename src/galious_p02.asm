@@ -108,7 +108,7 @@ L_8084:
 	cp (ix+018h)		;8084
 	ret nc			;8087
 	ld de,(0e70ch)		;8088
-	call 0415ch		;808c
+	call 0415ch		;808c   ; de_negado: DE = -DE
 	ld (0e70ch),de		;808f
 	jr L_80DC		;8093
 L_8095:
@@ -119,7 +119,7 @@ L_8095:
 	call L_8775		;80a4
 	call L_871A		;80a7
 	ld a,021h		;80aa
-	jp 04e1fh		;80ac
+	jp 04e1fh		;80ac   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_80AF:
 	dec (ix+008h)		;80af
 	ret nz			;80b2
@@ -133,11 +133,11 @@ L_80AF:
 	rra			;80c6
 	jr L_80CF		;80c7
 L_80C9:
-	ld a,(0e507h)		;80c9
+	ld a,(0e507h)		;80c9   ; lee la x del personaje
 	cp (ix+007h)		;80cc
 L_80CF:
 	ld de,00080h		;80cf
-	call c,0415ch		;80d2
+	call c,0415ch		;80d2   ; de_negado: DE = -DE
 	ld (ix+00ah),00ch		;80d5
 	jp 07fa3h		;80d9
 L_80DC:
@@ -153,7 +153,7 @@ L_80E1:
 	pop bc			;80ee
 	djnz L_80E1		;80ef
 	ld a,011h		;80f1
-	jp 04059h		;80f3
+	jp 04059h		;80f3   ; pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_80F6:
 	ld a,r		;80f6
 	and 01fh		;80f8
@@ -200,7 +200,7 @@ L_8146:
 	ld a,(0e604h)		;8146
 	and 003h		;8149
 	ret nz			;814b
-	ld a,(0e70ah)		;814c
+	ld a,(0e70ah)		;814c   ; lee el mosaico del jefe
 	xor 002h		;814f
 	jr L_816C		;8151
 L_8153:
@@ -210,19 +210,19 @@ L_8156:
 	and 00fh		;8159
 	ret nz			;815b
 	ld a,00ah		;815c
-	jp 04e1fh		;815e
+	jp 04e1fh		;815e   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_8161:
 	ld a,(0e604h)		;8161
 	and 007h		;8164
 	ret nz			;8166
-	ld a,(0e70ah)		;8167
+	ld a,(0e70ah)		;8167   ; lee el mosaico del jefe
 	xor 001h		;816a
 L_816C:
-	ld (0e70ah),a		;816c
+	ld (0e70ah),a		;816c   ; guarda el mosaico del jefe
 	ret			;816f
 L_8170:
 	ld a,(0e701h)		;8170
-	call 04140h		;8173
+	call 04140h		;8173   ; despacha: salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_8176: 6 destinos del despachador de 0x4140 (call en p02:8173):
@@ -243,7 +243,7 @@ DATA_tabla_8176:
 
 
 L_8182:
-	ld a,(0e505h)		;8182
+	ld a,(0e505h)		;8182   ; lee la y del personaje
 	sub (ix+005h)		;8185
 	cp 019h		;8188
 	jr nc,$+66		;818a
@@ -251,11 +251,11 @@ L_8182:
 	jr z,L_819D		;8190
 	call L_837A		;8192
 	ld b,a			;8195
-	ld a,(0e507h)		;8196
+	ld a,(0e507h)		;8196   ; lee la x del personaje
 	sub 008h		;8199
 	jr L_81A8		;819b
 L_819D:
-	ld a,(0e507h)		;819d
+	ld a,(0e507h)		;819d   ; lee la x del personaje
 	sub 008h		;81a0
 	ld b,a			;81a2
 	ld a,(0e707h)		;81a3
@@ -273,7 +273,7 @@ L_81B9:
 	jr c,$+17		;81bb
 	ld a,r		;81bd
 	and 003h		;81bf
-	call 04140h		;81c1
+	call 04140h		;81c1   ; despacha: salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_81C4: 4 destinos del despachador de 0x4140 (call en p02:81C1):
@@ -378,7 +378,7 @@ L_8279:
 	rra			;8280
 	rra			;8281
 	and 003h		;8282
-	call 04140h		;8284
+	call 04140h		;8284   ; despacha: salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_8287: 4 destinos del despachador de 0x4140 (call en p02:8284):
@@ -423,20 +423,20 @@ L_82B9:
 	inc a			;82b9
 L_82BA:
 	ld b,a			;82ba
-	ld a,(0e507h)		;82bb
+	ld a,(0e507h)		;82bb   ; lee la x del personaje
 	cp 080h		;82be
 	ccf			;82c0
 	rl b		;82c1
 	ld a,b			;82c3
 	jr L_82DF		;82c4
 L_82C6:
-	ld a,(0e505h)		;82c6
+	ld a,(0e505h)		;82c6   ; lee la y del personaje
 	ld c,000h		;82c9
 	cp 070h		;82cb
 	jr c,L_82D1		;82cd
 	ld c,004h		;82cf
 L_82D1:
-	ld a,(0e507h)		;82d1
+	ld a,(0e507h)		;82d1   ; lee la x del personaje
 	cp 080h		;82d4
 	rl c		;82d6
 	ld a,c			;82d8
@@ -466,7 +466,7 @@ L_8309:
 	ld a,(0e71dh)		;8312
 	rra			;8315
 	ld hl,08341h		;8316
-	call 04155h		;8319
+	call 04155h		;8319   ; byte_de_tabla: A = el byte HL + A
 	ld (0e705h),a		;831c
 	ld a,001h		;831f
 	ld (0e61bh),a		;8321
@@ -518,7 +518,7 @@ L_835E:
 	ret			;8363
 L_8364:
 	ld c,000h		;8364
-	ld a,(0e505h)		;8366
+	ld a,(0e505h)		;8366   ; lee la y del personaje
 	cp 040h		;8369
 	ret c			;836b
 	inc c			;836c
@@ -552,7 +552,7 @@ L_8393:
 L_839C:
 	and 001h		;839c
 	ld de,0ff00h		;839e
-	call z,0415ch		;83a1
+	call z,0415ch		;83a1   ; de_negado: DE = -DE
 	jp 07fa3h		;83a4
 L_83A7:
 	ld a,(0e701h)		;83a7
@@ -562,7 +562,7 @@ L_83A7:
 	dec (ix+01fh)		;83b0
 	jr z,L_83E2		;83b3
 	call L_8455		;83b5
-	ld a,(0e505h)		;83b8
+	ld a,(0e505h)		;83b8   ; lee la y del personaje
 	cp (ix+005h)		;83bb
 	jr nc,L_83C6		;83be
 	dec (ix+008h)		;83c0
@@ -576,7 +576,7 @@ L_83C6:
 	and 0f8h		;83cf
 	add a,028h		;83d1
 	ld b,a			;83d3
-	ld a,(0e507h)		;83d4
+	ld a,(0e507h)		;83d4   ; lee la x del personaje
 	sub 008h		;83d7
 	cp b			;83d9
 	ld a,000h		;83da
@@ -620,7 +620,7 @@ L_8409:
 	pop bc			;841c
 	djnz L_8409		;841d
 	ld a,012h		;841f
-	jp 04e1fh		;8421
+	jp 04e1fh		;8421   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_8424:
 	dec (ix+001h)		;8424
 	set 4,(ix+002h)		;8427
@@ -689,9 +689,9 @@ L_84A0:
 	ld a,(0e708h)		;84a5
 	and 003h		;84a8
 	ret nz			;84aa
-	ld a,(0e70ah)		;84ab
+	ld a,(0e70ah)		;84ab   ; lee el mosaico del jefe
 	xor 001h		;84ae
-	ld (0e70ah),a		;84b0
+	ld (0e70ah),a		;84b0   ; guarda el mosaico del jefe
 	cp 013h		;84b3
 	ret nz			;84b5
 	call L_8100		;84b6
@@ -706,7 +706,7 @@ L_84A0:
 	ld a,059h		;84c8
 	call 0407dh		;84ca
 	ld a,012h		;84cd
-	jp 04059h		;84cf
+	jp 04059h		;84cf   ; pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_84D2:
 	ld (ix+00ah),011h		;84d2
 	ld (ix+008h),014h		;84d6
@@ -756,7 +756,7 @@ L_8535:
 	dec (ix+01ah)		;854f
 	ret nz			;8552
 	ld (ix+01ah),008h		;8553
-	ld a,(0e505h)		;8557
+	ld a,(0e505h)		;8557   ; lee la y del personaje
 	ld b,a			;855a
 	ld a,(0e71ch)		;855b
 	rla			;855e
@@ -831,7 +831,7 @@ L_85E1:
 	ld a,(0e71ch)		;85ec
 	dec a			;85ef
 	ld hl,08608h		;85f0
-	call 04155h		;85f3
+	call 04155h		;85f3   ; byte_de_tabla: A = el byte HL + A
 	ld c,(ix+005h)		;85f6
 	add a,c			;85f9
 	ld d,a			;85fa
@@ -902,12 +902,12 @@ L_867D:
 	ld (ix+00ah),018h		;8685
 	set 4,(ix+002h)		;8689
 L_868D:
-	ld hl,0e500h		;868d
+	ld hl,0e500h		;868d   ; apunta a el estado del personaje (5 = hundirse)
 	ld a,(hl)			;8690
 	cp 004h		;8691
 	jp z,L_8765		;8693
 	ld a,(0e701h)		;8696
-	call 04140h		;8699
+	call 04140h		;8699   ; despacha: salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_869C: 4 destinos del despachador de 0x4140 (call en p02:8699):
@@ -997,7 +997,7 @@ L_8720:
 	ld a,065h		;8748
 	call 0407dh		;874a
 	ld a,011h		;874d
-	jp 04059h		;874f
+	jp 04059h		;874f   ; pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_8752:
 	ld a,(0e722h)		;8752
 	or a			;8755
@@ -1063,7 +1063,7 @@ L_87D2:
 L_87D9:
 	bit 7,(ix+00dh)		;87d9
 	ld de,00100h		;87dd
-	call z,0415ch		;87e0
+	call z,0415ch		;87e0   ; de_negado: DE = -DE
 	jp 07fb5h		;87e3
 L_87E6:
 	ld a,0f0h		;87e6
@@ -1085,7 +1085,7 @@ L_8812:
 	jp 07fa3h		;8812
 L_8815:
 	ld a,(0e701h)		;8815
-	call 04140h		;8818
+	call 04140h		;8818   ; despacha: salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_881B: 5 destinos del despachador de 0x4140 (call en p02:8818):
@@ -1109,7 +1109,7 @@ L_8825:
 	jr nc,L_8830		;882b
 	call 07fach		;882d
 L_8830:
-	ld hl,0e507h		;8830
+	ld hl,0e507h		;8830   ; apunta a la x del personaje
 	bit 7,(ix+00fh)		;8833
 	ld a,(0e707h)		;8837
 	jr nz,L_8844		;883a
@@ -1128,7 +1128,7 @@ L_884A:
 	and 003h		;884d
 	ret z			;884f
 	ld a,b			;8850
-	ld (0e70ah),a		;8851
+	ld (0e70ah),a		;8851   ; guarda el mosaico del jefe
 	ld (0e71dh),a		;8854
 	ld (ix+018h),008h		;8857
 	inc (ix+001h)		;885b
@@ -1142,7 +1142,7 @@ L_885F:
 	jr z,L_8871		;886d
 	ld a,030h		;886f
 L_8871:
-	ld (0e70ah),a		;8871
+	ld (0e70ah),a		;8871   ; guarda el mosaico del jefe
 	ld (0e71ch),a		;8874
 	ld (ix+018h),008h		;8877
 	set 4,(ix+002h)		;887b
@@ -1187,7 +1187,7 @@ L_88C5:
 L_88DB:
 	ld a,(0e71ch)		;88db
 	xor 01fh		;88de
-	ld (0e70ah),a		;88e0
+	ld (0e70ah),a		;88e0   ; guarda el mosaico del jefe
 	ld a,(0e71bh)		;88e3
 	cp (ix+005h)		;88e6
 	ret nc			;88e9
@@ -1195,14 +1195,14 @@ L_88DB:
 	ld (ix+008h),020h		;88ee
 	ld a,(0e71dh)		;88f2
 	xor 003h		;88f5
-	ld (0e70ah),a		;88f7
+	ld (0e70ah),a		;88f7   ; guarda el mosaico del jefe
 	inc (ix+001h)		;88fa
 	ld de,00000h		;88fd
 	call 07fa3h		;8900
 	ld de,00000h		;8903
 	call 07fb5h		;8906
 	ld a,01ah		;8909
-	jp 04059h		;890b
+	jp 04059h		;890b   ; pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_890E:
 	dec (ix+008h)		;890e
 	ret nz			;8911
@@ -1216,7 +1216,7 @@ L_890E:
 	sub 001h		;8924
 	jr L_892E		;8926
 L_8928:
-	ld a,(0e507h)		;8928
+	ld a,(0e507h)		;8928   ; lee la x del personaje
 	cp (ix+007h)		;892b
 L_892E:
 	ld de,0ff80h		;892e
@@ -1231,13 +1231,13 @@ L_8945:
 	dec (ix+018h)		;8945
 	ret nz			;8948
 	ld (ix+018h),008h		;8949
-	ld a,(0e70ah)		;894d
+	ld a,(0e70ah)		;894d   ; lee el mosaico del jefe
 	cp 02bh		;8950
 	ld a,02ch		;8952
 	jr z,L_8958		;8954
 	ld a,02bh		;8956
 L_8958:
-	ld (0e70ah),a		;8958
+	ld (0e70ah),a		;8958   ; guarda el mosaico del jefe
 	ret			;895b
 L_895C:
 	ld (ix+002h),0f0h		;895c
@@ -1326,7 +1326,7 @@ L_8A0D:
 	inc hl			;8a13
 L_8A14:
 	ld a,(hl)			;8a14
-	ld (0e70ah),a		;8a15
+	ld (0e70ah),a		;8a15   ; guarda el mosaico del jefe
 	sub 034h		;8a18
 	ld (0e717h),a		;8a1a
 	ret			;8a1d
@@ -1366,7 +1366,7 @@ L_8A33:
 	ld a,001h		;8a53
 L_8A55:
 	ld hl,08a6eh		;8a55
-	call 0414ch		;8a58
+	call 0414ch		;8a58   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ex de,hl			;8a5b
 	ld a,(hl)			;8a5c
 	add a,(ix+005h)		;8a5d
@@ -1417,7 +1417,7 @@ L_8AA4:
 	call L_8C8C		;8aa4
 	ld a,(0e701h)		;8aa7
 	ld hl,08ab0h		;8aaa
-	call 04140h		;8aad
+	call 04140h		;8aad   ; despacha: salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_8AB0: 8 destinos del despachador de 0x4140 (call en p02:8AAD):
@@ -1446,16 +1446,16 @@ L_8AC0:
 	ret nz			;8ac8
 	ld (ix+01ah),00fh		;8ac9
 L_8ACD:
-	ld a,(0e70ah)		;8acd
+	ld a,(0e70ah)		;8acd   ; lee el mosaico del jefe
 	xor 001h		;8ad0
-	ld (0e70ah),a		;8ad2
+	ld (0e70ah),a		;8ad2   ; guarda el mosaico del jefe
 	ret			;8ad5
 L_8AD6:
 	ld (ix+00ah),025h		;8ad6
 	inc (ix+001h)		;8ada
-	ld a,(0e507h)		;8add
+	ld a,(0e507h)		;8add   ; lee la x del personaje
 	ld (0e717h),a		;8ae0
-	ld a,(0e505h)		;8ae3
+	ld a,(0e505h)		;8ae3   ; lee la y del personaje
 	and 0e0h		;8ae6
 	sub 008h		;8ae8
 	ld (0e716h),a		;8aea
@@ -1588,7 +1588,7 @@ L_8C10:
 	ld (ix+00ah),024h		;8c14
 	cp 009h		;8c18
 	ld a,01bh		;8c1a
-	jp z,04e1fh		;8c1c
+	jp z,04e1fh		;8c1c   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	ret			;8c1f
 L_8C20:
 	cp 016h		;8c20
@@ -1613,7 +1613,7 @@ L_8C42:
 	ld a,(0e71bh)		;8c4a
 	ld (0e701h),a		;8c4d
 	ld a,(0e71fh)		;8c50
-	ld (0e70ah),a		;8c53
+	ld (0e70ah),a		;8c53   ; guarda el mosaico del jefe
 	ret			;8c56
 L_8C57:
 	ld (ix+00fh),000h		;8c57
@@ -1635,9 +1635,9 @@ L_8C7B:
 	dec (ix+019h)		;8c7b
 	ret nz			;8c7e
 	ld (ix+019h),004h		;8c7f
-	ld a,(0e70ah)		;8c83
+	ld a,(0e70ah)		;8c83   ; lee el mosaico del jefe
 	xor 003h		;8c86
-	ld (0e70ah),a		;8c88
+	ld (0e70ah),a		;8c88   ; guarda el mosaico del jefe
 	ret			;8c8b
 L_8C8C:
 	dec (ix+01ch)		;8c8c
@@ -1652,7 +1652,7 @@ L_8C8C:
 	ld a,(0e701h)		;8ca6
 	ld (0e71bh),a		;8ca9
 	ld (ix+001h),007h		;8cac
-	ld a,(0e70ah)		;8cb0
+	ld a,(0e70ah)		;8cb0   ; lee el mosaico del jefe
 	ld (0e71fh),a		;8cb3
 	ld (ix+00ah),024h		;8cb6
 	ret			;8cba
@@ -1686,7 +1686,7 @@ L_8CDD:
 L_8D05:
 	ld a,(ix+018h)		;8d05
 	ld hl,08ed7h		;8d08
-	call 04083h		;8d0b
+	call 04083h		;8d0b   ; byte_de_tabla (por 0x4083): A = el byte HL + A
 	ld (ix+01ah),a		;8d0e
 	ld e,060h		;8d11
 	ld d,040h		;8d13
@@ -1703,7 +1703,7 @@ L_8D24:
 	ret			;8d2c
 L_8D2D:
 	ld a,(ix+001h)		;8d2d
-	call 04140h		;8d30
+	call 04140h		;8d30   ; despacha: salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_8D33: 5 destinos del despachador de 0x4140 (call en p02:8D30):
@@ -1763,7 +1763,7 @@ L_8D8B:
 	call 04de3h		;8d8f
 	and 007h		;8d92
 	ld hl,08edfh		;8d94
-	call 0414ch		;8d97
+	call 0414ch		;8d97   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ld (ix+007h),e		;8d9a
 	ld (ix+005h),d		;8d9d
 	ld a,e			;8da0
@@ -1825,7 +1825,7 @@ L_8E05:
 	push ix		;8e2e
 	pop hl			;8e30
 	ld a,026h		;8e31
-	call 04136h		;8e33
+	call 04136h		;8e33   ; hl_mas_a: HL += A
 	ld b,00ch		;8e36
 	xor a			;8e38
 L_8E39:
@@ -1835,8 +1835,8 @@ L_8E39:
 	ret			;8e3d
 L_8E3E:
 	ld a,(ix+025h)		;8e3e
-	ld hl,0e800h		;8e41
-	call 04136h		;8e44
+	ld hl,0e800h		;8e41   ; apunta a los huecos de figura (32 bytes cada uno)
+	call 04136h		;8e44   ; hl_mas_a: HL += A
 	ld b,004h		;8e47
 L_8E49:
 	ld a,(hl)			;8e49
@@ -1844,28 +1844,28 @@ L_8E49:
 	call z,L_8E63		;8e4b
 	push hl			;8e4e
 	ld a,01fh		;8e4f
-	call 04136h		;8e51
+	call 04136h		;8e51   ; hl_mas_a: HL += A
 	bit 0,(hl)		;8e54
 	pop hl			;8e56
 	ret nz			;8e57
 	ld a,020h		;8e58
-	call 04136h		;8e5a
+	call 04136h		;8e5a   ; hl_mas_a: HL += A
 	djnz L_8E49		;8e5d
 	ld (ix+023h),b		;8e5f
 	ret			;8e62
 L_8E63:
 	push hl			;8e63
 	ld a,01fh		;8e64
-	call 04136h		;8e66
+	call 04136h		;8e66   ; hl_mas_a: HL += A
 	ld (hl),000h		;8e69
 	pop hl			;8e6b
 	ret			;8e6c
 L_8E6D:
 	xor a			;8e6d
 	ld b,008h		;8e6e
-	ld hl,0e800h		;8e70
+	ld hl,0e800h		;8e70   ; apunta a los huecos de figura (32 bytes cada uno)
 L_8E73:
-	call 04136h		;8e73
+	call 04136h		;8e73   ; hl_mas_a: HL += A
 	ld a,(hl)			;8e76
 	or a			;8e77
 	ret nz			;8e78
@@ -1894,14 +1894,14 @@ L_8EA5:
 	ld a,(ix+023h)		;8ea8
 	or a			;8eab
 	ret nz			;8eac
-	ld a,(0e507h)		;8ead
+	ld a,(0e507h)		;8ead   ; lee la x del personaje
 	sub (ix+01dh)		;8eb0
 	jr nc,L_8EB6		;8eb3
 	cpl			;8eb5
 L_8EB6:
 	cp 01eh		;8eb6
 	jr nc,L_8ED2		;8eb8
-	ld a,(0e505h)		;8eba
+	ld a,(0e505h)		;8eba   ; lee la y del personaje
 	sub 010h		;8ebd
 	sub (ix+01eh)		;8ebf
 	jr nc,L_8EC5		;8ec2
@@ -1943,20 +1943,20 @@ DATA_ocho_sitios_8edf:
 
 
 L_8EEF:
-	ld a,(0e041h)		;8eef
+	ld a,(0e041h)		;8eef   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	sub 002h		;8ef2
 	ret c			;8ef4
 	ld c,a			;8ef5
 	ld b,000h		;8ef6
 	ld hl,08f0ah		;8ef8
 	add hl,bc			;8efb
-	ld a,(0e042h)		;8efc
+	ld a,(0e042h)		;8efc   ; lee la sala
 	cp (hl)			;8eff
 	ret nz			;8f00
 	ld hl,08f14h		;8f01
 	add hl,bc			;8f04
 	ld a,(hl)			;8f05
-	ld (0e690h),a		;8f06
+	ld (0e690h),a		;8f06   ; guarda la sala especial (pista o tienda)
 	ret			;8f09
 
 ; ----------------------------------------------------------------------
@@ -1982,22 +1982,22 @@ L_8F1E:
 	xor a			;8f1e
 	ld h,a			;8f1f
 	ld l,a			;8f20
-	ld (0e691h),a		;8f21
+	ld (0e691h),a		;8f21   ; guarda el paso de la sala especial
 	ld (0e693h),a		;8f24
 	ld (0e6cch),hl		;8f27
 	ld (0e6ceh),a		;8f2a
 	ld (0e695h),a		;8f2d
 	call 0a8fch		;8f30
 	inc a			;8f33
-	ld (0e692h),a		;8f34
+	ld (0e692h),a		;8f34   ; guarda el articulo elegido en la tienda
 	call L_93A3		;8f37
 	call L_93AE		;8f3a
 	call L_952B		;8f3d
 	jp L_945C		;8f40
 L_8F43:
-	ld a,(0e690h)		;8f43
+	ld a,(0e690h)		;8f43   ; lee la sala especial (pista o tienda)
 	dec a			;8f46
-	call 04140h		;8f47
+	call 04140h		;8f47   ; despacha: salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_8F4A: 20 destinos del despachador de 0x4140 (call en p02:8F47):
@@ -2032,8 +2032,8 @@ DATA_tabla_8F4A:
 
 
 L_8F72:
-	ld a,(0e691h)		;8f72
-	call 04140h		;8f75
+	ld a,(0e691h)		;8f72   ; lee el paso de la sala especial
+	call 04140h		;8f75   ; despacha: salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_8F78: 6 destinos del despachador de 0x4140 (call en p02:8F75):
@@ -2056,7 +2056,7 @@ DATA_tabla_8F78:
 L_8F84:
 	call L_916F		;8f84
 	ld hl,0e058h		;8f87
-	ld a,(0e501h)		;8f8a
+	ld a,(0e501h)		;8f8a   ; lee quien juega (0 Afrodita)
 	xor 001h		;8f8d
 	add a,l			;8f8f
 	ld l,a			;8f90
@@ -2072,7 +2072,7 @@ L_8F84:
 	jr z,L_8F9D		;8f9b
 L_8F9D:
 	xor a			;8f9d
-	call L_94EF		;8f9e
+	call mensaje		;8f9e   ; mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
 	ld a,001h		;8fa1
 	jr L_8FBC		;8fa3
 L_8FA5:
@@ -2080,46 +2080,46 @@ L_8FA5:
 	or a			;8fa6
 	jr z,L_8FB1		;8fa7
 	xor a			;8fa9
-	call L_94EF		;8faa
+	call mensaje		;8faa   ; mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
 	ld a,002h		;8fad
 	jr L_8FBC		;8faf
 L_8FB1:
 	call L_8FCE		;8fb1
 	jr nc,L_8FC0		;8fb4
 	xor a			;8fb6
-	call L_94EF		;8fb7
+	call mensaje		;8fb7   ; mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
 	ld a,002h		;8fba
 L_8FBC:
-	ld (0e691h),a		;8fbc
+	ld (0e691h),a		;8fbc   ; guarda el paso de la sala especial
 	ret			;8fbf
 L_8FC0:
 	ld a,002h		;8fc0
-	call L_94EF		;8fc2
+	call mensaje		;8fc2   ; mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
 	ld a,00dh		;8fc5
-	call L_94EF		;8fc7
+	call mensaje		;8fc7   ; mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
 	ld a,003h		;8fca
 	jr L_8FBC		;8fcc
 L_8FCE:
-	ld hl,(0e04ah)		;8fce
+	ld hl,(0e04ah)		;8fce   ; lee las llaves (BCD, 16 bits)
 	ld bc,00020h		;8fd1
 	or a			;8fd4
 	sbc hl,bc		;8fd5
 	ret c			;8fd7
-	ld hl,(0e048h)		;8fd8
+	ld hl,(0e048h)		;8fd8   ; lee las monedas (BCD, 16 bits)
 	ld bc,00100h		;8fdb
 	sbc hl,bc		;8fde
 	ret c			;8fe0
-	ld hl,(0e046h)		;8fe1
+	ld hl,(0e046h)		;8fe1   ; lee las flechas (BCD, 16 bits)
 	ld bc,00100h		;8fe4
 	sbc hl,bc		;8fe7
 L_8FE9:
 	ret			;8fe9
 L_8FEA:
 	call L_930F		;8fea
-	ld a,(0e008h)		;8fed
+	ld a,(0e008h)		;8fed   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
 	and 010h		;8ff0
 	ret z			;8ff2
-	ld a,(0e692h)		;8ff3
+	ld a,(0e692h)		;8ff3   ; lee el articulo elegido en la tienda
 	or a			;8ff6
 	jr z,L_900F		;8ff7
 	cp 002h		;8ff9
@@ -2128,23 +2128,23 @@ L_8FEA:
 L_8FFE:
 	call L_937A		;8ffe
 	ld a,004h		;9001
-	call L_94EF		;9003
+	call mensaje		;9003   ; mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
 	ld a,0b4h		;9006
 	ld (0e694h),a		;9008
 	ld a,005h		;900b
 	jr L_8FBC		;900d
 L_900F:
 	ld bc,00100h		;900f
-	call L_922B		;9012
-	ld hl,0e04ah		;9015
+	call paga		;9012   ; paga: resta BC (BCD) de las monedas de 0xE048 y las repinta
+	ld hl,0e04ah		;9015   ; apunta a las llaves (BCD)
 	ld bc,00020h		;9018
-	call L_9234		;901b
-	ld hl,0e046h		;901e
+	call resta_bcd		;901b   ; resta_bcd: (HL) -= BC en BCD
+	ld hl,0e046h		;901e   ; apunta a las flechas (BCD)
 	ld bc,00100h		;9021
-	call L_9234		;9024
+	call resta_bcd		;9024   ; resta_bcd: (HL) -= BC en BCD
 	call 05f8fh		;9027
 	call 05f79h		;902a
-	ld a,(0e501h)		;902d
+	ld a,(0e501h)		;902d   ; lee quien juega (0 Afrodita)
 	or a			;9030
 	ld hl,0e050h		;9031
 	jr nz,L_9038		;9034
@@ -2160,7 +2160,7 @@ L_9038:
 	ld hl,09066h		;9046
 	ld bc,00008h		;9049
 	ldir		;904c
-	ld a,(0e501h)		;904e
+	ld a,(0e501h)		;904e   ; lee quien juega (0 Afrodita)
 	and a			;9051
 	jr z,L_9059		;9052
 	ld a,009h		;9054
@@ -2168,7 +2168,7 @@ L_9038:
 L_9059:
 	call L_937A		;9059
 	ld a,003h		;905c
-	call L_94EF		;905e
+	call mensaje		;905e   ; mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
 	ld a,004h		;9061
 	jp L_8FBC		;9063
 
@@ -2201,10 +2201,10 @@ L_9075:
 	ld hl,0e694h		;9084
 	dec (hl)			;9087
 	ret nz			;9088
-	ld a,(0e501h)		;9089
+	ld a,(0e501h)		;9089   ; lee quien juega (0 Afrodita)
 	or a			;908c
 	ld hl,0e05ah		;908d
-	ld de,0e053h		;9090
+	ld de,0e053h		;9090   ; apunta a el tope de la vida de Afrodita
 	jr nz,L_9099		;9093
 	ld l,05bh		;9095
 	ld e,057h		;9097
@@ -2224,7 +2224,7 @@ L_9099:
 	ld (de),a			;90a7
 	call 0604dh		;90a8
 	ld a,030h		;90ab
-	call 04e1fh		;90ad
+	call 04e1fh		;90ad   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	ld a,0b4h		;90b0
 	ld (0e694h),a		;90b2
 	ld a,005h		;90b5
@@ -2235,8 +2235,8 @@ L_90BA:
 L_90BF:
 	ret			;90bf
 L_90C0:
-	ld a,(0e691h)		;90c0
-	call 04140h		;90c3
+	ld a,(0e691h)		;90c0   ; lee el paso de la sala especial
+	call 04140h		;90c3   ; despacha: salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_90C6: 4 destinos del despachador de 0x4140 (call en p02:90C3):
@@ -2255,17 +2255,17 @@ DATA_tabla_90C6:
 
 L_90CE:
 	ld a,00ch		;90ce
-	call L_94EF		;90d0
+	call mensaje		;90d0   ; mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
 	ld a,00dh		;90d3
-	call L_94EF		;90d5
+	call mensaje		;90d5   ; mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
 	call L_916F		;90d8
 	jp L_91E5		;90db
 L_90DE:
 	call L_930F		;90de
-	ld a,(0e008h)		;90e1
+	ld a,(0e008h)		;90e1   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
 	and 010h		;90e4
 	ret z			;90e6
-	ld a,(0e692h)		;90e7
+	ld a,(0e692h)		;90e7   ; lee el articulo elegido en la tienda
 	or a			;90ea
 	jr z,L_90F2		;90eb
 	cp 002h		;90ed
@@ -2274,17 +2274,17 @@ L_90DE:
 L_90F2:
 	call L_937A		;90f2
 	ld a,00fh		;90f5
-	call L_94EF		;90f7
+	call mensaje		;90f7   ; mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
 	call L_95A0		;90fa
 	jp L_91E5		;90fd
 L_9100:
 	call L_937A		;9100
 	ld a,00eh		;9103
-	call L_94EF		;9105
+	call mensaje		;9105   ; mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
 	ld a,003h		;9108
 	jp L_8FBC		;910a
 L_910D:
-	ld a,(0e008h)		;910d
+	ld a,(0e008h)		;910d   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
 	and 010h		;9110
 	ret z			;9112
 	ld hl,00000h		;9113
@@ -2292,11 +2292,11 @@ L_910D:
 	ld (0e694h),a		;9118
 	call L_937A		;911b
 	ld a,010h		;911e
-	call L_94EF		;9120
+	call mensaje		;9120   ; mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
 	jp L_91E5		;9123
 L_9126:
-	ld a,(0e691h)		;9126
-	call 04140h		;9129
+	ld a,(0e691h)		;9126   ; lee el paso de la sala especial
+	call 04140h		;9129   ; despacha: salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_912C: 4 destinos del despachador de 0x4140 (call en p02:9129):
@@ -2316,13 +2316,13 @@ DATA_tabla_912C:
 L_9134:
 	call L_9142		;9134
 	ld a,005h		;9137
-	call L_94EF		;9139
+	call mensaje		;9139   ; mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
 	call L_916F		;913c
 	jp L_91E5		;913f
 L_9142:
-	ld a,(0e690h)		;9142
+	ld a,(0e690h)		;9142   ; lee la sala especial (pista o tienda)
 	ld hl,l9253h		;9145
-	call 0414ch		;9148
+	call 0414ch		;9148   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ld hl,0eea9h		;914b
 	call L_915A		;914e
 	ld hl,0eeafh		;9151
@@ -2358,18 +2358,18 @@ L_916F:
 L_917C:
 	call L_930F		;917c
 	ld a,005h		;917f
-	call c,L_94EF		;9181
-	ld a,(0e008h)		;9184
+	call c,mensaje		;9181   ; mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
+	ld a,(0e008h)		;9184   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
 	and 010h		;9187
 	ret z			;9189
 	jr L_91E5		;918a
 L_918C:
-	ld a,(0e692h)		;918c
+	ld a,(0e692h)		;918c   ; lee el articulo elegido en la tienda
 	ld hl,0e6cch		;918f
-	call 04155h		;9192
+	call 04155h		;9192   ; byte_de_tabla: A = el byte HL + A
 	or a			;9195
 	jr nz,L_91E5		;9196
-	call L_923E		;9198
+	call articulo_de_tienda		;9198   ; articulo_de_tienda: C = precio y D = objeto del articulo 0xE692 de la tienda 0xE690
 	ld a,d			;919b
 	or a			;919c
 	jp z,L_9225		;919d
@@ -2378,12 +2378,12 @@ L_918C:
 	cp 02bh		;91a4
 	jr z,L_91F4		;91a6
 L_91A8:
-	ld hl,(0e048h)		;91a8
+	ld hl,(0e048h)		;91a8   ; lee las monedas (BCD, 16 bits)
 	or a			;91ab
 	sbc hl,bc		;91ac
 	jr c,L_9216		;91ae
 	push de			;91b0
-	call L_922B		;91b1
+	call paga		;91b1   ; paga: resta BC (BCD) de las monedas de 0xE048 y las repinta
 	pop de			;91b4
 	ld hl,0e06fh		;91b5
 	ld a,d			;91b8
@@ -2395,13 +2395,13 @@ L_91A8:
 	jr z,L_9203		;91c3
 	cp 02fh		;91c5
 	jr z,L_920F		;91c7
-	call 04136h		;91c9
+	call 04136h		;91c9   ; hl_mas_a: HL += A
 	ld a,001h		;91cc
 L_91CE:
 	ld (hl),a			;91ce
 L_91CF:
 	ld a,02dh		;91cf
-	call 04e1fh		;91d1
+	call 04e1fh		;91d1   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	call L_92BD		;91d4
 	ld a,001h		;91d7
 	ld (0e695h),a		;91d9
@@ -2410,53 +2410,53 @@ L_91CF:
 	ld (0e695h),a		;91e0
 	jr L_9225		;91e3
 L_91E5:
-	ld hl,0e691h		;91e5
+	ld hl,0e691h		;91e5   ; apunta a el paso de la sala especial
 	inc (hl)			;91e8
 	ret			;91e9
 L_91EA:
 	ld a,028h		;91ea
-	call 04136h		;91ec
+	call 04136h		;91ec   ; hl_mas_a: HL += A
 	ld a,d			;91ef
 	sub 029h		;91f0
 	jr L_91CE		;91f2
 L_91F4:
 	ld e,a			;91f4
-	ld hl,0e097h		;91f5
+	ld hl,0e097h		;91f5   ; apunta a el nivel de los objetos 0x28/0x2B/0x2C
 	ld a,(hl)			;91f8
 	add a,02ah		;91f9
 	cp e			;91fb
 	jr c,L_9220		;91fc
-	call L_923E		;91fe
+	call articulo_de_tienda		;91fe   ; articulo_de_tienda: C = precio y D = objeto del articulo 0xE692 de la tienda 0xE690
 	jr L_91A8		;9201
 L_9203:
 	ld a,050h		;9203
-	call 04d5ah		;9205
+	call 04d5ah		;9205   ; suma_flechas: suma A (BCD) a las flechas de 0xE046, hasta 999
 	ld a,050h		;9208
-	call 04d5ah		;920a
+	call 04d5ah		;920a   ; suma_flechas: suma A (BCD) a las flechas de 0xE046, hasta 999
 	jr L_91CF		;920d
 L_920F:
 	ld a,001h		;920f
-	call 04d82h		;9211
+	call 04d82h		;9211   ; suma_llaves: suma A (BCD) a las llaves de 0xE04A, hasta 999
 	jr L_91CF		;9214
 L_9216:
 	ld c,002h		;9216
 	call L_937C		;9218
 	ld a,012h		;921b
-	call L_94EF		;921d
+	call mensaje		;921d   ; mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
 L_9220:
 	ld a,02fh		;9220
-	call 04e1fh		;9222
+	call 04e1fh		;9222   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_9225:
-	ld hl,0e691h		;9225
+	ld hl,0e691h		;9225   ; apunta a el paso de la sala especial
 	dec (hl)			;9228
 	ret			;9229
 L_922A:
 	ret			;922a
-L_922B:
-	ld hl,0e048h		;922b
-	call L_9234		;922e
+paga:		; resta BC (BCD) de las monedas de 0xE048 y las repinta
+	ld hl,0e048h		;922b   ; apunta a las monedas (BCD)
+	call resta_bcd		;922e   ; resta_bcd: (HL) -= BC en BCD
 	jp 05f84h		;9231
-L_9234:
+resta_bcd:		; (HL) -= BC en BCD
 	ld a,(hl)			;9234
 	sub c			;9235
 	daa			;9236
@@ -2467,14 +2467,14 @@ L_9234:
 	daa			;923b
 	ld (hl),a			;923c
 	ret			;923d
-L_923E:
-	ld a,(0e690h)		;923e
+articulo_de_tienda:		; C = precio y D = objeto del articulo 0xE692 de la tienda 0xE690
+	ld a,(0e690h)		;923e   ; lee la sala especial (pista o tienda)
 	ld hl,l9253h		;9241
-	call 0414ch		;9244
+	call 0414ch		;9244   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ex de,hl			;9247
-	ld a,(0e692h)		;9248
+	ld a,(0e692h)		;9248   ; lee el articulo elegido en la tienda
 	add a,a			;924b
-	call 04136h		;924c
+	call 04136h		;924c   ; hl_mas_a: HL += A
 	ld c,(hl)			;924f
 	ld b,000h		;9250
 	inc hl			;9252
@@ -2527,11 +2527,11 @@ DATA_fichas_926f:
 
 L_92BD:
 	ld hl,0e6cch		;92bd
-	ld a,(0e692h)		;92c0
-	call 04136h		;92c3
+	ld a,(0e692h)		;92c0   ; lee el articulo elegido en la tienda
+	call 04136h		;92c3   ; hl_mas_a: HL += A
 	ld a,001h		;92c6
 	ld (hl),a			;92c8
-	ld a,(0e692h)		;92c9
+	ld a,(0e692h)		;92c9   ; lee el articulo elegido en la tienda
 	cp 001h		;92cc
 	ld hl,0ee69h		;92ce
 	jr c,L_92DB		;92d1
@@ -2550,20 +2550,20 @@ L_92DE:
 	djnz L_92DE		;92e5
 	ret			;92e7
 L_92E8:
-	ld a,(0e691h)		;92e8
+	ld a,(0e691h)		;92e8   ; lee el paso de la sala especial
 	or a			;92eb
 	ret nz			;92ec
-	ld a,(0e690h)		;92ed
+	ld a,(0e690h)		;92ed   ; lee la sala especial (pista o tienda)
 	cp 008h		;92f0
 	ld a,001h		;92f2
 	jr z,L_9302		;92f4
-	ld a,(0e690h)		;92f6
+	ld a,(0e690h)		;92f6   ; lee la sala especial (pista o tienda)
 	sub 00eh		;92f9
 	ld hl,09308h		;92fb
-	call 04136h		;92fe
+	call 04136h		;92fe   ; hl_mas_a: HL += A
 	ld a,(hl)			;9301
 L_9302:
-	call L_94EF		;9302
+	call mensaje		;9302   ; mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
 	jp L_91E5		;9305
 
 ; ----------------------------------------------------------------------
@@ -2579,7 +2579,7 @@ DATA_siete_mensajes:
 
 
 L_930F:
-	ld a,(0e008h)		;930f
+	ld a,(0e008h)		;930f   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
 	bit 2,a		;9312
 	jr nz,L_931B		;9314
 	bit 3,a		;9316
@@ -2588,17 +2588,17 @@ L_930F:
 L_931B:
 	ld b,003h		;931b
 L_931D:
-	ld hl,0e692h		;931d
+	ld hl,0e692h		;931d   ; apunta a el articulo elegido en la tienda
 	dec (hl)			;9320
 	call m,L_933E		;9321
-	ld a,(0e692h)		;9324
+	ld a,(0e692h)		;9324   ; lee el articulo elegido en la tienda
 	ld de,0e6cch		;9327
-	call 0413bh		;932a
+	call 0413bh		;932a   ; de_mas_a: DE += A
 	ld a,(de)			;932d
 	or a			;932e
 	jr nz,L_933A		;932f
 	push bc			;9331
-	call L_923E		;9332
+	call articulo_de_tienda		;9332   ; articulo_de_tienda: C = precio y D = objeto del articulo 0xE692 de la tienda 0xE690
 	pop bc			;9335
 	ld a,d			;9336
 	or a			;9337
@@ -2618,25 +2618,25 @@ L_9341:
 	or a			;9348
 	ret nz			;9349
 	ld a,02ch		;934a
-	call 04e1fh		;934c
+	call 04e1fh		;934c   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	scf			;934f
 	ret			;9350
 L_9351:
 	ld b,003h		;9351
 L_9353:
-	ld hl,0e692h		;9353
+	ld hl,0e692h		;9353   ; apunta a el articulo elegido en la tienda
 	inc (hl)			;9356
 	ld a,(hl)			;9357
 	cp 003h		;9358
 	call nc,L_9377		;935a
-	ld a,(0e692h)		;935d
+	ld a,(0e692h)		;935d   ; lee el articulo elegido en la tienda
 	ld de,0e6cch		;9360
-	call 0413bh		;9363
+	call 0413bh		;9363   ; de_mas_a: DE += A
 	ld a,(de)			;9366
 	or a			;9367
 	jr nz,L_9373		;9368
 	push bc			;936a
-	call L_923E		;936b
+	call articulo_de_tienda		;936b   ; articulo_de_tienda: C = precio y D = objeto del articulo 0xE692 de la tienda 0xE690
 	pop bc			;936e
 	ld a,d			;936f
 	or a			;9370
@@ -2674,9 +2674,9 @@ L_938E:
 	jp L_958B		;93a0
 L_93A3:
 	ld a,0afh		;93a3
-	ld (0e505h),a		;93a5
+	ld (0e505h),a		;93a5   ; guarda la y del personaje
 	ld a,080h		;93a8
-	ld (0e507h),a		;93aa
+	ld (0e507h),a		;93aa   ; guarda la x del personaje
 	ret			;93ad
 L_93AE:
 	ld hl,0ed80h		;93ae
@@ -2755,7 +2755,7 @@ L_9457:
 	djnz L_9457		;9459
 	ret			;945b
 L_945C:
-	ld a,(0e690h)		;945c
+	ld a,(0e690h)		;945c   ; lee la sala especial (pista o tienda)
 	cp 00eh		;945f
 	ret nc			;9461
 	ld hl,0ee69h		;9462
@@ -2772,12 +2772,12 @@ L_945C:
 L_947D:
 	push hl			;947d
 	ld b,a			;947e
-	ld a,(0e690h)		;947f
+	ld a,(0e690h)		;947f   ; lee la sala especial (pista o tienda)
 	dec a			;9482
 	ld hl,09255h		;9483
-	call 0414ch		;9486
+	call 0414ch		;9486   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ld a,c			;9489
-	call 0413bh		;948a
+	call 0413bh		;948a   ; de_mas_a: DE += A
 	inc de			;948d
 	ld a,(de)			;948e
 	ld c,a			;948f
@@ -2797,7 +2797,7 @@ L_94A0:
 	add a,a			;94a1
 	add a,a			;94a2
 	ld de,094bdh		;94a3
-	call 0413bh		;94a6
+	call 0413bh		;94a6   ; de_mas_a: DE += A
 	ex de,hl			;94a9
 	ldi		;94aa
 	ldi		;94ac
@@ -2845,7 +2845,7 @@ L_94E1:
 	inc a			;94ec
 	ld (hl),a			;94ed
 	ret			;94ee
-L_94EF:
+mensaje:		; pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
 	ld b,a			;94ef
 	ld a,(0002bh)		;94f0
 	and 00fh		;94f3
@@ -2854,13 +2854,13 @@ L_94EF:
 	add a,020h		;94f8
 L_94FA:
 	push af			;94fa
-	call 04241h		;94fb
+	call 04241h		;94fb   ; a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
 	pop af			;94fe
 	call L_9505		;94ff
-	jp 04215h		;9502
+	jp 04215h		;9502   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 L_9505:
 	ld hl,0b09eh		;9505
-	call 0414ch		;9508
+	call 0414ch		;9508   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ex de,hl			;950b
 	ld e,(hl)			;950c
 	inc hl			;950d
@@ -2891,15 +2891,15 @@ L_951E:
 	ex de,hl			;9528
 	jr L_9512		;9529
 L_952B:
-	ld a,(0e690h)		;952b
+	ld a,(0e690h)		;952b   ; lee la sala especial (pista o tienda)
 	ld hl,0954ch		;952e
-	call 04136h		;9531
+	call 04136h		;9531   ; hl_mas_a: HL += A
 	ld a,(hl)			;9534
 	add a,018h		;9535
 	call L_94FA		;9537
-	ld a,(0e690h)		;953a
+	ld a,(0e690h)		;953a   ; lee la sala especial (pista o tienda)
 	ld hl,0954ch		;953d
-	call 04136h		;9540
+	call 04136h		;9540   ; hl_mas_a: HL += A
 	ld a,(hl)			;9543
 	add a,a			;9544
 	add a,a			;9545
@@ -2925,7 +2925,7 @@ L_9561:
 	ld a,06eh		;9564
 	jp L_94E1		;9566
 L_9569:
-	ld a,(0e692h)		;9569
+	ld a,(0e692h)		;9569   ; lee el articulo elegido en la tienda
 	ld hl,0ef09h		;956c
 	or a			;956f
 	ret z			;9570
@@ -2951,7 +2951,7 @@ L_958B:
 	ldi		;9592
 	ldi		;9594
 	ld a,01eh		;9596
-	call 0413bh		;9598
+	call 0413bh		;9598   ; de_mas_a: DE += A
 	ldi		;959b
 	ldi		;959d
 	ret			;959f
@@ -2959,7 +2959,7 @@ L_95A0:
 	call L_9708		;95a0
 	call L_9653		;95a3
 	ld hl,0eb00h		;95a6
-	ld de,0e046h		;95a9
+	ld de,0e046h		;95a9   ; apunta a las flechas (BCD)
 	ld a,006h		;95ac
 	ld c,000h		;95ae
 	call L_96C4		;95b0
@@ -2971,7 +2971,7 @@ L_95A0:
 	ld a,00ah		;95c0
 	ld c,000h		;95c2
 	call L_96C4		;95c4
-	ld de,0e070h		;95c7
+	ld de,0e070h		;95c7   ; apunta a tiene el objeto 0x01
 	ld c,02ch		;95ca
 L_95CC:
 	ld b,005h		;95cc
@@ -3071,12 +3071,12 @@ L_9648:
 	ld (de),a			;9651
 	ret			;9652
 L_9653:
-	ld a,(0e097h)		;9653
+	ld a,(0e097h)		;9653   ; lee el nivel de los objetos 0x28/0x2B/0x2C
 	and a			;9656
 	ret z			;9657
 	dec a			;9658
 	ret z			;9659
-	ld hl,0e09ah		;965a
+	ld hl,0e09ah		;965a   ; apunta a tiene el objeto 0x2B
 	dec a			;965d
 	jr z,L_9661		;965e
 	inc hl			;9660
@@ -3089,7 +3089,7 @@ L_9664:
 	and 003h		;9666
 	add a,d			;9668
 	ld de,09671h		;9669
-	call 0413bh		;966c
+	call 0413bh		;966c   ; de_mas_a: DE += A
 	ld a,(de)			;966f
 	ret			;9670
 
@@ -3136,7 +3136,7 @@ L_96B4:
 	jr z,L_96BA		;96b6
 	set 3,b		;96b8
 L_96BA:
-	ld a,(0e501h)		;96ba
+	ld a,(0e501h)		;96ba   ; lee quien juega (0 Afrodita)
 	and a			;96bd
 	jr z,L_96C2		;96be
 	set 4,b		;96c0
@@ -3208,7 +3208,7 @@ L_9716:
 	call L_9722		;971c
 	jp L_97AF		;971f
 L_9722:
-	call L_9C13		;9722
+	call tecla_ascii		;9722   ; tecla_ascii: A = el ASCII de la primera tecla apretada (0 si ninguna)
 	ld hl,0e02fh		;9725
 	ld c,(hl)			;9728
 	ld (hl),a			;9729
@@ -3221,7 +3221,7 @@ L_9722:
 	ld hl,0e02bh		;9730
 	ld a,(hl)			;9733
 	ld de,0eb00h		;9734
-	call 0413bh		;9737
+	call 0413bh		;9737   ; de_mas_a: DE += A
 	ld a,(0e030h)		;973a
 	cp 00dh		;973d
 	jr z,L_9751		;973f
@@ -3242,7 +3242,7 @@ L_9751:
 	ld (0e02dh),a		;9753
 	ret			;9756
 L_9757:
-	ld a,(0e008h)		;9757
+	ld a,(0e008h)		;9757   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
 	and 00ch		;975a
 	ret z			;975c
 	and 008h		;975d
@@ -3388,7 +3388,7 @@ L_9815:
 	ret			;982a
 L_982B:
 	ld de,0eb40h		;982b
-	ld hl,0e046h		;982e
+	ld hl,0e046h		;982e   ; apunta a las flechas (BCD)
 	ld a,006h		;9831
 	ld c,000h		;9833
 	call L_98AD		;9835
@@ -3403,7 +3403,7 @@ L_982B:
 	ld c,000h		;984d
 	call L_98AD		;984f
 	ld hl,0eb61h		;9852
-	ld de,0e070h		;9855
+	ld de,0e070h		;9855   ; apunta a tiene el objeto 0x01
 	exx			;9858
 	ld c,02ch		;9859
 	exx			;985b
@@ -3429,10 +3429,10 @@ L_986C:
 	inc hl			;9875
 	jr L_985C		;9876
 L_9878:
-	ld a,(0e097h)		;9878
+	ld a,(0e097h)		;9878   ; lee el nivel de los objetos 0x28/0x2B/0x2C
 	and a			;987b
 	jr z,L_9891		;987c
-	ld hl,0e09bh		;987e
+	ld hl,0e09bh		;987e   ; apunta a tiene el objeto 0x2C
 	ld b,003h		;9881
 	ld a,(hl)			;9883
 	and a			;9884
@@ -3444,7 +3444,7 @@ L_9878:
 	jr z,L_9891		;988b
 L_988D:
 	ld a,b			;988d
-	ld (0e097h),a		;988e
+	ld (0e097h),a		;988e   ; guarda el nivel de los objetos 0x28/0x2B/0x2C
 L_9891:
 	ld a,(0eb6ah)		;9891
 	ld hl,0e058h		;9894
@@ -3462,7 +3462,7 @@ L_98A0:
 	jr c,L_98A9		;98a6
 	xor a			;98a8
 L_98A9:
-	ld (0e501h),a		;98a9
+	ld (0e501h),a		;98a9   ; guarda quien juega (0 Afrodita)
 	ret			;98ac
 L_98AD:
 	ld (0f000h),a		;98ad
@@ -3515,7 +3515,7 @@ L_98E5:
 	rra			;98eb
 	ret			;98ec
 L_98ED:
-	call 0422bh		;98ed
+	call 0422bh		;98ed   ; a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
 	ld c,0ffh		;98f0
 	ld hl,03887h		;98f2
 	ld a,(0002bh)		;98f5
@@ -3525,13 +3525,13 @@ L_98ED:
 	ld de,0bf3ch		;98ff
 L_9902:
 	call 05c2dh		;9902
-	jp 04215h		;9905
+	jp 04215h		;9905   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 L_9908:
-	call 0422bh		;9908
+	call 0422bh		;9908   ; a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
 	ld c,0ffh		;990b
 	jr L_9914		;990d
 L_990F:
-	call 0422bh		;990f
+	call 0422bh		;990f   ; a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
 	ld c,000h		;9912
 L_9914:
 	ld hl,03a47h		;9914
@@ -3543,7 +3543,7 @@ L_9914:
 L_9924:
 	jr L_9902		;9924
 L_9926:
-	call 0422bh		;9926
+	call 0422bh		;9926   ; a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
 	ld c,0ffh		;9929
 	ld hl,039c7h		;992b
 	ld a,(0002bh)		;992e
@@ -3554,7 +3554,7 @@ L_9926:
 L_993B:
 	jr L_9902		;993b
 L_993D:
-	ld hl,(0e041h)		;993d
+	ld hl,(0e041h)		;993d   ; lee el mapa (0xE041) y la sala (0xE042) de un tiron
 	dec l			;9940
 	ret nz			;9941
 	ld a,h			;9942
@@ -3571,17 +3571,17 @@ L_9949:
 	ret z			;9955
 	ld a,(0e06dh)		;9956
 	ld b,a			;9959
-	ld a,(0e042h)		;995a
+	ld a,(0e042h)		;995a   ; lee la sala
 	cp b			;995d
 	ret nz			;995e
 	ld a,(0e06eh)		;995f
 	ld hl,099abh		;9962
-	call 0414ch		;9965
+	call 0414ch		;9965   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	jr L_9971		;9968
 L_996A:
 	ld a,c			;996a
 	ld hl,09997h		;996b
-	call 0414ch		;996e
+	call 0414ch		;996e   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 L_9971:
 	ld hl,0e688h		;9971
 	ld (hl),c			;9974
@@ -3646,7 +3646,7 @@ L_99B3:
 	and 003h		;99b5
 	ld (0e06eh),a		;99b7
 	ld hl,099c4h		;99ba
-	call 04155h		;99bd
+	call 04155h		;99bd   ; byte_de_tabla: A = el byte HL + A
 	ld (0e06dh),a		;99c0
 	ret			;99c3
 
@@ -3697,7 +3697,7 @@ L_99E9:
 	set 0,(hl)		;99f6
 	res 1,(hl)		;99f8
 	xor a			;99fa
-	ld (0e07bh),a		;99fb
+	ld (0e07bh),a		;99fb   ; guarda tiene el objeto 0x0C
 	ret			;99fe
 L_99FF:
 	call 044eah		;99ff
@@ -3719,16 +3719,16 @@ L_99FF:
 	ld hl,00601h		;9a1a
 	ld (0e68dh),hl		;9a1d
 	ld a,022h		;9a20
-	jp 04e1fh		;9a22
+	jp 04e1fh		;9a22   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_9A25:
-	ld a,(0e501h)		;9a25
+	ld a,(0e501h)		;9a25   ; lee quien juega (0 Afrodita)
 	ld b,a			;9a28
 	ld a,(0e688h)		;9a29
 	cp 005h		;9a2c
 	jr nz,L_9A3A		;9a2e
 	dec b			;9a30
 	jr z,L_9A46		;9a31
-	ld a,(0e092h)		;9a33
+	ld a,(0e092h)		;9a33   ; lee tiene el objeto 0x23
 	or a			;9a36
 	ret z			;9a37
 	jr L_9A46		;9a38
@@ -3737,11 +3737,11 @@ L_9A3A:
 	jr nz,L_9A46		;9a3c
 	dec b			;9a3e
 	jr nz,L_9A46		;9a3f
-	ld a,(0e07ch)		;9a41
+	ld a,(0e07ch)		;9a41   ; lee tiene el objeto 0x0D
 	or a			;9a44
 	ret z			;9a45
 L_9A46:
-	ld a,(0e009h)		;9a46
+	ld a,(0e009h)		;9a46   ; lee el mando (la otra copia que cambia p03:A8BE)
 	and 002h		;9a49
 	ret z			;9a4b
 	call L_9A56		;9a4c
@@ -3757,12 +3757,12 @@ L_9A5F:
 	ld hl,0e682h		;9a5f
 	ld de,01006h		;9a62
 L_9A65:
-	ld a,(0e505h)		;9a65
+	ld a,(0e505h)		;9a65   ; lee la y del personaje
 	sub (hl)			;9a68
 	sub d			;9a69
 	cp 002h		;9a6a
 	ret nc			;9a6c
-	ld a,(0e507h)		;9a6d
+	ld a,(0e507h)		;9a6d   ; lee la x del personaje
 	inc l			;9a70
 	sub (hl)			;9a71
 	sub e			;9a72
@@ -3777,11 +3777,11 @@ L_9A76:
 	ret z			;9a7f
 	cp 003h		;9a80
 	jr nz,L_9A89		;9a82
-	ld a,(0e099h)		;9a84
+	ld a,(0e099h)		;9a84   ; lee tiene el objeto 0x2A
 	or a			;9a87
 	ret z			;9a88
 L_9A89:
-	ld a,(0e009h)		;9a89
+	ld a,(0e009h)		;9a89   ; lee el mando (la otra copia que cambia p03:A8BE)
 	and 002h		;9a8c
 	ret z			;9a8e
 	call L_9A5F		;9a8f
@@ -3790,13 +3790,13 @@ L_9A89:
 	ld (0e01ch),a		;9a95
 	ret			;9a98
 L_9A99:
-	ld a,(0e096h)		;9a99
+	ld a,(0e096h)		;9a99   ; lee tiene el objeto 0x27
 	and a			;9a9c
 	ret z			;9a9d
-	ld a,(0e041h)		;9a9e
+	ld a,(0e041h)		;9a9e   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	dec a			;9aa1
 	ret nz			;9aa2
-	call L_9C13		;9aa3
+	call tecla_ascii		;9aa3   ; tecla_ascii: A = el ASCII de la primera tecla apretada (0 si ninguna)
 	and a			;9aa6
 	ret z			;9aa7
 	sub 031h		;9aa8
@@ -3804,29 +3804,29 @@ L_9A99:
 	ret nc			;9aac
 	ld b,a			;9aad
 	ld hl,0e063h		;9aae
-	call 04136h		;9ab1
+	call 04136h		;9ab1   ; hl_mas_a: HL += A
 	ld a,(hl)			;9ab4
 	rr a		;9ab5
 	ret nc			;9ab7
 	ld a,b			;9ab8
 	ld hl,09990h		;9ab9
-	call 04136h		;9abc
+	call 04136h		;9abc   ; hl_mas_a: HL += A
 	ld a,(hl)			;9abf
-	ld (0e042h),a		;9ac0
+	ld (0e042h),a		;9ac0   ; guarda la sala
 	ld a,001h		;9ac3
 	ld (0f000h),a		;9ac5
 	ret			;9ac8
 L_9AC9:
-	ld a,(0e084h)		;9ac9
+	ld a,(0e084h)		;9ac9   ; lee tiene el objeto 0x15
 	and a			;9acc
 	ret z			;9acd
-	ld a,(0e0d2h)		;9ace
+	ld a,(0e0d2h)		;9ace   ; lee el estado del jefe
 	and a			;9ad1
 	ret nz			;9ad2
 	ld a,(0e0d4h)		;9ad3
 	and a			;9ad6
 	ret nz			;9ad7
-	call L_9C13		;9ad8
+	call tecla_ascii		;9ad8   ; tecla_ascii: A = el ASCII de la primera tecla apretada (0 si ninguna)
 	and a			;9adb
 	ret z			;9adc
 	cp 00dh		;9add
@@ -3841,7 +3841,7 @@ L_9AE5:
 	ld (0e615h),a		;9ae6
 	call 05de4h		;9ae9
 	ret nz			;9aec
-	ld a,(0e0d2h)		;9aed
+	ld a,(0e0d2h)		;9aed   ; lee el estado del jefe
 	or a			;9af0
 	ret nz			;9af1
 	ld a,001h		;9af2
@@ -3864,11 +3864,11 @@ L_9B02:
 	xor a			;9b0f
 	ld (0e615h),a		;9b10
 	inc a			;9b13
-	ld (0e020h),a		;9b14
+	ld (0e020h),a		;9b14   ; guarda el nombre del jefe acertado
 	ret			;9b17
 L_9B18:
 	ld hl,09b4fh		;9b18
-	ld a,(0e041h)		;9b1b
+	ld a,(0e041h)		;9b1b   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	ld c,a			;9b1e
 	add a,a			;9b1f
 	add a,c			;9b20
@@ -3896,7 +3896,7 @@ L_9B33:
 	xor a			;9b3a
 	ret			;9b3b
 L_9B3C:
-	call L_9C13		;9b3c
+	call tecla_ascii		;9b3c   ; tecla_ascii: A = el ASCII de la primera tecla apretada (0 si ninguna)
 	or a			;9b3f
 	ret z			;9b40
 	ld hl,0e616h		;9b41
@@ -3944,10 +3944,10 @@ DATA_hechizos_ascii:
 
 
 L_9BB6:
-	ld a,(0e08fh)		;9bb6
+	ld a,(0e08fh)		;9bb6   ; lee tiene el objeto 0x20
 	or a			;9bb9
 	ret z			;9bba
-	ld a,(0e500h)		;9bbb
+	ld a,(0e500h)		;9bbb   ; lee el estado del personaje (5 = hundirse)
 	cp 005h		;9bbe
 	ret z			;9bc0
 	ld a,(0e615h)		;9bc1
@@ -3972,9 +3972,9 @@ L_9BB6:
 	ld hl,0e531h		;9be5
 	inc (hl)			;9be8
 	ld a,0fbh		;9be9
-	jp 04e1fh		;9beb
+	jp 04e1fh		;9beb   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_9BEE:
-	ld a,(0e095h)		;9bee
+	ld a,(0e095h)		;9bee   ; lee tiene el objeto 0x26
 	or a			;9bf1
 	ret z			;9bf2
 	ld a,(0e63eh)		;9bf3
@@ -3982,12 +3982,12 @@ L_9BEE:
 	ret z			;9bf7
 	call L_9B3C		;9bf8
 	ret z			;9bfb
-	ld hl,0e6b8h		;9bfc
+	ld hl,0e6b8h		;9bfc   ; apunta a las letras tecleadas
 	ld de,09c0bh		;9bff
 	ld b,008h		;9c02
 	call L_9B33		;9c04
 	ret nz			;9c07
-	jp 0b5eah		;9c08
+	jp 0b5eah		;9c08   ; umbrella: acaba con todas las figuras de tipo 0x0E (p03:B604)
 
 ; ----------------------------------------------------------------------
 ; DATOS umbrella: UMBRELLA en ASCII: p02:9BFF lo compara con las 8 letras
@@ -4001,7 +4001,7 @@ DATA_umbrella:
 ; ======================================================================
 
 
-L_9C13:
+tecla_ascii:		; A = el ASCII de la primera tecla apretada (0 si ninguna)
 	ld b,008h		;9c13
 	ld e,000h		;9c15
 L_9C17:
@@ -4022,7 +4022,7 @@ L_9C27:
 	add a,a			;9c2a
 	add a,a			;9c2b
 	ld hl,09c3bh		;9c2c
-	call 04136h		;9c2f
+	call 04136h		;9c2f   ; hl_mas_a: HL += A
 	ld a,b			;9c32
 L_9C33:
 	rra			;9c33
@@ -4177,7 +4177,7 @@ DATA_monumentos:
 
 
 L_9DAF:
-	ld bc,(0e041h)		;9daf
+	ld bc,(0e041h)		;9daf   ; lee el mapa (0xE041) y la sala (0xE042) de un tiron
 	dec c			;9db3
 	ret nz			;9db4
 	ld hl,09ddah		;9db5
@@ -4198,7 +4198,7 @@ L_9DC5:
 	ldi		;9dcc
 	ldi		;9dce
 	ld hl,(0e682h)		;9dd0
-	call 04da1h		;9dd3
+	call 04da1h		;9dd3   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	ld (0e684h),hl		;9dd6
 	ret			;9dd9
 
@@ -4271,16 +4271,16 @@ L_9E3B:
 	inc hl			;9e4d
 	ld a,(hl)			;9e4e
 	add a,010h		;9e4f
-	ld (0e507h),a		;9e51
+	ld (0e507h),a		;9e51   ; guarda la x del personaje
 	ld (0e0d1h),a		;9e54
 	ld a,00eh		;9e57
 L_9E59:
 	ld (0e502h),a		;9e59
 	ld a,082h		;9e5c
-	call 04e1fh		;9e5e
+	call 04e1fh		;9e5e   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	ld hl,01f80h		;9e61
 	ld de,09e6ah		;9e64
-	jp 05c46h		;9e67
+	jp 05c46h		;9e67   ; rle_a_vram: descomprime el rle de DE en la VRAM de HL
 
 ; ----------------------------------------------------------------------
 ; DATOS rle_9E6A: rle a la VRAM (0x5C46); lo leen p02:9E67 (5 bytes)
@@ -4326,11 +4326,11 @@ L_9E97:
 	call 0a5f4h		;9ea7
 	call 0afb5h		;9eaa
 	jr nc,L_9EC0		;9ead
-	ld a,(0e505h)		;9eaf
+	ld a,(0e505h)		;9eaf   ; lee la y del personaje
 	and 0f8h		;9eb2
-	ld (0e505h),a		;9eb4
+	ld (0e505h),a		;9eb4   ; guarda la y del personaje
 	xor a			;9eb7
-	ld (0e500h),a		;9eb8
+	ld (0e500h),a		;9eb8   ; guarda el estado del personaje (5 = hundirse)
 	ld (0e50eh),a		;9ebb
 	jr L_9E8A		;9ebe
 L_9EC0:
@@ -4354,7 +4354,7 @@ L_9EDA:
 	push hl			;9eda
 	ld a,b			;9edb
 	ld hl,09efdh		;9edc
-	call 0414ch		;9edf
+	call 0414ch		;9edf   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	exx			;9ee2
 	ld a,l			;9ee3
 	exx			;9ee4
@@ -4398,13 +4398,13 @@ DATA_ocho_direcciones:
 
 
 L_9F0F:
-	ld a,(0e505h)		;9f0f
+	ld a,(0e505h)		;9f0f   ; lee la y del personaje
 	add a,010h		;9f12
 	ld (0e0d0h),a		;9f14
 	ld hl,0e683h		;9f17
 	ld a,(hl)			;9f1a
 	add a,008h		;9f1b
-	ld (0e507h),a		;9f1d
+	ld (0e507h),a		;9f1d   ; guarda la x del personaje
 	ld (0e0d1h),a		;9f20
 	ld b,00eh		;9f23
 L_9F25:
@@ -4428,7 +4428,7 @@ L_9F42:
 	ld b,a			;9f47
 	ld (0e504h),bc		;9f48
 	ld a,(0e0d1h)		;9f4c
-	ld (0e507h),a		;9f4f
+	ld (0e507h),a		;9f4f   ; guarda la x del personaje
 	ld b,010h		;9f52
 	jr L_9F25		;9f54
 L_9F56:
@@ -4460,7 +4460,7 @@ L_9F82:
 	ld a,(0e539h)		;9f82
 	and a			;9f85
 	ret nz			;9f86
-	ld hl,(0e041h)		;9f87
+	ld hl,(0e041h)		;9f87   ; lee el mapa (0xE041) y la sala (0xE042) de un tiron
 	dec l			;9f8a
 	ret nz			;9f8b
 	ld a,h			;9f8c
@@ -4476,21 +4476,21 @@ L_9F82:
 	jp z,0a01ah		;9fa3
 	ret			;9fa6
 L_9FA7:
-	ld a,(0e082h)		;9fa7
+	ld a,(0e082h)		;9fa7   ; lee tiene el objeto 0x13
 	and a			;9faa
 	ret nz			;9fab
 	ld c,013h		;9fac
 	ld de,02850h		;9fae
 	jp 0a013h		;9fb1
 L_9FB4:
-	ld a,(0e085h)		;9fb4
+	ld a,(0e085h)		;9fb4   ; lee tiene el objeto 0x16
 	and a			;9fb7
 	ret nz			;9fb8
 	ld c,016h		;9fb9
 	ld de,0a820h		;9fbb
 	jp 0a013h		;9fbe
 L_9FC1:
-	ld a,(0e08ah)		;9fc1
+	ld a,(0e08ah)		;9fc1   ; lee tiene el objeto 0x1B
 	and a			;9fc4
 	ret nz			;9fc5
 	ld a,(0e066h)		;9fc6

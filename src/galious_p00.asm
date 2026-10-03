@@ -47,23 +47,23 @@ DATA_cabecera_de_konami:
 
 
 L_4050:
-	jp L_4140		;4050
+	jp despacha		;4050   ; despacha: salta a la entrada A de la tabla de palabras que va detras del call
 L_4053:
-	jp L_414C		;4053
+	jp palabra_de_tabla		;4053   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 L_4056:
-	jp L_4DA1		;4056
+	jp casilla_de_yx		;4056   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 L_4059:
-	jp L_4E1F		;4059
+	jp pide_sonido		;4059   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_405C:
 	jp L_4164		;405c
 L_405F:
 	jp L_4DB5		;405f
 L_4062:
-	jp L_4136		;4062
+	jp hl_mas_a		;4062   ; hl_mas_a: HL += A
 L_4065:
-	jp L_413B		;4065
+	jp de_mas_a		;4065   ; de_mas_a: DE += A
 L_4068:
-	jp L_415C		;4068
+	jp de_negado		;4068   ; de_negado: DE = -DE
 L_406B:
 	jp L_4DCF		;406b
 L_406E:
@@ -81,11 +81,11 @@ L_407D:
 L_4080:
 	jp L_5CC4		;4080
 L_4083:
-	jp L_4155		;4083
+	jp byte_de_tabla		;4083   ; byte_de_tabla: A = el byte HL + A
 L_4086:
 	jp L_5D12		;4086
 L_4089:
-	jp L_4DDB		;4089
+	jp tiene_o_popolon		;4089   ; tiene_o_popolon: NZ si la marca de HL esta puesta o se lleva a Popolon (0xE501)
 L_408C:
 	jp L_5F8F		;408c
 L_408F:
@@ -103,8 +103,8 @@ L_4095:
 	ld hl,L_40EF		;40a5
 	ld (0fd9bh),hl		;40a8
 	ld sp,0f0f0h		;40ab
-	ld hl,0e000h		;40ae
-	ld de,0e001h		;40b1
+	ld hl,0e000h		;40ae   ; apunta a el ESTADO del juego
+	ld de,0e001h		;40b1   ; apunta a el paso del estado
 	ld bc,010efh		;40b4
 	ld (hl),000h		;40b7
 	ldir		;40b9
@@ -151,17 +151,17 @@ L_40EF:
 	call L_5435		;40fd
 	di			;4100
 	ld a,00dh		;4101
-	ld (06000h),a		;4103
+	ld (06000h),a		;4103   ; el mapper: pone en 0x6000 el banco de A
 	inc a			;4106
-	ld (08000h),a		;4107
+	ld (08000h),a		;4107   ; el mapper: pone en 0x8000 el banco de A
 	call 06004h		;410a
 	xor a			;410d
 	ld (0e006h),a		;410e
 	di			;4111
 	ld a,(0f0f1h)		;4112
-	ld (06000h),a		;4115
+	ld (06000h),a		;4115   ; el mapper: pone en 0x6000 el banco de A
 	ld a,(0f0f2h)		;4118
-	ld (08000h),a		;411b
+	ld (08000h),a		;411b   ; el mapper: pone en 0x8000 el banco de A
 	call L_5C9E		;411e
 	ld hl,0e005h		;4121
 	ld a,(hl)			;4124
@@ -176,19 +176,19 @@ L_4131:
 	call 0013eh		;4131   ; BIOS RDVDP - Reads VDP status register
 	ei			;4134
 	ret			;4135
-L_4136:
+hl_mas_a:		; HL += A
 	add a,l			;4136
 	ld l,a			;4137
 	ret nc			;4138
 	inc h			;4139
 	ret			;413a
-L_413B:
+de_mas_a:		; DE += A
 	add a,e			;413b
 	ld e,a			;413c
 	ret nc			;413d
 	inc d			;413e
 	ret			;413f
-L_4140:
+despacha:		; salta a la entrada A de la tabla de palabras que va detras del call
 	pop hl			;4140
 	add a,a			;4141
 	add a,l			;4142
@@ -201,7 +201,7 @@ L_4147:
 	ld h,(hl)			;4149
 	ld l,a			;414a
 	jp (hl)			;414b
-L_414C:
+palabra_de_tabla:		; DE = la palabra A de la tabla de HL
 	add a,a			;414c
 	ld e,a			;414d
 	ld d,000h		;414e
@@ -210,7 +210,7 @@ L_414C:
 	inc hl			;4152
 	ld d,(hl)			;4153
 	ret			;4154
-L_4155:
+byte_de_tabla:		; A = el byte HL + A
 	add a,l			;4155
 	ld l,a			;4156
 	jr nc,L_415A		;4157
@@ -218,7 +218,7 @@ L_4155:
 L_415A:
 	ld a,(hl)			;415a
 	ret			;415b
-L_415C:
+de_negado:		; DE = -DE
 	ld a,e			;415c
 	cpl			;415d
 	ld e,a			;415e
@@ -239,128 +239,128 @@ L_4164:
 L_416C:
 	di			;416c
 	ld a,001h		;416d
-	ld (06000h),a		;416f
+	ld (06000h),a		;416f   ; el mapper: pone en 0x6000 el banco de A
 	ld (0f0f1h),a		;4172
 	inc a			;4175
-	ld (08000h),a		;4176
+	ld (08000h),a		;4176   ; el mapper: pone en 0x8000 el banco de A
 	ld (0f0f2h),a		;4179
 	inc a			;417c
-	ld (0a000h),a		;417d
+	ld (0a000h),a		;417d   ; el mapper: pone en 0xA000 el banco de A
 	ld (0f0f3h),a		;4180
 	ei			;4183
 	ret			;4184
 L_4185:
 	di			;4185
 	ld a,004h		;4186
-	ld (06000h),a		;4188
+	ld (06000h),a		;4188   ; el mapper: pone en 0x6000 el banco de A
 	ld (0f0f1h),a		;418b
 	inc a			;418e
-	ld (08000h),a		;418f
+	ld (08000h),a		;418f   ; el mapper: pone en 0x8000 el banco de A
 	ld (0f0f2h),a		;4192
 	inc a			;4195
-	ld (0a000h),a		;4196
+	ld (0a000h),a		;4196   ; el mapper: pone en 0xA000 el banco de A
 	ld (0f0f3h),a		;4199
 	ei			;419c
 	ret			;419d
 L_419E:
 	di			;419e
 	ld a,007h		;419f
-	ld (06000h),a		;41a1
+	ld (06000h),a		;41a1   ; el mapper: pone en 0x6000 el banco de A
 	ld (0f0f1h),a		;41a4
 	inc a			;41a7
-	ld (08000h),a		;41a8
+	ld (08000h),a		;41a8   ; el mapper: pone en 0x8000 el banco de A
 	ld (0f0f2h),a		;41ab
 	inc a			;41ae
-	ld (0a000h),a		;41af
+	ld (0a000h),a		;41af   ; el mapper: pone en 0xA000 el banco de A
 	ld (0f0f3h),a		;41b2
 	ei			;41b5
 	ret			;41b6
 L_41B7:
 	di			;41b7
 	ld a,00ah		;41b8
-	ld (06000h),a		;41ba
+	ld (06000h),a		;41ba   ; el mapper: pone en 0x6000 el banco de A
 	ld (0f0f1h),a		;41bd
 	inc a			;41c0
-	ld (08000h),a		;41c1
+	ld (08000h),a		;41c1   ; el mapper: pone en 0x8000 el banco de A
 	ld (0f0f2h),a		;41c4
 	inc a			;41c7
-	ld (0a000h),a		;41c8
+	ld (0a000h),a		;41c8   ; el mapper: pone en 0xA000 el banco de A
 	ld (0f0f3h),a		;41cb
 	ei			;41ce
 	ret			;41cf
 L_41D0:
 	di			;41d0
 	ld a,00dh		;41d1
-	ld (06000h),a		;41d3
+	ld (06000h),a		;41d3   ; el mapper: pone en 0x6000 el banco de A
 	ld (0f0f1h),a		;41d6
 	inc a			;41d9
-	ld (08000h),a		;41da
+	ld (08000h),a		;41da   ; el mapper: pone en 0x8000 el banco de A
 	ld (0f0f2h),a		;41dd
 	inc a			;41e0
-	ld (0a000h),a		;41e1
+	ld (0a000h),a		;41e1   ; el mapper: pone en 0xA000 el banco de A
 	ld (0f0f3h),a		;41e4
 	ei			;41e7
 	ret			;41e8
 L_41E9:
 	di			;41e9
 	ld a,001h		;41ea
-	ld (06000h),a		;41ec
+	ld (06000h),a		;41ec   ; el mapper: pone en 0x6000 el banco de A
 	ld (0f0f1h),a		;41ef
 	ei			;41f2
 	ret			;41f3
 L_41F4:
 	di			;41f4
 	ld a,004h		;41f5
-	ld (06000h),a		;41f7
+	ld (06000h),a		;41f7   ; el mapper: pone en 0x6000 el banco de A
 	ld (0f0f1h),a		;41fa
 	ei			;41fd
 	ret			;41fe
 L_41FF:
 	di			;41ff
 	ld a,002h		;4200
-	ld (08000h),a		;4202
+	ld (08000h),a		;4202   ; el mapper: pone en 0x8000 el banco de A
 	ld (0f0f2h),a		;4205
 	ei			;4208
 	ret			;4209
 L_420A:
 	di			;420a
 	ld a,00eh		;420b
-	ld (08000h),a		;420d
+	ld (08000h),a		;420d   ; el mapper: pone en 0x8000 el banco de A
 	ld (0f0f2h),a		;4210
 	ei			;4213
 	ret			;4214
-L_4215:
+a000_banco_3:		; pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 	di			;4215
 	ld a,003h		;4216
-	ld (0a000h),a		;4218
+	ld (0a000h),a		;4218   ; el mapper: pone en 0xA000 el banco de A
 	ld (0f0f3h),a		;421b
 	ei			;421e
 	ret			;421f
-L_4220:
+a000_banco_6:		; pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
 	di			;4220
 	ld a,006h		;4221
-	ld (0a000h),a		;4223
+	ld (0a000h),a		;4223   ; el mapper: pone en 0xA000 el banco de A
 	ld (0f0f3h),a		;4226
 	ei			;4229
 	ret			;422a
-L_422B:
+a000_banco_9:		; pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
 	di			;422b
 	ld a,009h		;422c
-	ld (0a000h),a		;422e
+	ld (0a000h),a		;422e   ; el mapper: pone en 0xA000 el banco de A
 	ld (0f0f3h),a		;4231
 	ei			;4234
 	ret			;4235
-L_4236:
+a000_banco_12:		; pone el banco 12 en 0xA000 (y su copia en 0xF0F3)
 	di			;4236
 	ld a,00ch		;4237
-	ld (0a000h),a		;4239
+	ld (0a000h),a		;4239   ; el mapper: pone en 0xA000 el banco de A
 	ld (0f0f3h),a		;423c
 	ei			;423f
 	ret			;4240
-L_4241:
+a000_banco_15:		; pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
 	di			;4241
 	ld a,00fh		;4242
-	ld (0a000h),a		;4244
+	ld (0a000h),a		;4244   ; el mapper: pone en 0xA000 el banco de A
 	ld (0f0f3h),a		;4247
 	ei			;424a
 	ret			;424b
@@ -387,15 +387,15 @@ L_4269:
 L_4277:
 	ld hl,0e003h		;4277
 	inc (hl)			;427a
-	ld a,(0e000h)		;427b
+	ld a,(0e000h)		;427b   ; lee el ESTADO del juego
 	cp 003h		;427e
 	jr nc,L_4286		;4280
 	ld hl,04bfah		;4282
 	push hl			;4285
 L_4286:
-	ld bc,(0e000h)		;4286
+	ld bc,(0e000h)		;4286   ; lee el ESTADO del juego y el byte siguiente (16 bits)
 	ld a,c			;428a
-	call L_4140		;428b
+	call despacha		;428b   ; despacha: salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_428E: 21 destinos del despachador de 0x4140 (call en p00:428B):
@@ -451,11 +451,11 @@ L_42D5:
 	call L_4C4A		;42d5
 	call L_5BB5		;42d8
 	call L_5E34		;42db
-	call L_422B		;42de
+	call a000_banco_9		;42de   ; a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
 	call 06957h		;42e1
-	call L_4215		;42e4
+	call a000_banco_3		;42e4   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 	xor a			;42e7
-	call L_4E1F		;42e8
+	call pide_sonido		;42e8   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	call L_5CC9		;42eb
 	jp L_435E		;42ee
 L_42F1:
@@ -463,21 +463,21 @@ L_42F1:
 	call L_4D38		;42f4
 	call L_5E34		;42f7
 	call L_420A		;42fa
-	call L_4241		;42fd
+	call a000_banco_15		;42fd   ; a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
 	call L_5772		;4300
 	call 06215h		;4303
 	call L_41FF		;4306
-	jp L_4215		;4309
+	jp a000_banco_3		;4309   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 L_430C:
 	push bc			;430c
 	call 098e5h		;430d
 	pop bc			;4310
 	jr nc,L_4330		;4311
 	call L_420A		;4313
-	call L_4241		;4316
+	call a000_banco_15		;4316   ; a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
 	call 06251h		;4319
 	call L_41FF		;431c
-	call L_4215		;431f
+	call a000_banco_3		;431f   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 	ld a,(0e019h)		;4322
 	or a			;4325
 	ret nz			;4326
@@ -493,7 +493,7 @@ L_4335:
 	ret			;433b
 L_433C:
 	ld a,b			;433c
-	call L_4140		;433d
+	call despacha		;433d   ; despacha: salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_4340: 4 destinos del despachador de 0x4140 (call en p00:433D):
@@ -523,7 +523,7 @@ L_4359:
 L_435B:
 	ld (0e004h),a		;435b
 L_435E:
-	ld hl,0e001h		;435e
+	ld hl,0e001h		;435e   ; apunta a el paso del estado
 	inc (hl)			;4361
 	ret			;4362
 L_4363:
@@ -545,10 +545,10 @@ L_437B:
 	or a			;438a
 	ret nz			;438b
 	xor a			;438c
-	ld (0e070h),a		;438d
+	ld (0e070h),a		;438d   ; guarda tiene el objeto 0x01
 	ld (0e510h),a		;4390
 	ld hl,00000h		;4393
-	ld (0e046h),hl		;4396
+	ld (0e046h),hl		;4396   ; guarda las flechas (BCD, 16 bits)
 	call L_43CB		;4399
 L_439C:
 	ld hl,0e025h		;439c
@@ -556,18 +556,18 @@ L_439C:
 L_43A0:
 	ld a,0ffh		;43a0
 L_43A2:
-	ld (0e000h),a		;43a2
+	ld (0e000h),a		;43a2   ; guarda el ESTADO del juego
 	xor a			;43a5
 	jp L_443B		;43a6
 L_43A9:
-	ld (0e000h),a		;43a9
+	ld (0e000h),a		;43a9   ; guarda el ESTADO del juego
 	ld a,020h		;43ac
 	ld (0e004h),a		;43ae
 	jp L_4442		;43b1
 L_43B4:
-	call L_4241		;43b4
+	call a000_banco_15		;43b4   ; a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
 	call 06adch		;43b7
-	call L_4215		;43ba
+	call a000_banco_3		;43ba   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 	ld a,(0e02eh)		;43bd
 	or a			;43c0
 	ret nz			;43c1
@@ -598,7 +598,7 @@ L_43D8:
 	jp L_5CAF		;43e9
 L_43EC:
 	xor a			;43ec
-	jp L_4E1F		;43ed
+	jp pide_sonido		;43ed   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_43F0:
 	djnz L_4404		;43f0
 	ld hl,0e004h		;43f2
@@ -606,8 +606,8 @@ L_43F0:
 	jp z,L_435E		;43f6
 	bit 2,(hl)		;43f9
 	ld de,07d71h		;43fb
-	jp z,L_5C25		;43fe
-	jp L_5C3C		;4401
+	jp z,lista_a_vram		;43fe   ; lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
+	jp borra_lista_vram		;4401   ; borra_lista_vram: como lista_a_vram pero escribiendo ceros
 L_4404:
 	djnz L_4416		;4404
 	call L_54E6		;4406
@@ -629,7 +629,7 @@ L_4420:
 	ld (0e01ah),a		;4429
 	inc a			;442c
 	ld (0e019h),a		;442d
-	ld a,(0e690h)		;4430
+	ld a,(0e690h)		;4430   ; lee la sala especial (pista o tienda)
 	or a			;4433
 	ld a,00eh		;4434
 	jp nz,L_43A9		;4436
@@ -637,12 +637,12 @@ L_4439:
 	ld a,020h		;4439
 L_443B:
 	ld (0e004h),a		;443b
-	ld hl,0e000h		;443e
+	ld hl,0e000h		;443e   ; apunta a el ESTADO del juego
 	inc (hl)			;4441
 L_4442:
 	xor a			;4442
 L_4443:
-	ld (0e001h),a		;4443
+	ld (0e001h),a		;4443   ; guarda el paso del estado
 	ret			;4446
 L_4447:
 	call L_4D1E		;4447
@@ -663,7 +663,7 @@ L_4462:
 	ld a,(0e019h)		;4465
 	or a			;4468
 	jr z,L_4439		;4469
-	ld a,(0e020h)		;446b
+	ld a,(0e020h)		;446b   ; lee el nombre del jefe acertado
 	or a			;446e
 	ld a,00fh		;446f
 	jr nz,L_44D2		;4471
@@ -701,7 +701,7 @@ L_4462:
 	jr nz,L_44D2		;44af
 	call 09e07h		;44b1
 	jr nc,L_44D5		;44b4
-	ld a,(0e500h)		;44b6
+	ld a,(0e500h)		;44b6   ; lee el estado del personaje (5 = hundirse)
 	cp 005h		;44b9
 	ret z			;44bb
 	call 0a8ceh		;44bc
@@ -710,7 +710,7 @@ L_4462:
 	inc (hl)			;44c4
 L_44C5:
 	ld a,0fdh		;44c5
-	call L_4E1F		;44c7
+	call pide_sonido		;44c7   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	call L_5917		;44ca
 	call 0be26h		;44cd
 	ld a,009h		;44d0
@@ -722,12 +722,12 @@ L_44D5:
 	call 09e21h		;44d9
 	ret nc			;44dc
 	ld a,02bh		;44dd
-	call L_4E1F		;44df
+	call pide_sonido		;44df   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	call L_5280		;44e2
 	ld a,00bh		;44e5
 	jp L_43A9		;44e7
 L_44EA:
-	ld a,(0e500h)		;44ea
+	ld a,(0e500h)		;44ea   ; lee el estado del personaje (5 = hundirse)
 	sub 004h		;44ed
 	cp 004h		;44ef
 	ret			;44f1
@@ -744,7 +744,7 @@ L_4502:
 	call L_4D38		;4502
 	call L_4D1E		;4505
 	ret p			;4508
-	ld a,(0e501h)		;4509
+	ld a,(0e501h)		;4509   ; lee quien juega (0 Afrodita)
 	ld hl,0e058h		;450c
 	add a,l			;450f
 	ld l,a			;4510
@@ -768,28 +768,28 @@ L_451F:
 	daa			;4529
 	ld (hl),a			;452a
 	call L_4538		;452b
-	ld a,(0e501h)		;452e
+	ld a,(0e501h)		;452e   ; lee quien juega (0 Afrodita)
 	xor 001h		;4531
-	ld (0e501h),a		;4533
+	ld (0e501h),a		;4533   ; guarda quien juega (0 Afrodita)
 	jr L_451C		;4536
 L_4538:
-	ld a,(0e501h)		;4538
+	ld a,(0e501h)		;4538   ; lee quien juega (0 Afrodita)
 	or a			;453b
 	ld de,07cf6h		;453c
 	jr z,L_4544		;453f
 	ld de,07d06h		;4541
 L_4544:
-	jp L_5C25		;4544
+	jp lista_a_vram		;4544   ; lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
 L_4547:
 	ld a,095h		;4547
-	call L_4E1F		;4549
+	call pide_sonido		;4549   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	jp L_4439		;454c
 L_454F:
 	djnz L_4582		;454f
 	call 07e8ch		;4551
 	call L_50F5		;4554
 	ret nz			;4557
-	ld hl,0e026h		;4558
+	ld hl,0e026h		;4558   ; apunta a ya se ha seguido con F5
 	ld a,(hl)			;455b
 	and a			;455c
 	jr nz,L_4567		;455d
@@ -800,7 +800,7 @@ L_455F:
 L_4567:
 	ld (hl),000h		;4567
 	ld hl,00004h		;4569
-	ld (0e000h),hl		;456c
+	ld (0e000h),hl		;456c   ; guarda el ESTADO del juego y el byte siguiente (16 bits)
 	call L_4579		;456f
 	ret nz			;4572
 	call L_5D1A		;4573
@@ -808,18 +808,18 @@ L_4567:
 L_4579:
 	ld a,(0e0d4h)		;4579
 	ld b,a			;457c
-	ld a,(0e0d2h)		;457d
+	ld a,(0e0d2h)		;457d   ; lee el estado del jefe
 	or b			;4580
 	ret			;4581
 L_4582:
 	call L_4D1E		;4582
 	ret p			;4585
 	ld de,07d44h		;4586
-	call L_5C25		;4589
-	ld a,(0e027h)		;458c
+	call lista_a_vram		;4589   ; lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
+	ld a,(0e027h)		;458c   ; lee ZEUS tecleado
 	and a			;458f
 	ld de,07ecfh		;4590
-	call nz,L_5C25		;4593
+	call nz,lista_a_vram		;4593   ; lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
 	jp L_435E		;4596
 L_4599:
 	djnz L_45E8		;4599
@@ -830,9 +830,9 @@ L_4599:
 	call L_5280		;45a3
 	call L_4D47		;45a6
 	ld de,07d28h		;45a9
-	call L_5C3C		;45ac
+	call borra_lista_vram		;45ac   ; borra_lista_vram: como lista_a_vram pero escribiendo ceros
 	ld de,07d14h		;45af
-	call L_5C25		;45b2
+	call lista_a_vram		;45b2   ; lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
 	ld a,(0e688h)		;45b5
 	dec a			;45b8
 	add a,001h		;45b9
@@ -853,7 +853,7 @@ L_4599:
 	call L_4646		;45d8
 	call L_461F		;45db
 	ld a,08eh		;45de
-	call L_4E1F		;45e0
+	call pide_sonido		;45e0   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	ld a,060h		;45e3
 	jp L_435B		;45e5
 L_45E8:
@@ -881,48 +881,48 @@ L_4614:
 	inc a			;4617
 	ld l,a			;4618
 	ld h,001h		;4619
-	ld (0e041h),hl		;461b
+	ld (0e041h),hl		;461b   ; guarda el mapa (0xE041) y la sala (0xE042) de un tiron
 	ret			;461e
 L_461F:
-	ld a,(0e041h)		;461f
-	ld hl,0e061h		;4622
-	call L_4136		;4625
+	ld a,(0e041h)		;461f   ; lee el mapa (1 el castillo, 2-11 los mundos)
+	ld hl,0e061h		;4622   ; apunta a el cambio de vida pendiente de Popolon (con signo)
+	call hl_mas_a		;4625   ; hl_mas_a: HL += A
 	ld a,001h		;4628
 	bit 7,(hl)		;462a
 	jr z,L_4631		;462c
-	ld (0e078h),a		;462e
+	ld (0e078h),a		;462e   ; guarda tiene el objeto 0x09
 L_4631:
 	bit 6,(hl)		;4631
 	jr z,L_4638		;4633
-	ld (0e077h),a		;4635
+	ld (0e077h),a		;4635   ; guarda tiene el objeto 0x08
 L_4638:
 	bit 5,(hl)		;4638
 	jr z,L_463F		;463a
-	ld (0e076h),a		;463c
+	ld (0e076h),a		;463c   ; guarda tiene el objeto 0x07
 L_463F:
 	bit 4,(hl)		;463f
 	ret z			;4641
-	ld (0e079h),a		;4642
+	ld (0e079h),a		;4642   ; guarda tiene el objeto 0x0A
 	ret			;4645
 L_4646:
-	ld a,(0e041h)		;4646
+	ld a,(0e041h)		;4646   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	cp 00bh		;4649
 	ret z			;464b
 	ld hl,04689h		;464c
-	call L_414C		;464f
+	call palabra_de_tabla		;464f   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ld h,0e0h		;4652
 	ld l,d			;4654
 	ld (hl),000h		;4655
 	ld l,e			;4657
 	ld (hl),000h		;4658
 L_465A:
-	call L_422B		;465a
-	ld a,(0e041h)		;465d
+	call a000_banco_9		;465a   ; a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
+	ld a,(0e041h)		;465d   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	ld hl,0af09h		;4660
-	call L_414C		;4663
+	call palabra_de_tabla		;4663   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ld hl,0af20h		;4666
-	ld a,(0e041h)		;4669
-	call L_4155		;466c
+	ld a,(0e041h)		;4669   ; lee el mapa (1 el castillo, 2-11 los mundos)
+	call byte_de_tabla		;466c   ; byte_de_tabla: A = el byte HL + A
 	ld c,a			;466f
 	dec c			;4670
 	ld b,000h		;4671
@@ -945,7 +945,7 @@ L_4683:
 	ld (hl),a			;4686
 	inc hl			;4687
 	djnz L_4683		;4688
-	jp L_4215		;468a
+	jp a000_banco_3		;468a   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 
 ; ----------------------------------------------------------------------
 ; DATOS dos_marcas_por_mundo: 9 palabras, mapas 2-10, que p00:464C lee en
@@ -969,7 +969,7 @@ DATA_dos_marcas_por_mundo:
 
 
 L_469F:
-	ld hl,0e800h		;469f
+	ld hl,0e800h		;469f   ; apunta a los huecos de figura (32 bytes cada uno)
 	ld de,0e801h		;46a2
 	ld bc,001ffh		;46a5
 	ld (hl),000h		;46a8
@@ -979,7 +979,7 @@ L_46AD:
 	djnz L_46EC		;46ad
 	call L_50F5		;46af
 	ret nz			;46b2
-	ld a,(0e041h)		;46b3
+	ld a,(0e041h)		;46b3   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	cp 00bh		;46b6
 	jr nz,L_46C0		;46b8
 	ld a,(0e06dh)		;46ba
@@ -999,7 +999,7 @@ L_46C0:
 	ld h,(hl)			;46d2
 L_46D3:
 	ld l,001h		;46d3
-	ld (0e041h),hl		;46d5
+	ld (0e041h),hl		;46d5   ; guarda el mapa (0xE041) y la sala (0xE042) de un tiron
 	call L_51CD		;46d8
 	call 06c95h		;46db
 	call 09e8fh		;46de
@@ -1027,20 +1027,20 @@ L_470D:
 	call L_5280		;470d
 	call L_4D47		;4710
 	ld de,07d28h		;4713
-	call L_5C3C		;4716
+	call borra_lista_vram		;4716   ; borra_lista_vram: como lista_a_vram pero escribiendo ceros
 	call L_472A		;4719
 	call L_4730		;471c
 	call L_520B		;471f
 	ld a,0fah		;4722
-	call L_4E1F		;4724
+	call pide_sonido		;4724   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	jp L_435E		;4727
 L_472A:
 	ld de,07d1dh		;472a
-	jp L_5C25		;472d
+	jp lista_a_vram		;472d   ; lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
 L_4730:
 	ld hl,00000h		;4730
-	ld (0e076h),hl		;4733
-	ld (0e078h),hl		;4736
+	ld (0e076h),hl		;4733   ; guarda tiene el objeto 0x07 y el byte siguiente (16 bits)
+	ld (0e078h),hl		;4736   ; guarda tiene el objeto 0x09 y el byte siguiente (16 bits)
 	ret			;4739
 L_473A:
 	djnz L_474A		;473a
@@ -1054,26 +1054,26 @@ L_474A:
 	jr c,L_475E		;474d
 	call 0be36h		;474f
 	call 073d6h		;4752
-	call 07e57h		;4755
+	call 07e57h		;4755   ; mira_zeus: en la pausa de F2 y en la sala 1 del castillo, cuenta las letras de ZEUS
 	call L_5474		;4758
 	jp L_5423		;475b
 L_475E:
 	ld a,0feh		;475e
-	call L_4E1F		;4760
+	call pide_sonido		;4760   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	call L_5280		;4763
 	jp L_435E		;4766
 L_4769:
 	call L_4D38		;4769
 	call L_4D47		;476c
-	ld a,(0e041h)		;476f
+	ld a,(0e041h)		;476f   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	cp 004h		;4772
 	call z,L_479C		;4774
 	call L_4792		;4777
-	ld (0e042h),a		;477a
+	ld (0e042h),a		;477a   ; guarda la sala
 	call L_51CD		;477d
 	xor a			;4780
 	ld (0e01ah),a		;4781
-	ld a,(0e690h)		;4784
+	ld a,(0e690h)		;4784   ; lee la sala especial (pista o tienda)
 	or a			;4787
 	ld a,00eh		;4788
 	jp nz,L_43A9		;478a
@@ -1097,7 +1097,7 @@ L_479C:
 	ret z			;47a9
 	dec a			;47aa
 	ret nz			;47ab
-	ld a,(0e505h)		;47ac
+	ld a,(0e505h)		;47ac   ; lee la y del personaje
 	cp 080h		;47af
 	ret c			;47b1
 	ld hl,00000h		;47b2
@@ -1116,7 +1116,7 @@ L_47B9:
 	inc l			;47c7
 	ld (hl),001h		;47c8
 	ld a,02eh		;47ca
-	jp L_4E1F		;47cc
+	jp pide_sonido		;47cc   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_47CF:
 	djnz L_4835		;47cf
 	xor a			;47d1
@@ -1127,7 +1127,7 @@ L_47CF:
 	jr nz,L_480D		;47dc
 	call 09ac9h		;47de
 	jr nc,L_481E		;47e1
-	ld a,(0e041h)		;47e3
+	ld a,(0e041h)		;47e3   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	dec a			;47e6
 	jr z,L_4807		;47e7
 	call L_4730		;47e9
@@ -1136,14 +1136,14 @@ L_47CF:
 	call L_5280		;47f2
 	call L_472A		;47f5
 	ld a,0fah		;47f8
-	call L_4E1F		;47fa
+	call pide_sonido		;47fa   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	ld a,078h		;47fd
 	ld (0e004h),a		;47ff
 	ld a,002h		;4802
 	jp L_4443		;4804
 L_4807:
 	ld hl,04801h		;4807
-	ld (0e041h),hl		;480a
+	ld (0e041h),hl		;480a   ; guarda el mapa (0xE041) y la sala (0xE042) de un tiron
 L_480D:
 	call L_4D38		;480d
 	call L_4D47		;4810
@@ -1177,7 +1177,7 @@ L_4843:
 L_484F:
 	djnz L_486E		;484f
 	call L_4C68		;4851
-	ld a,(0e008h)		;4854
+	ld a,(0e008h)		;4854   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
 	bit 5,a		;4857
 	ret z			;4859
 	call L_4D47		;485a
@@ -1196,20 +1196,20 @@ L_486E:
 	call L_5CC4		;4879
 	call L_520B		;487c
 	call L_575E		;487f
-	call L_422B		;4882
+	call a000_banco_9		;4882   ; a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
 	call 069b9h		;4885
-	call L_4215		;4888
+	call a000_banco_3		;4888   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 	jp L_435E		;488b
 L_488E:
 	djnz L_48B7		;488e
 	call L_4C68		;4890
 	call 08f43h		;4893
 	call 0938eh		;4896
-	ld a,(0e008h)		;4899
+	ld a,(0e008h)		;4899   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
 	and 002h		;489c
 	ret z			;489e
 	xor a			;489f
-	ld (0e690h),a		;48a0
+	ld (0e690h),a		;48a0   ; guarda la sala especial (pista o tienda)
 	ld a,010h		;48a3
 	ld (0e502h),a		;48a5
 	ld a,002h		;48a8
@@ -1226,7 +1226,7 @@ L_48B7:
 	jp L_435E		;48c2
 L_48C5:
 	ld a,b			;48c5
-	call L_4140		;48c6
+	call despacha		;48c6   ; despacha: salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_48C9: 5 destinos del despachador de 0x4140 (call en p00:48C6):
@@ -1259,7 +1259,7 @@ L_48E4:
 	call L_5280		;48ec
 	call L_4D47		;48ef
 	ld a,(0e680h)		;48f2
-	ld (0e690h),a		;48f5
+	ld (0e690h),a		;48f5   ; guarda la sala especial (pista o tienda)
 	call L_4901		;48f8
 	call 08f1eh		;48fb
 	jp L_435E		;48fe
@@ -1276,7 +1276,7 @@ L_4909:
 	ret z			;4916
 	dec a			;4917
 	jr z,L_4920		;4918
-	ld a,(0e008h)		;491a
+	ld a,(0e008h)		;491a   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
 	and 002h		;491d
 	ret z			;491f
 L_4920:
@@ -1285,7 +1285,7 @@ L_4922:
 	call L_5280		;4922
 	call L_4D47		;4925
 	xor a			;4928
-	ld (0e690h),a		;4929
+	ld (0e690h),a		;4929   ; guarda la sala especial (pista o tienda)
 	call L_51DF		;492c
 	call 09f42h		;492f
 	call 073b7h		;4932
@@ -1316,18 +1316,18 @@ L_4959:
 	jp L_435E		;4966
 L_4969:
 	djnz L_4991		;4969
-	call L_4241		;496b
+	call a000_banco_15		;496b   ; a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
 	call 0be1ch		;496e
-	call L_4215		;4971
+	call a000_banco_3		;4971   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 	ld a,(0e698h)		;4974
 	or a			;4977
 	ret nz			;4978
-	ld a,(0e041h)		;4979
+	ld a,(0e041h)		;4979   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	ld hl,05e05h		;497c
-	call L_4136		;497f
+	call hl_mas_a		;497f   ; hl_mas_a: HL += A
 	ld h,(hl)			;4982
 	ld l,001h		;4983
-	ld (0e0d2h),hl		;4985
+	ld (0e0d2h),hl		;4985   ; guarda el estado del jefe y el byte siguiente (16 bits)
 	call L_5561		;4988
 	call L_54BF		;498b
 	jp L_435E		;498e
@@ -1339,10 +1339,10 @@ L_4991:
 L_499B:
 	xor a			;499b
 	ld (0e615h),a		;499c
-	ld (0e020h),a		;499f
+	ld (0e020h),a		;499f   ; guarda el nombre del jefe acertado
 	call L_49B0		;49a2
 	ld a,081h		;49a5
-	call L_4E1F		;49a7
+	call pide_sonido		;49a7   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	call 09f61h		;49aa
 	jp L_435E		;49ad
 L_49B0:
@@ -1352,7 +1352,7 @@ L_49B0:
 	ret			;49b9
 L_49BA:
 	ld a,b			;49ba
-	call L_4140		;49bb
+	call despacha		;49bb   ; despacha: salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_49BE: 9 destinos del despachador de 0x4140 (call en p00:49BB):
@@ -1377,7 +1377,7 @@ DATA_tabla_49BE:
 
 L_49D0:
 	ld a,0ffh		;49d0
-	call L_4E1F		;49d2
+	call pide_sonido		;49d2   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	ld a,028h		;49d5
 	jp L_435B		;49d7
 L_49DA:
@@ -1402,9 +1402,9 @@ L_49F9:
 	call L_5280		;49fc
 	call L_54E6		;49ff
 	call L_579A		;4a02
-	call L_4241		;4a05
+	call a000_banco_15		;4a05   ; a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
 	call 0b7c0h		;4a08
-	call L_4215		;4a0b
+	call a000_banco_3		;4a0b   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 	xor a			;4a0e
 	ld (0e024h),a		;4a0f
 	inc a			;4a12
@@ -1415,9 +1415,9 @@ L_49F9:
 L_4A1E:
 	call L_5474		;4a1e
 	call L_54F3		;4a21
-	call L_4241		;4a24
+	call a000_banco_15		;4a24   ; a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
 	call 0b847h		;4a27
-	call L_4215		;4a2a
+	call a000_banco_3		;4a2a   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 	ld a,(0e608h)		;4a2d
 	or a			;4a30
 	ret nz			;4a31
@@ -1434,9 +1434,9 @@ L_4A35:
 	call L_4E34		;4a4b
 	jp L_435E		;4a4e
 L_4A51:
-	call L_4241		;4a51
+	call a000_banco_15		;4a51   ; a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
 	call 06adch		;4a54
-	call L_4215		;4a57
+	call a000_banco_3		;4a57   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 	ld a,(0e02eh)		;4a5a
 	or a			;4a5d
 	ret nz			;4a5e
@@ -1477,10 +1477,10 @@ L_4AA0:
 	jr L_4A78		;4aa3
 L_4AA5:
 	djnz L_4AB8		;4aa5
-	ld a,(0e008h)		;4aa7
+	ld a,(0e008h)		;4aa7   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
 	and a			;4aaa
 	ret z			;4aab
-	ld hl,0e001h		;4aac
+	ld hl,0e001h		;4aac   ; apunta a el paso del estado
 	dec (hl)			;4aaf
 	dec (hl)			;4ab0
 	xor a			;4ab1
@@ -1511,20 +1511,20 @@ L_4AB8:
 	call 0982bh		;4aea
 	call 099b3h		;4aed
 	ld hl,00101h		;4af0
-	ld (0e041h),hl		;4af3
-	ld a,(0e501h)		;4af6
+	ld (0e041h),hl		;4af3   ; guarda el mapa (0xE041) y la sala (0xE042) de un tiron
+	ld a,(0e501h)		;4af6   ; lee quien juega (0 Afrodita)
 	and a			;4af9
-	ld hl,0e053h		;4afa
+	ld hl,0e053h		;4afa   ; apunta a el tope de la vida de Afrodita
 	jr z,L_4B01		;4afd
 	ld l,057h		;4aff
 L_4B01:
 	ld a,(hl)			;4b01
 	dec l			;4b02
 	ld (hl),a			;4b03
-	ld a,(0e501h)		;4b04
+	ld a,(0e501h)		;4b04   ; lee quien juega (0 Afrodita)
 	or a			;4b07
 	ld hl,0e059h		;4b08
-	ld de,0e057h		;4b0b
+	ld de,0e057h		;4b0b   ; apunta a el tope de la vida de Popolon
 	jr z,L_4B13		;4b0e
 	dec l			;4b10
 	ld e,053h		;4b11
@@ -1535,7 +1535,7 @@ L_4B13:
 	dec e			;4b18
 	ld (de),a			;4b19
 L_4B1A:
-	call L_4CF1		;4b1a
+	call regalo_de_cartucho		;4b1a   ; regalo_de_cartucho: lo que dan Q*bert (bit 1) y Knightmare (bit 0) de 0xF0F8 al empezar
 	ld a,040h		;4b1d
 	ld (0e002h),a		;4b1f
 	ld a,004h		;4b22
@@ -1549,7 +1549,7 @@ L_4B27:
 	call L_54DD		;4b36
 	ld hl,01800h		;4b39
 	ld de,04b4eh		;4b3c
-	call L_5C46		;4b3f
+	call rle_a_vram		;4b3f   ; rle_a_vram: descomprime el rle de DE en la VRAM de HL
 	call L_54E1		;4b42
 	call 09704h		;4b45
 	call 098edh		;4b48
@@ -1568,9 +1568,9 @@ DATA_rle_4B4E:
 
 L_4B5B:
 	djnz L_4B8E		;4b5b
-	call L_4241		;4b5d
+	call a000_banco_15		;4b5d   ; a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
 	call 0be1ch		;4b60
-	call L_4215		;4b63
+	call a000_banco_3		;4b63   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 	ld a,(0e698h)		;4b66
 	or a			;4b69
 	ret nz			;4b6a
@@ -1579,19 +1579,19 @@ L_4B5B:
 	xor a			;4b71
 	ld h,a			;4b72
 	ld l,a			;4b73
-	ld (0e0d2h),hl		;4b74
-	ld (0e700h),a		;4b77
+	ld (0e0d2h),hl		;4b74   ; guarda el estado del jefe y el byte siguiente (16 bits)
+	ld (0e700h),a		;4b77   ; guarda el tipo del jefe (el hueco 0xE700 es el jefe)
 	ld (0e702h),hl		;4b7a
 	ld (0e02ch),a		;4b7d
-	ld a,(0e041h)		;4b80
-	ld hl,0e061h		;4b83
-	call L_4136		;4b86
+	ld a,(0e041h)		;4b80   ; lee el mapa (1 el castillo, 2-11 los mundos)
+	ld hl,0e061h		;4b83   ; apunta a el cambio de vida pendiente de Popolon (con signo)
+	call hl_mas_a		;4b86   ; hl_mas_a: HL += A
 	set 2,(hl)		;4b89
 L_4B8B:
 	jp L_435E		;4b8b
 L_4B8E:
 	djnz L_4BCA		;4b8e
-	ld a,(0e041h)		;4b90
+	ld a,(0e041h)		;4b90   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	cp 00bh		;4b93
 	jr z,L_4BA2		;4b95
 	call L_58D3		;4b97
@@ -1604,9 +1604,9 @@ L_4BA2:
 	ld (0e64bh),a		;4ba4
 	jr L_4B9D		;4ba7
 L_4BA9:
-	ld a,(0e041h)		;4ba9
+	ld a,(0e041h)		;4ba9   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	ld hl,l4bcdh		;4bac
-	call L_4155		;4baf
+	call byte_de_tabla		;4baf   ; byte_de_tabla: A = el byte HL + A
 	and 0f0h		;4bb2
 	sub 008h		;4bb4
 	ld d,a			;4bb6
@@ -1664,7 +1664,7 @@ L_4BFA:
 	ret z			;4c04
 	ld hl,0e004h		;4c05
 	ld (hl),000h		;4c08
-	ld hl,0e000h		;4c0a
+	ld hl,0e000h		;4c0a   ; apunta a el ESTADO del juego
 	ld b,(hl)			;4c0d
 	djnz L_4C1E		;4c0e
 	and 030h		;4c10
@@ -1689,7 +1689,7 @@ L_4C1E:
 	inc (hl)			;4c32
 L_4C33:
 	xor a			;4c33
-	call L_4E1F		;4c34
+	call pide_sonido		;4c34   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	call L_5CC9		;4c37
 	jp L_42F1		;4c3a
 L_4C3D:
@@ -1732,7 +1732,7 @@ L_4C63:
 L_4C68:
 	call L_4C75		;4c68
 L_4C6B:
-	ld hl,0e009h		;4c6b
+	ld hl,0e009h		;4c6b   ; apunta a el mando (la otra copia que cambia p03:A8BE)
 L_4C6E:
 	ld c,(hl)			;4c6e
 	ld (hl),a			;4c6f
@@ -1795,14 +1795,14 @@ L_4CB0:
 	ld (hl),000h		;4cc6
 	ldir		;4cc8
 	ld hl,00101h		;4cca
-	ld (0e041h),hl		;4ccd
+	ld (0e041h),hl		;4ccd   ; guarda el mapa (0xE041) y la sala (0xE042) de un tiron
 	ld a,001h		;4cd0
-	ld (0e501h),a		;4cd2
+	ld (0e501h),a		;4cd2   ; guarda quien juega (0 Afrodita)
 	ld hl,04ce6h		;4cd5
 	ld de,0e051h		;4cd8
 	ld bc,0000bh		;4cdb
 	ldir		;4cde
-	call L_4CF1		;4ce0
+	call regalo_de_cartucho		;4ce0   ; regalo_de_cartucho: lo que dan Q*bert (bit 1) y Knightmare (bit 0) de 0xF0F8 al empezar
 	jp 099b3h		;4ce3
 
 ; ----------------------------------------------------------------------
@@ -1817,8 +1817,8 @@ DATA_al_empezar:
 ; ======================================================================
 
 
-L_4CF1:
-	ld a,(0f0f8h)		;4cf1
+regalo_de_cartucho:		; lo que dan Q*bert (bit 1) y Knightmare (bit 0) de 0xF0F8 al empezar
+	ld a,(0f0f8h)		;4cf1   ; lee los cartuchos de la otra ranura (bit 0 Knightmare, 1 Q*bert, 2 Game Master)
 	or a			;4cf4
 	ret z			;4cf5
 	rra			;4cf6
@@ -1830,12 +1830,12 @@ L_4CF1:
 	ret			;4cfe
 L_4CFF:
 	ld hl,00100h		;4cff
-	ld (0e046h),hl		;4d02
-	ld (0e04ah),hl		;4d05
-	ld (0e048h),hl		;4d08
+	ld (0e046h),hl		;4d02   ; guarda las flechas (BCD, 16 bits)
+	ld (0e04ah),hl		;4d05   ; guarda las llaves (BCD, 16 bits)
+	ld (0e048h),hl		;4d08   ; guarda las monedas (BCD, 16 bits)
 	ld hl,03030h		;4d0b
-	ld (0e052h),hl		;4d0e
-	ld (0e056h),hl		;4d11
+	ld (0e052h),hl		;4d0e   ; guarda la vida de Afrodita y el byte siguiente (16 bits)
+	ld (0e056h),hl		;4d11   ; guarda la vida de Popolon y el byte siguiente (16 bits)
 	ret			;4d14
 L_4D15:
 	ld a,099h		;4d15
@@ -1874,9 +1874,9 @@ L_4D47:
 	xor a			;4d53
 	call 00056h		;4d54   ; BIOS FILVRM - Fills VRAM with value
 	jp L_54E1		;4d57
-L_4D5A:
+suma_flechas:		; suma A (BCD) a las flechas de 0xE046, hasta 999
 	ld b,000h		;4d5a
-	ld hl,0e046h		;4d5c
+	ld hl,0e046h		;4d5c   ; apunta a las flechas (BCD)
 L_4D5F:
 	add a,(hl)			;4d5f
 	daa			;4d60
@@ -1896,13 +1896,13 @@ L_4D71:
 	jp m,L_5F79		;4d72
 	jp z,L_5F84		;4d75
 	jp L_5F8F		;4d78
-L_4D7B:
+suma_monedas:		; suma A (BCD) a las monedas de 0xE048, hasta 999
 	ld b,001h		;4d7b
-	ld hl,0e048h		;4d7d
+	ld hl,0e048h		;4d7d   ; apunta a las monedas (BCD)
 	jr L_4D5F		;4d80
-L_4D82:
+suma_llaves:		; suma A (BCD) a las llaves de 0xE04A, hasta 999
 	ld b,002h		;4d82
-	ld hl,0e04ah		;4d84
+	ld hl,0e04ah		;4d84   ; apunta a las llaves (BCD)
 	jr L_4D5F		;4d87
 L_4D89:
 	ld a,(de)			;4d89
@@ -1923,7 +1923,7 @@ L_4D95:
 	inc hl			;4d9d
 	djnz L_4D89		;4d9e
 	ret			;4da0
-L_4DA1:
+casilla_de_yx:		; HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	ld a,l			;4da1
 	rra			;4da2
 	rra			;4da3
@@ -1944,7 +1944,7 @@ L_4DB5:
 	ld a,(ix+005h)		;4db8
 	add a,010h		;4dbb
 	ld l,a			;4dbd
-	call L_4DA1		;4dbe
+	call casilla_de_yx		;4dbe   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	ld a,0b9h		;4dc1
 	cp (hl)			;4dc3
 	ret c			;4dc4
@@ -1953,7 +1953,7 @@ L_4DC5:
 	cp (hl)			;4dc6
 	ret			;4dc7
 L_4DC8:
-	call L_4DA1		;4dc8
+	call casilla_de_yx		;4dc8   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	ld a,0b9h		;4dcb
 	cp (hl)			;4dcd
 	ret			;4dce
@@ -1968,11 +1968,11 @@ L_4DD4:
 L_4DD8:
 	djnz L_4DD4		;4dd8
 	ret			;4dda
-L_4DDB:
+tiene_o_popolon:		; NZ si la marca de HL esta puesta o se lleva a Popolon (0xE501)
 	ld a,(hl)			;4ddb
 	and a			;4ddc
 	ret nz			;4ddd
-	ld a,(0e501h)		;4dde
+	ld a,(0e501h)		;4dde   ; lee quien juega (0 Afrodita)
 	and a			;4de1
 	ret			;4de2
 L_4DE3:
@@ -2004,7 +2004,7 @@ L_4E02:
 	ld (0e104h),hl		;4e18
 	ld (0e106h),hl		;4e1b
 	ret			;4e1e
-L_4E1F:
+pide_sonido:		; pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	or a			;4e1f
 	jp p,L_4E34		;4e20
 	push hl			;4e23
@@ -2028,18 +2028,18 @@ L_4E34:
 	ld a,(0f0f2h)		;4e3f
 	ld (0f0f5h),a		;4e42
 	ld a,00dh		;4e45
-	ld (06000h),a		;4e47
+	ld (06000h),a		;4e47   ; el mapper: pone en 0x6000 el banco de A
 	inc a			;4e4a
-	ld (08000h),a		;4e4b
+	ld (08000h),a		;4e4b   ; el mapper: pone en 0x8000 el banco de A
 	pop af			;4e4e
 	push af			;4e4f
 	call L_4E6B		;4e50
 	ld a,(0f0f4h)		;4e53
 	ld (0f0f1h),a		;4e56
-	ld (06000h),a		;4e59
+	ld (06000h),a		;4e59   ; el mapper: pone en 0x6000 el banco de A
 	ld a,(0f0f5h)		;4e5c
 	ld (0f0f2h),a		;4e5f
-	ld (08000h),a		;4e62
+	ld (08000h),a		;4e62   ; el mapper: pone en 0x8000 el banco de A
 	pop af			;4e65
 	pop bc			;4e66
 	pop de			;4e67
@@ -2369,9 +2369,9 @@ L_510B:
 	call L_526C		;510e
 	call L_568E		;5111
 	call L_528E		;5114
-	call L_422B		;5117
+	call a000_banco_9		;5117   ; a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
 	call 063c2h		;511a
-	call L_4215		;511d
+	call a000_banco_3		;511d   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 	call L_5FA8		;5120
 	call L_51F7		;5123
 	call L_5200		;5126
@@ -2380,22 +2380,22 @@ L_5129:
 	call 0602fh		;512c
 	call L_5218		;512f
 	call L_523E		;5132
-	call L_4241		;5135
+	call a000_banco_15		;5135   ; a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
 	call 0bcb9h		;5138
 	call 0bd58h		;513b
-	call L_4215		;513e
+	call a000_banco_3		;513e   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 	call 09ae5h		;5141
 	call L_520B		;5144
 	call 08eefh		;5147
 	call L_5561		;514a
-	ld a,(0e690h)		;514d
+	ld a,(0e690h)		;514d   ; lee la sala especial (pista o tienda)
 	or a			;5150
 	jr nz,L_51A6		;5151
-	call L_422B		;5153
+	call a000_banco_9		;5153   ; a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
 	call L_5D68		;5156
 	call 0691ah		;5159
 	call 0656eh		;515c
-	call L_4215		;515f
+	call a000_banco_3		;515f   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 	call L_4185		;5162
 	call 06054h		;5165
 	call 06000h		;5168
@@ -2414,21 +2414,21 @@ L_5129:
 	call 09e61h		;518b
 	call 0a746h		;518e
 	call L_416C		;5191
-	call L_422B		;5194
+	call a000_banco_9		;5194   ; a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
 	call 062efh		;5197
 	call 063eah		;519a
-	call L_4215		;519d
+	call a000_banco_3		;519d   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 	call L_5CD0		;51a0
 	call L_5D24		;51a3
 L_51A6:
-	ld a,(0e041h)		;51a6
+	ld a,(0e041h)		;51a6   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	dec a			;51a9
 	ld de,07d28h		;51aa
 	jr z,L_51B2		;51ad
 	ld de,07d33h		;51af
 L_51B2:
-	call L_5C25		;51b2
-	ld a,(0e041h)		;51b5
+	call lista_a_vram		;51b2   ; lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
+	ld a,(0e041h)		;51b5   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	sub 001h		;51b8
 	ret z			;51ba
 	cp 00ah		;51bb
@@ -2458,7 +2458,7 @@ L_51E8:
 	call L_528E		;51f1
 	jp L_5129		;51f4
 L_51F7:
-	ld hl,0e0d2h		;51f7
+	ld hl,0e0d2h		;51f7   ; apunta a el estado del jefe
 	ld a,(hl)			;51fa
 	or a			;51fb
 	ret z			;51fc
@@ -2477,15 +2477,15 @@ L_520B:
 	ret z			;5210
 	ld (hl),000h		;5211
 	ld a,0fch		;5213
-	jp L_4E1F		;5215
+	jp pide_sonido		;5215   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_5218:
 	call L_4579		;5218
 	jp nz,L_49B0		;521b
 	call L_419E		;521e
-	ld a,(0e041h)		;5221
+	ld a,(0e041h)		;5221   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	ld hl,0a9efh		;5224
-	call L_414C		;5227
-	ld a,(0e042h)		;522a
+	call palabra_de_tabla		;5227   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
+	ld a,(0e042h)		;522a   ; lee la sala
 	ld l,a			;522d
 	ld h,000h		;522e
 	add hl,hl			;5230
@@ -2496,11 +2496,11 @@ L_5218:
 	ldir		;5239
 	jp L_416C		;523b
 L_523E:
-	call L_422B		;523e
-	ld bc,(0e041h)		;5241
+	call a000_banco_9		;523e   ; a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
+	ld bc,(0e041h)		;5241   ; lee el mapa (0xE041) y la sala (0xE042) de un tiron
 	ld a,c			;5245
 	ld hl,0af09h		;5246
-	call L_414C		;5249
+	call palabra_de_tabla		;5249   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ld l,b			;524c
 	dec l			;524d
 	ld h,000h		;524e
@@ -2509,7 +2509,7 @@ L_523E:
 	ld de,00150h		;5254
 	add hl,de			;5257
 	ld (0e60eh),hl		;5258
-	jp L_4215		;525b
+	jp a000_banco_3		;525b   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 L_525E:
 	ld hl,0e600h		;525e
 	ld de,0e601h		;5261
@@ -2534,9 +2534,9 @@ L_5280:
 	ldir		;528b
 	ret			;528d
 L_528E:
-	call L_422B		;528e
+	call a000_banco_9		;528e   ; a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
 	xor a			;5291
-	ld (0e500h),a		;5292
+	ld (0e500h),a		;5292   ; guarda el estado del personaje (5 = hundirse)
 	ld (0e503h),a		;5295
 	ld (0e502h),a		;5298
 	ld (0e508h),a		;529b
@@ -2548,45 +2548,45 @@ L_528E:
 	ld (0e533h),a		;52a9
 	ld a,008h		;52ac
 	ld (0e532h),a		;52ae
-	ld hl,(0e041h)		;52b1
+	ld hl,(0e041h)		;52b1   ; lee el mapa (0xE041) y la sala (0xE042) de un tiron
 	ld de,08a01h		;52b4
 	rst 20h			;52b7
 	jr nz,L_52CD		;52b8
-	ld a,(0e507h)		;52ba
+	ld a,(0e507h)		;52ba   ; lee la x del personaje
 	or a			;52bd
 	jp p,L_52CD		;52be
 	ld a,0a8h		;52c1
-	ld (0e507h),a		;52c3
+	ld (0e507h),a		;52c3   ; guarda la x del personaje
 	ld a,058h		;52c6
-	ld (0e505h),a		;52c8
+	ld (0e505h),a		;52c8   ; guarda la y del personaje
 	jr L_52F2		;52cb
 L_52CD:
-	ld a,(0e041h)		;52cd
+	ld a,(0e041h)		;52cd   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	ld hl,0b106h		;52d0
-	call L_414C		;52d3
+	call palabra_de_tabla		;52d3   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ex de,hl			;52d6
-	ld a,(0e042h)		;52d7
-	call L_4155		;52da
+	ld a,(0e042h)		;52d7   ; lee la sala
+	call byte_de_tabla		;52da   ; byte_de_tabla: A = el byte HL + A
 	or a			;52dd
 	jr z,L_52F2		;52de
 	ld b,a			;52e0
 	and 0f0h		;52e1
 	add a,008h		;52e3
-	ld (0e505h),a		;52e5
+	ld (0e505h),a		;52e5   ; guarda la y del personaje
 	ld a,b			;52e8
 	rla			;52e9
 	rla			;52ea
 	rla			;52eb
 	rla			;52ec
 	and 0f0h		;52ed
-	ld (0e507h),a		;52ef
+	ld (0e507h),a		;52ef   ; guarda la x del personaje
 L_52F2:
-	jp L_4215		;52f2
+	jp a000_banco_3		;52f2   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 L_52F5:
 	ld hl,0e604h		;52f5
 	inc (hl)			;52f8
 	call L_420A		;52f9
-	call L_4241		;52fc
+	call a000_banco_15		;52fc   ; a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
 	call 076c6h		;52ff
 	call 079b2h		;5302
 	call 06c56h		;5305
@@ -2601,10 +2601,10 @@ L_52F5:
 	call L_54E1		;531e
 	call 07378h		;5321
 	call L_41FF		;5324
-	call L_4215		;5327
+	call a000_banco_3		;5327   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 	call 0aebch		;532a
 	call L_420A		;532d
-	call L_4241		;5330
+	call a000_banco_15		;5330   ; a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
 	ld a,001h		;5333
 	call 06df7h		;5335
 	call 06bb0h		;5338
@@ -2615,12 +2615,12 @@ L_52F5:
 	call 079ddh		;5347
 	call 07c7eh		;534a
 	call L_41FF		;534d
-	call L_4215		;5350
-	call 0a8a0h		;5353
+	call a000_banco_3		;5350   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+	call 0a8a0h		;5353   ; cambia_izquierda_derecha: en el mapa 9 sin el objeto 0x13 cambia los bits 2 y 3 del mando
 	ld a,(0e002h)		;5356
 	add a,a			;5359
 	call m,L_4C68		;535a
-	call 0a8a0h		;535d
+	call 0a8a0h		;535d   ; cambia_izquierda_derecha: en el mapa 9 sin el objeto 0x13 cambia los bits 2 y 3 del mando
 	call 09b02h		;5360
 	call 09bb6h		;5363
 	call L_419E		;5366
@@ -2636,20 +2636,20 @@ L_52F5:
 	call L_416C		;5384
 	call 06371h		;5387
 	call 06398h		;538a
-	call L_422B		;538d
+	call a000_banco_9		;538d   ; a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
 	call 0643ch		;5390
 	call 06531h		;5393
-	call L_4215		;5396
+	call a000_banco_3		;5396   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 	call 0a916h		;5399
 	call L_420A		;539c
-	call L_4241		;539f
+	call a000_banco_15		;539f   ; a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
 	ld de,0eb00h		;53a2
 	call 077eeh		;53a5
 	call 079b2h		;53a8
 	call 071e3h		;53ab
 	call 07378h		;53ae
 	call L_41FF		;53b1
-	call L_4215		;53b4
+	call a000_banco_3		;53b4   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 	call 0a0f4h		;53b7
 	call 0ad4ch		;53ba
 	call 0b095h		;53bd
@@ -2662,12 +2662,12 @@ L_52F5:
 	call 069d2h		;53d2
 	call L_416C		;53d5
 	call L_420A		;53d8
-	call L_4241		;53db
+	call a000_banco_15		;53db   ; a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
 	ld hl,0eb00h		;53de
 	call 07afeh		;53e1
 	call 07c7eh		;53e4
 	call L_41FF		;53e7
-	call L_4215		;53ea
+	call a000_banco_3		;53ea   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 	call 07efch		;53ed
 	call 09f82h		;53f0
 	call 09beeh		;53f3
@@ -2688,14 +2688,14 @@ L_52F5:
 	call 06085h		;5420
 L_5423:
 	call L_54DD		;5423
-	call L_4241		;5426
+	call a000_banco_15		;5426   ; a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
 	call 0bd06h		;5429
 	call 0bda1h		;542c
-	call L_4215		;542f
+	call a000_banco_3		;542f   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 	jp L_54E1		;5432
 L_5435:
-	ld a,(0e000h)		;5435
-	call L_4140		;5438
+	ld a,(0e000h)		;5435   ; lee el ESTADO del juego
+	call despacha		;5438   ; despacha: salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_543B: 21 destinos del despachador de 0x4140 (call en p00:5438):
@@ -2837,7 +2837,7 @@ L_54FF:
 	ld a,h			;5506
 	add a,d			;5507
 	ld h,a			;5508
-	call L_4DA1		;5509
+	call casilla_de_yx		;5509   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	ld a,(hl)			;550c
 	pop hl			;550d
 	exx			;550e
@@ -2848,7 +2848,7 @@ L_54FF:
 	ld a,h			;5513
 	add a,e			;5514
 	ld h,a			;5515
-	call L_4DA1		;5516
+	call casilla_de_yx		;5516   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	ld a,(hl)			;5519
 	exx			;551a
 	cp (hl)			;551b
@@ -2861,7 +2861,7 @@ L_551F:
 	add a,b			;5523
 	ld h,a			;5524
 	push hl			;5525
-	call L_4DA1		;5526
+	call casilla_de_yx		;5526   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	ld a,(hl)			;5529
 	pop hl			;552a
 	exx			;552b
@@ -2873,7 +2873,7 @@ L_551F:
 	ld a,l			;5531
 	add a,d			;5532
 	ld l,a			;5533
-	call L_4DA1		;5534
+	call casilla_de_yx		;5534   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	ld a,(hl)			;5537
 	pop hl			;5538
 	exx			;5539
@@ -2886,7 +2886,7 @@ L_553E:
 	ld a,l			;5541
 	add a,e			;5542
 	ld l,a			;5543
-	call L_4DA1		;5544
+	call casilla_de_yx		;5544   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	ld a,(hl)			;5547
 	exx			;5548
 	cp (hl)			;5549
@@ -2898,7 +2898,7 @@ L_554D:
 	ld hl,0f020h		;554e
 	exx			;5551
 	ld c,0bah		;5552
-	ld a,(0e0d2h)		;5554
+	ld a,(0e0d2h)		;5554   ; lee el estado del jefe
 	and a			;5557
 	jr z,L_555C		;5558
 	ld c,0f0h		;555a
@@ -2909,7 +2909,7 @@ L_555C:
 	exx			;555f
 	ret			;5560
 L_5561:
-	ld a,(0e690h)		;5561
+	ld a,(0e690h)		;5561   ; lee la sala especial (pista o tienda)
 	or a			;5564
 	ret nz			;5565
 	call L_419E		;5566
@@ -2918,13 +2918,13 @@ L_5561:
 	call L_5590		;556f
 	jp L_416C		;5572
 L_5575:
-	ld a,(0e087h)		;5575
+	ld a,(0e087h)		;5575   ; lee tiene el objeto 0x18
 	or a			;5578
 	ret z			;5579
 	ld a,(0e619h)		;557a
 	or a			;557d
 	ret z			;557e
-	ld a,(0e041h)		;557f
+	ld a,(0e041h)		;557f   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	cp 009h		;5582
 	ret nz			;5584
 	ld b,000h		;5585
@@ -2935,10 +2935,10 @@ L_558A:
 	djnz L_558A		;558d
 	ret			;558f
 L_5590:
-	ld a,(0e041h)		;5590
+	ld a,(0e041h)		;5590   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	cp 004h		;5593
 	ret nz			;5595
-	ld a,(0e0d2h)		;5596
+	ld a,(0e0d2h)		;5596   ; lee el estado del jefe
 	or a			;5599
 	jr nz,L_55A1		;559a
 	ld a,(0e0d4h)		;559c
@@ -2973,11 +2973,11 @@ L_55C6:
 	or a			;55cc
 	ret z			;55cd
 	ld hl,09be2h		;55ce
-	ld a,(0e041h)		;55d1
-	call L_414C		;55d4
+	ld a,(0e041h)		;55d1   ; lee el mapa (1 el castillo, 2-11 los mundos)
+	call palabra_de_tabla		;55d4   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ex de,hl			;55d7
 	ld de,0ee0ch		;55d8
-	ld a,(0e041h)		;55db
+	ld a,(0e041h)		;55db   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	cp 007h		;55de
 	jr nz,L_55E5		;55e0
 	ld de,0ee4ch		;55e2
@@ -2989,15 +2989,15 @@ L_55E8:
 	ld bc,00008h		;55e9
 	ldir		;55ec
 	ld a,018h		;55ee
-	call L_413B		;55f0
+	call de_mas_a		;55f0   ; de_mas_a: DE += A
 	exx			;55f3
 	djnz L_55E8		;55f4
 	ret			;55f6
 L_55F7:
-	ld a,(0e085h)		;55f7
+	ld a,(0e085h)		;55f7   ; lee tiene el objeto 0x16
 	or a			;55fa
 	jr nz,L_560D		;55fb
-	ld hl,(0e041h)		;55fd
+	ld hl,(0e041h)		;55fd   ; lee el mapa (0xE041) y la sala (0xE042) de un tiron
 	ld de,00606h		;5600
 	or a			;5603
 	sbc hl,de		;5604
@@ -3005,10 +3005,10 @@ L_55F7:
 	ld hl,08daeh		;5608
 	jr L_5626		;560b
 L_560D:
-	ld a,(0e041h)		;560d
+	ld a,(0e041h)		;560d   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	ld hl,06abeh		;5610
-	call L_414C		;5613
-	ld a,(0e042h)		;5616
+	call palabra_de_tabla		;5613   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
+	ld a,(0e042h)		;5616   ; lee la sala
 	dec a			;5619
 	ld l,a			;561a
 	ld h,000h		;561b
@@ -3061,19 +3061,19 @@ L_5649:
 	ldi		;565c
 	ldi		;565e
 	ld a,01ch		;5660
-	call L_413B		;5662
+	call de_mas_a		;5662   ; de_mas_a: DE += A
 	ldi		;5665
 	ldi		;5667
 	ldi		;5669
 	ldi		;566b
 	ld a,01ch		;566d
-	call L_413B		;566f
+	call de_mas_a		;566f   ; de_mas_a: DE += A
 	ldi		;5672
 	ldi		;5674
 	ldi		;5676
 	ldi		;5678
 	ld a,01ch		;567a
-	call L_413B		;567c
+	call de_mas_a		;567c   ; de_mas_a: DE += A
 	ldi		;567f
 	ldi		;5681
 	ldi		;5683
@@ -3088,15 +3088,15 @@ L_568E:
 	call L_5E11		;5691
 	call L_41B7		;5694
 	call L_59E9		;5697
-	call L_422B		;569a
+	call a000_banco_9		;569a   ; a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
 	call L_5DC9		;569d
 	push af			;56a0
-	call L_4236		;56a1
+	call a000_banco_12		;56a1   ; a000_banco_12: pone el banco 12 en 0xA000 (y su copia en 0xF0F3)
 	pop af			;56a4
 	call nz,L_58DE		;56a5
 	call L_56FA		;56a8
 	call L_56D5		;56ab
-	ld a,(0e0d2h)		;56ae
+	ld a,(0e0d2h)		;56ae   ; lee el estado del jefe
 	or a			;56b1
 	call nz,L_5856		;56b2
 	call L_592F		;56b5
@@ -3118,7 +3118,7 @@ L_56D5:
 	ld a,(0e0d4h)		;56d5
 	or a			;56d8
 	jr nz,L_56E0		;56d9
-	ld a,(0e0d2h)		;56db
+	ld a,(0e0d2h)		;56db   ; lee el estado del jefe
 	or a			;56de
 	ret z			;56df
 L_56E0:
@@ -3142,13 +3142,13 @@ L_56E7:
 L_56FA:
 	call L_5DE4		;56fa
 	ret nz			;56fd
-	ld a,(0e0d2h)		;56fe
+	ld a,(0e0d2h)		;56fe   ; lee el estado del jefe
 	or a			;5701
 	ret nz			;5702
 	ld ix,06121h		;5703
-	call L_5AB3		;5707
+	call fichas_graficas		;5707   ; fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
 	ld ix,06128h		;570a
-	jp L_5A8D		;570e
+	jp copias_volteadas		;570e   ; copias_volteadas: copia caracteres dandoles la vuelta, fichas de 4 bytes desde IX
 L_5711:
 	call L_56C1		;5711
 	call L_571C		;5714
@@ -3168,23 +3168,23 @@ L_571C:
 	ld hl,00428h		;573a
 	call L_5C0C		;573d
 	ld ix,06365h		;5740
-	call L_5AB3		;5744
-	ld a,(0e097h)		;5747
+	call fichas_graficas		;5744   ; fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
+	ld a,(0e097h)		;5747   ; lee el nivel de los objetos 0x28/0x2B/0x2C
 	sub 002h		;574a
 	ret m			;574c
 	add a,02bh		;574d
 	ld hl,02788h		;574f
-	jp L_58E1		;5752
+	jp dibujo_de_cosa		;5752   ; dibujo_de_cosa: carga el dibujo y los colores de la cosa A (0x6E34/0x6E80) en HL
 L_5755:
 	ld de,07831h		;5755
 	ld hl,01d00h		;5758
-	jp L_5C46		;575b
+	jp rle_a_vram		;575b   ; rle_a_vram: descomprime el rle de DE en la VRAM de HL
 L_575E:
 	call L_56C1		;575e
 	ld ix,06139h		;5761
-	call L_5AB3		;5765
+	call fichas_graficas		;5765   ; fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
 	ld ix,06140h		;5768
-	call L_5A8D		;576c
+	call copias_volteadas		;576c   ; copias_volteadas: copia caracteres dandoles la vuelta, fichas de 4 bytes desde IX
 	jp L_56B8		;576f
 L_5772:
 	call L_54DD		;5772
@@ -3192,39 +3192,39 @@ L_5772:
 	call L_4C63		;5777
 	call L_5BB5		;577a
 	ld ix,09a96h		;577d
-	call L_5AB3		;5781
+	call fichas_graficas		;5781   ; fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
 	ld ix,09a9dh		;5784
-	call L_5A8D		;5788
+	call copias_volteadas		;5788   ; copias_volteadas: copia caracteres dandoles la vuelta, fichas de 4 bytes desde IX
 	ld hl,01800h		;578b
 	ld de,099a9h		;578e
-	call L_5C46		;5791
+	call rle_a_vram		;5791   ; rle_a_vram: descomprime el rle de DE en la VRAM de HL
 	call L_56C7		;5794
 	jp L_54E1		;5797
 L_579A:
 	call L_56C1		;579a
 	ld ix,06000h		;579d
-	call L_5AB3		;57a1
+	call fichas_graficas		;57a1   ; fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
 	call L_5A33		;57a4
 	call L_57C4		;57a7
 	ld ix,0636ch		;57aa
-	call L_5AB3		;57ae
+	call fichas_graficas		;57ae   ; fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
 	ld ix,0637fh		;57b1
-	call L_5A8D		;57b5
+	call copias_volteadas		;57b5   ; copias_volteadas: copia caracteres dandoles la vuelta, fichas de 4 bytes desde IX
 	ld hl,01800h		;57b8
 	ld de,0beafh		;57bb
-	call L_5C46		;57be
+	call rle_a_vram		;57be   ; rle_a_vram: descomprime el rle de DE en la VRAM de HL
 	jp L_56B8		;57c1
 L_57C4:
 	ld hl,02510h		;57c4
 	call L_57CD		;57c7
 	ld hl,00510h		;57ca
 L_57CD:
-	ld de,0e800h		;57cd
+	ld de,0e800h		;57cd   ; apunta a los huecos de figura (32 bytes cada uno)
 	ld bc,000a0h		;57d0
 	push hl			;57d3
 	call 00059h		;57d4   ; BIOS LDIRMV - Block transfers to memory from VRAM
 	pop hl			;57d7
-	ld de,0e800h		;57d8
+	ld de,0e800h		;57d8   ; apunta a los huecos de figura (32 bytes cada uno)
 	ld bc,000a0h		;57db
 	jp L_5BD8		;57de
 L_57E1:
@@ -3232,22 +3232,22 @@ L_57E1:
 	call L_5E95		;57e4
 	call L_41B7		;57e7
 	ld ix,06390h		;57ea
-	call L_5A8D		;57ee
+	call copias_volteadas		;57ee   ; copias_volteadas: copia caracteres dandoles la vuelta, fichas de 4 bytes desde IX
 	ld ix,0635eh		;57f1
-	call L_5AB3		;57f5
+	call fichas_graficas		;57f5   ; fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
 	ld hl,00780h		;57f8
 	ld de,0581dh		;57fb
 	ld bc,00008h		;57fe
 	call L_5BD8		;5801
-	ld a,(0e690h)		;5804
+	ld a,(0e690h)		;5804   ; lee la sala especial (pista o tienda)
 	cp 00eh		;5807
 	jr nc,L_581A		;5809
 	ld hl,05824h		;580b
-	call L_4155		;580e
+	call byte_de_tabla		;580e   ; byte_de_tabla: A = el byte HL + A
 	or a			;5811
 	jr z,L_581A		;5812
 	ld hl,02470h		;5814
-	call L_58E1		;5817
+	call dibujo_de_cosa		;5817   ; dibujo_de_cosa: carga el dibujo y los colores de la cosa A (0x6E34/0x6E80) en HL
 L_581A:
 	jp L_56B8		;581a
 
@@ -3275,24 +3275,24 @@ L_5832:
 	call L_56C1		;5832
 	ld hl,01900h		;5835
 	ld de,07b34h		;5838
-	call L_5C46		;583b
+	call rle_a_vram		;583b   ; rle_a_vram: descomprime el rle de DE en la VRAM de HL
 	ld ix,07b30h		;583e
 	call L_59BF		;5842
 	jp L_56B8		;5845
 L_5848:
-	ld a,(0e0d2h)		;5848
+	ld a,(0e0d2h)		;5848   ; lee el estado del jefe
 	or a			;584b
 	ret z			;584c
 	call L_56C1		;584d
 	call L_5856		;5850
 	jp L_56B8		;5853
 L_5856:
-	ld a,(0e0d3h)		;5856
+	ld a,(0e0d3h)		;5856   ; lee que jefe (0x5E05 + mapa)
 	cp 002h		;5859
 	jr z,L_586C		;585b
 	ld hl,06157h		;585d
 	call L_5AAD		;5860
-	ld a,(0e0d3h)		;5863
+	ld a,(0e0d3h)		;5863   ; lee que jefe (0x5E05 + mapa)
 	ld hl,06202h		;5866
 	jp L_5A87		;5869
 L_586C:
@@ -3324,7 +3324,7 @@ L_5884:
 	ex de,hl			;5896
 	ld ix,06175h		;5897
 	add ix,de		;589b
-	call L_5AB3		;589d
+	call fichas_graficas		;589d   ; fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
 	ld a,(0e61bh)		;58a0
 	cp 007h		;58a3
 	jr c,L_58AE		;58a5
@@ -3347,7 +3347,7 @@ L_58B3:
 	ex de,hl			;58bd
 	ld ix,0621ah		;58be
 	add ix,de		;58c2
-	call L_5A8D		;58c4
+	call copias_volteadas		;58c4   ; copias_volteadas: copia caracteres dandoles la vuelta, fichas de 4 bytes desde IX
 	ld a,(0e61bh)		;58c7
 	cp 02ch		;58ca
 	jr c,L_58AE		;58cc
@@ -3362,7 +3362,7 @@ L_58D3:
 	jp L_56B8		;58db
 L_58DE:
 	ld hl,023b0h		;58de
-L_58E1:
+dibujo_de_cosa:		; carga el dibujo y los colores de la cosa A (0x6E34/0x6E80) en HL
 	ld (0f000h),hl		;58e1
 	cp 007h		;58e4
 	ret c			;58e6
@@ -3378,7 +3378,7 @@ L_58E1:
 	inc hl			;58f4
 	ld d,(hl)			;58f5
 	ld hl,(0f000h)		;58f6
-	call L_5BFC		;58f9
+	call rle_tres_tercios		;58f9   ; rle_tres_tercios: el rle de DE en HL y en los otros dos tercios (+0x800)
 	pop hl			;58fc
 	ld de,06e80h		;58fd
 	add hl,de			;5900
@@ -3386,22 +3386,22 @@ L_58E1:
 	inc hl			;5902
 	ld d,(hl)			;5903
 	ld hl,(0f000h)		;5904
-	ld bc,0e000h		;5907
+	ld bc,0e000h		;5907   ; apunta a el ESTADO del juego
 	add hl,bc			;590a
-	jp L_5BFC		;590b
+	jp rle_tres_tercios		;590b   ; rle_tres_tercios: el rle de DE en HL y en los otros dos tercios (+0x800)
 L_590E:
 	call L_56C1		;590e
 	call L_5937		;5911
 	jp L_56B8		;5914
 L_5917:
-	call L_4241		;5917
+	call a000_banco_15		;5917   ; a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
 	call L_54DD		;591a
 	ld hl,01800h		;591d
 	ld de,0bf16h		;5920
-	call L_5C46		;5923
+	call rle_a_vram		;5923   ; rle_a_vram: descomprime el rle de DE en la VRAM de HL
 	call L_56C7		;5926
 	call L_54E1		;5929
-	jp L_4215		;592c
+	jp a000_banco_3		;592c   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 L_592F:
 	call L_5937		;592f
 	call L_5944		;5932
@@ -3414,23 +3414,23 @@ L_5937:
 L_5944:
 	ld de,07849h		;5944
 	ld hl,01e20h		;5947
-	call L_5C46		;594a
+	call rle_a_vram		;594a   ; rle_a_vram: descomprime el rle de DE en la VRAM de HL
 L_594D:
 	ld de,07bb2h		;594d
 	ld hl,01f20h		;5950
-	jp L_5C46		;5953
+	jp rle_a_vram		;5953   ; rle_a_vram: descomprime el rle de DE en la VRAM de HL
 L_5956:
 	call L_56C1		;5956
 	call L_594D		;5959
 	jp L_56B8		;595c
 L_595F:
-	ld a,(0e041h)		;595f
+	ld a,(0e041h)		;595f   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	or a			;5962
 	ret z			;5963
 	ld hl,09737h		;5964
-	call L_414C		;5967
+	call palabra_de_tabla		;5967   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ex de,hl			;596a
-	ld a,(0e042h)		;596b
+	ld a,(0e042h)		;596b   ; lee la sala
 	dec a			;596e
 	jr z,L_597E		;596f
 	ld b,a			;5971
@@ -3455,7 +3455,7 @@ L_597E:
 L_5989:
 	push af			;5989
 	ld hl,07c72h		;598a
-	call L_414C		;598d
+	call palabra_de_tabla		;598d   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ex de,hl			;5990
 	call L_59A6		;5991
 	inc hl			;5994
@@ -3466,7 +3466,7 @@ L_5989:
 	cp 039h		;599c
 	ret nz			;599e
 	ld ix,06365h		;599f
-	jp L_5AB3		;59a3
+	jp fichas_graficas		;59a3   ; fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
 L_59A6:
 	ld a,(hl)			;59a6
 	or a			;59a7
@@ -3484,7 +3484,7 @@ L_59A6:
 	add hl,hl			;59b4
 	ld bc,01800h		;59b5
 	add hl,bc			;59b8
-	call L_5C46		;59b9
+	call rle_a_vram		;59b9   ; rle_a_vram: descomprime el rle de DE en la VRAM de HL
 	pop hl			;59bc
 	jr L_59A6		;59bd
 L_59BF:
@@ -3513,22 +3513,22 @@ L_59BF:
 	jp L_59BF		;59e6
 L_59E9:
 	ld ix,06000h		;59e9
-	call L_5AB3		;59ed
+	call fichas_graficas		;59ed   ; fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
 	ld ix,06037h		;59f0
-	call L_5A8D		;59f4
-	ld a,(0e041h)		;59f7
+	call copias_volteadas		;59f4   ; copias_volteadas: copia caracteres dandoles la vuelta, fichas de 4 bytes desde IX
+	ld a,(0e041h)		;59f7   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	dec a			;59fa
 	ret m			;59fb
 	jr z,L_5A05		;59fc
 	ld ix,06044h		;59fe
-	jp L_5AB3		;5a02
+	jp fichas_graficas		;5a02   ; fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
 L_5A05:
-	ld a,(0e042h)		;5a05
+	ld a,(0e042h)		;5a05   ; lee la sala
 	ld b,a			;5a08
 	or a			;5a09
 	rra			;5a0a
 	ld hl,060d7h		;5a0b
-	call L_4155		;5a0e
+	call byte_de_tabla		;5a0e   ; byte_de_tabla: A = el byte HL + A
 	bit 0,b		;5a11
 	jr nz,L_5A19		;5a13
 	rra			;5a15
@@ -3537,7 +3537,7 @@ L_5A05:
 	rra			;5a18
 L_5A19:
 	and 00fh		;5a19
-	call L_4140		;5a1b
+	call despacha		;5a1b   ; despacha: salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_5A1E: 7 destinos del despachador de 0x4140 (call en p00:5A1B):
@@ -3560,42 +3560,42 @@ DATA_tabla_5A1E:
 
 L_5A2C:
 	ld ix,06069h		;5a2c
-	jp L_5AB3		;5a30
+	jp fichas_graficas		;5a30   ; fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
 L_5A33:
 	ld ix,06076h		;5a33
-	jp L_5AB3		;5a37
+	jp fichas_graficas		;5a37   ; fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
 L_5A3A:
 	ld ix,06083h		;5a3a
-	call L_5AB3		;5a3e
+	call fichas_graficas		;5a3e   ; fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
 	ld ix,060a8h		;5a41
-	jp L_5A8D		;5a45
+	jp copias_volteadas		;5a45   ; copias_volteadas: copia caracteres dandoles la vuelta, fichas de 4 bytes desde IX
 L_5A48:
 	ld ix,06083h		;5a48
-	call L_5AB3		;5a4c
+	call fichas_graficas		;5a4c   ; fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
 	ld ix,060c9h		;5a4f
-	call L_5AB3		;5a53
+	call fichas_graficas		;5a53   ; fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
 	ld ix,060a8h		;5a56
-	jp L_5A8D		;5a5a
+	jp copias_volteadas		;5a5a   ; copias_volteadas: copia caracteres dandoles la vuelta, fichas de 4 bytes desde IX
 L_5A5D:
 	ld ix,060b1h		;5a5d
-	call L_5AB3		;5a61
+	call fichas_graficas		;5a61   ; fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
 	ld ix,060a1h		;5a64
-	call L_5AB3		;5a68
+	call fichas_graficas		;5a68   ; fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
 	ld ix,060ach		;5a6b
-	jp L_5A8D		;5a6f
+	jp copias_volteadas		;5a6f   ; copias_volteadas: copia caracteres dandoles la vuelta, fichas de 4 bytes desde IX
 L_5A72:
 	ld ix,060b1h		;5a72
-	call L_5AB3		;5a76
+	call fichas_graficas		;5a76   ; fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
 	ld ix,060ach		;5a79
-	jp L_5A8D		;5a7d
+	jp copias_volteadas		;5a7d   ; copias_volteadas: copia caracteres dandoles la vuelta, fichas de 4 bytes desde IX
 L_5A80:
 	ld ix,060d0h		;5a80
-	jp L_5AB3		;5a84
+	jp fichas_graficas		;5a84   ; fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
 L_5A87:
-	call L_414C		;5a87
+	call palabra_de_tabla		;5a87   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	push de			;5a8a
 	pop ix		;5a8b
-L_5A8D:
+copias_volteadas:		; copia caracteres dandoles la vuelta, fichas de 4 bytes desde IX
 	ld a,(ix+000h)		;5a8d
 	and a			;5a90
 	ret z			;5a91
@@ -3610,12 +3610,12 @@ L_5A8D:
 	call L_5B1E		;5aa3
 	ld de,00004h		;5aa6
 	add ix,de		;5aa9
-	jr L_5A8D		;5aab
+	jr copias_volteadas		;5aab
 L_5AAD:
-	call L_414C		;5aad
+	call palabra_de_tabla		;5aad   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	push de			;5ab0
 	pop ix		;5ab1
-L_5AB3:
+fichas_graficas:		; dibujos y colores por rle, fichas de 6 bytes desde IX
 	ld a,(ix+000h)		;5ab3
 	and a			;5ab6
 	ret z			;5ab7
@@ -3630,7 +3630,7 @@ L_5AB3:
 	call nz,L_5ADA		;5ad0
 	ld de,00006h		;5ad3
 	add ix,de		;5ad6
-	jr L_5AB3		;5ad8
+	jr fichas_graficas		;5ad8
 L_5ADA:
 	ld l,(ix+003h)		;5ada
 	ld h,000h		;5add
@@ -3644,7 +3644,7 @@ L_5ADA:
 	ld e,(ix+001h)		;5ae8
 	ld d,(ix+002h)		;5aeb
 	push ix		;5aee
-	call L_5C46		;5af0
+	call rle_a_vram		;5af0   ; rle_a_vram: descomprime el rle de DE en la VRAM de HL
 	pop ix		;5af3
 	pop hl			;5af5
 	ld de,00000h		;5af6
@@ -3652,7 +3652,7 @@ L_5ADA:
 	ld e,(ix+004h)		;5afa
 	ld d,(ix+005h)		;5afd
 	push ix		;5b00
-	call L_5C46		;5b02
+	call rle_a_vram		;5b02   ; rle_a_vram: descomprime el rle de DE en la VRAM de HL
 	pop ix		;5b05
 	ret			;5b07
 L_5B08:
@@ -3788,12 +3788,12 @@ L_5BED:
 	dec d			;5bf8
 	jr nz,L_5BED		;5bf9
 	ret			;5bfb
-L_5BFC:
+rle_tres_tercios:		; el rle de DE en HL y en los otros dos tercios (+0x800)
 	ld b,003h		;5bfc
 L_5BFE:
 	push bc			;5bfe
 	push de			;5bff
-	call L_5C46		;5c00
+	call rle_a_vram		;5c00   ; rle_a_vram: descomprime el rle de DE en la VRAM de HL
 	ld de,00800h		;5c03
 	add hl,de			;5c06
 	pop de			;5c07
@@ -3805,7 +3805,7 @@ L_5C0C:
 L_5C0E:
 	push bc			;5c0e
 	push de			;5c0f
-	call L_5C46		;5c10
+	call rle_a_vram		;5c10   ; rle_a_vram: descomprime el rle de DE en la VRAM de HL
 	inc de			;5c13
 L_5C14:
 	call L_5C49		;5c14
@@ -3819,7 +3819,7 @@ L_5C14:
 	pop bc			;5c21
 	djnz L_5C0E		;5c22
 	ret			;5c24
-L_5C25:
+lista_a_vram:		; pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
 	ld c,0ffh		;5c25
 L_5C27:
 	ex de,hl			;5c27
@@ -3840,7 +3840,7 @@ L_5C2D:
 	call 0004dh		;5c36   ; BIOS WRTVRM - Writes data in VRAM
 	inc hl			;5c39
 	jr L_5C2D		;5c3a
-L_5C3C:
+borra_lista_vram:		; como lista_a_vram pero escribiendo ceros
 	ld c,000h		;5c3c
 	jr L_5C27		;5c3e
 L_5C40:
@@ -3850,7 +3850,7 @@ L_5C40:
 	ld d,(hl)			;5c43
 	ex de,hl			;5c44
 	inc de			;5c45
-L_5C46:
+rle_a_vram:		; descomprime el rle de DE en la VRAM de HL
 	call L_5BC8		;5c46
 L_5C49:
 	ld a,(de)			;5c49
@@ -3884,7 +3884,7 @@ L_5C63:
 L_5C6B:
 	call L_5C77		;5c6b
 	ld a,020h		;5c6e
-	call L_413B		;5c70
+	call de_mas_a		;5c70   ; de_mas_a: DE += A
 	dec c			;5c73
 	jr nz,L_5C6B		;5c74
 	ret			;5c76
@@ -3940,7 +3940,7 @@ L_5CAF:
 	jr c,L_5CBF		;5cbb
 	ld (hl),001h		;5cbd
 L_5CBF:
-	call L_4E1F		;5cbf
+	call pide_sonido		;5cbf   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	ei			;5cc2
 	ret			;5cc3
 L_5CC4:
@@ -3963,7 +3963,7 @@ L_5CE0:
 	ld a,(0e0d4h)		;5ce0
 	or a			;5ce3
 	jr nz,L_5CEF		;5ce4
-	ld a,(0e0d2h)		;5ce6
+	ld a,(0e0d2h)		;5ce6   ; lee el estado del jefe
 	or a			;5ce9
 	ret z			;5cea
 	ld a,090h		;5ceb
@@ -3992,7 +3992,7 @@ L_5D0A:
 	di			;5d0a
 	push af			;5d0b
 	ld a,0fah		;5d0c
-	call L_4E1F		;5d0e
+	call pide_sonido		;5d0e   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	pop af			;5d11
 L_5D12:
 	ld h,a			;5d12
@@ -4001,22 +4001,22 @@ L_5D12:
 	ei			;5d18
 	ret			;5d19
 L_5D1A:
-	ld a,(0e041h)		;5d1a
+	ld a,(0e041h)		;5d1a   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	dec a			;5d1d
 	ld a,088h		;5d1e
 	ret z			;5d20
 	ld a,08ah		;5d21
 	ret			;5d23
 L_5D24:
-	ld a,(0e083h)		;5d24
+	ld a,(0e083h)		;5d24   ; lee tiene el objeto 0x14
 	or a			;5d27
 	ret z			;5d28
-	ld a,(0e041h)		;5d29
+	ld a,(0e041h)		;5d29   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	dec a			;5d2c
 	ret nz			;5d2d
-	call L_422B		;5d2e
+	call a000_banco_9		;5d2e   ; a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
 	call L_5D37		;5d31
-	jp L_4215		;5d34
+	jp a000_banco_3		;5d34   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 L_5D37:
 	ld hl,0e06ch		;5d37
 	bit 1,(hl)		;5d3a
@@ -4037,8 +4037,8 @@ L_5D51:
 	ld hl,0be4fh		;5d51
 	ld a,b			;5d54
 L_5D55:
-	call L_414C		;5d55
-	ld a,(0e042h)		;5d58
+	call palabra_de_tabla		;5d55   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
+	ld a,(0e042h)		;5d58   ; lee la sala
 	ld b,a			;5d5b
 L_5D5C:
 	ld a,(de)			;5d5c
@@ -4048,7 +4048,7 @@ L_5D5C:
 	cp b			;5d60
 	jr nz,L_5D5C		;5d61
 	ld a,028h		;5d63
-	jp L_4E1F		;5d65
+	jp pide_sonido		;5d65   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_5D68:
 	ld hl,(0e60eh)		;5d68
 	bit 0,(hl)		;5d6b
@@ -4088,9 +4088,9 @@ L_5D88:
 	ld a,c			;5d99
 	cp 00ch		;5d9a
 	jr nz,L_5DAB		;5d9c
-	ld a,(0e041h)		;5d9e
+	ld a,(0e041h)		;5d9e   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	ld hl,0e062h		;5da1
-	call L_4136		;5da4
+	call hl_mas_a		;5da4   ; hl_mas_a: HL += A
 	ld a,(hl)			;5da7
 	and 003h		;5da8
 	ret nz			;5daa
@@ -4114,14 +4114,14 @@ L_5DBD:
 	ld (hl),e			;5dbf
 	ld h,e			;5dc0
 	ld l,d			;5dc1
-	call L_4DA1		;5dc2
+	call casilla_de_yx		;5dc2   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	ld (0e744h),hl		;5dc5
 	ret			;5dc8
 L_5DC9:
-	ld bc,(0e041h)		;5dc9
+	ld bc,(0e041h)		;5dc9   ; lee el mapa (0xE041) y la sala (0xE042) de un tiron
 	ld a,c			;5dcd
 	ld hl,0b6fch		;5dce
-	call L_414C		;5dd1
+	call palabra_de_tabla		;5dd1   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ex de,hl			;5dd4
 L_5DD5:
 	ld a,(hl)			;5dd5
@@ -4138,12 +4138,12 @@ L_5DE0:
 	inc hl			;5de1
 	jr L_5DD5		;5de2
 L_5DE4:
-	ld a,(0e041h)		;5de4
-	ld hl,0e061h		;5de7
-	call L_4136		;5dea
+	ld a,(0e041h)		;5de4   ; lee el mapa (1 el castillo, 2-11 los mundos)
+	ld hl,0e061h		;5de7   ; apunta a el cambio de vida pendiente de Popolon (con signo)
+	call hl_mas_a		;5dea   ; hl_mas_a: HL += A
 	bit 2,(hl)		;5ded
 	ret nz			;5def
-	ld hl,(0e041h)		;5df0
+	ld hl,(0e041h)		;5df0   ; lee el mapa (0xE041) y la sala (0xE042) de un tiron
 	ld a,h			;5df3
 	ld h,000h		;5df4
 	ld de,l5dfbh		;5df6
@@ -4180,10 +4180,10 @@ L_5E11:
 	call L_41D0		;5e11
 	ld de,09ad3h		;5e14
 	ld hl,02008h		;5e17
-	call L_5BFC		;5e1a
+	call rle_tres_tercios		;5e1a   ; rle_tres_tercios: el rle de DE en HL y en los otros dos tercios (+0x800)
 	ld de,09b24h		;5e1d
 	ld hl,02058h		;5e20
-	call L_5BFC		;5e23
+	call rle_tres_tercios		;5e23   ; rle_tres_tercios: el rle de DE en HL y en los otros dos tercios (+0x800)
 	ld a,0f0h		;5e26
 	ld hl,00008h		;5e28
 	ld bc,00120h		;5e2b
@@ -4194,16 +4194,16 @@ L_5E34:
 	call L_5EAF		;5e37
 	ld de,09ad3h		;5e3a
 	ld hl,02080h		;5e3d
-	call L_5BFC		;5e40
+	call rle_tres_tercios		;5e40   ; rle_tres_tercios: el rle de DE en HL y en los otros dos tercios (+0x800)
 	ld de,09aa2h		;5e43
 	ld hl,020d0h		;5e46
-	call L_5BFC		;5e49
+	call rle_tres_tercios		;5e49   ; rle_tres_tercios: el rle de DE en HL y en los otros dos tercios (+0x800)
 	ld de,09acch		;5e4c
 	ld hl,02100h		;5e4f
-	call L_5BFC		;5e52
+	call rle_tres_tercios		;5e52   ; rle_tres_tercios: el rle de DE en HL y en los otros dos tercios (+0x800)
 	ld de,09b24h		;5e55
 	ld hl,02108h		;5e58
-	call L_5BFC		;5e5b
+	call rle_tres_tercios		;5e5b   ; rle_tres_tercios: el rle de DE en HL y en los otros dos tercios (+0x800)
 	ld a,0f0h		;5e5e
 	ld hl,00080h		;5e60
 	ld bc,00158h		;5e63
@@ -4213,13 +4213,13 @@ L_5E6C:
 	call L_41D0		;5e6c
 	ld de,09aa2h		;5e6f
 	ld hl,02160h		;5e72
-	call L_5BFC		;5e75
+	call rle_tres_tercios		;5e75   ; rle_tres_tercios: el rle de DE en HL y en los otros dos tercios (+0x800)
 	jp L_416C		;5e78
 L_5E7B:
 	call L_41D0		;5e7b
 	ld de,09abdh		;5e7e
 	ld hl,02168h		;5e81
-	call L_5BFC		;5e84
+	call rle_tres_tercios		;5e84   ; rle_tres_tercios: el rle de DE en HL y en los otros dos tercios (+0x800)
 	ld a,0f0h		;5e87
 	ld hl,00168h		;5e89
 	ld bc,00010h		;5e8c
@@ -4229,7 +4229,7 @@ L_5E95:
 	call L_41D0		;5e95
 	ld de,09bech		;5e98
 	ld hl,025d0h		;5e9b
-	call L_5BFC		;5e9e
+	call rle_tres_tercios		;5e9e   ; rle_tres_tercios: el rle de DE en HL y en los otros dos tercios (+0x800)
 	ld a,0f0h		;5ea1
 	ld hl,005d0h		;5ea3
 	ld bc,001b0h		;5ea6
@@ -4256,7 +4256,7 @@ L_5EC1:
 	ret			;5ecf
 L_5ED0:
 	xor a			;5ed0
-	ld (0f0f8h),a		;5ed1
+	ld (0f0f8h),a		;5ed1   ; guarda los cartuchos de la otra ranura (bit 0 Knightmare, 1 Q*bert, 2 Game Master)
 	ld bc,00400h		;5ed4
 	ld hl,0fcc1h		;5ed7
 L_5EDA:
@@ -4265,11 +4265,11 @@ L_5EDA:
 	ld a,(hl)			;5edc
 	bit 7,a		;5edd
 	jr nz,L_5EF0		;5edf
-	call L_5F0C		;5ee1
+	call busca_cartuchos		;5ee1   ; busca_cartuchos: mira la firma de Game Master, Q*bert y Knightmare en la otra ranura (0xF0F8)
 L_5EE4:
 	pop hl			;5ee4
 	pop bc			;5ee5
-	ld a,(0f0f8h)		;5ee6
+	ld a,(0f0f8h)		;5ee6   ; lee los cartuchos de la otra ranura (bit 0 Knightmare, 1 Q*bert, 2 Game Master)
 	and a			;5ee9
 	ret nz			;5eea
 	inc hl			;5eeb
@@ -4286,9 +4286,9 @@ L_5EF5:
 	ld b,004h		;5ef9
 L_5EFB:
 	push bc			;5efb
-	call L_5F0C		;5efc
+	call busca_cartuchos		;5efc   ; busca_cartuchos: mira la firma de Game Master, Q*bert y Knightmare en la otra ranura (0xF0F8)
 	pop bc			;5eff
-	ld a,(0f0f8h)		;5f00
+	ld a,(0f0f8h)		;5f00   ; lee los cartuchos de la otra ranura (bit 0 Knightmare, 1 Q*bert, 2 Game Master)
 	and a			;5f03
 	ret nz			;5f04
 	ld a,c			;5f05
@@ -4296,13 +4296,13 @@ L_5EFB:
 	ld c,a			;5f08
 	djnz L_5EFB		;5f09
 	ret			;5f0b
-L_5F0C:
+busca_cartuchos:		; mira la firma de Game Master, Q*bert y Knightmare en la otra ranura (0xF0F8)
 	ld de,05f59h		;5f0c
 	ld hl,07ffah		;5f0f
 	ld b,006h		;5f12
 	call L_5F44		;5f14
 	jr nc,L_5F1F		;5f17
-	ld hl,0f0f8h		;5f19
+	ld hl,0f0f8h		;5f19   ; apunta a los cartuchos de la otra ranura (bit 0 Knightmare, 1 Q*bert, 2 Game Master)
 	set 2,(hl)		;5f1c
 	ret			;5f1e
 L_5F1F:
@@ -4311,7 +4311,7 @@ L_5F1F:
 	ld b,006h		;5f25
 	call L_5F44		;5f27
 	jr nc,L_5F32		;5f2a
-	ld hl,0f0f8h		;5f2c
+	ld hl,0f0f8h		;5f2c   ; apunta a los cartuchos de la otra ranura (bit 0 Knightmare, 1 Q*bert, 2 Game Master)
 	set 1,(hl)		;5f2f
 	ret			;5f31
 L_5F32:
@@ -4320,7 +4320,7 @@ L_5F32:
 	ld b,006h		;5f38
 	call L_5F44		;5f3a
 	ret nc			;5f3d
-	ld hl,0f0f8h		;5f3e
+	ld hl,0f0f8h		;5f3e   ; apunta a los cartuchos de la otra ranura (bit 0 Knightmare, 1 Q*bert, 2 Game Master)
 	set 0,(hl)		;5f41
 	ret			;5f43
 L_5F44:
@@ -4399,15 +4399,15 @@ L_5F8F:
 	ld b,002h		;5f95
 	jp L_4D95		;5f97
 L_5F9A:
-	ld a,(0e500h)		;5f9a
+	ld a,(0e500h)		;5f9a   ; lee el estado del personaje (5 = hundirse)
 	cp 007h		;5f9d
 	ret nz			;5f9f
 	xor a			;5fa0
-	ld (0e500h),a		;5fa1
+	ld (0e500h),a		;5fa1   ; guarda el estado del personaje (5 = hundirse)
 	ld (0e518h),a		;5fa4
 	ret			;5fa7
 L_5FA8:
-	ld a,(0e042h)		;5fa8
+	ld a,(0e042h)		;5fa8   ; lee la sala
 	cp 092h		;5fab
 	ret nz			;5fad
 	ld de,0e4a1h		;5fae
@@ -4450,7 +4450,7 @@ L_5FDC:
 L_5FE0:
 	ld a,028h		;5fe0
 L_5FE2:
-	ld (0e505h),a		;5fe2
+	ld (0e505h),a		;5fe2   ; guarda la y del personaje
 	ld hl,0ec12h		;5fe5
 	bit 0,(hl)		;5fe8
 	ret z			;5fea
@@ -4461,7 +4461,7 @@ L_5FE2:
 	ld h,a			;5ff1
 	ld l,000h		;5ff2
 	add hl,de			;5ff4
-	ld (0e505h),hl		;5ff5
+	ld (0e505h),hl		;5ff5   ; guarda la y del personaje y el byte siguiente (16 bits)
 	ret			;5ff8
 L_5FF9:
 	ld a,0f7h		;5ff9

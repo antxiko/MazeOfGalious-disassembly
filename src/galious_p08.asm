@@ -978,11 +978,11 @@ L_9CFA:
 	ld (0f00ah),hl		;9d03
 	ld hl,0ea00h		;9d06
 	ld (0f00ch),hl		;9d09
-	ld a,(0e041h)		;9d0c
+	ld a,(0e041h)		;9d0c   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	ld hl,0a7bch		;9d0f
-	call 04053h		;9d12
+	call 04053h		;9d12   ; palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 	ex de,hl			;9d15
-	ld a,(0e042h)		;9d16
+	ld a,(0e042h)		;9d16   ; lee la sala
 	dec a			;9d19
 	jr z,L_9D2A		;9d1a
 	ld b,a			;9d1c
@@ -1022,7 +1022,7 @@ L_9D44:
 	ld (0f002h),de		;9d47
 	and 00fh		;9d4b
 	dec a			;9d4d
-	call 04050h		;9d4e
+	call 04050h		;9d4e   ; despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_9D51: 7 destinos del despachador de 0x4140 (call en p08:9D4E):
@@ -1044,11 +1044,11 @@ DATA_tabla_9D51:
 
 
 L_9D5F:
-	ld de,(0e041h)		;9d5f
+	ld de,(0e041h)		;9d5f   ; lee el mapa (0xE041) y la sala (0xE042) de un tiron
 	ld a,e			;9d63
 	sub 002h		;9d64
 	ret m			;9d66
-	call 04050h		;9d67
+	call 04050h		;9d67   ; despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_9D6A: 10 destinos del despachador de 0x4140 (call en p08:9D67):
@@ -1091,7 +1091,7 @@ L_9D95:
 	ret nz			;9d9a
 	set 4,(hl)		;9d9b
 	ld a,02eh		;9d9d
-	jp 04059h		;9d9f
+	jp 04059h		;9d9f   ; pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_9DA2:
 	ld a,d			;9da2
 	cp 007h		;9da3
@@ -1193,7 +1193,7 @@ L_9E34:
 L_9E4E:
 	ld a,c			;9e4e
 	ld hl,0af09h		;9e4f
-	call 04053h		;9e52
+	call 04053h		;9e52   ; palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 	ld l,b			;9e55
 	dec l			;9e56
 	ld h,000h		;9e57
@@ -1206,7 +1206,7 @@ L_9E61:
 	ld hl,(0e60eh)		;9e61
 	bit 3,(hl)		;9e64
 	ret z			;9e66
-	ld de,(0e041h)		;9e67
+	ld de,(0e041h)		;9e67   ; lee el mapa (0xE041) y la sala (0xE042) de un tiron
 	ld hl,00703h		;9e6b
 	or a			;9e6e
 	sbc hl,de		;9e6f
@@ -1301,7 +1301,7 @@ L_9F15:
 	ld hl,0ed84h		;9f15
 	jr L_9EE3		;9f18
 L_9F1A:
-	ld de,(0e041h)		;9f1a
+	ld de,(0e041h)		;9f1a   ; lee el mapa (0xE041) y la sala (0xE042) de un tiron
 	ld hl,00404h		;9f1e
 	or a			;9f21
 	sbc hl,de		;9f22
@@ -1350,7 +1350,7 @@ L_9F1A:
 	or a			;9f83
 	sbc hl,de		;9f84
 	ret nz			;9f86
-	ld a,(0e081h)		;9f87
+	ld a,(0e081h)		;9f87   ; lee tiene el objeto 0x12
 	or a			;9f8a
 	ret z			;9f8b
 	ld a,001h		;9f8c

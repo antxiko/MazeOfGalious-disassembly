@@ -95,3 +95,65 @@ F 0xBCEF 16
 D 0xBFE9 0xC000 relleno_p09  relleno: 23 bytes 0xFF hasta el final del banco, sin nada que los lea ni los ejecute (23 bytes)
 F 0xBFE9 16
 # --- fin de los bloques de bloques.py ---
+
+# --- ANOTACIONES AUTOMATICAS (seccion que reescribe tools/anota.py; no editar a mano) ---
+C 0xA053 despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0xA05E lee las llaves (BCD, 16 bits)
+C 0xA06B lee la y del personaje
+C 0xA083 lee la x del personaje
+C 0xA08C lee el mando (la otra copia que cambia p03:A8BE)
+C 0xA0A2 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0xA0AC guarda el estado del personaje (5 = hundirse)
+C 0xA0DD lee la x del personaje
+C 0xA0F4 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0xA102 guarda el estado del personaje (5 = hundirse)
+C 0xA109 lee el estado del personaje (5 = hundirse)
+C 0xA151 lee las llaves (BCD, 16 bits)
+C 0xA15E lee la y del personaje
+C 0xA17B lee la x del personaje
+C 0xA184 lee el mando (la otra copia que cambia p03:A8BE)
+C 0xA19D pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0xA1BC lee la x del personaje
+C 0xA1D3 lee la x del personaje
+C 0xA1F2 apunta a las llaves (BCD)
+C 0xA23F lee la y del personaje
+C 0xA259 lee la x del personaje
+C 0xA262 lee el mando (la otra copia que cambia p03:A8BE)
+C 0xA27A pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0xA2DC apunta a el estado del personaje (5 = hundirse)
+C 0xA2EF apunta a los huecos de figura (32 bytes cada uno)
+C 0xA345 apunta a tiene el objeto 0x29
+C 0xA348 tiene_o_popolon (por 0x4089): NZ si la marca de HL esta puesta o se lleva a Popolon (0xE501)
+C 0xA353 lee la y del personaje
+C 0xA36B lee la x del personaje
+C 0xA3A1 lee el mando (la otra copia que cambia p03:A8BE)
+C 0xA3BA pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0xA448 lee la y del personaje
+C 0xA450 lee la x del personaje
+C 0xA467 lee la y del personaje
+C 0xA482 lee la x del personaje
+C 0xA4C3 lee la y del personaje
+C 0xA4CE lee la x del personaje
+C 0xA4DD guarda la x del personaje
+C 0xA4E9 guarda la x del personaje
+C 0xA4EC apunta a los huecos de figura (32 bytes cada uno)
+C 0xA54C lee la y del personaje
+C 0xA553 lee la x del personaje
+C 0xA55D lee la x del personaje
+C 0xA5A3 lee la y del personaje
+C 0xA5A9 lee la x del personaje
+C 0xA5E8 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0xA605 lee la x del personaje
+C 0xA658 byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0xA668 apunta a tiene el objeto 0x1C
+C 0xA66B tiene_o_popolon (por 0x4089): NZ si la marca de HL esta puesta o se lleva a Popolon (0xE501)
+C 0xA67A lee la y del personaje
+C 0xA688 lee la x del personaje
+C 0xA6A0 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0xA6B2 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0xA6DA palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0xA6DD lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0xA767 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0xA76A lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0xA79C casilla_de_yx (por 0x4056): HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+# --- fin de las anotaciones de anota.py ---

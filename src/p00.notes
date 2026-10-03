@@ -40,3 +40,403 @@ F 0x5A1E 2
 D 0x5FFF 0x6000 partida_5FFF  la instruccion de p00:5FFF (32 | 07 E5) empieza al final del banco 0 y acaba al principio del 1, que el cartucho pone siempre a continuacion: aqui el primer byte; lo leen p00:5FFF (1 bytes)
 F 0x5FFF 4
 # --- fin de los bloques de bloques.py ---
+
+# --- ANOTACIONES AUTOMATICAS (seccion que reescribe tools/anota.py; no editar a mano) ---
+L 0x4136 hl_mas_a HL += A
+L 0x413B de_mas_a DE += A
+L 0x4140 despacha salta a la entrada A de la tabla de palabras que va detras del call
+L 0x414C palabra_de_tabla DE = la palabra A de la tabla de HL
+L 0x4155 byte_de_tabla A = el byte HL + A
+L 0x415C de_negado DE = -DE
+L 0x4215 a000_banco_3 pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+L 0x4220 a000_banco_6 pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
+L 0x422B a000_banco_9 pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
+L 0x4236 a000_banco_12 pone el banco 12 en 0xA000 (y su copia en 0xF0F3)
+L 0x4241 a000_banco_15 pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
+L 0x4CF1 regalo_de_cartucho lo que dan Q*bert (bit 1) y Knightmare (bit 0) de 0xF0F8 al empezar
+L 0x4D5A suma_flechas suma A (BCD) a las flechas de 0xE046, hasta 999
+L 0x4D7B suma_monedas suma A (BCD) a las monedas de 0xE048, hasta 999
+L 0x4D82 suma_llaves suma A (BCD) a las llaves de 0xE04A, hasta 999
+L 0x4DA1 casilla_de_yx HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+L 0x4DDB tiene_o_popolon NZ si la marca de HL esta puesta o se lleva a Popolon (0xE501)
+L 0x4E1F pide_sonido pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+L 0x58E1 dibujo_de_cosa carga el dibujo y los colores de la cosa A (0x6E34/0x6E80) en HL
+L 0x5A8D copias_volteadas copia caracteres dandoles la vuelta, fichas de 4 bytes desde IX
+L 0x5AB3 fichas_graficas dibujos y colores por rle, fichas de 6 bytes desde IX
+L 0x5BFC rle_tres_tercios el rle de DE en HL y en los otros dos tercios (+0x800)
+L 0x5C25 lista_a_vram pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
+L 0x5C3C borra_lista_vram como lista_a_vram pero escribiendo ceros
+L 0x5C46 rle_a_vram descomprime el rle de DE en la VRAM de HL
+L 0x5F0C busca_cartuchos mira la firma de Game Master, Q*bert y Knightmare en la otra ranura (0xF0F8)
+C 0x4050 despacha: salta a la entrada A de la tabla de palabras que va detras del call
+C 0x4053 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x4056 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x4059 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x4062 hl_mas_a: HL += A
+C 0x4065 de_mas_a: DE += A
+C 0x4068 de_negado: DE = -DE
+C 0x4083 byte_de_tabla: A = el byte HL + A
+C 0x4089 tiene_o_popolon: NZ si la marca de HL esta puesta o se lleva a Popolon (0xE501)
+C 0x40AE apunta a el ESTADO del juego
+C 0x40B1 apunta a el paso del estado
+C 0x4103 el mapper: pone en 0x6000 el banco de A
+C 0x4107 el mapper: pone en 0x8000 el banco de A
+C 0x4115 el mapper: pone en 0x6000 el banco de A
+C 0x411B el mapper: pone en 0x8000 el banco de A
+C 0x416F el mapper: pone en 0x6000 el banco de A
+C 0x4176 el mapper: pone en 0x8000 el banco de A
+C 0x417D el mapper: pone en 0xA000 el banco de A
+C 0x4188 el mapper: pone en 0x6000 el banco de A
+C 0x418F el mapper: pone en 0x8000 el banco de A
+C 0x4196 el mapper: pone en 0xA000 el banco de A
+C 0x41A1 el mapper: pone en 0x6000 el banco de A
+C 0x41A8 el mapper: pone en 0x8000 el banco de A
+C 0x41AF el mapper: pone en 0xA000 el banco de A
+C 0x41BA el mapper: pone en 0x6000 el banco de A
+C 0x41C1 el mapper: pone en 0x8000 el banco de A
+C 0x41C8 el mapper: pone en 0xA000 el banco de A
+C 0x41D3 el mapper: pone en 0x6000 el banco de A
+C 0x41DA el mapper: pone en 0x8000 el banco de A
+C 0x41E1 el mapper: pone en 0xA000 el banco de A
+C 0x41EC el mapper: pone en 0x6000 el banco de A
+C 0x41F7 el mapper: pone en 0x6000 el banco de A
+C 0x4202 el mapper: pone en 0x8000 el banco de A
+C 0x420D el mapper: pone en 0x8000 el banco de A
+C 0x4218 el mapper: pone en 0xA000 el banco de A
+C 0x4223 el mapper: pone en 0xA000 el banco de A
+C 0x422E el mapper: pone en 0xA000 el banco de A
+C 0x4239 el mapper: pone en 0xA000 el banco de A
+C 0x4244 el mapper: pone en 0xA000 el banco de A
+C 0x427B lee el ESTADO del juego
+C 0x4286 lee el ESTADO del juego y el byte siguiente (16 bits)
+C 0x428B despacha: salta a la entrada A de la tabla de palabras que va detras del call
+C 0x42DE a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
+C 0x42E4 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x42E8 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x42FD a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
+C 0x4309 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x4316 a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
+C 0x431F a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x433D despacha: salta a la entrada A de la tabla de palabras que va detras del call
+C 0x435E apunta a el paso del estado
+C 0x438D guarda tiene el objeto 0x01
+C 0x4396 guarda las flechas (BCD, 16 bits)
+C 0x43A2 guarda el ESTADO del juego
+C 0x43A9 guarda el ESTADO del juego
+C 0x43B4 a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
+C 0x43BA a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x43ED pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x43FE lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
+C 0x4401 borra_lista_vram: como lista_a_vram pero escribiendo ceros
+C 0x4430 lee la sala especial (pista o tienda)
+C 0x443E apunta a el ESTADO del juego
+C 0x4443 guarda el paso del estado
+C 0x446B lee el nombre del jefe acertado
+C 0x44B6 lee el estado del personaje (5 = hundirse)
+C 0x44C7 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x44DF pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x44EA lee el estado del personaje (5 = hundirse)
+C 0x4509 lee quien juega (0 Afrodita)
+C 0x452E lee quien juega (0 Afrodita)
+C 0x4533 guarda quien juega (0 Afrodita)
+C 0x4538 lee quien juega (0 Afrodita)
+C 0x4544 lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
+C 0x4549 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x4558 apunta a ya se ha seguido con F5
+C 0x456C guarda el ESTADO del juego y el byte siguiente (16 bits)
+C 0x457D lee el estado del jefe
+C 0x4589 lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
+C 0x458C lee ZEUS tecleado
+C 0x4593 lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
+C 0x45AC borra_lista_vram: como lista_a_vram pero escribiendo ceros
+C 0x45B2 lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
+C 0x45E0 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x461B guarda el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x461F lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x4622 apunta a el cambio de vida pendiente de Popolon (con signo)
+C 0x4625 hl_mas_a: HL += A
+C 0x462E guarda tiene el objeto 0x09
+C 0x4635 guarda tiene el objeto 0x08
+C 0x463C guarda tiene el objeto 0x07
+C 0x4642 guarda tiene el objeto 0x0A
+C 0x4646 lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x464F palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x465A a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
+C 0x465D lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x4663 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x4669 lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x466C byte_de_tabla: A = el byte HL + A
+C 0x468A a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x469F apunta a los huecos de figura (32 bytes cada uno)
+C 0x46B3 lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x46D5 guarda el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x4716 borra_lista_vram: como lista_a_vram pero escribiendo ceros
+C 0x4724 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x472D lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
+C 0x4733 guarda tiene el objeto 0x07 y el byte siguiente (16 bits)
+C 0x4736 guarda tiene el objeto 0x09 y el byte siguiente (16 bits)
+C 0x4755 mira_zeus: en la pausa de F2 y en la sala 1 del castillo, cuenta las letras de ZEUS
+C 0x4760 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x476F lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x477A guarda la sala
+C 0x4784 lee la sala especial (pista o tienda)
+C 0x47AC lee la y del personaje
+C 0x47CC pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x47E3 lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x47FA pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x480A guarda el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x4854 lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+C 0x4882 a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
+C 0x4888 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x4899 lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+C 0x48A0 guarda la sala especial (pista o tienda)
+C 0x48C6 despacha: salta a la entrada A de la tabla de palabras que va detras del call
+C 0x48F5 guarda la sala especial (pista o tienda)
+C 0x491A lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+C 0x4929 guarda la sala especial (pista o tienda)
+C 0x496B a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
+C 0x4971 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x4979 lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x497F hl_mas_a: HL += A
+C 0x4985 guarda el estado del jefe y el byte siguiente (16 bits)
+C 0x499F guarda el nombre del jefe acertado
+C 0x49A7 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x49BB despacha: salta a la entrada A de la tabla de palabras que va detras del call
+C 0x49D2 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x4A05 a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
+C 0x4A0B a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x4A24 a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
+C 0x4A2A a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x4A51 a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
+C 0x4A57 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x4AA7 lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+C 0x4AAC apunta a el paso del estado
+C 0x4AF3 guarda el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x4AF6 lee quien juega (0 Afrodita)
+C 0x4AFA apunta a el tope de la vida de Afrodita
+C 0x4B04 lee quien juega (0 Afrodita)
+C 0x4B0B apunta a el tope de la vida de Popolon
+C 0x4B1A regalo_de_cartucho: lo que dan Q*bert (bit 1) y Knightmare (bit 0) de 0xF0F8 al empezar
+C 0x4B3F rle_a_vram: descomprime el rle de DE en la VRAM de HL
+C 0x4B5D a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
+C 0x4B63 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x4B74 guarda el estado del jefe y el byte siguiente (16 bits)
+C 0x4B77 guarda el tipo del jefe (el hueco 0xE700 es el jefe)
+C 0x4B80 lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x4B83 apunta a el cambio de vida pendiente de Popolon (con signo)
+C 0x4B86 hl_mas_a: HL += A
+C 0x4B90 lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x4BA9 lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x4BAF byte_de_tabla: A = el byte HL + A
+C 0x4C0A apunta a el ESTADO del juego
+C 0x4C34 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x4C6B apunta a el mando (la otra copia que cambia p03:A8BE)
+C 0x4CCD guarda el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x4CD2 guarda quien juega (0 Afrodita)
+C 0x4CE0 regalo_de_cartucho: lo que dan Q*bert (bit 1) y Knightmare (bit 0) de 0xF0F8 al empezar
+C 0x4CF1 lee los cartuchos de la otra ranura (bit 0 Knightmare, 1 Q*bert, 2 Game Master)
+C 0x4D02 guarda las flechas (BCD, 16 bits)
+C 0x4D05 guarda las llaves (BCD, 16 bits)
+C 0x4D08 guarda las monedas (BCD, 16 bits)
+C 0x4D0E guarda la vida de Afrodita y el byte siguiente (16 bits)
+C 0x4D11 guarda la vida de Popolon y el byte siguiente (16 bits)
+C 0x4D5C apunta a las flechas (BCD)
+C 0x4D7D apunta a las monedas (BCD)
+C 0x4D84 apunta a las llaves (BCD)
+C 0x4DBE casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x4DC8 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x4DDE lee quien juega (0 Afrodita)
+C 0x4E47 el mapper: pone en 0x6000 el banco de A
+C 0x4E4B el mapper: pone en 0x8000 el banco de A
+C 0x4E59 el mapper: pone en 0x6000 el banco de A
+C 0x4E62 el mapper: pone en 0x8000 el banco de A
+C 0x5117 a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
+C 0x511D a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x5135 a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
+C 0x513E a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x514D lee la sala especial (pista o tienda)
+C 0x5153 a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
+C 0x515F a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x5194 a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
+C 0x519D a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x51A6 lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x51B2 lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
+C 0x51B5 lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x51F7 apunta a el estado del jefe
+C 0x5215 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x5221 lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x5227 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x522A lee la sala
+C 0x523E a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
+C 0x5241 lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x5249 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x525B a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x528E a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
+C 0x5292 guarda el estado del personaje (5 = hundirse)
+C 0x52B1 lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x52BA lee la x del personaje
+C 0x52C3 guarda la x del personaje
+C 0x52C8 guarda la y del personaje
+C 0x52CD lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x52D3 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x52D7 lee la sala
+C 0x52DA byte_de_tabla: A = el byte HL + A
+C 0x52E5 guarda la y del personaje
+C 0x52EF guarda la x del personaje
+C 0x52F2 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x52FC a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
+C 0x5327 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x5330 a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
+C 0x5350 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x5353 cambia_izquierda_derecha: en el mapa 9 sin el objeto 0x13 cambia los bits 2 y 3 del mando
+C 0x535D cambia_izquierda_derecha: en el mapa 9 sin el objeto 0x13 cambia los bits 2 y 3 del mando
+C 0x538D a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
+C 0x5396 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x539F a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
+C 0x53B4 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x53DB a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
+C 0x53EA a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x5426 a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
+C 0x542F a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x5435 lee el ESTADO del juego
+C 0x5438 despacha: salta a la entrada A de la tabla de palabras que va detras del call
+C 0x5509 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x5516 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x5526 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x5534 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x5544 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x5554 lee el estado del jefe
+C 0x5561 lee la sala especial (pista o tienda)
+C 0x5575 lee tiene el objeto 0x18
+C 0x557F lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x5590 lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x5596 lee el estado del jefe
+C 0x55D1 lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x55D4 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x55DB lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x55F0 de_mas_a: DE += A
+C 0x55F7 lee tiene el objeto 0x16
+C 0x55FD lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x560D lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x5613 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x5616 lee la sala
+C 0x5662 de_mas_a: DE += A
+C 0x566F de_mas_a: DE += A
+C 0x567C de_mas_a: DE += A
+C 0x569A a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
+C 0x56A1 a000_banco_12: pone el banco 12 en 0xA000 (y su copia en 0xF0F3)
+C 0x56AE lee el estado del jefe
+C 0x56DB lee el estado del jefe
+C 0x56FE lee el estado del jefe
+C 0x5707 fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
+C 0x570E copias_volteadas: copia caracteres dandoles la vuelta, fichas de 4 bytes desde IX
+C 0x5744 fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
+C 0x5747 lee el nivel de los objetos 0x28/0x2B/0x2C
+C 0x5752 dibujo_de_cosa: carga el dibujo y los colores de la cosa A (0x6E34/0x6E80) en HL
+C 0x575B rle_a_vram: descomprime el rle de DE en la VRAM de HL
+C 0x5765 fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
+C 0x576C copias_volteadas: copia caracteres dandoles la vuelta, fichas de 4 bytes desde IX
+C 0x5781 fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
+C 0x5788 copias_volteadas: copia caracteres dandoles la vuelta, fichas de 4 bytes desde IX
+C 0x5791 rle_a_vram: descomprime el rle de DE en la VRAM de HL
+C 0x57A1 fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
+C 0x57AE fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
+C 0x57B5 copias_volteadas: copia caracteres dandoles la vuelta, fichas de 4 bytes desde IX
+C 0x57BE rle_a_vram: descomprime el rle de DE en la VRAM de HL
+C 0x57CD apunta a los huecos de figura (32 bytes cada uno)
+C 0x57D8 apunta a los huecos de figura (32 bytes cada uno)
+C 0x57EE copias_volteadas: copia caracteres dandoles la vuelta, fichas de 4 bytes desde IX
+C 0x57F5 fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
+C 0x5804 lee la sala especial (pista o tienda)
+C 0x580E byte_de_tabla: A = el byte HL + A
+C 0x5817 dibujo_de_cosa: carga el dibujo y los colores de la cosa A (0x6E34/0x6E80) en HL
+C 0x583B rle_a_vram: descomprime el rle de DE en la VRAM de HL
+C 0x5848 lee el estado del jefe
+C 0x5856 lee que jefe (0x5E05 + mapa)
+C 0x5863 lee que jefe (0x5E05 + mapa)
+C 0x589D fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
+C 0x58C4 copias_volteadas: copia caracteres dandoles la vuelta, fichas de 4 bytes desde IX
+C 0x58F9 rle_tres_tercios: el rle de DE en HL y en los otros dos tercios (+0x800)
+C 0x5907 apunta a el ESTADO del juego
+C 0x590B rle_tres_tercios: el rle de DE en HL y en los otros dos tercios (+0x800)
+C 0x5917 a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
+C 0x5923 rle_a_vram: descomprime el rle de DE en la VRAM de HL
+C 0x592C a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x594A rle_a_vram: descomprime el rle de DE en la VRAM de HL
+C 0x5953 rle_a_vram: descomprime el rle de DE en la VRAM de HL
+C 0x595F lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x5967 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x596B lee la sala
+C 0x598D palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x59A3 fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
+C 0x59B9 rle_a_vram: descomprime el rle de DE en la VRAM de HL
+C 0x59ED fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
+C 0x59F4 copias_volteadas: copia caracteres dandoles la vuelta, fichas de 4 bytes desde IX
+C 0x59F7 lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x5A02 fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
+C 0x5A05 lee la sala
+C 0x5A0E byte_de_tabla: A = el byte HL + A
+C 0x5A1B despacha: salta a la entrada A de la tabla de palabras que va detras del call
+C 0x5A30 fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
+C 0x5A37 fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
+C 0x5A3E fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
+C 0x5A45 copias_volteadas: copia caracteres dandoles la vuelta, fichas de 4 bytes desde IX
+C 0x5A4C fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
+C 0x5A53 fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
+C 0x5A5A copias_volteadas: copia caracteres dandoles la vuelta, fichas de 4 bytes desde IX
+C 0x5A61 fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
+C 0x5A68 fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
+C 0x5A6F copias_volteadas: copia caracteres dandoles la vuelta, fichas de 4 bytes desde IX
+C 0x5A76 fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
+C 0x5A7D copias_volteadas: copia caracteres dandoles la vuelta, fichas de 4 bytes desde IX
+C 0x5A84 fichas_graficas: dibujos y colores por rle, fichas de 6 bytes desde IX
+C 0x5A87 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x5AAD palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x5AF0 rle_a_vram: descomprime el rle de DE en la VRAM de HL
+C 0x5B02 rle_a_vram: descomprime el rle de DE en la VRAM de HL
+C 0x5C00 rle_a_vram: descomprime el rle de DE en la VRAM de HL
+C 0x5C10 rle_a_vram: descomprime el rle de DE en la VRAM de HL
+C 0x5C70 de_mas_a: DE += A
+C 0x5CBF pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x5CE6 lee el estado del jefe
+C 0x5D0E pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x5D1A lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x5D24 lee tiene el objeto 0x14
+C 0x5D29 lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x5D2E a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
+C 0x5D34 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x5D55 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x5D58 lee la sala
+C 0x5D65 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x5D9E lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x5DA4 hl_mas_a: HL += A
+C 0x5DC2 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x5DC9 lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x5DD1 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x5DE4 lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x5DE7 apunta a el cambio de vida pendiente de Popolon (con signo)
+C 0x5DEA hl_mas_a: HL += A
+C 0x5DF0 lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x5E1A rle_tres_tercios: el rle de DE en HL y en los otros dos tercios (+0x800)
+C 0x5E23 rle_tres_tercios: el rle de DE en HL y en los otros dos tercios (+0x800)
+C 0x5E40 rle_tres_tercios: el rle de DE en HL y en los otros dos tercios (+0x800)
+C 0x5E49 rle_tres_tercios: el rle de DE en HL y en los otros dos tercios (+0x800)
+C 0x5E52 rle_tres_tercios: el rle de DE en HL y en los otros dos tercios (+0x800)
+C 0x5E5B rle_tres_tercios: el rle de DE en HL y en los otros dos tercios (+0x800)
+C 0x5E75 rle_tres_tercios: el rle de DE en HL y en los otros dos tercios (+0x800)
+C 0x5E84 rle_tres_tercios: el rle de DE en HL y en los otros dos tercios (+0x800)
+C 0x5E9E rle_tres_tercios: el rle de DE en HL y en los otros dos tercios (+0x800)
+C 0x5ED1 guarda los cartuchos de la otra ranura (bit 0 Knightmare, 1 Q*bert, 2 Game Master)
+C 0x5EE1 busca_cartuchos: mira la firma de Game Master, Q*bert y Knightmare en la otra ranura (0xF0F8)
+C 0x5EE6 lee los cartuchos de la otra ranura (bit 0 Knightmare, 1 Q*bert, 2 Game Master)
+C 0x5EFC busca_cartuchos: mira la firma de Game Master, Q*bert y Knightmare en la otra ranura (0xF0F8)
+C 0x5F00 lee los cartuchos de la otra ranura (bit 0 Knightmare, 1 Q*bert, 2 Game Master)
+C 0x5F19 apunta a los cartuchos de la otra ranura (bit 0 Knightmare, 1 Q*bert, 2 Game Master)
+C 0x5F2C apunta a los cartuchos de la otra ranura (bit 0 Knightmare, 1 Q*bert, 2 Game Master)
+C 0x5F3E apunta a los cartuchos de la otra ranura (bit 0 Knightmare, 1 Q*bert, 2 Game Master)
+C 0x5F9A lee el estado del personaje (5 = hundirse)
+C 0x5FA1 guarda el estado del personaje (5 = hundirse)
+C 0x5FA8 lee la sala
+C 0x5FE2 guarda la y del personaje
+C 0x5FF5 guarda la y del personaje y el byte siguiente (16 bits)
+# --- fin de las anotaciones de anota.py ---

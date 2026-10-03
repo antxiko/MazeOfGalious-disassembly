@@ -43,3 +43,6 @@ F 0x7DE5 16
 D 0x7DF2 0x8000 efecto_7DF2  la envolvente del canal de 0xE178, que p00:50AC pone a mano en 0xE184; se solapan 2 bloques (0x7DF2-0x7E03, 0x7E02-0x8000); lo leen p00:50AF, p13:6197 (526 bytes)
 F 0x7DF2 16
 # --- fin de los bloques de bloques.py ---
+
+# --- ANOTACIONES AUTOMATICAS (seccion que reescribe tools/anota.py; no editar a mano) ---
+# --- fin de las anotaciones de anota.py ---

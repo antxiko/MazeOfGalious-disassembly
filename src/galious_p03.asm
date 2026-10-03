@@ -25,7 +25,7 @@ lb8efh:	equ 0x0b8ef
 L_A000:
 	jp L_A03F		;a000
 L_A003:
-	ld a,(0e094h)		;a003
+	ld a,(0e094h)		;a003   ; lee tiene el objeto 0x25
 	and a			;a006
 	ret nz			;a007
 	ld a,(0e068h)		;a008
@@ -39,7 +39,7 @@ L_A013:
 	ret z			;a017
 	jr L_A049		;a018
 L_A01A:
-	ld a,(0e095h)		;a01a
+	ld a,(0e095h)		;a01a   ; lee tiene el objeto 0x26
 	and a			;a01d
 	ret nz			;a01e
 	call L_A8CE		;a01f
@@ -51,9 +51,9 @@ L_A01A:
 	ld a,(0e536h)		;a02d
 	cp b			;a030
 	jr z,L_A049		;a031
-	call 04155h		;a033
+	call 04155h		;a033   ; byte_de_tabla: A = el byte HL + A
 	ld d,a			;a036
-	ld a,(0e008h)		;a037
+	ld a,(0e008h)		;a037   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
 	and a			;a03a
 	ret z			;a03b
 	and d			;a03c
@@ -71,7 +71,7 @@ L_A049:
 	ld (0e539h),a		;a04b
 	call 05d88h		;a04e
 	ld a,02eh		;a051
-	jp 04e1fh		;a053
+	jp 04e1fh		;a053   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 
 ; ----------------------------------------------------------------------
 ; DATOS cuatro_bytes_a056: 4 bytes que p03:A025 lee con 0x4155 y compara con
@@ -117,7 +117,7 @@ L_A06D:
 	ld hl,(0e6aah)		;a094
 	ld a,(0e6adh)		;a097
 	dec a			;a09a
-	call 04136h		;a09b
+	call 04136h		;a09b   ; hl_mas_a: HL += A
 	call L_A0CB		;a09e
 	ld hl,(0e6aah)		;a0a1
 	ld bc,00021h		;a0a4
@@ -166,7 +166,7 @@ L_A0E1:
 	rst 20h			;a0e8
 	ret z			;a0e9
 	ld a,01fh		;a0ea
-	call 0413bh		;a0ec
+	call 0413bh		;a0ec   ; de_mas_a: DE += A
 	rst 20h			;a0ef
 	ret z			;a0f0
 	inc de			;a0f1
@@ -179,10 +179,10 @@ L_A0F4:
 	call L_A715		;a0fd
 	jp L_A7F8		;a100
 L_A103:
-	ld a,(0e501h)		;a103
+	ld a,(0e501h)		;a103   ; lee quien juega (0 Afrodita)
 	or a			;a106
 	jr nz,L_A113		;a107
-	ld hl,(0e041h)		;a109
+	ld hl,(0e041h)		;a109   ; lee el mapa (0xE041) y la sala (0xE042) de un tiron
 	ld de,00b08h		;a10c
 	or a			;a10f
 	sbc hl,de		;a110
@@ -191,7 +191,7 @@ L_A113:
 	ld a,(0e511h)		;a113
 	and a			;a116
 	ret z			;a117
-	ld hl,0e505h		;a118
+	ld hl,0e505h		;a118   ; apunta a la y del personaje
 	ld a,(hl)			;a11b
 	cp 0b9h		;a11c
 	ret c			;a11e
@@ -202,8 +202,8 @@ L_A124:
 	ld (0e515h),a		;a125
 	call L_A8D9		;a128
 	call L_A8F2		;a12b
-	ld a,(0e500h)		;a12e
-	call 04140h		;a131
+	ld a,(0e500h)		;a12e   ; lee el estado del personaje (5 = hundirse)
+	call 04140h		;a131   ; despacha: salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_A134: 8 destinos del despachador de 0x4140 (call en p03:A131):
@@ -270,7 +270,7 @@ L_A189:
 	ret nz			;a18d
 	jr L_A178		;a18e
 L_A190:
-	ld a,(0e501h)		;a190
+	ld a,(0e501h)		;a190   ; lee quien juega (0 Afrodita)
 	and a			;a193
 	ld a,00ch		;a194
 	jr z,L_A19A		;a196
@@ -280,7 +280,7 @@ L_A19A:
 	ld e,a			;a19c
 	ld (0e509h),de		;a19d
 	ld a,002h		;a1a1
-	ld (0e500h),a		;a1a3
+	ld (0e500h),a		;a1a3   ; guarda el estado del personaje (5 = hundirse)
 	ret			;a1a6
 L_A1A7:
 	ld a,001h		;a1a7
@@ -293,7 +293,7 @@ L_A1B6:
 	ld a,(0e520h)		;a1b6
 	and a			;a1b9
 	call nz,L_A23F		;a1ba
-	ld a,(0e500h)		;a1bd
+	ld a,(0e500h)		;a1bd   ; lee el estado del personaje (5 = hundirse)
 	dec a			;a1c0
 	call nz,L_A2C4		;a1c1
 	ld hl,(0e506h)		;a1c4
@@ -329,7 +329,7 @@ L_A201:
 	ld a,(0e520h)		;a201
 	and a			;a204
 	call nz,L_A23F		;a205
-	ld a,(0e500h)		;a208
+	ld a,(0e500h)		;a208   ; lee el estado del personaje (5 = hundirse)
 	dec a			;a20b
 	call nz,L_A2C4		;a20c
 	ld hl,(0e506h)		;a20f
@@ -371,7 +371,7 @@ L_A251:
 	add a,b			;a252
 	jp L_A893		;a253
 L_A256:
-	ld a,(0e008h)		;a256
+	ld a,(0e008h)		;a256   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
 	and 001h		;a259
 	ret z			;a25b
 	call L_AEE1		;a25c
@@ -391,32 +391,32 @@ L_A265:
 	ld a,002h		;a27e
 	ld (0e503h),a		;a280
 	ld a,003h		;a283
-	ld (0e500h),a		;a285
+	ld (0e500h),a		;a285   ; guarda el estado del personaje (5 = hundirse)
 	jp L_A911		;a288
 L_A28B:
-	ld a,(0e008h)		;a28b
+	ld a,(0e008h)		;a28b   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
 	and 001h		;a28e
 	ret z			;a290
-	ld a,(0e500h)		;a291
+	ld a,(0e500h)		;a291   ; lee el estado del personaje (5 = hundirse)
 	dec a			;a294
 	ret z			;a295
 	xor a			;a296
 	ld (0e509h),a		;a297
 	ld (0e50ah),a		;a29a
 	inc a			;a29d
-	ld (0e500h),a		;a29e
+	ld (0e500h),a		;a29e   ; guarda el estado del personaje (5 = hundirse)
 	ld a,001h		;a2a1
-	jp 04e1fh		;a2a3
+	jp 04e1fh		;a2a3   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_A2A6:
-	ld a,(0e008h)		;a2a6
+	ld a,(0e008h)		;a2a6   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
 	and 002h		;a2a9
 	jp z,L_A178		;a2ab
 	call L_AEF2		;a2ae
 	jp nc,L_A178		;a2b1
-	ld a,(0e505h)		;a2b4
+	ld a,(0e505h)		;a2b4   ; lee la y del personaje
 	and 0f8h		;a2b7
 	add a,008h		;a2b9
-	ld (0e505h),a		;a2bb
+	ld (0e505h),a		;a2bb   ; guarda la y del personaje
 	ld a,002h		;a2be
 	ld b,010h		;a2c0
 	jr L_A265		;a2c2
@@ -436,7 +436,7 @@ L_A2D2:
 	inc a			;a2da
 	ld (0e515h),a		;a2db
 	ld a,(0e50eh)		;a2de
-	call 04140h		;a2e1
+	call 04140h		;a2e1   ; despacha: salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_A2E4: 4 destinos del despachador de 0x4140 (call en p03:A2E1):
@@ -455,7 +455,7 @@ DATA_tabla_A2E4:
 
 L_A2EC:
 	ld b,001h		;a2ec
-	ld a,(0e009h)		;a2ee
+	ld a,(0e009h)		;a2ee   ; lee el mando (la otra copia que cambia p03:A8BE)
 	rra			;a2f1
 	rra			;a2f2
 	and 003h		;a2f3
@@ -487,7 +487,7 @@ L_A320:
 	ld (0e537h),a		;a325
 	ret			;a328
 L_A329:
-	ld a,(0e501h)		;a329
+	ld a,(0e501h)		;a329   ; lee quien juega (0 Afrodita)
 	and a			;a32c
 	ld a,(0e509h)		;a32d
 	ld b,00ch		;a330
@@ -497,7 +497,7 @@ L_A336:
 	push bc			;a336
 	cp b			;a337
 	jr c,L_A376		;a338
-	ld a,(0e009h)		;a33a
+	ld a,(0e009h)		;a33a   ; lee el mando (la otra copia que cambia p03:A8BE)
 	rra			;a33d
 	rra			;a33e
 	and 003h		;a33f
@@ -538,7 +538,7 @@ L_A376:
 	ld a,(0e509h)		;a379
 	cp b			;a37c
 	jr nc,L_A3AC		;a37d
-	ld a,(0e501h)		;a37f
+	ld a,(0e501h)		;a37f   ; lee quien juega (0 Afrodita)
 	and a			;a382
 	jr z,L_A399		;a383
 	ld a,(0e52bh)		;a385
@@ -548,11 +548,11 @@ L_A376:
 	cp 006h		;a38e
 	jr c,L_A399		;a390
 L_A392:
-	ld a,(0e009h)		;a392
+	ld a,(0e009h)		;a392   ; lee el mando (la otra copia que cambia p03:A8BE)
 	and 001h		;a395
 	jr z,L_A3A7		;a397
 L_A399:
-	ld a,(0e505h)		;a399
+	ld a,(0e505h)		;a399   ; lee la y del personaje
 	cp 029h		;a39c
 	jr c,L_A3A7		;a39e
 	ld a,(0e519h)		;a3a0
@@ -577,12 +577,12 @@ L_A3AC:
 	and 00ch		;a3c3
 	ld (0e52eh),a		;a3c5
 L_A3C8:
-	ld a,(0e500h)		;a3c8
+	ld a,(0e500h)		;a3c8   ; lee el estado del personaje (5 = hundirse)
 	dec a			;a3cb
 	ld a,002h		;a3cc
-	call nz,04e1fh		;a3ce
+	call nz,04e1fh		;a3ce   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	xor a			;a3d1
-	ld (0e500h),a		;a3d2
+	ld (0e500h),a		;a3d2   ; guarda el estado del personaje (5 = hundirse)
 	ld (0e50eh),a		;a3d5
 	ld (0e52bh),a		;a3d8
 	call L_A560		;a3db
@@ -599,7 +599,7 @@ L_A3E3:
 L_A3ED:
 	jp L_A911		;a3ed
 L_A3F0:
-	ld a,(0e501h)		;a3f0
+	ld a,(0e501h)		;a3f0   ; lee quien juega (0 Afrodita)
 	and a			;a3f3
 	ld b,018h		;a3f4
 	ld de,0a953h		;a3f6
@@ -628,7 +628,7 @@ L_A41B:
 	dec a			;a41b
 	ret m			;a41c
 	ex de,hl			;a41d
-	call 04155h		;a41e
+	call 04155h		;a41e   ; byte_de_tabla: A = el byte HL + A
 	ld b,a			;a421
 	ld c,000h		;a422
 	ld a,(0e511h)		;a424
@@ -773,7 +773,7 @@ L_A526:
 	ld a,004h		;a529
 	ld (0e50fh),a		;a52b
 	ld a,002h		;a52e
-	call 04e1fh		;a530
+	call 04e1fh		;a530   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	jp L_A4A3		;a533
 L_A536:
 	ld hl,0e515h		;a536
@@ -789,7 +789,7 @@ L_A536:
 	ld (0e503h),a		;a54d
 	call L_A3E3		;a550
 	xor a			;a553
-	ld (0e500h),a		;a554
+	ld (0e500h),a		;a554   ; guarda el estado del personaje (5 = hundirse)
 L_A557:
 	ld (0e50eh),a		;a557
 	ld (0e508h),a		;a55a
@@ -813,7 +813,7 @@ L_A570:
 	ld (hl),004h		;a57c
 	call 05cc9h		;a57e
 	ld a,094h		;a581
-	call 04e1fh		;a583
+	call 04e1fh		;a583   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_A586:
 	jp L_A4A3		;a586
 L_A589:
@@ -870,7 +870,7 @@ L_A5D6:
 	ld b,000h		;a5da
 	jr z,L_A5E3		;a5dc
 	ld b,002h		;a5de
-	call 0415ch		;a5e0
+	call 0415ch		;a5e0   ; de_negado: DE = -DE
 L_A5E3:
 	ld hl,(0e506h)		;a5e3
 	add hl,de			;a5e6
@@ -890,10 +890,10 @@ L_A5F4:
 	add a,b			;a5fa
 	jp L_A912		;a5fb
 L_A5FE:
-	ld a,(0e080h)		;a5fe
+	ld a,(0e080h)		;a5fe   ; lee tiene el objeto 0x11
 	and a			;a601
 	ret z			;a602
-	ld a,(0e500h)		;a603
+	ld a,(0e500h)		;a603   ; lee el estado del personaje (5 = hundirse)
 	dec a			;a606
 	ret			;a607
 L_A608:
@@ -917,12 +917,12 @@ L_A62B:
 	ld a,001h		;a62b
 	ld (0ec07h),a		;a62d
 	ld a,02eh		;a630
-	call 04e1fh		;a632
+	call 04e1fh		;a632   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_A635:
 	xor a			;a635
 	ld (0e50ch),a		;a636
 	ld (0e50bh),a		;a639
-	ld (0e500h),a		;a63c
+	ld (0e500h),a		;a63c   ; guarda el estado del personaje (5 = hundirse)
 	ld a,(0e516h)		;a63f
 	ld (0e503h),a		;a642
 	call L_A560		;a645
@@ -973,25 +973,25 @@ L_A692:
 	bit 0,(hl)		;a692
 	ret nz			;a694
 L_A695:
-	ld a,(0e505h)		;a695
+	ld a,(0e505h)		;a695   ; lee la y del personaje
 	add a,005h		;a698
 	ld l,a			;a69a
-	ld a,(0e507h)		;a69b
+	ld a,(0e507h)		;a69b   ; lee la x del personaje
 	add a,d			;a69e
 	ld h,a			;a69f
-	call 04da1h		;a6a0
+	call 04da1h		;a6a0   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	ld a,(hl)			;a6a3
 	cp 0bah		;a6a4
 	ret c			;a6a6
 	xor a			;a6a7
-	ld (0e500h),a		;a6a8
-	ld a,(0e507h)		;a6ab
+	ld (0e500h),a		;a6a8   ; guarda el estado del personaje (5 = hundirse)
+	ld a,(0e507h)		;a6ab   ; lee la x del personaje
 	add a,e			;a6ae
 	jp L_A893		;a6af
 L_A6B2:
 	ld a,c			;a6b2
 	ld (0e503h),a		;a6b3
-	ld a,(0e080h)		;a6b6
+	ld a,(0e080h)		;a6b6   ; lee tiene el objeto 0x11
 	ld de,00100h		;a6b9
 	and a			;a6bc
 	jr z,L_A6C2		;a6bd
@@ -1000,7 +1000,7 @@ L_A6C2:
 	ld a,b			;a6c2
 	ld (0e50ch),a		;a6c3
 	dec a			;a6c6
-	call z,0415ch		;a6c7
+	call z,0415ch		;a6c7   ; de_negado: DE = -DE
 	ld hl,(0e504h)		;a6ca
 	add hl,de			;a6cd
 	ld a,h			;a6ce
@@ -1028,18 +1028,18 @@ L_A6EA:
 	ld (0e538h),a		;a6f1
 	ld a,(0e604h)		;a6f4
 	bit 1,a		;a6f7
-	ld a,(0e507h)		;a6f9
+	ld a,(0e507h)		;a6f9   ; lee la x del personaje
 	ld b,001h		;a6fc
 	jr z,L_A702		;a6fe
 	ld b,0ffh		;a700
 L_A702:
 	add a,b			;a702
-	ld (0e507h),a		;a703
+	ld (0e507h),a		;a703   ; guarda la x del personaje
 	ld hl,0e50fh		;a706
 	dec (hl)			;a709
 	ret nz			;a70a
 	xor a			;a70b
-	ld (0e500h),a		;a70c
+	ld (0e500h),a		;a70c   ; guarda el estado del personaje (5 = hundirse)
 	ld (0e518h),a		;a70f
 	jp L_A560		;a712
 L_A715:
@@ -1047,7 +1047,7 @@ L_A715:
 	call L_A76F		;a718
 	jp L_A9CF		;a71b
 L_A71E:
-	ld a,(0e008h)		;a71e
+	ld a,(0e008h)		;a71e   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
 	bit 4,a		;a721
 	push af			;a723
 	call nz,L_A747		;a724
@@ -1075,7 +1075,7 @@ L_A747:
 	ld a,(hl)			;a74a
 	and a			;a74b
 	ret nz			;a74c
-	ld a,(0e500h)		;a74d
+	ld a,(0e500h)		;a74d   ; lee el estado del personaje (5 = hundirse)
 	cp 003h		;a750
 	jr c,L_A75B		;a752
 	ret nz			;a754
@@ -1091,7 +1091,7 @@ L_A75B:
 	ld (0e526h),a		;a764
 	ld (0e538h),a		;a767
 	ld a,013h		;a76a
-	jp 04e1fh		;a76c
+	jp 04e1fh		;a76c   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_A76F:
 	xor a			;a76f
 	ld (0e523h),a		;a770
@@ -1100,7 +1100,7 @@ L_A76F:
 	dec a			;a777
 	jr nz,L_A7C8		;a778
 	ld b,008h		;a77a
-	ld a,(0e500h)		;a77c
+	ld a,(0e500h)		;a77c   ; lee el estado del personaje (5 = hundirse)
 	dec a			;a77f
 	jr nz,L_A784		;a780
 	ld b,006h		;a782
@@ -1111,7 +1111,7 @@ L_A784:
 	ld a,001h		;a78c
 	inc (hl)			;a78e
 L_A78F:
-	ld a,(0e500h)		;a78f
+	ld a,(0e500h)		;a78f   ; lee el estado del personaje (5 = hundirse)
 	ld c,012h		;a792
 	dec a			;a794
 	jr z,L_A799		;a795
@@ -1120,19 +1120,19 @@ L_A799:
 	ld a,(0e503h)		;a799
 	and a			;a79c
 	jr z,L_A7A9		;a79d
-	ld a,(0e507h)		;a79f
+	ld a,(0e507h)		;a79f   ; lee la x del personaje
 	sub c			;a7a2
 	jr c,L_A7C1		;a7a3
 	add a,006h		;a7a5
 	jr L_A7B1		;a7a7
 L_A7A9:
-	ld a,(0e507h)		;a7a9
+	ld a,(0e507h)		;a7a9   ; lee la x del personaje
 	add a,c			;a7ac
 	jr c,L_A7C1		;a7ad
 	sub 006h		;a7af
 L_A7B1:
 	ld h,a			;a7b1
-	ld a,(0e505h)		;a7b2
+	ld a,(0e505h)		;a7b2   ; lee la y del personaje
 	sub 008h		;a7b5
 	ld l,a			;a7b7
 	call 04dc8h		;a7b8
@@ -1159,7 +1159,7 @@ L_A7C8:
 	ld (0e51bh),a		;a7db
 	ld (0e526h),a		;a7de
 	call L_A560		;a7e1
-	ld a,(0e500h)		;a7e4
+	ld a,(0e500h)		;a7e4   ; lee el estado del personaje (5 = hundirse)
 	dec a			;a7e7
 	jp nz,L_A3E3		;a7e8
 	ld a,(0e503h)		;a7eb
@@ -1172,7 +1172,7 @@ L_A7F5:
 L_A7F8:
 	xor a			;a7f8
 	ld (0e52ch),a		;a7f9
-	ld a,(0e500h)		;a7fc
+	ld a,(0e500h)		;a7fc   ; lee el estado del personaje (5 = hundirse)
 	cp 005h		;a7ff
 	ret z			;a801
 	cp 006h		;a802
@@ -1195,14 +1195,14 @@ L_A81F:
 	cp 002h		;a81f
 	jr nz,L_A82A		;a821
 L_A823:
-	ld a,(0e505h)		;a823
+	ld a,(0e505h)		;a823   ; lee la y del personaje
 	cp 028h		;a826
 	jr c,L_A84E		;a828
 L_A82A:
-	ld a,(0e505h)		;a82a
+	ld a,(0e505h)		;a82a   ; lee la y del personaje
 	cp 0c0h		;a82d
 	jr nc,L_A865		;a82f
-	ld a,(0e507h)		;a831
+	ld a,(0e507h)		;a831   ; lee la x del personaje
 	cp 010h		;a834
 	jr c,L_A874		;a836
 	cp 0f8h		;a838
@@ -1240,7 +1240,7 @@ L_A865:
 	ld a,002h		;a86d
 	jr L_A846		;a86f
 L_A871:
-	jp L_B337		;a871
+	jp muere		;a871   ; muere: la vida y la experiencia del que juega a cero
 L_A874:
 	ld a,(0e64ah)		;a874
 	inc a			;a877
@@ -1249,18 +1249,18 @@ L_A874:
 	ld a,003h		;a87d
 	jr L_A846		;a87f
 L_A881:
-	ld a,(0e507h)		;a881
+	ld a,(0e507h)		;a881   ; lee la x del personaje
 	cp 0f8h		;a884
 	ret c			;a886
 	ld a,0f8h		;a887
 	jr L_A893		;a889
 L_A88B:
-	ld a,(0e507h)		;a88b
+	ld a,(0e507h)		;a88b   ; lee la x del personaje
 	cp 010h		;a88e
 	ret nc			;a890
 	ld a,00fh		;a891
 L_A893:
-	ld (0e507h),a		;a893
+	ld (0e507h),a		;a893   ; guarda la x del personaje
 	ret			;a896
 L_A897:
 	cp 0f6h		;a897
@@ -1268,19 +1268,19 @@ L_A897:
 	ld a,002h		;a89a
 	ld (0e01fh),a		;a89c
 	ret			;a89f
-L_A8A0:
-	ld a,(0e041h)		;a8a0
+cambia_izquierda_derecha:		; en el mapa 9 sin el objeto 0x13 cambia los bits 2 y 3 del mando
+	ld a,(0e041h)		;a8a0   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	cp 009h		;a8a3
 	ret nz			;a8a5
-	ld a,(0e082h)		;a8a6
+	ld a,(0e082h)		;a8a6   ; lee tiene el objeto 0x13
 	or a			;a8a9
 	ret nz			;a8aa
-	ld a,(0e009h)		;a8ab
+	ld a,(0e009h)		;a8ab   ; lee el mando (la otra copia que cambia p03:A8BE)
 	call L_A8BE		;a8ae
-	ld (0e009h),a		;a8b1
-	ld a,(0e008h)		;a8b4
+	ld (0e009h),a		;a8b1   ; guarda el mando (la otra copia que cambia p03:A8BE)
+	ld a,(0e008h)		;a8b4   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
 	call L_A8BE		;a8b7
-	ld (0e008h),a		;a8ba
+	ld (0e008h),a		;a8ba   ; guarda el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
 	ret			;a8bd
 L_A8BE:
 	ld b,a			;a8be
@@ -1305,11 +1305,11 @@ L_A8CE:
 	ret			;a8d8
 L_A8D9:
 	ld hl,0e52eh		;a8d9
-	ld a,(0e009h)		;a8dc
+	ld a,(0e009h)		;a8dc   ; lee el mando (la otra copia que cambia p03:A8BE)
 	and 00fh		;a8df
 	ld b,a			;a8e1
 	jr z,L_A8F0		;a8e2
-	ld a,(0e008h)		;a8e4
+	ld a,(0e008h)		;a8e4   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
 	and 00fh		;a8e7
 	jr nz,L_A8F0		;a8e9
 	ld a,b			;a8eb
@@ -1415,12 +1415,12 @@ L_A98D:
 	djnz L_A980		;a992
 	ret			;a994
 L_A995:
-	ld hl,(0e046h)		;a995
+	ld hl,(0e046h)		;a995   ; lee las flechas (BCD, 16 bits)
 	ld a,h			;a998
 	or l			;a999
 	jr z,L_A9CB		;a99a
 	ld b,003h		;a99c
-	ld de,0e08ch		;a99e
+	ld de,0e08ch		;a99e   ; apunta a tiene el objeto 0x1D
 	ld hl,0e51ch		;a9a1
 	ld a,(0e510h)		;a9a4
 	dec a			;a9a7
@@ -1428,19 +1428,19 @@ L_A995:
 	jr nc,L_A9C1		;a9aa
 	jr L_A9BD		;a9ac
 L_A9AE:
-	ld hl,(0e046h)		;a9ae
+	ld hl,(0e046h)		;a9ae   ; lee las flechas (BCD, 16 bits)
 	ld a,h			;a9b1
 	or l			;a9b2
 	jr z,L_A9CB		;a9b3
 	ld b,003h		;a9b5
-	ld de,0e08dh		;a9b7
+	ld de,0e08dh		;a9b7   ; apunta a tiene el objeto 0x1E
 	ld hl,0e51dh		;a9ba
 L_A9BD:
 	ld a,(de)			;a9bd
 	and a			;a9be
 	jr nz,L_A9C8		;a9bf
 L_A9C1:
-	ld a,(0e501h)		;a9c1
+	ld a,(0e501h)		;a9c1   ; lee quien juega (0 Afrodita)
 	and a			;a9c4
 	jr z,L_A9C8		;a9c5
 	dec b			;a9c7
@@ -1490,7 +1490,7 @@ L_AA0A:
 	and a			;aa12
 	ret z			;aa13
 	dec a			;aa14
-	call 04140h		;aa15
+	call 04140h		;aa15   ; despacha: salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_AA18: 5 destinos del despachador de 0x4140 (call en p03:AA15):
@@ -1512,7 +1512,7 @@ L_AA22:
 	ld a,(iy+001h)		;aa22
 	dec a			;aa25
 	jp nz,L_AAA5		;aa26
-	ld a,(0e500h)		;aa29
+	ld a,(0e500h)		;aa29   ; lee el estado del personaje (5 = hundirse)
 	cp 004h		;aa2c
 	jp nc,L_AD76		;aa2e
 	ld a,(0e503h)		;aa31
@@ -1533,7 +1533,7 @@ L_AA49:
 	ld (iy+002h),a		;aa54
 	ld (iy+00ah),d		;aa57
 	ld (iy+00bh),e		;aa5a
-	ld a,(0e505h)		;aa5d
+	ld a,(0e505h)		;aa5d   ; lee la y del personaje
 	sub 008h		;aa60
 	and 0f8h		;aa62
 	cp 020h		;aa64
@@ -1547,7 +1547,7 @@ L_AA6A:
 	jr nz,L_AA77		;aa73
 	ld b,000h		;aa75
 L_AA77:
-	ld a,(0e507h)		;aa77
+	ld a,(0e507h)		;aa77   ; lee la x del personaje
 	add a,b			;aa7a
 	ld (iy+007h),a		;aa7b
 	inc (iy+001h)		;aa7e
@@ -1557,18 +1557,18 @@ L_AA77:
 	jr nz,L_AA8B		;aa87
 	ld a,014h		;aa89
 L_AA8B:
-	call 04e1fh		;aa8b
+	call 04e1fh		;aa8b   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_AA8E:
-	ld a,(0e0d2h)		;aa8e
+	ld a,(0e0d2h)		;aa8e   ; lee el estado del jefe
 	or a			;aa91
 	jr z,L_AA99		;aa92
-	ld a,(0e078h)		;aa94
+	ld a,(0e078h)		;aa94   ; lee tiene el objeto 0x09
 	or a			;aa97
 	ret nz			;aa98
 L_AA99:
-	ld hl,0e046h		;aa99
+	ld hl,0e046h		;aa99   ; apunta a las flechas (BCD)
 	ld bc,00001h		;aa9c
-	call 09234h		;aa9f
+	call 09234h		;aa9f   ; resta_bcd: (HL) -= BC en BCD
 	jp 05f79h		;aaa2
 L_AAA5:
 	ld a,(iy+007h)		;aaa5
@@ -1592,7 +1592,7 @@ L_AAC8:
 	ld a,(iy+001h)		;aac8
 	dec a			;aacb
 	jr nz,L_AAA5		;aacc
-	ld a,(0e500h)		;aace
+	ld a,(0e500h)		;aace   ; lee el estado del personaje (5 = hundirse)
 	cp 004h		;aad1
 	jp nc,L_AD76		;aad3
 	ld a,(0e503h)		;aad6
@@ -1728,10 +1728,10 @@ L_ABFB:
 	jr nz,L_AC40		;abff
 	call L_AE92		;ac01
 	jp nz,L_AD76		;ac04
-	ld a,(0e505h)		;ac07
+	ld a,(0e505h)		;ac07   ; lee la y del personaje
 	sub 008h		;ac0a
 	ld (iy+005h),a		;ac0c
-	ld a,(0e507h)		;ac0f
+	ld a,(0e507h)		;ac0f   ; lee la x del personaje
 	sub 008h		;ac12
 	ld (iy+007h),a		;ac14
 	ld bc,03004h		;ac17
@@ -1796,11 +1796,11 @@ L_AC92:
 	jr nz,L_ACDE		;ac96
 	call L_AE8D		;ac98
 	jp nz,L_AD76		;ac9b
-	ld a,(0e505h)		;ac9e
+	ld a,(0e505h)		;ac9e   ; lee la y del personaje
 	ld l,a			;aca1
 	sub 004h		;aca2
 	ld (iy+005h),a		;aca4
-	ld a,(0e507h)		;aca7
+	ld a,(0e507h)		;aca7   ; lee la x del personaje
 	sub 008h		;acaa
 	ld (iy+007h),a		;acac
 	ld h,a			;acaf
@@ -1823,17 +1823,17 @@ L_AC92:
 	ld (iy+00bh),e		;acd3
 L_ACD6:
 	ld a,016h		;acd6
-	call 04e1fh		;acd8
+	call 04e1fh		;acd8   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	jp L_AA8E		;acdb
 L_ACDE:
 	dec a			;acde
 	jr nz,L_AD04		;acdf
-	ld a,(0e505h)		;ace1
+	ld a,(0e505h)		;ace1   ; lee la y del personaje
 	sub (iy+005h)		;ace4
 	jr c,L_ACF9		;ace7
 	cp 015h		;ace9
 	jr nc,L_ACF9		;aceb
-	ld a,(0e507h)		;aced
+	ld a,(0e507h)		;aced   ; lee la x del personaje
 	sub (iy+007h)		;acf0
 	add a,008h		;acf3
 	ret c			;acf5
@@ -1890,7 +1890,7 @@ L_AD3A:
 	ld a,(0e510h)		;ad3a
 	cp 006h		;ad3d
 	ret nz			;ad3f
-	ld a,(0e008h)		;ad40
+	ld a,(0e008h)		;ad40   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
 	and 020h		;ad43
 	ret z			;ad45
 	ld a,001h		;ad46
@@ -1972,7 +1972,7 @@ L_ADD2:
 	add a,002h		;add7
 	ld l,a			;add9
 L_ADDA:
-	call 04da1h		;adda
+	call 04da1h		;adda   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 L_ADDD:
 	ld a,0b9h		;addd
 	cp (hl)			;addf
@@ -2046,13 +2046,13 @@ L_AE4B:
 	sub 008h		;ae5e
 	ld (iy+007h),a		;ae60
 	ld a,026h		;ae63
-	jp 04e1fh		;ae65
+	jp 04e1fh		;ae65   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_AE68:
 	set 1,(iy+002h)		;ae68
 	res 0,(iy+002h)		;ae6c
 	ld e,(iy+00eh)		;ae70
 	ld d,(iy+00fh)		;ae73
-	call 0415ch		;ae76
+	call 0415ch		;ae76   ; de_negado: DE = -DE
 	ld (iy+00eh),e		;ae79
 	ld (iy+00fh),d		;ae7c
 	ld de,0f800h		;ae7f
@@ -2060,20 +2060,20 @@ L_AE68:
 	ld (iy+00dh),d		;ae85
 L_AE88:
 	ld a,01dh		;ae88
-	jp 04e1fh		;ae8a
+	jp 04e1fh		;ae8a   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_AE8D:
 	ld a,(0e52ah)		;ae8d
 	and a			;ae90
 	ret nz			;ae91
 L_AE92:
-	ld a,(0e500h)		;ae92
+	ld a,(0e500h)		;ae92   ; lee el estado del personaje (5 = hundirse)
 	and a			;ae95
 	ret nz			;ae96
 	jp L_A8CE		;ae97
 L_AE9A:
-	ld a,(0e501h)		;ae9a
+	ld a,(0e501h)		;ae9a   ; lee quien juega (0 Afrodita)
 	or a			;ae9d
-	ld hl,0e053h		;ae9e
+	ld hl,0e053h		;ae9e   ; apunta a el tope de la vida de Afrodita
 	jr z,L_AEA5		;aea1
 	ld l,057h		;aea3
 L_AEA5:
@@ -2113,20 +2113,20 @@ L_AEBC:
 	exx			;aedf
 	ret			;aee0
 L_AEE1:
-	ld a,(0e507h)		;aee1
+	ld a,(0e507h)		;aee1   ; lee la x del personaje
 	sub 008h		;aee4
 	ld h,a			;aee6
-	ld a,(0e505h)		;aee7
+	ld a,(0e505h)		;aee7   ; lee la y del personaje
 	dec a			;aeea
 	ld l,a			;aeeb
 	ld c,004h		;aeec
 	ld b,000h		;aeee
 	jr L_AF02		;aef0
 L_AEF2:
-	ld a,(0e507h)		;aef2
+	ld a,(0e507h)		;aef2   ; lee la x del personaje
 	sub 008h		;aef5
 	ld h,a			;aef7
-	ld a,(0e505h)		;aef8
+	ld a,(0e505h)		;aef8   ; lee la y del personaje
 	add a,008h		;aefb
 	ld l,a			;aefd
 	ld c,004h		;aefe
@@ -2136,7 +2136,7 @@ L_AF02:
 	ld a,h			;af03
 	add a,c			;af04
 	ld h,a			;af05
-	call 04da1h		;af06
+	call 04da1h		;af06   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	ld a,(hl)			;af09
 	pop hl			;af0a
 	sub 09ah		;af0b
@@ -2149,7 +2149,7 @@ L_AF02:
 	add a,c			;af15
 	ld h,a			;af16
 	push hl			;af17
-	call 04da1h		;af18
+	call 04da1h		;af18   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	ld a,(hl)			;af1b
 	pop hl			;af1c
 	sub 09ah		;af1d
@@ -2157,7 +2157,7 @@ L_AF02:
 	ret nc			;af21
 	ld a,h			;af22
 	and 0f8h		;af23
-	ld (0e507h),a		;af25
+	ld (0e507h),a		;af25   ; guarda la x del personaje
 	xor a			;af28
 	ld (0e525h),a		;af29
 	ld c,b			;af2c
@@ -2186,7 +2186,7 @@ L_AF41:
 	ld b,a			;af4a
 	bit 0,c		;af4b
 	jr nz,L_AF63		;af4d
-	ld a,(0e505h)		;af4f
+	ld a,(0e505h)		;af4f   ; lee la y del personaje
 	sub b			;af52
 	inc hl			;af53
 	inc hl			;af54
@@ -2205,12 +2205,12 @@ L_AF63:
 	ld a,b			;af63
 	sub 008h		;af64
 	ld b,a			;af66
-	ld a,(0e505h)		;af67
+	ld a,(0e505h)		;af67   ; lee la y del personaje
 	sub b			;af6a
 	jr nz,L_AF7B		;af6b
 	inc hl			;af6d
 L_AF6E:
-	ld a,(0e507h)		;af6e
+	ld a,(0e507h)		;af6e   ; lee la x del personaje
 	sub (hl)			;af71
 	cp 011h		;af72
 	ccf			;af74
@@ -2225,7 +2225,7 @@ L_AF7D:
 	ld (0e51eh),de		;af80
 	ld a,(0e515h)		;af84
 	ld b,a			;af87
-	ld a,(0e500h)		;af88
+	ld a,(0e500h)		;af88   ; lee el estado del personaje (5 = hundirse)
 	cp 001h		;af8b
 	call z,L_AFAD		;af8d
 	add a,b			;af90
@@ -2233,7 +2233,7 @@ L_AF7D:
 	ret z			;af92
 	ld a,(0e519h)		;af93
 	bit 0,a		;af96
-	ld a,(0e507h)		;af98
+	ld a,(0e507h)		;af98   ; lee la x del personaje
 	ld c,a			;af9b
 	jr nz,L_AFA7		;af9c
 	ld a,(0e51ah)		;af9e
@@ -2243,7 +2243,7 @@ L_AF7D:
 	add a,008h		;afa5
 L_AFA7:
 	and 0f8h		;afa7
-	ld (0e507h),a		;afa9
+	ld (0e507h),a		;afa9   ; guarda la x del personaje
 	ret			;afac
 L_AFAD:
 	ex af,af'			;afad
@@ -2252,27 +2252,27 @@ L_AFAD:
 	ex af,af'			;afb3
 	ret			;afb4
 L_AFB5:
-	ld a,(0e507h)		;afb5
+	ld a,(0e507h)		;afb5   ; lee la x del personaje
 	ld h,a			;afb8
-	ld a,(0e505h)		;afb9
+	ld a,(0e505h)		;afb9   ; lee la y del personaje
 	ld l,a			;afbc
 	ld b,000h		;afbd
 	ld de,0fc04h		;afbf
 	jp 054ffh		;afc2
 L_AFC5:
-	ld a,(0e507h)		;afc5
+	ld a,(0e507h)		;afc5   ; lee la x del personaje
 	ld h,a			;afc8
-	ld a,(0e505h)		;afc9
+	ld a,(0e505h)		;afc9   ; lee la y del personaje
 	ld l,a			;afcc
 	ld b,0f0h		;afcd
 	ld de,0fc04h		;afcf
 	jp 054ffh		;afd2
 L_AFD5:
-	ld a,(0e507h)		;afd5
+	ld a,(0e507h)		;afd5   ; lee la x del personaje
 	ld h,a			;afd8
 	ld b,008h		;afd9
 L_AFDB:
-	ld a,(0e505h)		;afdb
+	ld a,(0e505h)		;afdb   ; lee la y del personaje
 	sub 008h		;afde
 	ld l,a			;afe0
 	ld de,0ff07h		;afe1
@@ -2280,12 +2280,12 @@ L_AFDB:
 L_AFE7:
 	xor a			;afe7
 	ld (0e51ah),a		;afe8
-	ld a,(0e507h)		;afeb
+	ld a,(0e507h)		;afeb   ; lee la x del personaje
 	ld h,a			;afee
 	ld b,0f8h		;afef
 	call L_AFDB		;aff1
 	jr c,L_AFFF		;aff4
-	ld a,(0e507h)		;aff6
+	ld a,(0e507h)		;aff6   ; lee la x del personaje
 	ld h,a			;aff9
 	ld b,0f7h		;affa
 	jp L_AFDB		;affc
@@ -2299,11 +2299,11 @@ L_B005:
 	xor a			;b00b
 	ld (0e511h),a		;b00c
 	ld (0e52ah),a		;b00f
-	ld a,(0e507h)		;b012
+	ld a,(0e507h)		;b012   ; lee la x del personaje
 	ld h,a			;b015
-	ld a,(0e505h)		;b016
+	ld a,(0e505h)		;b016   ; lee la y del personaje
 	ld l,a			;b019
-	call 04da1h		;b01a
+	call 04da1h		;b01a   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	ld a,(0e519h)		;b01d
 	bit 3,a		;b020
 	jr z,L_B028		;b022
@@ -2320,10 +2320,10 @@ L_B028:
 	ld a,002h		;b033
 	jr L_B05A		;b035
 L_B037:
-	ld a,(0e07fh)		;b037
+	ld a,(0e07fh)		;b037   ; lee tiene el objeto 0x10
 	and a			;b03a
 	jr z,L_B058		;b03b
-	ld hl,(0e041h)		;b03d
+	ld hl,(0e041h)		;b03d   ; lee el mapa (0xE041) y la sala (0xE042) de un tiron
 	ld a,l			;b040
 	cp 006h		;b041
 	jr nz,L_B058		;b043
@@ -2346,12 +2346,12 @@ L_B05A:
 	cp (hl)			;b060
 	jr z,L_B068		;b061
 	ld a,024h		;b063
-	call 04e1fh		;b065
+	call 04e1fh		;b065   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_B068:
 	call 044eah		;b068
 	ccf			;b06b
 	ret nc			;b06c
-	ld a,(0e501h)		;b06d
+	ld a,(0e501h)		;b06d   ; lee quien juega (0 Afrodita)
 	or a			;b070
 	ld bc,0fe03h		;b071
 	jr z,L_B078		;b074
@@ -2369,9 +2369,9 @@ L_B080:
 	jr nc,L_B093		;b085
 	ld (hl),000h		;b087
 	ld a,0ffh		;b089
-	call 0612ch		;b08b
+	call 0612ch		;b08b   ; cambia_vida: suma A (con signo) al cambio de vida pendiente del que juega
 	ld a,025h		;b08e
-	call 04e1fh		;b090
+	call 04e1fh		;b090   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_B093:
 	xor a			;b093
 	ret			;b094
@@ -2421,12 +2421,12 @@ L_B0C2:
 	res 3,(ix+002h)		;b0e2
 	ret			;b0e6
 L_B0E7:
-	ld a,(0e505h)		;b0e7
+	ld a,(0e505h)		;b0e7   ; lee la y del personaje
 	sub (ix+005h)		;b0ea
 	dec a			;b0ed
 	cp 01fh		;b0ee
 	jr nc,L_B105		;b0f0
-	ld a,(0e507h)		;b0f2
+	ld a,(0e507h)		;b0f2   ; lee la x del personaje
 	sub (ix+007h)		;b0f5
 	add a,008h		;b0f8
 	cp 004h		;b0fa
@@ -2435,12 +2435,12 @@ L_B0E7:
 	cp 004h		;b100
 	call c,L_B166		;b102
 L_B105:
-	ld a,(0e507h)		;b105
+	ld a,(0e507h)		;b105   ; lee la x del personaje
 	add a,002h		;b108
 	sub (ix+007h)		;b10a
 	cp 025h		;b10d
 	jr nc,L_B147		;b10f
-	ld a,(0e505h)		;b111
+	ld a,(0e505h)		;b111   ; lee la y del personaje
 	sub (ix+005h)		;b114
 	sub 008h		;b117
 	jr nc,L_B12D		;b119
@@ -2482,16 +2482,16 @@ L_B147:
 L_B15C:
 	ld a,(ix+007h)		;b15c
 	sub 008h		;b15f
-	ld (0e507h),a		;b161
+	ld (0e507h),a		;b161   ; guarda la x del personaje
 	jr L_B105		;b164
 L_B166:
 	ld a,(ix+007h)		;b166
 	add a,028h		;b169
-	ld (0e507h),a		;b16b
+	ld (0e507h),a		;b16b   ; guarda la x del personaje
 	ret			;b16e
 L_B16F:
 	res 0,(ix+002h)		;b16f
-	ld a,(0e500h)		;b173
+	ld a,(0e500h)		;b173   ; lee el estado del personaje (5 = hundirse)
 	cp 002h		;b176
 	ret nz			;b178
 	set 3,(ix+002h)		;b179
@@ -2517,14 +2517,14 @@ L_B194:
 	ld a,(hl)			;b19f
 	or a			;b1a0
 	ret z			;b1a1
-	ld a,(0e505h)		;b1a2
+	ld a,(0e505h)		;b1a2   ; lee la y del personaje
 	sub 010h		;b1a5
 	inc l			;b1a7
 	sub (hl)			;b1a8
 	add a,010h		;b1a9
 	cp 021h		;b1ab
 	ret nc			;b1ad
-	ld a,(0e507h)		;b1ae
+	ld a,(0e507h)		;b1ae   ; lee la x del personaje
 	inc l			;b1b1
 	sub 008h		;b1b2
 	sub (hl)			;b1b4
@@ -2539,8 +2539,8 @@ L_B1C1:
 	ld (0e520h),a		;b1c2
 	ld (0e61fh),a		;b1c5
 	call L_B8A0		;b1c8
-	ld ix,0e800h		;b1cb
-	ld a,(0e635h)		;b1cf
+	ld ix,0e800h		;b1cb   ; apunta a los huecos de figura (32 bytes cada uno)
+	ld a,(0e635h)		;b1cf   ; lee cuantos huecos de figura hay
 	ld (0e623h),a		;b1d2
 L_B1D5:
 	bit 6,(ix+002h)		;b1d5
@@ -2566,35 +2566,35 @@ L_B1ED:
 	ld a,c			;b1fc
 	cp 008h		;b1fd
 	jr nz,L_B206		;b1ff
-	ld a,(0e093h)		;b201
+	ld a,(0e093h)		;b201   ; lee tiene el objeto 0x24
 	or a			;b204
 	ret nz			;b205
 L_B206:
 	ld a,c			;b206
 	cp 02ah		;b207
 	jr nz,L_B210		;b209
-	ld a,(0e07dh)		;b20b
+	ld a,(0e07dh)		;b20b   ; lee tiene el objeto 0x0E
 	or a			;b20e
 	ret nz			;b20f
 L_B210:
 	ld a,c			;b210
 	cp 028h		;b211
 	jr nz,L_B21A		;b213
-	ld a,(0e07eh)		;b215
+	ld a,(0e07eh)		;b215   ; lee tiene el objeto 0x0F
 	or a			;b218
 	ret nz			;b219
 L_B21A:
 	ld a,c			;b21a
 	cp 02eh		;b21b
 	jr nz,L_B224		;b21d
-	ld a,(0e086h)		;b21f
+	ld a,(0e086h)		;b21f   ; lee tiene el objeto 0x17
 	or a			;b222
 	ret nz			;b223
 L_B224:
 	ld a,c			;b224
 	cp 031h		;b225
 	jr nz,L_B22E		;b227
-	ld a,(0e091h)		;b229
+	ld a,(0e091h)		;b229   ; lee tiene el objeto 0x22
 	or a			;b22c
 	ret nz			;b22d
 L_B22E:
@@ -2652,7 +2652,7 @@ L_B255:
 	call nz,04257h		;b289
 L_B28C:
 	ld a,025h		;b28c
-	jp 04e1fh		;b28e
+	jp 04e1fh		;b28e   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_B291:
 	call L_B916		;b291
 	jr L_B23E		;b294
@@ -2692,16 +2692,16 @@ L_B2CB:
 	push af			;b2cb
 	call 04257h		;b2cc
 	ld a,02dh		;b2cf
-	call 04e1fh		;b2d1
+	call 04e1fh		;b2d1   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	pop af			;b2d4
 	dec a			;b2d5
 	ld a,(ix+018h)		;b2d6
-	jp m,04d5ah		;b2d9
-	jp z,04d7bh		;b2dc
-	jp 04d82h		;b2df
+	jp m,04d5ah		;b2d9   ; suma_flechas: suma A (BCD) a las flechas de 0xE046, hasta 999
+	jp z,04d7bh		;b2dc   ; suma_monedas: suma A (BCD) a las monedas de 0xE048, hasta 999
+	jp 04d82h		;b2df   ; suma_llaves: suma A (BCD) a las llaves de 0xE04A, hasta 999
 L_B2E2:
 	call 04257h		;b2e2
-	ld a,(0e500h)		;b2e5
+	ld a,(0e500h)		;b2e5   ; lee el estado del personaje (5 = hundirse)
 	cp 003h		;b2e8
 	jp z,L_B389		;b2ea
 	ld a,03ch		;b2ed
@@ -2714,14 +2714,14 @@ L_B2E2:
 L_B2FE:
 	call 04257h		;b2fe
 L_B301:
-	ld a,(0e501h)		;b301
+	ld a,(0e501h)		;b301   ; lee quien juega (0 Afrodita)
 	or a			;b304
-	ld hl,0e053h		;b305
+	ld hl,0e053h		;b305   ; apunta a el tope de la vida de Afrodita
 	jr z,L_B30C		;b308
 	ld l,057h		;b30a
 L_B30C:
 	ld a,(hl)			;b30c
-	jp 0612ch		;b30d
+	jp 0612ch		;b30d   ; cambia_vida: suma A (con signo) al cambio de vida pendiente del que juega
 L_B310:
 	ld a,(ix+007h)		;b310
 	ld b,a			;b313
@@ -2733,19 +2733,19 @@ L_B31A:
 	ld (0e520h),bc		;b31a
 	dec c			;b31e
 	jr z,L_B32C		;b31f
-	ld a,(0e507h)		;b321
+	ld a,(0e507h)		;b321   ; lee la x del personaje
 	sub (ix+007h)		;b324
 	cp 00fh		;b327
-	jr c,L_B337		;b329
+	jr c,muere		;b329
 	ret			;b32b
 L_B32C:
-	ld a,(0e507h)		;b32c
+	ld a,(0e507h)		;b32c   ; lee la x del personaje
 	sub (ix+007h)		;b32f
 	neg		;b332
 	cp 005h		;b334
 	ret nc			;b336
-L_B337:
-	ld a,(0e501h)		;b337
+muere:		; la vida y la experiencia del que juega a cero
+	ld a,(0e501h)		;b337   ; lee quien juega (0 Afrodita)
 	or a			;b33a
 	ld a,000h		;b33b
 	ld l,a			;b33d
@@ -2753,21 +2753,21 @@ L_B337:
 	ld (0e1c5h),a		;b33f
 	jr nz,L_B352		;b342
 	ld (0e050h),a		;b344
-	ld (0e052h),a		;b347
-	ld (0e05ch),hl		;b34a
-	ld (0e05eh),a		;b34d
+	ld (0e052h),a		;b347   ; guarda la vida de Afrodita
+	ld (0e05ch),hl		;b34a   ; guarda la experiencia de Afrodita
+	ld (0e05eh),a		;b34d   ; guarda el cambio de vida pendiente de Afrodita (con signo)
 	jr L_B35E		;b350
 L_B352:
 	ld (0e054h),a		;b352
-	ld (0e056h),a		;b355
-	ld (0e05fh),hl		;b358
-	ld (0e061h),a		;b35b
+	ld (0e056h),a		;b355   ; guarda la vida de Popolon
+	ld (0e05fh),hl		;b358   ; guarda la experiencia de Popolon
+	ld (0e061h),a		;b35b   ; guarda el cambio de vida pendiente de Popolon (con signo)
 L_B35E:
 	ld a,005h		;b35e
 	call L_B366		;b360
 	jp 05832h		;b363
 L_B366:
-	ld (0e500h),a		;b366
+	ld (0e500h),a		;b366   ; guarda el estado del personaje (5 = hundirse)
 	xor a			;b369
 	ld (0e50eh),a		;b36a
 	ld (0e533h),a		;b36d
@@ -2800,7 +2800,7 @@ L_B39A:
 	jr nz,$+18		;b3a0
 	ld a,(ix+01bh)		;b3a2
 	ld hl,0b3aeh		;b3a5
-	call 04155h		;b3a8
+	call 04155h		;b3a8   ; byte_de_tabla: A = el byte HL + A
 	ld b,a			;b3ab
 	jr $+19		;b3ac
 
@@ -2824,7 +2824,7 @@ L_B3B2:
 	ld b,(hl)			;b3bb
 	call 041e9h		;b3bc
 L_B3BF:
-	ld a,(0e088h)		;b3bf
+	ld a,(0e088h)		;b3bf   ; lee tiene el objeto 0x19
 	or a			;b3c2
 	jr z,L_B3CE		;b3c3
 	ld c,b			;b3c5
@@ -2835,19 +2835,19 @@ L_B3BF:
 	and 07fh		;b3cb
 	ld b,a			;b3cd
 L_B3CE:
-	ld a,(0e501h)		;b3ce
+	ld a,(0e501h)		;b3ce   ; lee quien juega (0 Afrodita)
 	or a			;b3d1
-	ld hl,0e052h		;b3d2
+	ld hl,0e052h		;b3d2   ; apunta a la vida de Afrodita
 	jr z,L_B3D9		;b3d5
 	ld l,056h		;b3d7
 L_B3D9:
 	ld a,(hl)			;b3d9
 	cp 006h		;b3da
 	ld a,02ah		;b3dc
-	call c,04e1fh		;b3de
+	call c,04e1fh		;b3de   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	ld a,b			;b3e1
 	neg		;b3e2
-	jp 0612ch		;b3e4
+	jp 0612ch		;b3e4   ; cambia_vida: suma A (con signo) al cambio de vida pendiente del que juega
 L_B3E7:
 	or a			;b3e7
 	bit 7,(ix+003h)		;b3e8
@@ -2855,7 +2855,7 @@ L_B3E7:
 	ld a,(0e530h)		;b3ed
 	or a			;b3f0
 	ret z			;b3f1
-	ld a,(0e507h)		;b3f2
+	ld a,(0e507h)		;b3f2   ; lee la x del personaje
 	sub 008h		;b3f5
 	sub (ix+007h)		;b3f7
 	ld a,(0e503h)		;b3fa
@@ -2868,17 +2868,17 @@ L_B403:
 	ret nz			;b404
 L_B405:
 	ld a,01dh		;b405
-	call 04e1fh		;b407
+	call 04e1fh		;b407   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	scf			;b40a
 	ret			;b40b
 L_B40C:
 	ld a,(0e518h)		;b40c
 	or a			;b40f
 	ret nz			;b410
-	ld a,(0e505h)		;b411
+	ld a,(0e505h)		;b411   ; lee la y del personaje
 	sub 010h		;b414
 	ld c,a			;b416
-	ld a,(0e507h)		;b417
+	ld a,(0e507h)		;b417   ; lee la x del personaje
 	sub 008h		;b41a
 	ld b,a			;b41c
 	ld iy,0e5a0h		;b41d
@@ -2947,7 +2947,7 @@ L_B47D:
 	call L_B389		;b480
 L_B483:
 	ld a,0feh		;b483
-	call 0612ch		;b485
+	call 0612ch		;b485   ; cambia_vida: suma A (con signo) al cambio de vida pendiente del que juega
 	jp L_B28C		;b488
 L_B48B:
 	set 3,(iy+002h)		;b48b
@@ -2972,8 +2972,8 @@ L_B4A5:
 	bit 0,(iy+002h)		;b4ad
 	ret z			;b4b1
 	call L_B8B2		;b4b2
-	ld ix,0e800h		;b4b5
-	ld a,(0e635h)		;b4b9
+	ld ix,0e800h		;b4b5   ; apunta a los huecos de figura (32 bytes cada uno)
+	ld a,(0e635h)		;b4b9   ; lee cuantos huecos de figura hay
 	ld (0e623h),a		;b4bc
 L_B4BF:
 	call L_B4D1		;b4bf
@@ -3076,10 +3076,10 @@ L_B575:
 	call L_B592		;b575
 	call z,L_B5A7		;b578
 	ld a,01eh		;b57b
-	call 04e1fh		;b57d
+	call 04e1fh		;b57d   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	dec (ix+010h)		;b580
 	jp z,L_B604		;b583
-	ld a,(0e094h)		;b586
+	ld a,(0e094h)		;b586   ; lee tiene el objeto 0x25
 	or a			;b589
 	ret z			;b58a
 	dec (ix+010h)		;b58b
@@ -3117,7 +3117,7 @@ L_B5B1:
 	jr z,L_B5DF		;b5ca
 	dec (ix+010h)		;b5cc
 	jr z,L_B5DF		;b5cf
-	ld a,(0e094h)		;b5d1
+	ld a,(0e094h)		;b5d1   ; lee tiene el objeto 0x25
 	or a			;b5d4
 	ret z			;b5d5
 	dec (ix+010h)		;b5d6
@@ -3129,13 +3129,13 @@ L_B5DF:
 L_B5E2:
 	call L_AE4B		;b5e2
 	ld a,01eh		;b5e5
-	jp 04e1fh		;b5e7
-L_B5EA:
-	ld ix,0e800h		;b5ea
-	ld a,(0e635h)		;b5ee
+	jp 04e1fh		;b5e7   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+umbrella:		; acaba con todas las figuras de tipo 0x0E (p03:B604)
+	ld ix,0e800h		;b5ea   ; apunta a los huecos de figura (32 bytes cada uno)
+	ld a,(0e635h)		;b5ee   ; lee cuantos huecos de figura hay
 L_B5F1:
 	push af			;b5f1
-	ld a,(ix+000h)		;b5f2
+	ld a,(ix+000h)		;b5f2   ; lee el tipo de la figura
 	cp 00eh		;b5f5
 	call z,L_B604		;b5f7
 	ld bc,00020h		;b5fa
@@ -3146,7 +3146,7 @@ L_B5F1:
 	ret			;b603
 L_B604:
 	ld a,020h		;b604
-	call 04e1fh		;b606
+	call 04e1fh		;b606   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	ld a,(ix+000h)		;b609
 	cp 05ch		;b60c
 	jp z,L_B69B		;b60e
@@ -3154,7 +3154,7 @@ L_B604:
 	jr nz,$+17		;b613
 	ld a,(ix+01bh)		;b615
 	ld hl,0b620h		;b618
-	call 04136h		;b61b
+	call 04136h		;b61b   ; hl_mas_a: HL += A
 	jr $+15		;b61e
 
 ; ----------------------------------------------------------------------
@@ -3176,13 +3176,13 @@ L_B624:
 	add hl,bc			;b62c
 L_B62D:
 	ld c,(hl)			;b62d
-	ld a,(0e08ah)		;b62e
+	ld a,(0e08ah)		;b62e   ; lee tiene el objeto 0x1B
 	or a			;b631
 	ld a,c			;b632
 	jr z,L_B636		;b633
 	add a,a			;b635
 L_B636:
-	call 06158h		;b636
+	call 06158h		;b636   ; suma_experiencia: suma A x 256 a la experiencia del que juega
 	call L_B6AA		;b639
 	ld a,(ix+000h)		;b63c
 	ld (0e6c7h),a		;b63f
@@ -3214,13 +3214,13 @@ L_B66C:
 	ret			;b67a
 L_B67B:
 	push ix		;b67b
-	ld ix,0e800h		;b67d
+	ld ix,0e800h		;b67d   ; apunta a los huecos de figura (32 bytes cada uno)
 	ld de,00020h		;b681
-	ld a,(0e635h)		;b684
+	ld a,(0e635h)		;b684   ; lee cuantos huecos de figura hay
 	ld b,a			;b687
 	ld a,062h		;b688
 L_B68A:
-	cp (ix+000h)		;b68a
+	cp (ix+000h)		;b68a   ; compara con el tipo de la figura
 	jr z,L_B696		;b68d
 	add ix,de		;b68f
 	djnz L_B68A		;b691
@@ -3245,7 +3245,7 @@ L_B6AA:
 	ld hl,0e622h		;b6af
 	dec (hl)			;b6b2
 	ret nz			;b6b3
-	ld a,(0e041h)		;b6b4
+	ld a,(0e041h)		;b6b4   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	dec a			;b6b7
 	jp nz,04260h		;b6b8
 	ld a,001h		;b6bb
@@ -3256,7 +3256,7 @@ L_B6C1:
 	or a			;b6c4
 	ret z			;b6c5
 	call L_B8FB		;b6c6
-	ld ix,0e800h		;b6c9
+	ld ix,0e800h		;b6c9   ; apunta a los huecos de figura (32 bytes cada uno)
 	ld a,010h		;b6cd
 	ld (0e623h),a		;b6cf
 L_B6D2:
@@ -3336,9 +3336,9 @@ L_B734:
 	sub 02bh		;b749
 	jr c,L_B75A		;b74b
 	add a,002h		;b74d
-	ld (0e097h),a		;b74f
-	ld hl,0e098h		;b752
-	call 04136h		;b755
+	ld (0e097h),a		;b74f   ; guarda el nivel de los objetos 0x28/0x2B/0x2C
+	ld hl,0e098h		;b752   ; apunta a tiene el objeto 0x29
+	call 04136h		;b755   ; hl_mas_a: HL += A
 	ld (hl),001h		;b758
 L_B75A:
 	ld hl,(0e60eh)		;b75a
@@ -3347,11 +3347,11 @@ L_B75A:
 	cp 00ch		;b760
 	jr z,L_B769		;b762
 	ld a,02dh		;b764
-	call 04e1fh		;b766
+	call 04e1fh		;b766   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_B769:
-	ld hl,0e061h		;b769
-	ld a,(0e041h)		;b76c
-	call 04136h		;b76f
+	ld hl,0e061h		;b769   ; apunta a el cambio de vida pendiente de Popolon (con signo)
+	ld a,(0e041h)		;b76c   ; lee el mapa (1 el castillo, 2-11 los mundos)
+	call 04136h		;b76f   ; hl_mas_a: HL += A
 	ld a,c			;b772
 	sub 007h		;b773
 	jr nz,L_B77A		;b775
@@ -3378,15 +3378,15 @@ L_B78C:
 	inc l			;b78f
 	set 1,(hl)		;b790
 	ld a,0fch		;b792
-	call 04e1fh		;b794
+	call 04e1fh		;b794   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	ld a,085h		;b797
-	call 04e1fh		;b799
-	ld a,(0e041h)		;b79c
+	call 04e1fh		;b799   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+	ld a,(0e041h)		;b79c   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	dec a			;b79f
 	jr nz,L_B7A5		;b7a0
 	call L_AE9A		;b7a2
 L_B7A5:
-	ld a,(0e041h)		;b7a5
+	ld a,(0e041h)		;b7a5   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	dec a			;b7a8
 	ld a,088h		;b7a9
 	ld b,000h		;b7ab
@@ -3407,12 +3407,12 @@ L_B7BE:
 	ld b,a			;b7c3
 	dec b			;b7c4
 	ld a,010h		;b7c5
-	jp z,04d7bh		;b7c7
+	jp z,04d7bh		;b7c7   ; suma_monedas: suma A (BCD) a las monedas de 0xE048, hasta 999
 	dec b			;b7ca
 	ld a,002h		;b7cb
-	jp z,04d82h		;b7cd
+	jp z,04d82h		;b7cd   ; suma_llaves: suma A (BCD) a las llaves de 0xE04A, hasta 999
 	ld a,050h		;b7d0
-	jp 04d5ah		;b7d2
+	jp 04d5ah		;b7d2   ; suma_flechas: suma A (BCD) a las flechas de 0xE046, hasta 999
 L_B7D5:
 	call L_B877		;b7d5
 	ld iy,0e540h		;b7d8
@@ -3474,9 +3474,9 @@ L_B833:
 	call L_AD76		;b839
 L_B83C:
 	ld a,01eh		;b83c
-	call 04e1fh		;b83e
-	ld hl,0e08eh		;b841
-	call 04ddbh		;b844
+	call 04e1fh		;b83e   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+	ld hl,0e08eh		;b841   ; apunta a tiene el objeto 0x1F
+	call 04ddbh		;b844   ; tiene_o_popolon: NZ si la marca de HL esta puesta o se lleva a Popolon (0xE501)
 	ld b,001h		;b847
 	jr z,L_B84D		;b849
 	ld b,005h		;b84b
@@ -3488,7 +3488,7 @@ L_B84D:
 	ret nc			;b856
 L_B857:
 	ld a,020h		;b857
-	call 04e1fh		;b859
+	call 04e1fh		;b859   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_B85C:
 	ld (ix+001h),001h		;b85c
 	ld (ix+006h),00ah		;b860
@@ -3528,10 +3528,10 @@ L_B899:
 	ld (0e526h),a		;b89a
 	jp L_B83C		;b89d
 L_B8A0:
-	ld a,(0e505h)		;b8a0
+	ld a,(0e505h)		;b8a0   ; lee la y del personaje
 	sub 00eh		;b8a3
 	ld e,a			;b8a5
-	ld a,(0e507h)		;b8a6
+	ld a,(0e507h)		;b8a6   ; lee la x del personaje
 	sub 006h		;b8a9
 	ld d,a			;b8ab
 	exx			;b8ac
@@ -3556,7 +3556,7 @@ L_B8CB:
 	exx			;b8cb
 	ld a,(iy+000h)		;b8cc
 	ld hl,lb8efh		;b8cf
-	call 0414ch		;b8d2
+	call 0414ch		;b8d2   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	exx			;b8d5
 	ld a,(iy+000h)		;b8d6
 	cp 005h		;b8d9
@@ -3602,10 +3602,10 @@ L_B8FB:
 	jr z,L_B905		;b901
 	ld d,0eeh		;b903
 L_B905:
-	ld a,(0e507h)		;b905
+	ld a,(0e507h)		;b905   ; lee la x del personaje
 	add a,d			;b908
 	ld d,a			;b909
-	ld a,(0e505h)		;b90a
+	ld a,(0e505h)		;b90a   ; lee la y del personaje
 	sub 007h		;b90d
 	ld e,a			;b90f
 	exx			;b910
@@ -3731,7 +3731,7 @@ L_B9A7:
 	cp h			;b9b0
 	ret			;b9b1
 L_B9B2:
-	ld a,(0e700h)		;b9b2
+	ld a,(0e700h)		;b9b2   ; lee el tipo del jefe (el hueco 0xE700 es el jefe)
 	or a			;b9b5
 	ret z			;b9b6
 	ld a,(0e518h)		;b9b7
@@ -3747,9 +3747,9 @@ L_B9B2:
 	call L_BABA		;b9cc
 	jp L_B28C		;b9cf
 L_B9D2:
-	ld a,(0e700h)		;b9d2
+	ld a,(0e700h)		;b9d2   ; lee el tipo del jefe (el hueco 0xE700 es el jefe)
 	dec a			;b9d5
-	call 04140h		;b9d6
+	call 04140h		;b9d6   ; despacha: salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_B9D9: 11 destinos del despachador de 0x4140 (call en p03:B9D6):
@@ -3775,9 +3775,9 @@ DATA_tabla_B9D9:
 
 
 L_B9EF:
-	ld a,(0e505h)		;b9ef
+	ld a,(0e505h)		;b9ef   ; lee la y del personaje
 	ld e,a			;b9f2
-	ld a,(0e507h)		;b9f3
+	ld a,(0e507h)		;b9f3   ; lee la x del personaje
 	ld d,a			;b9f6
 	jp L_BD98		;b9f7
 L_B9FA:
@@ -3786,14 +3786,14 @@ L_B9FA:
 	call L_BA04		;b9fe
 	jp L_BAE1		;ba01
 L_BA04:
-	ld a,(0e70ah)		;ba04
+	ld a,(0e70ah)		;ba04   ; lee el mosaico del jefe
 	ld b,034h		;ba07
 	ld hl,0ba12h		;ba09
 L_BA0C:
 	sub b			;ba0c
 	add a,a			;ba0d
 	add a,a			;ba0e
-	jp 04136h		;ba0f
+	jp 04136h		;ba0f   ; hl_mas_a: HL += A
 
 ; ----------------------------------------------------------------------
 ; DATOS tres_fichas_ba12: 3 fichas de 4 bytes que p03:BA09 elige con (0xE70A)
@@ -3841,7 +3841,7 @@ L_BA42:
 	call L_BA4C		;ba46
 	jp L_BAE1		;ba49
 L_BA4C:
-	ld a,(0e70ah)		;ba4c
+	ld a,(0e70ah)		;ba4c   ; lee el mosaico del jefe
 	ld b,02bh		;ba4f
 	ld hl,0ba56h		;ba51
 	jr $-72		;ba54
@@ -3871,10 +3871,10 @@ L_BA6E:
 	inc a			;ba78
 	ld (0e518h),a		;ba79
 	ld a,004h		;ba7c
-	ld (0e500h),a		;ba7e
+	ld (0e500h),a		;ba7e   ; guarda el estado del personaje (5 = hundirse)
 	ret			;ba81
 L_BA82:
-	ld a,(0e70ah)		;ba82
+	ld a,(0e70ah)		;ba82   ; lee el mosaico del jefe
 	ld c,a			;ba85
 	ld b,000h		;ba86
 	ld hl,0ba9ah		;ba88
@@ -3903,11 +3903,11 @@ DATA_altura_por_dibujo:
 
 L_BABA:
 	ld hl,0bad2h		;baba
-	ld a,(0e700h)		;babd
+	ld a,(0e700h)		;babd   ; lee el tipo del jefe (el hueco 0xE700 es el jefe)
 	ld c,a			;bac0
 	ld b,000h		;bac1
 	add hl,bc			;bac3
-	ld a,(0e077h)		;bac4
+	ld a,(0e077h)		;bac4   ; lee tiene el objeto 0x08
 	or a			;bac7
 	ld a,(hl)			;bac8
 	jr z,L_BACE		;bac9
@@ -3915,7 +3915,7 @@ L_BABA:
 	and 07fh		;bacc
 L_BACE:
 	neg		;bace
-	jp 0612ch		;bad0
+	jp 0612ch		;bad0   ; cambia_vida: suma A (con signo) al cambio de vida pendiente del que juega
 
 ; ----------------------------------------------------------------------
 ; DATOS once_bytes_bad3: 11 bytes que p03:BABA lee en 0xBAD2 + (0xE700) (1-11)
@@ -3958,16 +3958,16 @@ L_BAF8:
 L_BB04:
 	call 0420ah		;bb04
 	ld hl,0928ah		;bb07
-	ld a,(0e700h)		;bb0a
+	ld a,(0e700h)		;bb0a   ; lee el tipo del jefe (el hueco 0xE700 es el jefe)
 	add a,a			;bb0d
-	call 04136h		;bb0e
+	call 04136h		;bb0e   ; hl_mas_a: HL += A
 	ld a,(hl)			;bb11
 	inc hl			;bb12
 	ld h,(hl)			;bb13
 	ld l,a			;bb14
 	ld b,(hl)			;bb15
 	inc hl			;bb16
-	ld a,(0e70ah)		;bb17
+	ld a,(0e70ah)		;bb17   ; lee el mosaico del jefe
 	sub b			;bb1a
 	add a,a			;bb1b
 	add a,a			;bb1c
@@ -3987,7 +3987,7 @@ L_BB2A:
 	djnz L_BB2A		;bb34
 	ret			;bb36
 L_BB37:
-	ld a,(0e500h)		;bb37
+	ld a,(0e500h)		;bb37   ; lee el estado del personaje (5 = hundirse)
 	cp 005h		;bb3a
 	ret z			;bb3c
 	ld a,(0e02ch)		;bb3d
@@ -4001,7 +4001,7 @@ L_BB37:
 	bit 0,(iy+002h)		;bb4a
 	ret z			;bb4e
 	call L_B8B2		;bb4f
-	ld ix,0e700h		;bb52
+	ld ix,0e700h		;bb52   ; apunta a el tipo del jefe (el hueco 0xE700 es el jefe)
 	call L_BB5D		;bb56
 	jp c,L_BC75		;bb59
 	ret			;bb5c
@@ -4017,9 +4017,9 @@ L_BB5D:
 	cp 005h		;bb6e
 	jp z,L_BC25		;bb70
 L_BB73:
-	ld a,(0e700h)		;bb73
+	ld a,(0e700h)		;bb73   ; lee el tipo del jefe (el hueco 0xE700 es el jefe)
 	dec a			;bb76
-	call 04140h		;bb77
+	call 04140h		;bb77   ; despacha: salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_BB7A: 11 destinos del despachador de 0x4140 (call en p03:BB77):
@@ -4048,19 +4048,19 @@ L_BB90:
 	call L_BC15		;bb90
 	jp L_BDD7		;bb93
 L_BB96:
-	ld a,(0e70ah)		;bb96
+	ld a,(0e70ah)		;bb96   ; lee el mosaico del jefe
 	cp 012h		;bb99
 	ccf			;bb9b
 	ret nc			;bb9c
 	jr L_BBAD		;bb9d
 L_BB9F:
-	ld a,(0e70ah)		;bb9f
+	ld a,(0e70ah)		;bb9f   ; lee el mosaico del jefe
 	cp 019h		;bba2
 	ccf			;bba4
 	ret nc			;bba5
 	jr L_BBAD		;bba6
 L_BBA8:
-	ld a,(0e07ah)		;bba8
+	ld a,(0e07ah)		;bba8   ; lee tiene el objeto 0x0B
 	or a			;bbab
 	ret z			;bbac
 L_BBAD:
@@ -4107,13 +4107,13 @@ DATA_tres_fichas_de_13:
 
 
 L_BC02:
-	ld a,(0e70ah)		;bc02
+	ld a,(0e70ah)		;bc02   ; lee el mosaico del jefe
 	push af			;bc05
 	ld a,(0e719h)		;bc06
-	ld (0e70ah),a		;bc09
+	ld (0e70ah),a		;bc09   ; guarda el mosaico del jefe
 	call L_BD70		;bc0c
 	pop af			;bc0f
-	ld (0e70ah),a		;bc10
+	ld (0e70ah),a		;bc10   ; guarda el mosaico del jefe
 	jr $-99		;bc13
 L_BC15:
 	ld a,(iy+010h)		;bc15
@@ -4132,9 +4132,9 @@ L_BC1F:
 L_BC25:
 	bit 2,(iy+002h)		;bc25
 	jp z,L_BB73		;bc29
-	ld a,(0e700h)		;bc2c
+	ld a,(0e700h)		;bc2c   ; lee el tipo del jefe (el hueco 0xE700 es el jefe)
 	dec a			;bc2f
-	call 04140h		;bc30
+	call 04140h		;bc30   ; despacha: salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_BC33: 12 destinos del despachador de 0x4140 (call en p03:BC30):
@@ -4201,16 +4201,16 @@ L_BC90:
 	call L_BCC1		;bc90
 	ret c			;bc93
 	ld a,027h		;bc94
-	call 04e1fh		;bc96
+	call 04e1fh		;bc96   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	dec (ix+010h)		;bc99
 	jp z,L_BD32		;bc9c
 L_BC9F:
 	ld a,(0e710h)		;bc9f
 	ld b,a			;bca2
 	ld c,000h		;bca3
-	ld a,(0e700h)		;bca5
+	ld a,(0e700h)		;bca5   ; lee el tipo del jefe (el hueco 0xE700 es el jefe)
 	ld hl,07f97h		;bca8
-	call 04155h		;bcab
+	call 04155h		;bcab   ; byte_de_tabla: A = el byte HL + A
 	srl a		;bcae
 	srl a		;bcb0
 	cp b			;bcb2
@@ -4243,10 +4243,10 @@ L_BCC1:
 	jr z,L_BCE1		;bcdd
 	ld b,002h		;bcdf
 L_BCE1:
-	ld a,(0e700h)		;bce1
+	ld a,(0e700h)		;bce1   ; lee el tipo del jefe (el hueco 0xE700 es el jefe)
 	dec a			;bce4
 	ld hl,0bd0ah		;bce5
-	call 04136h		;bce8
+	call 04136h		;bce8   ; hl_mas_a: HL += A
 	ld a,(hl)			;bceb
 	and b			;bcec
 	jr nz,L_BCFB		;bced
@@ -4255,11 +4255,11 @@ L_BCE1:
 	scf			;bcf2
 	ret z			;bcf3
 	ld a,01dh		;bcf4
-	call 04e1fh		;bcf6
+	call 04e1fh		;bcf6   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	scf			;bcf9
 	ret			;bcfa
 L_BCFB:
-	ld a,(0e700h)		;bcfb
+	ld a,(0e700h)		;bcfb   ; lee el tipo del jefe (el hueco 0xE700 es el jefe)
 	cp 006h		;bcfe
 	scf			;bd00
 	ccf			;bd01
@@ -4299,8 +4299,8 @@ L_BD32:
 	inc a			;bd36
 	ld (0e02ch),a		;bd37
 	ld a,084h		;bd3a
-	call 04e1fh		;bd3c
-	ld a,(0e041h)		;bd3f
+	call 04e1fh		;bd3c   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+	ld a,(0e041h)		;bd3f   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	cp 00bh		;bd42
 	ld a,091h		;bd44
 	jr nz,L_BD4A		;bd46
@@ -4310,13 +4310,13 @@ L_BD4A:
 L_BD4D:
 	call L_AE4B		;bd4d
 	ld a,027h		;bd50
-	jp 04e1fh		;bd52
+	jp 04e1fh		;bd52   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_BD55:
 	ld a,(0e51bh)		;bd55
 	or a			;bd58
 	ret z			;bd59
 	call L_B8FB		;bd5a
-	ld ix,0e700h		;bd5d
+	ld ix,0e700h		;bd5d   ; apunta a el tipo del jefe (el hueco 0xE700 es el jefe)
 	call L_BB5D		;bd61
 	ret nc			;bd64
 	xor a			;bd65
@@ -4327,9 +4327,9 @@ L_BD55:
 L_BD70:
 	call 0420ah		;bd70
 	ld hl,091ech		;bd73
-	ld a,(0e700h)		;bd76
+	ld a,(0e700h)		;bd76   ; lee el tipo del jefe (el hueco 0xE700 es el jefe)
 	add a,a			;bd79
-	call 04136h		;bd7a
+	call 04136h		;bd7a   ; hl_mas_a: HL += A
 	ld a,(hl)			;bd7d
 	inc hl			;bd7e
 	ld h,(hl)			;bd7f
@@ -4337,7 +4337,7 @@ L_BD70:
 L_BD81:
 	ld b,(hl)			;bd81
 	inc hl			;bd82
-	ld a,(0e70ah)		;bd83
+	ld a,(0e70ah)		;bd83   ; lee el mosaico del jefe
 	sub b			;bd86
 	add a,a			;bd87
 	add a,a			;bd88
@@ -4488,7 +4488,7 @@ L_BE50:
 	xor 001h		;be5b
 	jr L_BE4C		;be5d
 L_BE5F:
-	ld a,(0e505h)		;be5f
+	ld a,(0e505h)		;be5f   ; lee la y del personaje
 	ld (0e53eh),a		;be62
 	ld a,004h		;be65
 	ld (0e502h),a		;be67
@@ -4548,7 +4548,7 @@ L_BEC7:
 	ld hl,0bf0bh		;bedb
 	ld c,01dh		;bede
 	ldir		;bee0
-	ld a,(0e041h)		;bee2
+	ld a,(0e041h)		;bee2   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	ld (0ee55h),a		;bee5
 	call 054bfh		;bee8
 	ld hl,0eb00h		;beeb
@@ -4563,9 +4563,9 @@ L_BEF7:
 	xor a			;befe
 	ld (0e518h),a		;beff
 L_BF02:
-	ld a,(0e505h)		;bf02
+	ld a,(0e505h)		;bf02   ; lee la y del personaje
 	and 0f8h		;bf05
-	ld (0e505h),a		;bf07
+	ld (0e505h),a		;bf07   ; guarda la y del personaje
 	ret			;bf0a
 
 ; ----------------------------------------------------------------------

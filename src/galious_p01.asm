@@ -35,13 +35,13 @@ L_6002:
 	ret			;6002
 L_6003:
 	ld hl,06017h		;6003
-	ld a,(0e041h)		;6006
-	call 0414ch		;6009
+	ld a,(0e041h)		;6006   ; lee el mapa (1 el castillo, 2-11 los mundos)
+	call 0414ch		;6009   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 L_600C:
 	ld a,e			;600c
-	ld (0e505h),a		;600d
+	ld (0e505h),a		;600d   ; guarda la y del personaje
 	ld a,d			;6010
-	ld (0e507h),a		;6011
+	ld (0e507h),a		;6011   ; guarda la x del personaje
 	ret			;6014
 L_6015:
 	ld de,(0e0d0h)		;6015
@@ -72,7 +72,7 @@ DATA_salida_por_mundo:
 
 L_602F:
 	xor a			;602f
-	ld (0e690h),a		;6030
+	ld (0e690h),a		;6030   ; guarda la sala especial (pista o tienda)
 	ld (0e603h),a		;6033
 	ld (0e536h),a		;6036
 	ld (0e539h),a		;6039
@@ -85,7 +85,7 @@ L_602F:
 	ret			;604c
 L_604D:
 	ld de,07caeh		;604d
-	call 05c25h		;6050
+	call 05c25h		;6050   ; lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
 	call 05f79h		;6053
 	call 05f84h		;6056
 	call 05f8fh		;6059
@@ -131,12 +131,12 @@ L_6085:
 	pop af			;60a1
 	ret			;60a2
 L_60A3:
-	ld de,0e056h		;60a3
+	ld de,0e056h		;60a3   ; apunta a la vida de Popolon
 	ld hl,03822h		;60a6
 	ld b,02dh		;60a9
 	jr L_60C9		;60ab
 L_60AD:
-	ld de,0e052h		;60ad
+	ld de,0e052h		;60ad   ; apunta a la vida de Afrodita
 	ld hl,0382dh		;60b0
 	ld b,038h		;60b3
 	jr L_60C9		;60b5
@@ -215,11 +215,11 @@ L_6126:
 	ld c,a			;6126
 	ld a,(0f000h)		;6127
 	jr L_6130		;612a
-L_612C:
+cambia_vida:		; suma A (con signo) al cambio de vida pendiente del que juega
 	ld c,a			;612c
-	ld a,(0e501h)		;612d
+	ld a,(0e501h)		;612d   ; lee quien juega (0 Afrodita)
 L_6130:
-	ld hl,0e05eh		;6130
+	ld hl,0e05eh		;6130   ; apunta a el cambio de vida pendiente de Afrodita (con signo)
 	or a			;6133
 	jr z,L_6138		;6134
 	ld l,061h		;6136
@@ -248,26 +248,26 @@ L_6145:
 	or a			;6151
 	ret nz			;6152
 	ld a,029h		;6153
-	jp 04e1fh		;6155
-L_6158:
+	jp 04e1fh		;6155   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+suma_experiencia:		; suma A x 256 a la experiencia del que juega
 	ld d,a			;6158
 	ld e,000h		;6159
-	ld a,(0e501h)		;615b
+	ld a,(0e501h)		;615b   ; lee quien juega (0 Afrodita)
 	or a			;615e
 	jr nz,L_6169		;615f
-	ld hl,(0e05ch)		;6161
+	ld hl,(0e05ch)		;6161   ; lee la experiencia de Afrodita
 	add hl,de			;6164
-	ld (0e05ch),hl		;6165
+	ld (0e05ch),hl		;6165   ; guarda la experiencia de Afrodita
 	ret			;6168
 L_6169:
-	ld hl,(0e05fh)		;6169
+	ld hl,(0e05fh)		;6169   ; lee la experiencia de Popolon
 	add hl,de			;616c
-	ld (0e05fh),hl		;616d
+	ld (0e05fh),hl		;616d   ; guarda la experiencia de Popolon
 	ret			;6170
 L_6171:
 	xor a			;6171
 	ld (0e062h),a		;6172
-	ld a,(0e500h)		;6175
+	ld a,(0e500h)		;6175   ; lee el estado del personaje (5 = hundirse)
 	cp 005h		;6178
 	ret z			;617a
 	ld a,(0e604h)		;617b
@@ -285,16 +285,16 @@ L_618D:
 	ld hl,0e050h		;6191
 	ld de,0e05dh		;6194
 	call L_61D8		;6197
-	ld hl,0e052h		;619a
-	ld de,0e05eh		;619d
+	ld hl,0e052h		;619a   ; apunta a la vida de Afrodita
+	ld de,0e05eh		;619d   ; apunta a el cambio de vida pendiente de Afrodita (con signo)
 	call L_61F3		;61a0
-	ld a,(0e052h)		;61a3
+	ld a,(0e052h)		;61a3   ; lee la vida de Afrodita
 	or a			;61a6
 	ret nz			;61a7
 	push bc			;61a8
-	ld a,(0e501h)		;61a9
+	ld a,(0e501h)		;61a9   ; lee quien juega (0 Afrodita)
 	or a			;61ac
-	call z,0b337h		;61ad
+	call z,0b337h		;61ad   ; muere: la vida y la experiencia del que juega a cero
 	pop bc			;61b0
 	ret			;61b1
 L_61B2:
@@ -303,16 +303,16 @@ L_61B2:
 	ld hl,0e054h		;61b7
 	ld de,0e060h		;61ba
 	call L_61D8		;61bd
-	ld hl,0e056h		;61c0
-	ld de,0e061h		;61c3
+	ld hl,0e056h		;61c0   ; apunta a la vida de Popolon
+	ld de,0e061h		;61c3   ; apunta a el cambio de vida pendiente de Popolon (con signo)
 	call L_61F3		;61c6
-	ld a,(0e056h)		;61c9
+	ld a,(0e056h)		;61c9   ; lee la vida de Popolon
 	or a			;61cc
 	ret nz			;61cd
 	push bc			;61ce
-	ld a,(0e501h)		;61cf
+	ld a,(0e501h)		;61cf   ; lee quien juega (0 Afrodita)
 	or a			;61d2
-	call nz,0b337h		;61d3
+	call nz,0b337h		;61d3   ; muere: la vida y la experiencia del que juega a cero
 	pop bc			;61d6
 	ret			;61d7
 L_61D8:
@@ -379,7 +379,7 @@ L_6215:
 	ld bc,00c0eh		;6229
 	call L_6D49		;622c
 	ld de,07d51h		;622f
-	call 05c25h		;6232
+	call 05c25h		;6232   ; lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
 	xor a			;6235
 	ld (0f01fh),a		;6236
 	ld (0f020h),a		;6239
@@ -398,7 +398,7 @@ L_6251:
 	or a			;6257
 	jp z,L_62DA		;6258
 	ld a,(0f01fh)		;625b
-	call 04140h		;625e
+	call 04140h		;625e   ; despacha: salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_6261: 3 destinos del despachador de 0x4140 (call en p01:625E):
@@ -454,7 +454,7 @@ L_6298:
 	inc (hl)			;62a1
 	ld a,(hl)			;62a2
 	dec a			;62a3
-	call 04140h		;62a4
+	call 04140h		;62a4   ; despacha: salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_62A7: 5 destinos del despachador de 0x4140 (call en p01:62A4):
@@ -511,7 +511,7 @@ L_62DA:
 L_62EF:
 	xor a			;62ef
 	ld (0e6a0h),a		;62f0
-	ld bc,(0e041h)		;62f3
+	ld bc,(0e041h)		;62f3   ; lee el mapa (0xE041) y la sala (0xE042) de un tiron
 	dec c			;62f7
 	ret nz			;62f8
 	ld hl,0b8a2h		;62f9
@@ -572,7 +572,7 @@ L_633C:
 	ld (hl),d			;6348
 	push hl			;6349
 	ex de,hl			;634a
-	call 04da1h		;634b
+	call 04da1h		;634b   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	ex de,hl			;634e
 	pop hl			;634f
 	inc l			;6350
@@ -625,10 +625,10 @@ L_6385:
 	ld (ix+000h),000h		;6393
 	ret			;6397
 L_6398:
-	ld a,(0e090h)		;6398
+	ld a,(0e090h)		;6398   ; lee tiene el objeto 0x21
 	or a			;639b
 	ret z			;639c
-	ld a,(0e008h)		;639d
+	ld a,(0e008h)		;639d   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
 	and 010h		;63a0
 	ret z			;63a2
 	ld hl,0e632h		;63a3
@@ -675,7 +675,7 @@ L_63CF:
 	exx			;63e8
 	ret			;63e9
 L_63EA:
-	ld hl,(0e041h)		;63ea
+	ld hl,(0e041h)		;63ea   ; lee el mapa (0xE041) y la sala (0xE042) de un tiron
 	dec l			;63ed
 	ret nz			;63ee
 	ld c,000h		;63ef
@@ -735,14 +735,14 @@ L_6446:
 	add ix,de		;644b
 	djnz L_6446		;644d
 	exx			;644f
-	ld a,(0e041h)		;6450
+	ld a,(0e041h)		;6450   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	dec a			;6453
 	ret nz			;6454
 	ld hl,0e4a1h		;6455
 	ld b,006h		;6458
 	ld de,00010h		;645a
 L_645D:
-	ld a,(0e042h)		;645d
+	ld a,(0e042h)		;645d   ; lee la sala
 	cp (hl)			;6460
 	jr z,L_6470		;6461
 	add hl,de			;6463
@@ -787,7 +787,7 @@ L_64AD:
 	ld a,(ix+000h)		;64ad
 	dec a			;64b0
 	ld hl,0ba80h		;64b1
-	call 0414ch		;64b4
+	call 0414ch		;64b4   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ex de,hl			;64b7
 	ld e,(ix+003h)		;64b8
 	ld d,000h		;64bb
@@ -838,7 +838,7 @@ L_6516:
 	cp (ix+00fh)		;651b
 	ret c			;651e
 L_651F:
-	call 0415ch		;651f
+	call 0415ch		;651f   ; de_negado: DE = -DE
 	ld (ix+008h),e		;6522
 	ld (ix+009h),d		;6525
 	ld a,(ix+002h)		;6528
@@ -880,8 +880,8 @@ L_656E:
 	xor a			;656e
 	ld (0e614h),a		;656f
 	ld hl,01110h		;6572
-	ld (0e635h),hl		;6575
-	ld de,(0e041h)		;6578
+	ld (0e635h),hl		;6575   ; guarda cuantos huecos de figura hay y el byte siguiente (16 bits)
+	ld de,(0e041h)		;6578   ; lee el mapa (0xE041) y la sala (0xE042) de un tiron
 	dec e			;657c
 	ret nz			;657d
 	ld c,d			;657e
@@ -906,11 +906,11 @@ L_6594:
 	ret z			;6599
 	ld (0e614h),a		;659a
 	ld hl,0ba28h		;659d
-	call 0414ch		;65a0
-	ld (0e635h),de		;65a3
+	call 0414ch		;65a0   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
+	ld (0e635h),de		;65a3   ; guarda cuantos huecos de figura hay y el byte siguiente (16 bits)
 	ret			;65a7
 L_65A8:
-	call 0422bh		;65a8
+	call 0422bh		;65a8   ; a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
 	call L_660D		;65ab
 	call 05280h		;65ae
 	call L_65C6		;65b1
@@ -919,11 +919,11 @@ L_65A8:
 	call L_677A		;65ba
 	call L_661B		;65bd
 	call 054bfh		;65c0
-	jp 04215h		;65c3
+	jp 04215h		;65c3   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 L_65C6:
-	ld a,(0e501h)		;65c6
+	ld a,(0e501h)		;65c6   ; lee quien juega (0 Afrodita)
 	or a			;65c9
-	ld hl,0e05eh		;65ca
+	ld hl,0e05eh		;65ca   ; apunta a el cambio de vida pendiente de Afrodita (con signo)
 	jr z,L_65D1		;65cd
 	ld l,061h		;65cf
 L_65D1:
@@ -932,7 +932,7 @@ L_65D1:
 	jp p,L_65D8		;65d3
 	ld (hl),000h		;65d6
 L_65D8:
-	ld a,(0e501h)		;65d8
+	ld a,(0e501h)		;65d8   ; lee quien juega (0 Afrodita)
 	ld hl,0e058h		;65db
 	add a,l			;65de
 	ld l,a			;65df
@@ -942,7 +942,7 @@ L_65D8:
 	ld (hl),a			;65e4
 	ld hl,0e04ch		;65e5
 	ld (hl),000h		;65e8
-	ld a,(0e501h)		;65ea
+	ld a,(0e501h)		;65ea   ; lee quien juega (0 Afrodita)
 	inc l			;65ed
 	ld (hl),a			;65ee
 	ld a,(0e510h)		;65ef
@@ -952,7 +952,7 @@ L_65D8:
 	ret nz			;65f5
 	ld c,001h		;65f6
 	ld b,006h		;65f8
-	ld de,0e070h		;65fa
+	ld de,0e070h		;65fa   ; apunta a tiene el objeto 0x01
 L_65FD:
 	ld a,(de)			;65fd
 	or a			;65fe
@@ -974,7 +974,7 @@ L_660D:
 	ldir		;6618
 	ret			;661a
 L_661B:
-	ld a,(0e079h)		;661b
+	ld a,(0e079h)		;661b   ; lee tiene el objeto 0x0A
 	or a			;661e
 	ret z			;661f
 	ld de,0ef26h		;6620
@@ -982,10 +982,10 @@ L_661B:
 	ld bc,00003h		;6626
 	ldir		;6629
 	ld hl,0af2ah		;662b
-	ld a,(0e041h)		;662e
+	ld a,(0e041h)		;662e   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	dec a			;6631
 	ret z			;6632
-	call 0414ch		;6633
+	call 0414ch		;6633   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ex de,hl			;6636
 	ld e,(hl)			;6637
 	inc hl			;6638
@@ -1013,16 +1013,16 @@ L_664A:
 	ld hl,0f003h		;6666
 	dec (hl)			;6669
 	jr nz,L_664A		;666a
-	ld a,(0e041h)		;666c
+	ld a,(0e041h)		;666c   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	ld hl,0b038h		;666f
-	call 0414ch		;6672
+	call 0414ch		;6672   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ex de,hl			;6675
-	ld a,(0e042h)		;6676
+	ld a,(0e042h)		;6676   ; lee la sala
 	ld e,a			;6679
 	ld d,000h		;667a
 	add hl,de			;667c
 	ex de,hl			;667d
-	ld a,(0e041h)		;667e
+	ld a,(0e041h)		;667e   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	dec a			;6681
 	ld hl,0e670h		;6682
 	ld a,(de)			;6685
@@ -1030,12 +1030,12 @@ L_664A:
 	ret z			;6689
 	ld c,008h		;668a
 	call L_66A5		;668c
-	ld a,(0e089h)		;668f
+	ld a,(0e089h)		;668f   ; lee tiene el objeto 0x1A
 	and a			;6692
 	ret z			;6693
-	ld a,(0e041h)		;6694
+	ld a,(0e041h)		;6694   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	ld hl,0b0fch		;6697
-	call 04155h		;669a
+	call 04155h		;669a   ; byte_de_tabla: A = el byte HL + A
 	ld (0f020h),a		;669d
 	ld hl,0e674h		;66a0
 	ld c,005h		;66a3
@@ -1138,14 +1138,14 @@ L_6715:
 	ldir		;671e
 	ld hl,0ee46h		;6720
 	exx			;6723
-	ld de,0e07ch		;6724
+	ld de,0e07ch		;6724   ; apunta a tiene el objeto 0x0D
 	ld bc,0030ah		;6727
 	ld l,081h		;672a
 	exx			;672c
 	call L_673D		;672d
 	ld hl,0ef4fh		;6730
 	exx			;6733
-	ld de,0e076h		;6734
+	ld de,0e076h		;6734   ; apunta a tiene el objeto 0x07
 	ld bc,00106h		;6737
 	ld l,056h		;673a
 	exx			;673c
@@ -1209,7 +1209,7 @@ DATA_cuatro_caracteres_6776:
 L_677A:
 	ld hl,0efaeh		;677a
 	exx			;677d
-	ld de,0e070h		;677e
+	ld de,0e070h		;677e   ; apunta a tiene el objeto 0x01
 	ld c,006h		;6781
 	exx			;6783
 L_6784:
@@ -1275,14 +1275,14 @@ L_67DC:
 	ld (hl),e			;67e0
 	ret			;67e1
 L_67E2:
-	call 0422bh		;67e2
+	call 0422bh		;67e2   ; a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
 	call 054bfh		;67e5
 	call 04c68h		;67e8
 	call L_67F4		;67eb
 	call L_6885		;67ee
-	jp 04215h		;67f1
+	jp 04215h		;67f1   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 L_67F4:
-	ld a,(0e008h)		;67f4
+	ld a,(0e008h)		;67f4   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
 	and 003h		;67f7
 	call nz,L_686F		;67f9
 	ld a,(0e04ch)		;67fc
@@ -1292,7 +1292,7 @@ L_67F4:
 	or a			;6805
 	ret z			;6806
 	ld hl,0e04eh		;6807
-	ld a,(0e008h)		;680a
+	ld a,(0e008h)		;680a   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
 	and 00ch		;680d
 	ret z			;680f
 	bit 3,a		;6810
@@ -1329,21 +1329,21 @@ L_6831:
 	jr z,L_6829		;6839
 	jr L_6823		;683b
 L_683D:
-	ld a,(0e041h)		;683d
+	ld a,(0e041h)		;683d   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	cp 006h		;6840
 	jr nz,L_684B		;6842
-	ld a,(0e092h)		;6844
+	ld a,(0e092h)		;6844   ; lee tiene el objeto 0x23
 	or a			;6847
 	ret z			;6848
 	jr L_6854		;6849
 L_684B:
 	cp 008h		;684b
 	jr nz,L_6854		;684d
-	ld a,(0e07ch)		;684f
+	ld a,(0e07ch)		;684f   ; lee tiene el objeto 0x0D
 	or a			;6852
 	ret z			;6853
 L_6854:
-	ld a,(0e008h)		;6854
+	ld a,(0e008h)		;6854   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
 	and 00ch		;6857
 	ret z			;6859
 	ld hl,0e04dh		;685a
@@ -1359,7 +1359,7 @@ L_6854:
 	ld (hl),c			;6869
 L_686A:
 	ld a,02ch		;686a
-	jp 04e1fh		;686c
+	jp 04e1fh		;686c   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_686F:
 	ld hl,0e04ch		;686f
 	ld a,(hl)			;6872
@@ -1424,7 +1424,7 @@ L_68CE:
 	inc l			;68d1
 	ld a,(0e04eh)		;68d2
 	ld de,l68e3h		;68d5
-	call 0413bh		;68d8
+	call 0413bh		;68d8   ; de_mas_a: DE += A
 	ld a,(de)			;68db
 	ld (hl),a			;68dc
 	inc l			;68dd
@@ -1461,7 +1461,7 @@ L_68FD:
 L_6903:
 	ld de,0e04dh		;6903
 	ld a,(de)			;6906
-	ld (0e501h),a		;6907
+	ld (0e501h),a		;6907   ; guarda quien juega (0 Afrodita)
 	ld hl,0e058h		;690a
 	add a,l			;690d
 	ld l,a			;690e
@@ -1474,12 +1474,12 @@ L_6903:
 	ld (0e510h),a		;6916
 	ret			;6919
 L_691A:
-	ld bc,(0e041h)		;691a
+	ld bc,(0e041h)		;691a   ; lee el mapa (0xE041) y la sala (0xE042) de un tiron
 	ld a,c			;691e
 	cp 00ch		;691f
 	ret z			;6921
 	ld hl,0b25dh		;6922
-	call 0414ch		;6925
+	call 0414ch		;6925   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ld a,b			;6928
 	cp 001h		;6929
 	jr z,L_693E		;692b
@@ -1501,7 +1501,7 @@ L_693E:
 	ld a,c			;693e
 	exx			;693f
 	ld hl,0af09h		;6940
-	call 0414ch		;6943
+	call 0414ch		;6943   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	dec de			;6946
 	ld b,000h		;6947
 	exx			;6949
@@ -1557,7 +1557,7 @@ L_698C:
 	ld de,00a00h		;6995
 	add hl,de			;6998
 	ld a,c			;6999
-	call 04136h		;699a
+	call 04136h		;699a   ; hl_mas_a: HL += A
 	ld b,015h		;699d
 	ld de,00008h		;699f
 	ld a,0f0h		;69a2
@@ -1592,15 +1592,15 @@ L_69B9:
 	or a			;69d8
 	ret m			;69d9
 	ld hl,0bb58h		;69da
-	call 0414ch		;69dd
-	jp 05c25h		;69e0
+	call 0414ch		;69dd   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
+	jp 05c25h		;69e0   ; lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
 L_69E3:
-	ld a,(0e041h)		;69e3
+	ld a,(0e041h)		;69e3   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	sub 002h		;69e6
 	ret m			;69e8
 	ld hl,09c83h		;69e9
-	call 0414ch		;69ec
-	ld a,(0e042h)		;69ef
+	call 0414ch		;69ec   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
+	ld a,(0e042h)		;69ef   ; lee la sala
 	ld b,a			;69f2
 L_69F3:
 	ld a,(de)			;69f3
@@ -1654,7 +1654,7 @@ L_6A1E:
 	ld bc,00138h		;6a3e
 	ldir		;6a41
 	ld hl,0e808h		;6a43
-	ld de,0e800h		;6a46
+	ld de,0e800h		;6a46   ; apunta a los huecos de figura (32 bytes cada uno)
 	ld bc,00140h		;6a49
 	ldir		;6a4c
 	ld bc,00120h		;6a4e
@@ -1676,7 +1676,7 @@ L_6A5F:
 	sbc hl,de		;6a6b
 	add hl,hl			;6a6d
 	ld a,008h		;6a6e
-	call 04136h		;6a70
+	call 04136h		;6a70   ; hl_mas_a: HL += A
 	add hl,de			;6a73
 	ex de,hl			;6a74
 	pop hl			;6a75
@@ -1712,7 +1712,7 @@ L_6A96:
 	call 05bebh		;6aaf
 	ld hl,02010h		;6ab2
 L_6AB5:
-	ld de,0e800h		;6ab5
+	ld de,0e800h		;6ab5   ; apunta a los huecos de figura (32 bytes cada uno)
 	ld bc,002a0h		;6ab8
 	jp 00059h		;6abb   ; BIOS LDIRMV - Block transfers to memory from VRAM
 L_6ABE:
@@ -1779,9 +1779,9 @@ L_6B28:
 	pop hl			;6b31
 	ld a,040h		;6b32
 	ld b,a			;6b34
-	call 04136h		;6b35
+	call 04136h		;6b35   ; hl_mas_a: HL += A
 	ld a,b			;6b38
-	call 0413bh		;6b39
+	call 0413bh		;6b39   ; de_mas_a: DE += A
 	pop bc			;6b3c
 	djnz L_6B28		;6b3d
 	ret			;6b3f
@@ -1810,7 +1810,7 @@ L_6B59:
 	jr z,L_6B6E		;6b5f
 	cp 0ffh		;6b61
 	jr z,L_6BAB		;6b63
-	call 0413bh		;6b65
+	call 0413bh		;6b65   ; de_mas_a: DE += A
 	ld c,(hl)			;6b68
 	ld b,000h		;6b69
 	inc hl			;6b6b
@@ -1836,7 +1836,7 @@ L_6B80:
 L_6B8A:
 	ld b,023h		;6b8a
 	ld hl,0e801h		;6b8c
-	ld de,0e800h		;6b8f
+	ld de,0e800h		;6b8f   ; apunta a los huecos de figura (32 bytes cada uno)
 L_6B92:
 	push bc			;6b92
 	ld bc,0000fh		;6b93
@@ -1850,18 +1850,18 @@ L_6B92:
 	ld bc,00230h		;6b9f
 	ld hl,02010h		;6ba2
 L_6BA5:
-	ld de,0e800h		;6ba5
+	ld de,0e800h		;6ba5   ; apunta a los huecos de figura (32 bytes cada uno)
 	jp 05bd8h		;6ba8
 L_6BAB:
 	xor a			;6bab
 	ld (0e02eh),a		;6bac
 	ret			;6baf
 L_6BB0:
-	ld a,(0e0d2h)		;6bb0
+	ld a,(0e0d2h)		;6bb0   ; lee el estado del jefe
 	or a			;6bb3
 	ret z			;6bb4
-	ld ix,0e700h		;6bb5
-	ld a,(0e700h)		;6bb9
+	ld ix,0e700h		;6bb5   ; apunta a el tipo del jefe (el hueco 0xE700 es el jefe)
+	ld a,(0e700h)		;6bb9   ; lee el tipo del jefe (el hueco 0xE700 es el jefe)
 	or a			;6bbc
 	ret z			;6bbd
 	cp 006h		;6bbe
@@ -1884,15 +1884,15 @@ L_6BDB:
 	ld bc,0000fh		;6bdc
 	ldir		;6bdf
 	ld a,011h		;6be1
-	call 0413bh		;6be3
+	call 0413bh		;6be3   ; de_mas_a: DE += A
 	exx			;6be6
 	djnz L_6BDB		;6be7
 	ret			;6be9
 L_6BEA:
-	ld a,(0e70ah)		;6bea
+	ld a,(0e70ah)		;6bea   ; lee el mosaico del jefe
 L_6BED:
 	ld hl,09e0ah		;6bed
-	call 0414ch		;6bf0
+	call 0414ch		;6bf0   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ex de,hl			;6bf3
 	ld de,(0e712h)		;6bf4
 	ret			;6bf8
@@ -1900,14 +1900,14 @@ L_6BF9:
 	call L_6BEA		;6bf9
 	ld bc,0040ah		;6bfc
 	ld a,004h		;6bff
-	call 0413bh		;6c01
+	call 0413bh		;6c01   ; de_mas_a: DE += A
 	ld a,00ah		;6c04
 	call L_6C34		;6c06
 	ld a,(0e719h)		;6c09
 	call L_6BED		;6c0c
 	ld bc,00402h		;6c0f
 	ld a,022h		;6c12
-	call 0413bh		;6c14
+	call 0413bh		;6c14   ; de_mas_a: DE += A
 	ld a,002h		;6c17
 	call L_6C34		;6c19
 	ld a,(0e718h)		;6c1c
@@ -1920,7 +1920,7 @@ L_6BF9:
 	rla			;6c2b
 	rla			;6c2c
 	and 0f0h		;6c2d
-	call 0413bh		;6c2f
+	call 0413bh		;6c2f   ; de_mas_a: DE += A
 	ld a,002h		;6c32
 L_6C34:
 	sub c			;6c34
@@ -1978,7 +1978,7 @@ L_6C76:
 	jr L_6C65		;6c7a
 L_6C7C:
 	ld hl,l6c87h		;6c7c
-	call 0414ch		;6c7f
+	call 0414ch		;6c7f   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ld hl,(0e744h)		;6c82
 	ld (hl),d			;6c85
 	inc l			;6c86
@@ -2014,7 +2014,7 @@ L_6C95:
 	inc l			;6c9e
 	ld d,(hl)			;6c9f
 	ex de,hl			;6ca0
-	call 04da1h		;6ca1
+	call 04da1h		;6ca1   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	ex de,hl			;6ca4
 	ld hl,06cc7h		;6ca5
 	ld a,(0e68ch)		;6ca8
@@ -2033,7 +2033,7 @@ L_6CB7:
 	ld bc,00004h		;6cb8
 	ldir		;6cbb
 	ld a,01ch		;6cbd
-	call 0413bh		;6cbf
+	call 0413bh		;6cbf   ; de_mas_a: DE += A
 	exx			;6cc2
 	djnz L_6CB7		;6cc3
 	exx			;6cc5
@@ -2087,7 +2087,7 @@ L_6D14:
 	ld (ix+014h),b		;6d1d
 	ld l,(ix+005h)		;6d20
 	ld h,(ix+007h)		;6d23
-	call 04da1h		;6d26
+	call 04da1h		;6d26   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	ld (ix+012h),l		;6d29
 	ld (ix+013h),h		;6d2c
 	ld c,(ix+00bh)		;6d2f
@@ -2120,7 +2120,7 @@ L_6D59:
 L_6D5E:
 	ld a,(ix+00ah)		;6d5e
 	ld hl,09e0ah		;6d61
-	call 0414ch		;6d64
+	call 0414ch		;6d64   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ex de,hl			;6d67
 	ld e,(ix+012h)		;6d68
 	ld d,(ix+013h)		;6d6b
@@ -2163,7 +2163,7 @@ L_6D8C:
 L_6DA0:
 	ld a,(ix+00ah)		;6da0
 	ld hl,09e0ah		;6da3
-	call 0414ch		;6da6
+	call 0414ch		;6da6   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ex de,hl			;6da9
 	ld e,(ix+012h)		;6daa
 	ld d,(ix+013h)		;6dad
@@ -2206,7 +2206,7 @@ L_6DCD:
 L_6DDC:
 	ld l,(ix+005h)		;6ddc
 	ld h,(ix+007h)		;6ddf
-	call 04da1h		;6de2
+	call 04da1h		;6de2   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	ld (ix+012h),l		;6de5
 	ld (ix+013h),h		;6de8
 	ld a,l			;6deb
@@ -2221,9 +2221,9 @@ L_6DDC:
 L_6DF7:
 	ld (0e630h),a		;6df7
 	ld de,0ecbch		;6dfa
-	ld ix,0e800h		;6dfd
+	ld ix,0e800h		;6dfd   ; apunta a los huecos de figura (32 bytes cada uno)
 	exx			;6e01
-	ld hl,(0e635h)		;6e02
+	ld hl,(0e635h)		;6e02   ; lee cuantos huecos de figura hay y el byte siguiente (16 bits)
 	ld b,l			;6e05
 	ld c,h			;6e06
 	ld de,00020h		;6e07
@@ -2305,7 +2305,7 @@ L_6E79:
 	call L_6EA7		;6e7e
 	ld a,d			;6e81
 	ld hl,09e0ah		;6e82
-	call 0414ch		;6e85
+	call 0414ch		;6e85   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ex de,hl			;6e88
 	ld e,(ix+012h)		;6e89
 	ld d,(ix+013h)		;6e8c
@@ -2419,7 +2419,7 @@ L_6F16:
 	ret			;6f2b
 L_6F2C:
 	ld a,(ix+00bh)		;6f2c
-	call 04140h		;6f2f
+	call 04140h		;6f2f   ; despacha: salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_6F32: 17 destinos del despachador de 0x4140 (call en p01:6F2F):
@@ -2489,10 +2489,10 @@ L_6F73:
 L_6F8A:
 	ld a,(ix+00ah)		;6f8a
 	ld hl,0a77eh		;6f8d
-	call 0414ch		;6f90
+	call 0414ch		;6f90   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ld l,(ix+012h)		;6f93
 	ld h,(ix+013h)		;6f96
-	ld a,(0e041h)		;6f99
+	ld a,(0e041h)		;6f99   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	cp 00ah		;6f9c
 	jr z,L_6FA9		;6f9e
 	ld c,(ix+01fh)		;6fa0
@@ -2871,7 +2871,7 @@ L_718F:
 	rra			;71b1
 	rra			;71b2
 	and 007h		;71b3
-	call 04136h		;71b5
+	call 04136h		;71b5   ; hl_mas_a: HL += A
 	ld a,(hl)			;71b8
 	ex af,af'			;71b9
 	inc de			;71ba
@@ -2881,7 +2881,7 @@ L_718F:
 	rra			;71c1
 	rra			;71c2
 	and 007h		;71c3
-	call 04136h		;71c5
+	call 04136h		;71c5   ; hl_mas_a: HL += A
 	ld a,(hl)			;71c8
 	ld h,a			;71c9
 	ex af,af'			;71ca
@@ -3005,7 +3005,7 @@ L_7261:
 	ld c,(ix+008h)		;7269
 	ld b,(ix+009h)		;726c
 	ld hl,0a6fbh		;726f
-	call 0414ch		;7272
+	call 0414ch		;7272   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ld l,(ix+006h)		;7275
 	ld h,(ix+007h)		;7278
 	ex de,hl			;727b
@@ -3044,7 +3044,7 @@ L_72A5:
 	ld a,(ix+005h)		;72aa
 	ld c,a			;72ad
 	ld hl,0a74ch		;72ae
-	call 0414ch		;72b1
+	call 0414ch		;72b1   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	jr L_72C9		;72b4
 L_72B6:
 	ld ix,0ea50h		;72b6
@@ -3054,7 +3054,7 @@ L_72B6:
 	ld a,(ix+005h)		;72bf
 	ld c,a			;72c2
 	ld hl,0a726h		;72c3
-	call 0414ch		;72c6
+	call 0414ch		;72c6   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 L_72C9:
 	ld l,(ix+007h)		;72c9
 	ld h,(ix+008h)		;72cc
@@ -3272,7 +3272,7 @@ L_73D6:
 	ld (0e60ah),hl		;73e1
 L_73E4:
 	ld hl,07529h		;73e4
-	ld a,(0e000h)		;73e7
+	ld a,(0e000h)		;73e7   ; lee el ESTADO del juego
 	cp 009h		;73ea
 	ld a,(0e53dh)		;73ec
 	jr z,L_73F4		;73ef
@@ -3280,19 +3280,19 @@ L_73E4:
 L_73F4:
 	cp 0ffh		;73f4
 	ret z			;73f6
-	call 0414ch		;73f7
+	call 0414ch		;73f7   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ld hl,(0e60ah)		;73fa
 	ex de,hl			;73fd
 	ld b,(hl)			;73fe
 	inc hl			;73ff
 L_7400:
-	ld a,(0e505h)		;7400
+	ld a,(0e505h)		;7400   ; lee la y del personaje
 	add a,(hl)			;7403
 	dec a			;7404
 	ld (de),a			;7405
 	inc hl			;7406
 	inc de			;7407
-	ld a,(0e507h)		;7408
+	ld a,(0e507h)		;7408   ; lee la x del personaje
 	add a,(hl)			;740b
 	ld c,a			;740c
 	ld a,b			;740d
@@ -3314,10 +3314,10 @@ L_741D:
 	ld (de),a			;7422
 	inc hl			;7423
 	inc de			;7424
-	ld a,(0e000h)		;7425
+	ld a,(0e000h)		;7425   ; lee el ESTADO del juego
 	cp 009h		;7428
 	jr z,L_743A		;742a
-	ld a,(0e500h)		;742c
+	ld a,(0e500h)		;742c   ; lee el estado del personaje (5 = hundirse)
 	cp 004h		;742f
 	ld c,(hl)			;7431
 	jr z,L_745C		;7432
@@ -3331,13 +3331,13 @@ L_743A:
 	ld a,(hl)			;743d
 	jr z,L_7456		;743e
 	jp m,L_744B		;7440
-	ld a,(0e000h)		;7443
+	ld a,(0e000h)		;7443   ; lee el ESTADO del juego
 	cp 009h		;7446
 	ld a,(hl)			;7448
 	jr z,L_7456		;7449
 L_744B:
 	push hl			;744b
-	ld hl,0e501h		;744c
+	ld hl,0e501h		;744c   ; apunta a quien juega (0 Afrodita)
 	bit 0,(hl)		;744f
 	pop hl			;7451
 	jr nz,L_7456		;7452
@@ -3632,7 +3632,7 @@ L_76C6:
 	call L_7794		;76d2
 	jp L_77A9		;76d5
 L_76D8:
-	ld ix,0e800h		;76d8
+	ld ix,0e800h		;76d8   ; apunta a los huecos de figura (32 bytes cada uno)
 	exx			;76dc
 	ld b,010h		;76dd
 	ld de,00020h		;76df
@@ -3656,7 +3656,7 @@ L_76ED:
 	call L_6EA7		;76fd
 	ld l,(ix+005h)		;7700
 	ld h,(ix+007h)		;7703
-	call 04da1h		;7706
+	call 04da1h		;7706   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	ld (ix+012h),l		;7709
 	ld (ix+013h),h		;770c
 L_770F:
@@ -3730,7 +3730,7 @@ L_7776:
 	ret nz			;777f
 	ld l,(ix+005h)		;7780
 	ld h,(ix+007h)		;7783
-	call 04da1h		;7786
+	call 04da1h		;7786   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	ld (ix+015h),l		;7789
 	ld (ix+016h),h		;778c
 	ldi		;778f
@@ -3749,11 +3749,11 @@ L_7794:
 	ldi		;77a6
 	ret			;77a8
 L_77A9:
-	ld a,(0e0d2h)		;77a9
+	ld a,(0e0d2h)		;77a9   ; lee el estado del jefe
 	or a			;77ac
 	ret z			;77ad
-	ld ix,0e700h		;77ae
-	ld a,(ix+000h)		;77b2
+	ld ix,0e700h		;77ae   ; apunta a el tipo del jefe (el hueco 0xE700 es el jefe)
+	ld a,(ix+000h)		;77b2   ; lee el tipo de la figura
 	or a			;77b5
 	ret z			;77b6
 	bit 7,(ix+002h)		;77b7
@@ -3836,7 +3836,7 @@ L_783A:
 	inc de			;7843
 	ld a,(de)			;7844
 	ld h,a			;7845
-	call 04da1h		;7846
+	call 04da1h		;7846   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	inc de			;7849
 	inc de			;784a
 	ld a,l			;784b
@@ -3887,7 +3887,7 @@ L_7877:
 	inc de			;7885
 	ld a,(de)			;7886
 	ld h,a			;7887
-	call 04da1h		;7888
+	call 04da1h		;7888   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	inc de			;788b
 	inc de			;788c
 	inc de			;788d
@@ -3902,7 +3902,7 @@ L_7877:
 	dec de			;7898
 	dec de			;7899
 	ld a,(de)			;789a
-	call 0414ch		;789b
+	call 0414ch		;789b   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ld b,d			;789e
 	ld c,e			;789f
 	ld (ix+008h),c		;78a0
@@ -3981,7 +3981,7 @@ L_78F4:
 	ld (hl),a			;78f5
 	ld d,a			;78f6
 	ex de,hl			;78f7
-	call 04da1h		;78f8
+	call 04da1h		;78f8   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	ex de,hl			;78fb
 	inc hl			;78fc
 	inc hl			;78fd
@@ -4030,7 +4030,7 @@ L_792A:
 	ld e,c			;7933
 	ld d,b			;7934
 	ex de,hl			;7935
-	call 04da1h		;7936
+	call 04da1h		;7936   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	ex de,hl			;7939
 	inc hl			;793a
 	ld (hl),e			;793b
@@ -4051,7 +4051,7 @@ L_794D:
 	or a			;7950
 	ret z			;7951
 	ld hl,(0ea21h)		;7952
-	call 04da1h		;7955
+	call 04da1h		;7955   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	ld (0ea24h),hl		;7958
 	ld a,003h		;795b
 L_795D:
@@ -4143,14 +4143,14 @@ L_79DD:
 	call L_7AFE		;79e3
 	call L_7ABB		;79e6
 	call L_7AE5		;79e9
-	ld a,(0e0d2h)		;79ec
+	ld a,(0e0d2h)		;79ec   ; lee el estado del jefe
 	or a			;79ef
 	ret z			;79f0
 	ld (0e644h),hl		;79f1
 L_79F4:
 	ld hl,(0e644h)		;79f4
-	ld ix,0e700h		;79f7
-	ld a,(0e700h)		;79fb
+	ld ix,0e700h		;79f7   ; apunta a el tipo del jefe (el hueco 0xE700 es el jefe)
+	ld a,(0e700h)		;79fb   ; lee el tipo del jefe (el hueco 0xE700 es el jefe)
 	or a			;79fe
 	ret z			;79ff
 	bit 7,(ix+002h)		;7a00
@@ -4184,7 +4184,7 @@ L_7A26:
 	djnz L_7A26		;7a33
 	ret			;7a35
 L_7A36:
-	ld ix,0e800h		;7a36
+	ld ix,0e800h		;7a36   ; apunta a los huecos de figura (32 bytes cada uno)
 	exx			;7a3a
 	ld b,010h		;7a3b
 	ld de,00020h		;7a3d
@@ -4237,7 +4237,7 @@ L_7A77:
 	ldi		;7a89
 	ldi		;7a8b
 	ld a,01eh		;7a8d
-	call 0413bh		;7a8f
+	call 0413bh		;7a8f   ; de_mas_a: DE += A
 	ldi		;7a92
 	ldi		;7a94
 	ret			;7a96
@@ -4685,20 +4685,20 @@ L_7D82:
 	ld (0e022h),hl		;7d8a
 	ld a,(0e023h)		;7d8d
 	ld hl,07dd9h		;7d90
-	call 0414ch		;7d93
-	ld (0e041h),de		;7d96
+	call 0414ch		;7d93   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
+	ld (0e041h),de		;7d96   ; guarda el mapa (0xE041) y la sala (0xE042) de un tiron
 	xor a			;7d9a
 	ld (0e604h),a		;7d9b
 	call 0510bh		;7d9e
 	ld a,001h		;7da1
-	ld (0e070h),a		;7da3
+	ld (0e070h),a		;7da3   ; guarda tiene el objeto 0x01
 	ld (0e510h),a		;7da6
 	ld hl,00100h		;7da9
-	ld (0e046h),hl		;7dac
+	ld (0e046h),hl		;7dac   ; guarda las flechas (BCD, 16 bits)
 	call L_604D		;7daf
 	ld a,(0e023h)		;7db2
 	ld hl,07de3h		;7db5
-	call 04155h		;7db8
+	call 04155h		;7db8   ; byte_de_tabla: A = el byte HL + A
 	ld (0e033h),a		;7dbb
 	ld a,(0e00dh)		;7dbe
 	or a			;7dc1
@@ -4751,7 +4751,7 @@ L_7DE8:
 	dec (hl)			;7dfc
 	jr nz,L_7E04		;7dfd
 	ld a,0ffh		;7dff
-	call 04e1fh		;7e01
+	call 04e1fh		;7e01   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_7E04:
 	ld a,(0e01ah)		;7e04
 	and a			;7e07
@@ -4761,7 +4761,7 @@ L_7E04:
 	ld a,020h		;7e0f
 	ld (0e004h),a		;7e11
 	call 04792h		;7e14
-	ld (0e042h),a		;7e17
+	ld (0e042h),a		;7e17   ; guarda la sala
 	call 051cdh		;7e1a
 	xor a			;7e1d
 	ld (0e01ah),a		;7e1e
@@ -4781,10 +4781,10 @@ L_7E35:
 	dec hl			;7e35
 	ld c,(hl)			;7e36
 	inc (hl)			;7e37
-	call 04241h		;7e38
+	call 04241h		;7e38   ; a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
 	ld hl,0bafdh		;7e3b
 	ld a,(0e023h)		;7e3e
-	call 0414ch		;7e41
+	call 0414ch		;7e41   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ld l,c			;7e44
 	ld h,000h		;7e45
 	add hl,hl			;7e47
@@ -4794,14 +4794,14 @@ L_7E35:
 	inc hl			;7e4d
 	ld a,(hl)			;7e4e
 	ld (0e022h),a		;7e4f
-	call 04215h		;7e52
+	call 04215h		;7e52   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 	jr L_7E28		;7e55
-L_7E57:
-	ld hl,(0e041h)		;7e57
+mira_zeus:		; en la pausa de F2 y en la sala 1 del castillo, cuenta las letras de ZEUS
+	ld hl,(0e041h)		;7e57   ; lee el mapa (0xE041) y la sala (0xE042) de un tiron
 	ld de,00101h		;7e5a
 	rst 20h			;7e5d
 	ret nz			;7e5e
-	call 09c13h		;7e5f
+	call 09c13h		;7e5f   ; tecla_ascii: A = el ASCII de la primera tecla apretada (0 si ninguna)
 	ld hl,0e02ah		;7e62
 	ld c,(hl)			;7e65
 	ld (hl),a			;7e66
@@ -4810,9 +4810,9 @@ L_7E57:
 	ret z			;7e69
 	ld b,a			;7e6a
 	ld de,07e88h		;7e6b
-	ld hl,0e028h		;7e6e
+	ld hl,0e028h		;7e6e   ; apunta a las letras de ZEUS acertadas
 	ld a,(hl)			;7e71
-	call 0413bh		;7e72
+	call 0413bh		;7e72   ; de_mas_a: DE += A
 	ld a,(de)			;7e75
 	cp b			;7e76
 	jr z,L_7E7C		;7e77
@@ -4826,7 +4826,7 @@ L_7E7C:
 	xor a			;7e81
 	ld (hl),a			;7e82
 	inc a			;7e83
-	ld (0e027h),a		;7e84
+	ld (0e027h),a		;7e84   ; guarda ZEUS tecleado
 	ret			;7e87
 
 ; ----------------------------------------------------------------------
@@ -4842,34 +4842,34 @@ DATA_zeus:
 
 
 L_7E8C:
-	ld a,(0e026h)		;7e8c
+	ld a,(0e026h)		;7e8c   ; lee ya se ha seguido con F5
 	and a			;7e8f
 	ret nz			;7e90
-	ld a,(0e027h)		;7e91
+	ld a,(0e027h)		;7e91   ; lee ZEUS tecleado
 	and a			;7e94
 	ret z			;7e95
-	call L_7EF1		;7e96
+	call tecla_f5		;7e96   ; tecla_f5: C si F5 esta apretada (fila 7 de la matriz)
 	ret nc			;7e99
 	ld de,07ecfh		;7e9a
-	call 05c3ch		;7e9d
+	call 05c3ch		;7e9d   ; borra_lista_vram: como lista_a_vram pero escribiendo ceros
 	xor a			;7ea0
 	ld h,a			;7ea1
 	ld l,a			;7ea2
 	ld (0e050h),a		;7ea3
-	ld (0e05eh),a		;7ea6
+	ld (0e05eh),a		;7ea6   ; guarda el cambio de vida pendiente de Afrodita (con signo)
 	ld (0e054h),a		;7ea9
-	ld (0e061h),a		;7eac
-	ld (0e05ch),hl		;7eaf
-	ld (0e05fh),hl		;7eb2
+	ld (0e061h),a		;7eac   ; guarda el cambio de vida pendiente de Popolon (con signo)
+	ld (0e05ch),hl		;7eaf   ; guarda la experiencia de Afrodita
+	ld (0e05fh),hl		;7eb2   ; guarda la experiencia de Popolon
 	ld (0e059h),a		;7eb5
 	inc a			;7eb8
 	ld (0e058h),a		;7eb9
-	ld (0e501h),a		;7ebc
-	ld (0e026h),a		;7ebf
-	ld a,(0e053h)		;7ec2
-	ld (0e052h),a		;7ec5
-	ld a,(0e057h)		;7ec8
-	ld (0e056h),a		;7ecb
+	ld (0e501h),a		;7ebc   ; guarda quien juega (0 Afrodita)
+	ld (0e026h),a		;7ebf   ; guarda ya se ha seguido con F5
+	ld a,(0e053h)		;7ec2   ; lee el tope de la vida de Afrodita
+	ld (0e052h),a		;7ec5   ; guarda la vida de Afrodita
+	ld a,(0e057h)		;7ec8   ; lee el tope de la vida de Popolon
+	ld (0e056h),a		;7ecb   ; guarda la vida de Popolon
 	ret			;7ece
 
 ; ----------------------------------------------------------------------
@@ -4885,7 +4885,7 @@ DATA_lista_vram_7ECF:
 
 
 L_7EDD:
-	call L_7EF1		;7edd
+	call tecla_f5		;7edd   ; tecla_f5: C si F5 esta apretada (fila 7 de la matriz)
 	jr c,L_7EE7		;7ee0
 	xor a			;7ee2
 	ld (0e032h),a		;7ee3
@@ -4898,7 +4898,7 @@ L_7EE7:
 	ld (hl),001h		;7eed
 	scf			;7eef
 	ret			;7ef0
-L_7EF1:
+tecla_f5:		; C si F5 esta apretada (fila 7 de la matriz)
 	ld a,007h		;7ef1
 	call 00141h		;7ef3   ; BIOS SNSMAT - Returns the value of the specified line from the keyboard matrix
 	cpl			;7ef6
@@ -4907,7 +4907,7 @@ L_7EF1:
 	scf			;7efa
 	ret			;7efb
 L_7EFC:
-	ld hl,0e0d2h		;7efc
+	ld hl,0e0d2h		;7efc   ; apunta a el estado del jefe
 	ld a,(hl)			;7eff
 	or a			;7f00
 	ret z			;7f01
@@ -4916,28 +4916,28 @@ L_7EFC:
 	sub 002h		;7f06
 	jp m,L_7FDB		;7f08
 	jr z,$+75		;7f0b
-	ld ix,0e700h		;7f0d
-	call 04220h		;7f11
+	ld ix,0e700h		;7f0d   ; apunta a el tipo del jefe (el hueco 0xE700 es el jefe)
+	call 04220h		;7f11   ; a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
 	call 0b3e7h		;7f14
 	call 0b3f7h		;7f17
-	call 04215h		;7f1a
+	call 04215h		;7f1a   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 	ld a,(0e0d5h)		;7f1d
 	or a			;7f20
 	ret nz			;7f21
 	call L_7F38		;7f22
-	ld a,(0e700h)		;7f25
+	ld a,(0e700h)		;7f25   ; lee el tipo del jefe (el hueco 0xE700 es el jefe)
 	or a			;7f28
 	ret z			;7f29
 	bit 4,(ix+002h)		;7f2a
 	ret z			;7f2e
-	call 04220h		;7f2f
+	call 04220h		;7f2f   ; a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
 	call 0b0edh		;7f32
-	jp 04215h		;7f35
+	jp 04215h		;7f35   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 L_7F38:
-	ld a,(0e700h)		;7f38
+	ld a,(0e700h)		;7f38   ; lee el tipo del jefe (el hueco 0xE700 es el jefe)
 	dec a			;7f3b
 	ret m			;7f3c
-	call 04140h		;7f3d
+	call 04140h		;7f3d   ; despacha: salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_7F40: 11 destinos del despachador de 0x4140 (call en p01:7F3D):
@@ -4966,23 +4966,23 @@ L_7F56:
 	inc (hl)			;7f56
 	inc l			;7f57
 	ld a,(hl)			;7f58
-	ld (0e700h),a		;7f59
+	ld (0e700h),a		;7f59   ; guarda el tipo del jefe (el hueco 0xE700 es el jefe)
 	ld hl,07f97h		;7f5c
-	call 04155h		;7f5f
+	call 04155h		;7f5f   ; byte_de_tabla: A = el byte HL + A
 	ld b,a			;7f62
-	ld a,(0e076h)		;7f63
+	ld a,(0e076h)		;7f63   ; lee tiene el objeto 0x07
 	or a			;7f66
 	ld a,b			;7f67
 	jr z,L_7F6C		;7f68
 	srl a		;7f6a
 L_7F6C:
 	ld (0e710h),a		;7f6c
-	ld ix,0e700h		;7f6f
+	ld ix,0e700h		;7f6f   ; apunta a el tipo del jefe (el hueco 0xE700 es el jefe)
 	ld (ix+001h),000h		;7f73
 	ld (ix+002h),0f0h		;7f77
-	ld a,(0e700h)		;7f7b
+	ld a,(0e700h)		;7f7b   ; lee el tipo del jefe (el hueco 0xE700 es el jefe)
 	dec a			;7f7e
-	call 04140h		;7f7f
+	call 04140h		;7f7f   ; despacha: salta a la entrada A de la tabla de palabras que va detras del call
 
 ; ----------------------------------------------------------------------
 ; DATOS tabla_7F82: 11 destinos del despachador de 0x4140 (call en p01:7F7F):
@@ -5015,25 +5015,25 @@ DATA_once_bytes_7f98:
 
 
 L_7FA3:
-	call 04220h		;7fa3
+	call 04220h		;7fa3   ; a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
 	call 0b13eh		;7fa6
-	jp 04215h		;7fa9
+	jp 04215h		;7fa9   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 L_7FAC:
-	call 04220h		;7fac
+	call 04220h		;7fac   ; a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
 	call 0b15fh		;7faf
-	jp 04215h		;7fb2
+	jp 04215h		;7fb2   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 L_7FB5:
-	call 04220h		;7fb5
+	call 04220h		;7fb5   ; a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
 	call 0b137h		;7fb8
-	jp 04215h		;7fbb
+	jp 04215h		;7fbb   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 L_7FBE:
-	call 04220h		;7fbe
+	call 04220h		;7fbe   ; a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
 	call 0b145h		;7fc1
-	jp 04215h		;7fc4
+	jp 04215h		;7fc4   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 L_7FC7:
-	call 04220h		;7fc7
+	call 04220h		;7fc7   ; a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
 	call 0b14ch		;7fca
-	jp 04215h		;7fcd
+	jp 04215h		;7fcd   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 L_7FD0:
 	inc (hl)			;7fd0
 	ld a,041h		;7fd1
@@ -5054,7 +5054,7 @@ L_7FDB:
 	ld a,(hl)			;7feb
 	and 007h		;7fec
 	ld hl,08003h		;7fee
-	call 0414ch		;7ff1
+	call 0414ch		;7ff1   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ld a,063h		;7ff4
 	jp 0424ch		;7ff6
 L_7FF9:

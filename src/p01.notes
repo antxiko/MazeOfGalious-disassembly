@@ -73,3 +73,209 @@ F 0x7F82 2
 D 0x7FFE 0x8000 partida_7FFE  la instruccion de p01:7FFE (21 D2 | E0) empieza al final del banco 1 y acaba al principio del 2, que el cartucho pone siempre a continuacion: aqui los 2 primeros bytes; lo leen p01:7FFE (2 bytes)
 F 0x7FFE 4
 # --- fin de los bloques de bloques.py ---
+
+# --- ANOTACIONES AUTOMATICAS (seccion que reescribe tools/anota.py; no editar a mano) ---
+L 0x612C cambia_vida suma A (con signo) al cambio de vida pendiente del que juega
+L 0x6158 suma_experiencia suma A x 256 a la experiencia del que juega
+L 0x7E57 mira_zeus en la pausa de F2 y en la sala 1 del castillo, cuenta las letras de ZEUS
+L 0x7EF1 tecla_f5 C si F5 esta apretada (fila 7 de la matriz)
+C 0x6006 lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x6009 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x600D guarda la y del personaje
+C 0x6011 guarda la x del personaje
+C 0x6030 guarda la sala especial (pista o tienda)
+C 0x6050 lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
+C 0x60A3 apunta a la vida de Popolon
+C 0x60AD apunta a la vida de Afrodita
+C 0x612D lee quien juega (0 Afrodita)
+C 0x6130 apunta a el cambio de vida pendiente de Afrodita (con signo)
+C 0x6155 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x615B lee quien juega (0 Afrodita)
+C 0x6161 lee la experiencia de Afrodita
+C 0x6165 guarda la experiencia de Afrodita
+C 0x6169 lee la experiencia de Popolon
+C 0x616D guarda la experiencia de Popolon
+C 0x6175 lee el estado del personaje (5 = hundirse)
+C 0x619A apunta a la vida de Afrodita
+C 0x619D apunta a el cambio de vida pendiente de Afrodita (con signo)
+C 0x61A3 lee la vida de Afrodita
+C 0x61A9 lee quien juega (0 Afrodita)
+C 0x61AD muere: la vida y la experiencia del que juega a cero
+C 0x61C0 apunta a la vida de Popolon
+C 0x61C3 apunta a el cambio de vida pendiente de Popolon (con signo)
+C 0x61C9 lee la vida de Popolon
+C 0x61CF lee quien juega (0 Afrodita)
+C 0x61D3 muere: la vida y la experiencia del que juega a cero
+C 0x6232 lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
+C 0x625E despacha: salta a la entrada A de la tabla de palabras que va detras del call
+C 0x62A4 despacha: salta a la entrada A de la tabla de palabras que va detras del call
+C 0x62F3 lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x634B casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x6398 lee tiene el objeto 0x21
+C 0x639D lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+C 0x63EA lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x6450 lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x645D lee la sala
+C 0x64B4 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x651F de_negado: DE = -DE
+C 0x6575 guarda cuantos huecos de figura hay y el byte siguiente (16 bits)
+C 0x6578 lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x65A0 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x65A3 guarda cuantos huecos de figura hay y el byte siguiente (16 bits)
+C 0x65A8 a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
+C 0x65C3 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x65C6 lee quien juega (0 Afrodita)
+C 0x65CA apunta a el cambio de vida pendiente de Afrodita (con signo)
+C 0x65D8 lee quien juega (0 Afrodita)
+C 0x65EA lee quien juega (0 Afrodita)
+C 0x65FA apunta a tiene el objeto 0x01
+C 0x661B lee tiene el objeto 0x0A
+C 0x662E lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x6633 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x666C lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x6672 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x6676 lee la sala
+C 0x667E lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x668F lee tiene el objeto 0x1A
+C 0x6694 lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x669A byte_de_tabla: A = el byte HL + A
+C 0x6724 apunta a tiene el objeto 0x0D
+C 0x6734 apunta a tiene el objeto 0x07
+C 0x677E apunta a tiene el objeto 0x01
+C 0x67E2 a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
+C 0x67F1 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x67F4 lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+C 0x680A lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+C 0x683D lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x6844 lee tiene el objeto 0x23
+C 0x684F lee tiene el objeto 0x0D
+C 0x6854 lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+C 0x686C pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x68D8 de_mas_a: DE += A
+C 0x6907 guarda quien juega (0 Afrodita)
+C 0x691A lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x6925 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x6943 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x699A hl_mas_a: HL += A
+C 0x69DD palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x69E0 lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
+C 0x69E3 lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x69EC palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x69EF lee la sala
+C 0x6A46 apunta a los huecos de figura (32 bytes cada uno)
+C 0x6A70 hl_mas_a: HL += A
+C 0x6AB5 apunta a los huecos de figura (32 bytes cada uno)
+C 0x6B35 hl_mas_a: HL += A
+C 0x6B39 de_mas_a: DE += A
+C 0x6B65 de_mas_a: DE += A
+C 0x6B8F apunta a los huecos de figura (32 bytes cada uno)
+C 0x6BA5 apunta a los huecos de figura (32 bytes cada uno)
+C 0x6BB0 lee el estado del jefe
+C 0x6BB5 apunta a el tipo del jefe (el hueco 0xE700 es el jefe)
+C 0x6BB9 lee el tipo del jefe (el hueco 0xE700 es el jefe)
+C 0x6BE3 de_mas_a: DE += A
+C 0x6BEA lee el mosaico del jefe
+C 0x6BF0 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x6C01 de_mas_a: DE += A
+C 0x6C14 de_mas_a: DE += A
+C 0x6C2F de_mas_a: DE += A
+C 0x6C7F palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x6CA1 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x6CBF de_mas_a: DE += A
+C 0x6D26 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x6D64 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x6DA6 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x6DE2 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x6DFD apunta a los huecos de figura (32 bytes cada uno)
+C 0x6E02 lee cuantos huecos de figura hay y el byte siguiente (16 bits)
+C 0x6E85 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x6F2F despacha: salta a la entrada A de la tabla de palabras que va detras del call
+C 0x6F90 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x6F99 lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x71B5 hl_mas_a: HL += A
+C 0x71C5 hl_mas_a: HL += A
+C 0x7272 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x72B1 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x72C6 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x73E7 lee el ESTADO del juego
+C 0x73F7 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x7400 lee la y del personaje
+C 0x7408 lee la x del personaje
+C 0x7425 lee el ESTADO del juego
+C 0x742C lee el estado del personaje (5 = hundirse)
+C 0x7443 lee el ESTADO del juego
+C 0x744C apunta a quien juega (0 Afrodita)
+C 0x76D8 apunta a los huecos de figura (32 bytes cada uno)
+C 0x7706 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x7786 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x77A9 lee el estado del jefe
+C 0x77AE apunta a el tipo del jefe (el hueco 0xE700 es el jefe)
+C 0x77B2 lee el tipo de la figura
+C 0x7846 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x7888 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x789B palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x78F8 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x7936 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x7955 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x79EC lee el estado del jefe
+C 0x79F7 apunta a el tipo del jefe (el hueco 0xE700 es el jefe)
+C 0x79FB lee el tipo del jefe (el hueco 0xE700 es el jefe)
+C 0x7A36 apunta a los huecos de figura (32 bytes cada uno)
+C 0x7A8F de_mas_a: DE += A
+C 0x7D93 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x7D96 guarda el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x7DA3 guarda tiene el objeto 0x01
+C 0x7DAC guarda las flechas (BCD, 16 bits)
+C 0x7DB8 byte_de_tabla: A = el byte HL + A
+C 0x7E01 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x7E17 guarda la sala
+C 0x7E38 a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
+C 0x7E41 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x7E52 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x7E57 lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x7E5F tecla_ascii: A = el ASCII de la primera tecla apretada (0 si ninguna)
+C 0x7E6E apunta a las letras de ZEUS acertadas
+C 0x7E72 de_mas_a: DE += A
+C 0x7E84 guarda ZEUS tecleado
+C 0x7E8C lee ya se ha seguido con F5
+C 0x7E91 lee ZEUS tecleado
+C 0x7E96 tecla_f5: C si F5 esta apretada (fila 7 de la matriz)
+C 0x7E9D borra_lista_vram: como lista_a_vram pero escribiendo ceros
+C 0x7EA6 guarda el cambio de vida pendiente de Afrodita (con signo)
+C 0x7EAC guarda el cambio de vida pendiente de Popolon (con signo)
+C 0x7EAF guarda la experiencia de Afrodita
+C 0x7EB2 guarda la experiencia de Popolon
+C 0x7EBC guarda quien juega (0 Afrodita)
+C 0x7EBF guarda ya se ha seguido con F5
+C 0x7EC2 lee el tope de la vida de Afrodita
+C 0x7EC5 guarda la vida de Afrodita
+C 0x7EC8 lee el tope de la vida de Popolon
+C 0x7ECB guarda la vida de Popolon
+C 0x7EDD tecla_f5: C si F5 esta apretada (fila 7 de la matriz)
+C 0x7EFC apunta a el estado del jefe
+C 0x7F0D apunta a el tipo del jefe (el hueco 0xE700 es el jefe)
+C 0x7F11 a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
+C 0x7F1A a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x7F25 lee el tipo del jefe (el hueco 0xE700 es el jefe)
+C 0x7F2F a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
+C 0x7F35 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x7F38 lee el tipo del jefe (el hueco 0xE700 es el jefe)
+C 0x7F3D despacha: salta a la entrada A de la tabla de palabras que va detras del call
+C 0x7F59 guarda el tipo del jefe (el hueco 0xE700 es el jefe)
+C 0x7F5F byte_de_tabla: A = el byte HL + A
+C 0x7F63 lee tiene el objeto 0x07
+C 0x7F6F apunta a el tipo del jefe (el hueco 0xE700 es el jefe)
+C 0x7F7B lee el tipo del jefe (el hueco 0xE700 es el jefe)
+C 0x7F7F despacha: salta a la entrada A de la tabla de palabras que va detras del call
+C 0x7FA3 a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
+C 0x7FA9 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x7FAC a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
+C 0x7FB2 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x7FB5 a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
+C 0x7FBB a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x7FBE a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
+C 0x7FC4 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x7FC7 a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
+C 0x7FCD a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x7FF1 palabra_de_tabla: DE = la palabra A de la tabla de HL
+# --- fin de las anotaciones de anota.py ---

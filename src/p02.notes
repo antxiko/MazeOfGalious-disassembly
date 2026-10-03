@@ -76,3 +76,257 @@ F 0x912C 2
 D 0x9E6A 0x9E6F rle_9E6A  rle a la VRAM (0x5C46); lo leen p02:9E67 (5 bytes)
 F 0x9E6A 16
 # --- fin de los bloques de bloques.py ---
+
+# --- ANOTACIONES AUTOMATICAS (seccion que reescribe tools/anota.py; no editar a mano) ---
+L 0x922B paga resta BC (BCD) de las monedas de 0xE048 y las repinta
+L 0x9234 resta_bcd (HL) -= BC en BCD
+L 0x923E articulo_de_tienda C = precio y D = objeto del articulo 0xE692 de la tienda 0xE690
+L 0x94EF mensaje pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
+L 0x9C13 tecla_ascii A = el ASCII de la primera tecla apretada (0 si ninguna)
+C 0x808C de_negado: DE = -DE
+C 0x80AC pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x80C9 lee la x del personaje
+C 0x80D2 de_negado: DE = -DE
+C 0x80F3 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x814C lee el mosaico del jefe
+C 0x815E pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x8167 lee el mosaico del jefe
+C 0x816C guarda el mosaico del jefe
+C 0x8173 despacha: salta a la entrada A de la tabla de palabras que va detras del call
+C 0x8182 lee la y del personaje
+C 0x8196 lee la x del personaje
+C 0x819D lee la x del personaje
+C 0x81C1 despacha: salta a la entrada A de la tabla de palabras que va detras del call
+C 0x8284 despacha: salta a la entrada A de la tabla de palabras que va detras del call
+C 0x82BB lee la x del personaje
+C 0x82C6 lee la y del personaje
+C 0x82D1 lee la x del personaje
+C 0x8319 byte_de_tabla: A = el byte HL + A
+C 0x8366 lee la y del personaje
+C 0x83A1 de_negado: DE = -DE
+C 0x83B8 lee la y del personaje
+C 0x83D4 lee la x del personaje
+C 0x8421 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x84AB lee el mosaico del jefe
+C 0x84B0 guarda el mosaico del jefe
+C 0x84CF pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x8557 lee la y del personaje
+C 0x85F3 byte_de_tabla: A = el byte HL + A
+C 0x868D apunta a el estado del personaje (5 = hundirse)
+C 0x8699 despacha: salta a la entrada A de la tabla de palabras que va detras del call
+C 0x874F pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x87E0 de_negado: DE = -DE
+C 0x8818 despacha: salta a la entrada A de la tabla de palabras que va detras del call
+C 0x8830 apunta a la x del personaje
+C 0x8851 guarda el mosaico del jefe
+C 0x8871 guarda el mosaico del jefe
+C 0x88E0 guarda el mosaico del jefe
+C 0x88F7 guarda el mosaico del jefe
+C 0x890B pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x8928 lee la x del personaje
+C 0x894D lee el mosaico del jefe
+C 0x8958 guarda el mosaico del jefe
+C 0x8A15 guarda el mosaico del jefe
+C 0x8A58 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x8AAD despacha: salta a la entrada A de la tabla de palabras que va detras del call
+C 0x8ACD lee el mosaico del jefe
+C 0x8AD2 guarda el mosaico del jefe
+C 0x8ADD lee la x del personaje
+C 0x8AE3 lee la y del personaje
+C 0x8C1C pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x8C53 guarda el mosaico del jefe
+C 0x8C83 lee el mosaico del jefe
+C 0x8C88 guarda el mosaico del jefe
+C 0x8CB0 lee el mosaico del jefe
+C 0x8D0B byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0x8D30 despacha: salta a la entrada A de la tabla de palabras que va detras del call
+C 0x8D97 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x8E33 hl_mas_a: HL += A
+C 0x8E41 apunta a los huecos de figura (32 bytes cada uno)
+C 0x8E44 hl_mas_a: HL += A
+C 0x8E51 hl_mas_a: HL += A
+C 0x8E5A hl_mas_a: HL += A
+C 0x8E66 hl_mas_a: HL += A
+C 0x8E70 apunta a los huecos de figura (32 bytes cada uno)
+C 0x8E73 hl_mas_a: HL += A
+C 0x8EAD lee la x del personaje
+C 0x8EBA lee la y del personaje
+C 0x8EEF lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x8EFC lee la sala
+C 0x8F06 guarda la sala especial (pista o tienda)
+C 0x8F21 guarda el paso de la sala especial
+C 0x8F34 guarda el articulo elegido en la tienda
+C 0x8F43 lee la sala especial (pista o tienda)
+C 0x8F47 despacha: salta a la entrada A de la tabla de palabras que va detras del call
+C 0x8F72 lee el paso de la sala especial
+C 0x8F75 despacha: salta a la entrada A de la tabla de palabras que va detras del call
+C 0x8F8A lee quien juega (0 Afrodita)
+C 0x8F9E mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
+C 0x8FAA mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
+C 0x8FB7 mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
+C 0x8FBC guarda el paso de la sala especial
+C 0x8FC2 mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
+C 0x8FC7 mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
+C 0x8FCE lee las llaves (BCD, 16 bits)
+C 0x8FD8 lee las monedas (BCD, 16 bits)
+C 0x8FE1 lee las flechas (BCD, 16 bits)
+C 0x8FED lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+C 0x8FF3 lee el articulo elegido en la tienda
+C 0x9003 mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
+C 0x9012 paga: resta BC (BCD) de las monedas de 0xE048 y las repinta
+C 0x9015 apunta a las llaves (BCD)
+C 0x901B resta_bcd: (HL) -= BC en BCD
+C 0x901E apunta a las flechas (BCD)
+C 0x9024 resta_bcd: (HL) -= BC en BCD
+C 0x902D lee quien juega (0 Afrodita)
+C 0x904E lee quien juega (0 Afrodita)
+C 0x905E mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
+C 0x9089 lee quien juega (0 Afrodita)
+C 0x9090 apunta a el tope de la vida de Afrodita
+C 0x90AD pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x90C0 lee el paso de la sala especial
+C 0x90C3 despacha: salta a la entrada A de la tabla de palabras que va detras del call
+C 0x90D0 mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
+C 0x90D5 mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
+C 0x90E1 lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+C 0x90E7 lee el articulo elegido en la tienda
+C 0x90F7 mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
+C 0x9105 mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
+C 0x910D lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+C 0x9120 mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
+C 0x9126 lee el paso de la sala especial
+C 0x9129 despacha: salta a la entrada A de la tabla de palabras que va detras del call
+C 0x9139 mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
+C 0x9142 lee la sala especial (pista o tienda)
+C 0x9148 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x9181 mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
+C 0x9184 lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+C 0x918C lee el articulo elegido en la tienda
+C 0x9192 byte_de_tabla: A = el byte HL + A
+C 0x9198 articulo_de_tienda: C = precio y D = objeto del articulo 0xE692 de la tienda 0xE690
+C 0x91A8 lee las monedas (BCD, 16 bits)
+C 0x91B1 paga: resta BC (BCD) de las monedas de 0xE048 y las repinta
+C 0x91C9 hl_mas_a: HL += A
+C 0x91D1 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x91E5 apunta a el paso de la sala especial
+C 0x91EC hl_mas_a: HL += A
+C 0x91F5 apunta a el nivel de los objetos 0x28/0x2B/0x2C
+C 0x91FE articulo_de_tienda: C = precio y D = objeto del articulo 0xE692 de la tienda 0xE690
+C 0x9205 suma_flechas: suma A (BCD) a las flechas de 0xE046, hasta 999
+C 0x920A suma_flechas: suma A (BCD) a las flechas de 0xE046, hasta 999
+C 0x9211 suma_llaves: suma A (BCD) a las llaves de 0xE04A, hasta 999
+C 0x921D mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
+C 0x9222 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x9225 apunta a el paso de la sala especial
+C 0x922B apunta a las monedas (BCD)
+C 0x922E resta_bcd: (HL) -= BC en BCD
+C 0x923E lee la sala especial (pista o tienda)
+C 0x9244 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x9248 lee el articulo elegido en la tienda
+C 0x924C hl_mas_a: HL += A
+C 0x92C0 lee el articulo elegido en la tienda
+C 0x92C3 hl_mas_a: HL += A
+C 0x92C9 lee el articulo elegido en la tienda
+C 0x92E8 lee el paso de la sala especial
+C 0x92ED lee la sala especial (pista o tienda)
+C 0x92F6 lee la sala especial (pista o tienda)
+C 0x92FE hl_mas_a: HL += A
+C 0x9302 mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
+C 0x930F lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+C 0x931D apunta a el articulo elegido en la tienda
+C 0x9324 lee el articulo elegido en la tienda
+C 0x932A de_mas_a: DE += A
+C 0x9332 articulo_de_tienda: C = precio y D = objeto del articulo 0xE692 de la tienda 0xE690
+C 0x934C pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x9353 apunta a el articulo elegido en la tienda
+C 0x935D lee el articulo elegido en la tienda
+C 0x9363 de_mas_a: DE += A
+C 0x936B articulo_de_tienda: C = precio y D = objeto del articulo 0xE692 de la tienda 0xE690
+C 0x93A5 guarda la y del personaje
+C 0x93AA guarda la x del personaje
+C 0x945C lee la sala especial (pista o tienda)
+C 0x947F lee la sala especial (pista o tienda)
+C 0x9486 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x948A de_mas_a: DE += A
+C 0x94A6 de_mas_a: DE += A
+C 0x94FB a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
+C 0x9502 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x9508 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x952B lee la sala especial (pista o tienda)
+C 0x9531 hl_mas_a: HL += A
+C 0x953A lee la sala especial (pista o tienda)
+C 0x9540 hl_mas_a: HL += A
+C 0x9569 lee el articulo elegido en la tienda
+C 0x9598 de_mas_a: DE += A
+C 0x95A9 apunta a las flechas (BCD)
+C 0x95C7 apunta a tiene el objeto 0x01
+C 0x9653 lee el nivel de los objetos 0x28/0x2B/0x2C
+C 0x965A apunta a tiene el objeto 0x2B
+C 0x966C de_mas_a: DE += A
+C 0x96BA lee quien juega (0 Afrodita)
+C 0x9722 tecla_ascii: A = el ASCII de la primera tecla apretada (0 si ninguna)
+C 0x9737 de_mas_a: DE += A
+C 0x9757 lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+C 0x982E apunta a las flechas (BCD)
+C 0x9855 apunta a tiene el objeto 0x01
+C 0x9878 lee el nivel de los objetos 0x28/0x2B/0x2C
+C 0x987E apunta a tiene el objeto 0x2C
+C 0x988E guarda el nivel de los objetos 0x28/0x2B/0x2C
+C 0x98A9 guarda quien juega (0 Afrodita)
+C 0x98ED a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
+C 0x9905 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x9908 a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
+C 0x990F a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
+C 0x9926 a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
+C 0x993D lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x995A lee la sala
+C 0x9965 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x996E palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x99BD byte_de_tabla: A = el byte HL + A
+C 0x99FB guarda tiene el objeto 0x0C
+C 0x9A22 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x9A25 lee quien juega (0 Afrodita)
+C 0x9A33 lee tiene el objeto 0x23
+C 0x9A41 lee tiene el objeto 0x0D
+C 0x9A46 lee el mando (la otra copia que cambia p03:A8BE)
+C 0x9A65 lee la y del personaje
+C 0x9A6D lee la x del personaje
+C 0x9A84 lee tiene el objeto 0x2A
+C 0x9A89 lee el mando (la otra copia que cambia p03:A8BE)
+C 0x9A99 lee tiene el objeto 0x27
+C 0x9A9E lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x9AA3 tecla_ascii: A = el ASCII de la primera tecla apretada (0 si ninguna)
+C 0x9AB1 hl_mas_a: HL += A
+C 0x9ABC hl_mas_a: HL += A
+C 0x9AC0 guarda la sala
+C 0x9AC9 lee tiene el objeto 0x15
+C 0x9ACE lee el estado del jefe
+C 0x9AD8 tecla_ascii: A = el ASCII de la primera tecla apretada (0 si ninguna)
+C 0x9AED lee el estado del jefe
+C 0x9B14 guarda el nombre del jefe acertado
+C 0x9B1B lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x9B3C tecla_ascii: A = el ASCII de la primera tecla apretada (0 si ninguna)
+C 0x9BB6 lee tiene el objeto 0x20
+C 0x9BBB lee el estado del personaje (5 = hundirse)
+C 0x9BEB pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x9BEE lee tiene el objeto 0x26
+C 0x9BFC apunta a las letras tecleadas
+C 0x9C08 umbrella: acaba con todas las figuras de tipo 0x0E (p03:B604)
+C 0x9C2F hl_mas_a: HL += A
+C 0x9DAF lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x9DD3 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x9E51 guarda la x del personaje
+C 0x9E5E pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x9E67 rle_a_vram: descomprime el rle de DE en la VRAM de HL
+C 0x9EAF lee la y del personaje
+C 0x9EB4 guarda la y del personaje
+C 0x9EB8 guarda el estado del personaje (5 = hundirse)
+C 0x9EDF palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x9F0F lee la y del personaje
+C 0x9F1D guarda la x del personaje
+C 0x9F4F guarda la x del personaje
+C 0x9F87 lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x9FA7 lee tiene el objeto 0x13
+C 0x9FB4 lee tiene el objeto 0x16
+C 0x9FC1 lee tiene el objeto 0x1B
+# --- fin de las anotaciones de anota.py ---
