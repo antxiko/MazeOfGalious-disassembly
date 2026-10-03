@@ -439,7 +439,6 @@ C 0xA96A multiplica (por 0x406B): HL = H x E
 C 0xA97C espera_10_1f: (ix+0x15) = 0x10 + azar
 C 0xA97F quita_bit_4_figura: quita el bit 4 de las banderas
 C 0xA991 velocidad_de_lado: la velocidad de lado = DE
-C 0xA99A dos_sprites_tabla: dos sprites de la tabla 0x70BE
 C 0xA9A1 sube las columnas de la figura que se pintan
 C 0xA9B7 sube las columnas de la figura que se pintan
 C 0xA9C7 pon_bit_4_figura: pone el bit 4 de las banderas
@@ -454,7 +453,6 @@ C 0xAA24 pared_delante: C con pared delante o en el borde
 C 0xAA29 vuelta_de_lado: la velocidad de lado al reves
 C 0xAA3A quita_bit_4_figura: quita el bit 4 de las banderas
 C 0xAA40 guarda el dibujo (o el mosaico) de la figura
-C 0xAA4D dos_sprites_tabla: dos sprites de la tabla 0x70BE
 C 0xAA53 guarda el dibujo (o el mosaico) de la figura
 C 0xAA6C mira el bit 7 de la velocidad de lado de la figura (alta)
 C 0xAAAF guarda las columnas de la figura que se pintan
@@ -530,7 +528,6 @@ C 0xACCD compara con la y de la figura
 C 0xACD1 lee la x del personaje
 C 0xACD6 le resta la x de la figura
 C 0xACE2 byte_de_tabla (por 0x4083): A = el byte HL + A
-C 0xACE5 dos_sprites_tabla: dos sprites de la tabla 0x70BE
 C 0xACF4 lee la y de la figura
 C 0xACF7 lee la x de la figura
 C 0xACFC crea_figura_hl: crea la figura A en DE con HL en 0xF014

@@ -1463,7 +1463,6 @@ C 0x7EE7 apunta a F5 ya apretada
 C 0x7F03 empieza_el_humo: 0xE0D2 = 2, 0x41 cuadros de humo y la musica 0x90
 C 0x7F08 humo: una nube cada 8 cuadros en los sitios de 0x8003
 C 0x7F11 a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
-C 0x7F14 para_con_escudo: C si el personaje quieto para el disparo mirando hacia el (sonido 0x1D)
 C 0x7F1A a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x7F25 lee el tipo del jefe (el hueco 0xE700 es el jefe)
 C 0x7F2F a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)

@@ -789,7 +789,7 @@ C 0x726F pone a uno el bit 7 de las banderas de la figura (bit 7: en pantalla)
 C 0x7273 el dibujo (o el mosaico) de la figura = 0xA0
 C 0x7281 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0x729B byte_de_tabla (por 0x4083): A = el byte HL + A
-C 0x72A8 banderas_e0: las banderas con 0xE0 y p05:96FA
+C 0x72A8 banderas_e0: banderas 0xE0
 C 0x72BB guarda el dibujo (o el mosaico) de la figura
 C 0x72BE el ancho del mosaico = 0x09
 C 0x72C2 velocidad_de_lado: la velocidad de lado = DE
@@ -1032,7 +1032,6 @@ C 0x7B2D de_negado (por 0x4068): DE = -DE
 C 0x7B30 velocidad_de_lado: la velocidad de lado = DE
 C 0x7B46 pone a uno el bit 0 de las banderas de la figura (bit 7: en pantalla)
 C 0x7B58 anda_tipo_01: anda; en el borde, da la vuelta
-C 0x7B64 articulo: el dibujo de un articulo
 C 0x7B68 dibujo_b0_c0: cada 4 cuadros el dibujo 0xB0 o 0xC0
 C 0x7B6B suelo_delante: C si hay suelo delante de los pies
 C 0x7B70 suelo_o_escalera: C si debajo hay suelo (0xBA o mas) o escalera (0xD2)
@@ -1062,7 +1061,7 @@ C 0x7C48 cambia_dibujo_8: el dibujo XOR 8 y la vertical al reves
 C 0x7C4E a_un_lado_70: velocidad de lado 0x70 segun (ix+0x1D)
 C 0x7C53 lee el dibujo (o el mosaico) de la figura
 C 0x7C58 guarda el dibujo (o el mosaico) de la figura
-C 0x7C5B suelta_figura: la figura deja de llevarlo
+C 0x7C5B vuelta_vertical: la velocidad vertical al reves
 C 0x7C6F lee la x de la figura
 C 0x7C72 mira el bit 7 de la velocidad de lado de la figura (alta)
 C 0x7C84 lee la y del personaje
@@ -1081,7 +1080,6 @@ C 0x7CFD mira el bit 7 de la velocidad de lado de la figura (alta)
 C 0x7D07 apunta a el contador de cuadros de partida
 C 0x7D11 pone a cero el bit 5 de la ficha del tipo (bit 7 sprites, bit 6, bit 4 filas de 0x1A)
 C 0x7D24 esperas_tipo_0e: esperas al azar
-C 0x7D27 agua_tope: en el agua no se baja de la y 0xB9 (salvo Afrodita en la sala 0x0B del mapa 8)
 C 0x7D2A pared_encima: C si encima hay pared
 C 0x7D32 el dibujo (o el mosaico) de la figura = 0xA0
 C 0x7D3D despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
@@ -1110,7 +1108,7 @@ C 0x7DDA anima_cada: cada (ix+8) cuadros: el dibujo XOR D y el tamaño XOR B
 C 0x7DDD lee la y de la figura
 C 0x7DE0 mira el bit 7 de la velocidad vertical de la figura (alta)
 C 0x7DF0 las columnas de la figura que se pintan = 0x10
-C 0x7DF8 suelta_figura: la figura deja de llevarlo
+C 0x7DF8 vuelta_vertical: la velocidad vertical al reves
 C 0x7DFB lee la x de la figura
 C 0x7DFE mira el bit 7 de la velocidad de lado de la figura (alta)
 C 0x7E0C las columnas de la figura que se pintan = 0x10

@@ -817,7 +817,7 @@ L_85FD:
 	ret nz			;8600
 	inc (ix+001h)		;8601   ; sube el paso de la figura
 	set 4,(ix+002h)		;8604   ; pone a uno el bit 4 de las banderas de la figura (bit 7: en pantalla)
-	jp 0b16fh		;8608   ; suelta_figura: la figura deja de llevarlo
+	jp 0b16fh		;8608   ; vuelta_vertical: la velocidad vertical al reves
 L_860B:
 	inc (ix+018h)		;860b
 	ld a,(ix+018h)		;860e
@@ -1103,13 +1103,13 @@ L_883E:
 	add a,(ix+015h)		;884e   ; le suma las columnas de la figura que se pintan
 	ld c,a			;8851
 	ld b,(ix+014h)		;8852
-	jp 06d49h		;8855   ; copia_filas: B filas de C bytes de HL a DE, en filas de 32
+	jp 06d49h		;8855   ; pared_en_bc: C si la casilla (x + B, y + C) es pared
 L_8858:
 	call L_888C		;8858
 	add a,(ix+014h)		;885b
 	ld b,a			;885e
 	ld c,(ix+015h)		;885f   ; lee las columnas de la figura que se pintan
-	jp 06d49h		;8862   ; copia_filas: B filas de C bytes de HL a DE, en filas de 32
+	jp 06d49h		;8862   ; pared_en_bc: C si la casilla (x + B, y + C) es pared
 L_8865:
 	call 06d43h		;8865   ; pared_en_16_17: C si la casilla (x + (ix+0x16), y + (ix+0x17)) es pared
 	ret c			;8868
@@ -1121,13 +1121,13 @@ L_8865:
 	add a,(ix+016h)		;8875
 	ld b,a			;8878
 	ld c,(ix+017h)		;8879
-	jp 06d49h		;887c   ; copia_filas: B filas de C bytes de HL a DE, en filas de 32
+	jp 06d49h		;887c   ; pared_en_bc: C si la casilla (x + B, y + C) es pared
 L_887F:
 	call L_888C		;887f
 	add a,(ix+017h)		;8882
 	ld c,a			;8885
 	ld b,(ix+016h)		;8886
-	jp 06d49h		;8889   ; copia_filas: B filas de C bytes de HL a DE, en filas de 32
+	jp 06d49h		;8889   ; pared_en_bc: C si la casilla (x + B, y + C) es pared
 L_888C:
 	bit 0,(ix+001h)		;888c   ; mira el bit 0 de el paso de la figura
 	ret z			;8890
@@ -1185,7 +1185,7 @@ L_88F5:
 	jr z,L_88FA		;88f5
 	ld a,(ix+008h)		;88f7
 L_88FA:
-	jp 07083h		;88fa   ; dos_sprites_tabla: dos sprites de la tabla 0x70BE
+	jp 07083h		;88fa
 
 ; ----------------------------------------------------------------------
 ; DATOS sin_nombrar_88fd: los mismos 56 bytes que p04:6DC6 (16 parejas de
@@ -1714,7 +1714,7 @@ L_8D4F:
 	jp 0b133h		;8d58   ; velocidades: la de lado = DE y la vertical = HL
 L_8D5B:
 	call 0b15fh		;8d5b   ; vuelta_de_lado: la velocidad de lado al reves
-	jp 0b16fh		;8d5e   ; suelta_figura: la figura deja de llevarlo
+	jp 0b16fh		;8d5e   ; vuelta_vertical: la velocidad vertical al reves
 L_8D61:
 	ld a,(0e604h)		;8d61   ; lee el contador de cuadros de partida
 	bit 3,a		;8d64
@@ -2349,7 +2349,7 @@ DATA_tabla_9225:
 
 L_922D:
 	bit 7,(ix+00dh)		;922d   ; mira el bit 7 de la velocidad vertical de la figura (alta)
-	call nz,0b16fh		;9231   ; suelta_figura: la figura deja de llevarlo
+	call nz,0b16fh		;9231   ; vuelta_vertical: la velocidad vertical al reves
 	call 06bd5h		;9234   ; paso_0_figura: el paso a 0
 	call L_92A1		;9237
 	ret nc			;923a
@@ -2457,11 +2457,11 @@ L_930E:
 	bit 7,(ix+00dh)		;9311   ; mira el bit 7 de la velocidad vertical de la figura (alta)
 	jr z,L_931E		;9315
 	cp 020h		;9317
-	call c,0b16fh		;9319   ; suelta_figura: la figura deja de llevarlo
+	call c,0b16fh		;9319   ; vuelta_vertical: la velocidad vertical al reves
 	jr L_9323		;931c
 L_931E:
 	cp 0b0h		;931e
-	call nc,0b16fh		;9320   ; suelta_figura: la figura deja de llevarlo
+	call nc,0b16fh		;9320   ; vuelta_vertical: la velocidad vertical al reves
 L_9323:
 	ld a,(ix+007h)		;9323   ; lee la x de la figura
 	bit 7,(ix+00fh)		;9326   ; mira el bit 7 de la velocidad de lado de la figura (alta)
@@ -2669,7 +2669,7 @@ L_94AC:
 L_94C6:
 	call 07973h		;94c6   ; tamano_0: el tamaño 0
 	ld (ix+001h),002h		;94c9   ; el paso de la figura = 0x02
-	jp 07083h		;94cd   ; dos_sprites_tabla: dos sprites de la tabla 0x70BE
+	jp 07083h		;94cd
 L_94D0:
 	call L_9B1D		;94d0
 	call L_99C9		;94d3
@@ -2740,7 +2740,7 @@ L_9529:
 L_9536:
 	ld (ix+014h),b		;9536
 	ld (ix+011h),013h		;9539   ; el tamaño de la figura (tabla 0x9006, banco 14) = 0x13
-	jp 07083h		;953d   ; dos_sprites_tabla: dos sprites de la tabla 0x70BE
+	jp 07083h		;953d
 tipo_17_cuadro:		; cada cuadro el tipo 0x17
 	ld a,(ix+001h)		;9540   ; El tipo 0x17: cada cuadro
 	dec a			;9543
@@ -3224,7 +3224,7 @@ L_98F9:
 	ld (ix+009h),c		;98fc   ; guarda la ficha del tipo (bit 7 sprites, bit 6, bit 4 filas de 0x1A)
 	ld (ix+011h),d		;98ff   ; guarda el tamaño de la figura (tabla 0x9006, banco 14)
 	ld (ix+013h),e		;9902
-	jp 07083h		;9905   ; dos_sprites_tabla: dos sprites de la tabla 0x70BE
+	jp 07083h		;9905
 tipo_25_cuadro:		; cada cuadro el tipo 0x25
 	ld a,(ix+001h)		;9908   ; El tipo 0x25: cada cuadro
 	cp 006h		;990b
@@ -3397,7 +3397,7 @@ L_9A50:
 	jp z,L_98E0		;9a55
 	add a,004h		;9a58
 	res 5,(ix+009h)		;9a5a   ; pone a cero el bit 5 de la ficha del tipo (bit 7 sprites, bit 6, bit 4 filas de 0x1A)
-	jp 07083h		;9a5e   ; dos_sprites_tabla: dos sprites de la tabla 0x70BE
+	jp 07083h		;9a5e
 
 ; ----------------------------------------------------------------------
 ; DATOS tres_palabras_9a61: 3 palabras que p05:99F7 elige con (ix+0x19) y pasa
@@ -3565,7 +3565,7 @@ L_9B47:
 	jr z,L_9B51		;9b4d
 	ld a,0ach		;9b4f
 L_9B51:
-	jp 07083h		;9b51   ; dos_sprites_tabla: dos sprites de la tabla 0x70BE
+	jp 07083h		;9b51
 tipo_24_cuadro:		; cada cuadro el tipo 0x24
 	ld a,(ix+001h)		;9b54   ; El tipo 0x24: cada cuadro
 	dec a			;9b57
@@ -3960,7 +3960,7 @@ L_9DD8:
 	jr z,L_9DF1		;9de9
 L_9DEB:
 	call 04083h		;9deb   ; byte_de_tabla (por 0x4083): A = el byte HL + A
-	jp 07083h		;9dee   ; dos_sprites_tabla: dos sprites de la tabla 0x70BE
+	jp 07083h		;9dee
 L_9DF1:
 	call L_9EC6		;9df1
 	call L_9ED0		;9df4
@@ -4039,7 +4039,7 @@ L_9E91:
 L_9EA6:
 	ld (ix+019h),b		;9ea6
 L_9EA9:
-	jp 07083h		;9ea9   ; dos_sprites_tabla: dos sprites de la tabla 0x70BE
+	jp 07083h		;9ea9
 L_9EAC:
 	bit 7,(ix+00fh)		;9eac   ; mira el bit 7 de la velocidad de lado de la figura (alta)
 	ld a,0bch		;9eb0
@@ -4202,7 +4202,7 @@ L_9FB1:
 	inc (ix+014h)		;9fc8
 L_9FCB:
 	dec (ix+014h)		;9fcb
-	call z,0b16fh		;9fce   ; suelta_figura: la figura deja de llevarlo
+	call z,0b16fh		;9fce   ; vuelta_vertical: la velocidad vertical al reves
 	dec (ix+015h)		;9fd1   ; baja las columnas de la figura que se pintan
 	jp z,0b15fh		;9fd4   ; vuelta_de_lado: la velocidad de lado al reves
 	ret			;9fd7

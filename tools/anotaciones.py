@@ -18,6 +18,26 @@ VECTORES = {
     0x408C: 0x5F8F, 0x4092: 0x4269,
 }
 
+# Que banco se ve en cada ventana (0x6000, 0x8000, 0xA000). Konami4 en trios:
+# el banco b de codigo corre con su trio (p00:416C-41E1, sin excepciones);
+# el banco 0 (0x4000) no tiene trio fijo.
+def trio(b):
+    if b == 0:
+        return {}
+    t = 3 * ((b - 1) // 3) + 1
+    return {0x6000: t, 0x8000: t + 1, 0xA000: t + 2}
+
+
+# Las rutinas del banco 0 que cambian lo que se ve (ventana -> banco).
+CAMBIOS_DE_BANCO = {
+    0x416C: {0x6000: 1, 0x8000: 2, 0xA000: 3}, 0x4185: {0x6000: 4, 0x8000: 5, 0xA000: 6},
+    0x419E: {0x6000: 7, 0x8000: 8, 0xA000: 9}, 0x41B7: {0x6000: 10, 0x8000: 11, 0xA000: 12},
+    0x41D0: {0x6000: 13, 0x8000: 14, 0xA000: 15},
+    0x41E9: {0x6000: 1}, 0x41F4: {0x6000: 4}, 0x41FF: {0x8000: 2}, 0x420A: {0x8000: 14},
+    0x4215: {0xA000: 3}, 0x4220: {0xA000: 6}, 0x422B: {0xA000: 9}, 0x4236: {0xA000: 12},
+    0x4241: {0xA000: 15},
+}
+
 # (banco, direccion) -> (nombre, lo que hace). Cada una leida en el listado.
 RUTINAS = {
     (0, 0x4095): ("init", "el arranque del cartucho: slot, H.KEYI, RAM a cero, y a esperar la interrupcion"),

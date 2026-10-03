@@ -2555,7 +2555,7 @@ DATA_tres_bytes_72a1:
 
 L_72A4:
 	ld (ix+008h),00ah		;72a4
-	call banderas_e0		;72a8   ; banderas_e0: las banderas con 0xE0 y p05:96FA
+	call banderas_e0		;72a8   ; banderas_e0: banderas 0xE0
 	ld a,r		;72ab
 	bit 0,a		;72ad
 	ld a,0ach		;72af
@@ -3690,7 +3690,7 @@ tipo_0a_cuadro:		; cada cuadro el tipo 0x0A
 	jr z,L_7B9B		;7b5e
 	ld a,(ix+018h)		;7b60
 	and a			;7b63
-	jp z,0947dh		;7b64   ; articulo: el dibujo de un articulo
+	jp z,0947dh		;7b64
 	ret			;7b67
 anda_tipo_01:		; anda; en el borde, da la vuelta
 	call dibujo_b0_c0		;7b68   ; dibujo_b0_c0: cada 4 cuadros el dibujo 0xB0 o 0xC0
@@ -3806,7 +3806,7 @@ cambia_dibujo_8:		; el dibujo XOR 8 y la vertical al reves
 	ld a,(ix+00ah)		;7c53   ; lee el dibujo (o el mosaico) de la figura
 	xor 008h		;7c56
 	ld (ix+00ah),a		;7c58   ; guarda el dibujo (o el mosaico) de la figura
-	jp 0b16fh		;7c5b   ; suelta_figura: la figura deja de llevarlo
+	jp 0b16fh		;7c5b   ; vuelta_vertical: la velocidad vertical al reves
 suelo_o_escalera:		; C si debajo hay suelo (0xBA o mas) o escalera (0xD2)
 	ld (ix+014h),000h		;7c5e
 	ld bc,0ffe0h		;7c62
@@ -3918,7 +3918,7 @@ tipo_0e_entra:		; al entrar el tipo 0x0E
 	ld (ix+018h),004h		;7d1c
 	ld (ix+016h),00bh		;7d20
 	call esperas_tipo_0e		;7d24   ; esperas_tipo_0e: esperas al azar
-	call 0a103h		;7d27   ; agua_tope: en el agua no se baja de la y 0xB9 (salvo Afrodita en la sala 0x0B del mapa 8)
+	call 0a103h		;7d27
 	call pared_encima		;7d2a   ; pared_encima: C si encima hay pared
 	ret nc			;7d2d
 	call 09706h		;7d2e
@@ -4023,7 +4023,7 @@ L_7DEC:
 L_7DF0:
 	ld (ix+015h),010h		;7df0   ; las columnas de la figura que se pintan = 0x10
 	ld (ix+01dh),001h		;7df4
-	call 0b16fh		;7df8   ; suelta_figura: la figura deja de llevarlo
+	call 0b16fh		;7df8   ; vuelta_vertical: la velocidad vertical al reves
 L_7DFB:
 	ld a,(ix+007h)		;7dfb   ; lee la x de la figura
 	bit 7,(ix+00fh)		;7dfe   ; mira el bit 7 de la velocidad de lado de la figura (alta)

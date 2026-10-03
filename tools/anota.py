@@ -33,7 +33,8 @@ FIN = "# --- fin de las anotaciones de anota.py ---"
 
 # Lo propio del juego (rutinas, RAM, campos de las figuras) esta en
 # tools/anotaciones.py: aqui solo la maquinaria.
-from anotaciones import BANCOS, CAMPOS, FICHAS_IX, IX_FIGURA_POR_DEFECTO, RAM, RAM16, RUTINAS, VECTORES  # noqa: E402
+from anotaciones import (BANCOS, CAMBIOS_DE_BANCO, CAMPOS, FICHAS_IX, IX_FIGURA_POR_DEFECTO,  # noqa: E402
+                         RAM, RAM16, RUTINAS, VECTORES, trio)
 
 REGISTROS_MAPPER = {0x6000: "0x6000", 0x8000: "0x8000", 0xA000: "0xA000"}
 
@@ -92,7 +93,28 @@ def fichas_de(filas, b=None):
     return fuera
 
 
-def comentario(b, filas, k, fichas):
+def ventanas_de(filas, b):
+    """Para cada instruccion, {ventana: banco} visible: el trio del banco al
+    empezar cada tramo (tras `ret` o `jp`), cambiado por las llamadas a las
+    rutinas de CAMBIOS_DE_BANCO."""
+    fuera, ahora = {}, trio(b)
+    for k, (a, t) in enumerate(filas):
+        fuera[k] = dict(ahora)
+        m = re.match(r"(?:call|jp)\s+(?:(?:nz|z|nc|c|po|pe|p|m),)?(?:L_([0-9A-F]{4})|0([0-9a-f]{4})h)$", t)
+        if m:
+            d = int(m.group(1) or m.group(2), 16)
+            ahora.update(CAMBIOS_DE_BANCO.get(VECTORES.get(d, d), {}))
+        nombre = re.match(r"(?:call|jp)\s+([a-z_][a-z0-9_]*)$", t)
+        if nombre:
+            for (bb, aa), (nom, que) in RUTINAS.items():
+                if nom == nombre.group(1) and bb == 0:
+                    ahora.update(CAMBIOS_DE_BANCO.get(aa, {}))
+        if t == "ret" or (t.startswith("jp ") and "," not in t):
+            ahora = trio(b)
+    return fuera
+
+
+def comentario(b, filas, k, fichas, ventanas=None):
     a, t = filas[k]
     # llamadas y saltos a rutinas con nombre
     m = re.match(r"(call|jp)\s+(?:(?:nz|z|nc|c|po|pe|p|m),)?(?:L_([0-9A-F]{4})|0([0-9a-f]{4})h|([a-z_][a-z0-9_]*))$", t)
@@ -106,10 +128,15 @@ def comentario(b, filas, k, fichas):
         dest = int(m.group(2) or m.group(3), 16)
         destino = VECTORES.get(dest, dest)
         via = " (por 0x%04X)" % dest if dest in VECTORES else ""
-        for (bb, aa), (nom, que) in RUTINAS.items():
-            if aa == destino and (bb == b or ORG[bb] == 0x4000 or not (ORG[b] <= destino < ORG[b] + 0x2000)):
-                if bb == 0 or ORG[bb] <= destino < ORG[bb] + 0x2000:
-                    return "%s%s: %s" % (nom, via, que)
+        if destino < 0x6000:
+            banco = 0
+        elif b and ORG[b] <= destino < ORG[b] + 0x2000:
+            banco = b
+        else:
+            banco = (ventanas or {}).get(k, {}).get(destino & 0xE000)
+        hecho = RUTINAS.get((banco, destino)) if banco is not None else None
+        if hecho:
+            return "%s%s: %s" % (hecho[0], via, hecho[1])
     # los campos de la figura
     if fichas.get(k, False):
         mm = re.search(r"\(ix\+0?([0-9a-f]+)h?\)", t)
@@ -170,6 +197,7 @@ def main(argv):
         filas = listado(b)
         cs, ls = a_mano(b)
         fichas = fichas_de(filas, b)
+        ventanas = ventanas_de(filas, b)
         lineas = []
         for (bb, aa), (nom, que) in sorted(RUTINAS.items()):
             if bb == b and aa not in ls:
@@ -178,7 +206,7 @@ def main(argv):
         for k, (a, t) in enumerate(filas):
             if a in cs:
                 continue
-            c = comentario(b, filas, k, fichas)
+            c = comentario(b, filas, k, fichas, ventanas)
             if c:
                 lineas.append("C 0x%04X %s" % (a, c))
                 n += 1

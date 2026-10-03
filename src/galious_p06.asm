@@ -1284,7 +1284,7 @@ L_A97F:
 	call velocidad_de_lado		;a991   ; velocidad_de_lado: la velocidad de lado = DE
 	call L_AA6C		;a994
 	ld a,(ix+016h)		;a997
-	jp 07083h		;a99a   ; dos_sprites_tabla: dos sprites de la tabla 0x70BE
+	jp 07083h		;a99a
 tipo_64_cuadro:		; cada cuadro el tipo 0x64
 	dec (ix+015h)		;a99d   ; El tipo 0x64: cada cuadro
 	ret nz			;a9a0
@@ -1368,7 +1368,7 @@ L_AA45:
 	jr c,L_AA50		;aa48
 	ld a,(ix+018h)		;aa4a
 L_AA4D:
-	jp 07083h		;aa4d   ; dos_sprites_tabla: dos sprites de la tabla 0x70BE
+	jp 07083h		;aa4d
 L_AA50:
 	ld a,(ix+017h)		;aa50
 	ld (ix+00ah),a		;aa53   ; guarda el dibujo (o el mosaico) de la figura
@@ -1685,7 +1685,7 @@ L_ACDD:
 	jr L_AC98		;ace0
 L_ACE2:
 	call 04083h		;ace2   ; byte_de_tabla (por 0x4083): A = el byte HL + A
-	jp 07083h		;ace5   ; dos_sprites_tabla: dos sprites de la tabla 0x70BE
+	jp 07083h		;ace5
 tipo_54_cuadro:		; cada cuadro el tipo 0x54
 	call L_AD1C		;ace8   ; El tipo 0x54: cada cuadro
 	ld a,(ix+01ch)		;aceb
