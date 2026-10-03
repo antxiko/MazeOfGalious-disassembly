@@ -1131,8 +1131,10 @@ C 0x423C guarda la copia del banco de 0xA000
 C 0x4244 el mapper: pone en 0xA000 el banco de A
 C 0x4247 guarda la copia del banco de 0xA000
 C 0x424D bancos_4_5_6: pone los bancos 4, 5 y 6 (y sus copias en 0xF0F1-0xF0F3)
+C 0x4251 crea_figura_hl: crea la figura A en DE con HL en 0xF014
 C 0x4254 bancos_1_2_3: pone los bancos 1, 2 y 3 (y sus copias en 0xF0F1-0xF0F3)
 C 0x4257 bancos_4_5_6: pone los bancos 4, 5 y 6 (y sus copias en 0xF0F1-0xF0F3)
+C 0x425A acaba_figura: la figura se acaba: el hueco vacio y una menos
 C 0x425D bancos_1_2_3: pone los bancos 1, 2 y 3 (y sus copias en 0xF0F1-0xF0F3)
 C 0x4260 bancos_7_8_9: pone los bancos 7, 8 y 9 (y sus copias en 0xF0F1-0xF0F3)
 C 0x4266 bancos_1_2_3: pone los bancos 1, 2 y 3 (y sus copias en 0xF0F1-0xF0F3)
@@ -1536,6 +1538,10 @@ C 0x5156 cosa_de_la_sala: pone la cosa de la sala en el hueco 0xE740 si no se ha
 C 0x5159 borra_marcas_de_la_sala: los sitios de la lista 0xB25D de la sala a 0 en el tramo del mapa
 C 0x515C huecos_de_la_sala: 0xE614 y cuantos huecos de figura (tablas 0xBA2E, 0xBA28)
 C 0x515F a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x5165 sala_sin_vuelta: 0xE612 en las salas de 0x60EE: las figuras vencidas no vuelven
+C 0x5168 figuras_de_la_sala: crea las figuras de la lista de la sala (0xB5CB, banco 6)
+C 0x516C guarda las figuras vencidas no vuelven en esta sala
+C 0x516F especiales_de_la_sala: lo especial de cada sala (0xE650-0xE66F)
 C 0x5172 bancos_1_2_3: pone los bancos 1, 2 y 3 (y sus copias en 0xF0F1-0xF0F3)
 C 0x517C puerta_de_vuelta_de_la_sala: en el castillo, la puerta de vuelta de la sala (0x9DDA) en 0xE680-0xE685
 C 0x517F cosa_e678: en los mundos, 0xE678-0xE67A de la lista 0x9C83 de la sala
@@ -1629,6 +1635,8 @@ C 0x53B4 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x53B7 personaje: el personaje cada cuadro
 C 0x53BA mueve_armas: las armas se mueven y se acaban fuera de la pantalla
 C 0x53BD figuras_que_llevan: las figuras de 0xEC10 y 0xEC20 con el personaje
+C 0x53CF generadores: cada cuadro, las figuras que salen solas en las salas especiales
+C 0x53D2 humos: cada 16 cuadros un humo (figura 0x5B) alrededor de 0xE6C0
 C 0x53D8 p8000_banco_14: pone el banco 14 en 0x8000
 C 0x53DB a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
 C 0x53DE apunta a el tampon de 0xEB00 (lo de debajo de las figuras; la contraseña)

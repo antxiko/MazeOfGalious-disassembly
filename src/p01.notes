@@ -1097,6 +1097,7 @@ C 0x600D guarda la y del personaje
 C 0x6011 guarda la x del personaje
 C 0x6030 guarda la sala especial (pista o tienda)
 C 0x603C guarda empujado (1 a la izquierda, 2 a la derecha)
+C 0x6042 apunta a cuantas figuras de grupo hay
 C 0x6050 lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
 C 0x6056 pinta_monedas: las monedas en la fila 1, columna 24
 C 0x6059 pinta_llaves: las llaves en la fila 2, columna 24
@@ -1466,6 +1467,7 @@ C 0x7F14 para_con_escudo: C si el personaje quieto para el disparo mirando hacia
 C 0x7F1A a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x7F25 lee el tipo del jefe (el hueco 0xE700 es el jefe)
 C 0x7F2F a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
+C 0x7F32 mueve_figura: la y y la x de la figura mas sus velocidades
 C 0x7F35 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x7F3D despacha: salta a la entrada A de la tabla de palabras que va detras del call
 C 0x7F59 guarda el tipo del jefe (el hueco 0xE700 es el jefe)
@@ -1474,16 +1476,22 @@ C 0x7F6F apunta a el tipo del jefe (el hueco 0xE700 es el jefe)
 C 0x7F77 las banderas de la figura (bit 7: en pantalla) = 0xF0
 C 0x7F7F despacha: salta a la entrada A de la tabla de palabras que va detras del call
 C 0x7FA3 a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
+C 0x7FA6 velocidad_de_lado: la velocidad de lado = DE
 C 0x7FA9 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x7FAC a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
+C 0x7FAF vuelta_de_lado: la velocidad de lado al reves
 C 0x7FB2 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x7FB5 a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
+C 0x7FB8 velocidad_vertical: la velocidad vertical = DE
 C 0x7FBB a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x7FBE a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
+C 0x7FC1 gravedad: la gravedad = DE
 C 0x7FC4 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x7FC7 a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
+C 0x7FCA cae: la velocidad vertical mas la gravedad
 C 0x7FCD a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x7FD3 guarda los cuadros de humo del jefe
 C 0x7FD8 musica_ya: sin musica esperando, la musica A
 C 0x7FF1 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x7FF9 lee cuantas figuras hay
 # --- fin de las anotaciones de anota.py ---

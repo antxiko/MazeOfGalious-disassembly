@@ -3210,7 +3210,7 @@ L_B66C:
 	ld (0e63fh),a		;b66e   ; guarda los cuadros de lo que deja la figura vencida
 	ld l,(ix+005h)		;b671
 	ld h,(ix+007h)		;b674
-	ld (0e6c0h),hl		;b677
+	ld (0e6c0h),hl		;b677   ; guarda donde deja algo la figura vencida y el byte siguiente (16 bits)
 	ret			;b67a
 acaba_los_62:		; acaba con las figuras de tipo 0x62
 	push ix		;b67b

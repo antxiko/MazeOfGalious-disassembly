@@ -1331,6 +1331,7 @@ C 0xB61B hl_mas_a: HL += A
 C 0xB636 suma_experiencia: suma A x 256 a la experiencia del que juega
 C 0xB65E acaba_los_62: acaba con las figuras de tipo 0x62
 C 0xB66E guarda los cuadros de lo que deja la figura vencida
+C 0xB677 guarda donde deja algo la figura vencida y el byte siguiente (16 bits)
 C 0xB67D apunta a los huecos de figura (32 bytes cada uno)
 C 0xB684 lee cuantos huecos de figura hay
 C 0xB68A compara con el tipo de la figura

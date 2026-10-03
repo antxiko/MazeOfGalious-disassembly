@@ -33,7 +33,7 @@ FIN = "# --- fin de las anotaciones de anota.py ---"
 
 # Lo propio del juego (rutinas, RAM, campos de las figuras) esta en
 # tools/anotaciones.py: aqui solo la maquinaria.
-from anotaciones import BANCOS, CAMPOS, FICHAS_IX, RAM, RAM16, RUTINAS, VECTORES  # noqa: E402
+from anotaciones import BANCOS, CAMPOS, FICHAS_IX, IX_FIGURA_POR_DEFECTO, RAM, RAM16, RUTINAS, VECTORES  # noqa: E402
 
 REGISTROS_MAPPER = {0x6000: "0x6000", 0x8000: "0x8000", 0xA000: "0xA000"}
 
@@ -73,11 +73,13 @@ def valor(txt):
     return int(txt[:-1], 16) if txt.endswith("h") else int(txt, 0)
 
 
-def fichas_de(filas):
+def fichas_de(filas, b=None):
     """Para cada instruccion, si IX apunta ahi a un hueco de figura: desde un
     `ld ix,nn` con nn en FICHAS_IX hasta el siguiente `ld ix` con otra cosa,
-    un `ret` o un `jp` (un tramo sin carga de IX no cuenta)."""
-    fuera, bueno = {}, False
+    un `ret` o un `jp` (un tramo sin carga de IX no cuenta, salvo en los
+    bancos de IX_FIGURA_POR_DEFECTO)."""
+    defecto = b in IX_FIGURA_POR_DEFECTO
+    fuera, bueno = {}, defecto
     for k, (a, t) in enumerate(filas):
         m = re.match(r"ld ix,0([0-9a-f]{4})h$", t)
         if m:
@@ -86,7 +88,7 @@ def fichas_de(filas):
             bueno = False
         fuera[k] = bueno
         if t.startswith(("ret", "jp ")) and not re.match(r"ret [a-z]", t):
-            bueno = False
+            bueno = defecto
     return fuera
 
 
@@ -167,7 +169,7 @@ def main(argv):
     for b in BANCOS:
         filas = listado(b)
         cs, ls = a_mano(b)
-        fichas = fichas_de(filas)
+        fichas = fichas_de(filas, b)
         lineas = []
         for (bb, aa), (nom, que) in sorted(RUTINAS.items()):
             if bb == b and aa not in ls:

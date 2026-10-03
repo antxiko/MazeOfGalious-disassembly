@@ -78,7 +78,7 @@ borra_al_entrar:		; 0xE690, 0xE603, 0xE536, 0xE539, 0xE520 y 0xE620-0xE63F a cer
 	ld (0e539h),a		;6039
 	ld (0e520h),a		;603c   ; guarda empujado (1 a la izquierda, 2 a la derecha)
 	ld hl,0e620h		;603f   ; ...y 0xE620-0xE63F a cero
-	ld de,0e621h		;6042
+	ld de,0e621h		;6042   ; apunta a cuantas figuras de grupo hay
 	ld bc,0001fh		;6045
 	ld (hl),000h		;6048
 	ldir		;604a
@@ -4931,7 +4931,7 @@ jefe_cada_cuadro:		; el jefe: humo, salida y lo de su tipo
 	bit 4,(ix+002h)		;7f2a   ; con el bit 4, p06:B0ED
 	ret z			;7f2e
 	call 04220h		;7f2f   ; a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
-	call 0b0edh		;7f32
+	call 0b0edh		;7f32   ; mueve_figura: la y y la x de la figura mas sus velocidades
 	jp 04215h		;7f35   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 lo_del_jefe:		; la rutina del tipo de jefe (tabla 0x7F40)
 	ld a,(0e700h)		;7f38   ; por el tipo del jefe (tabla que sigue)
@@ -5016,23 +5016,23 @@ DATA_once_bytes_7f98:
 
 L_7FA3:
 	call 04220h		;7fa3   ; a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
-	call 0b13eh		;7fa6
+	call 0b13eh		;7fa6   ; velocidad_de_lado: la velocidad de lado = DE
 	jp 04215h		;7fa9   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 L_7FAC:
 	call 04220h		;7fac   ; a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
-	call 0b15fh		;7faf
+	call 0b15fh		;7faf   ; vuelta_de_lado: la velocidad de lado al reves
 	jp 04215h		;7fb2   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 L_7FB5:
 	call 04220h		;7fb5   ; a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
-	call 0b137h		;7fb8
+	call 0b137h		;7fb8   ; velocidad_vertical: la velocidad vertical = DE
 	jp 04215h		;7fbb   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 L_7FBE:
 	call 04220h		;7fbe   ; a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
-	call 0b145h		;7fc1
+	call 0b145h		;7fc1   ; gravedad: la gravedad = DE
 	jp 04215h		;7fc4   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 L_7FC7:
 	call 04220h		;7fc7   ; a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
-	call 0b14ch		;7fca
+	call 0b14ch		;7fca   ; cae: la velocidad vertical mas la gravedad
 	jp 04215h		;7fcd   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 empieza_el_humo:		; 0xE0D2 = 2, 0x41 cuadros de humo y la musica 0x90
 	inc (hl)			;7fd0   ; 1: a 2, 0x41 cuadros de humo y la musica 0x90
@@ -5058,7 +5058,7 @@ humo:		; una nube cada 8 cuadros en los sitios de 0x8003
 	ld a,063h		;7ff4
 	jp 0424ch		;7ff6
 L_7FF9:
-	ld a,(0e620h)		;7ff9
+	ld a,(0e620h)		;7ff9   ; lee cuantas figuras hay
 	or a			;7ffc
 	ret nz			;7ffd
 

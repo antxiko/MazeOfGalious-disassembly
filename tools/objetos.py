@@ -56,7 +56,7 @@ EFECTOS = {
     0x15: "en la pantalla de objetos, sin jefe, RETURN lleva a la sala 0x48 del castillo (p02:9AC9, p00:47DE)",
     0x16: "la sala 6 del mapa 6 sale con su otra planta (p00:55F7, 0x8DAE)",
     0x17: "el enemigo de tipo 0x2E no le toca (p03:B21F)",
-    0x18: "en el mapa 9 llena 0xEF00 de 0xF0 (p00:5575) y p04:6200 (sin mirar)",
+    0x18: "apaga las figuras de tipo 8 que salen solas en el castillo (salas 0x90-0x93) y en los mapas 9, 10 y 11 (p04:6200); en el mapa 9, con 0xE619, p00:5575",
     0x19: "el daño que hacen las figuras se queda en la mitad (p03:B3BF; el daño de cada tipo en p04:64E5)",
     0x1A: "en ese mapa marca tambien el sitio de la tabla 0xB0FC (p01:668F)",
     0x1B: "cada enemigo da el doble de experiencia (p03:B62E, tabla 0xBF27 -> p01:6158)",
@@ -72,11 +72,11 @@ EFECTOS = {
     0x25: "cada golpe quita el doble (p03:B586 y p03:B5D1)",
     0x26: "sin el no se mira la palabra UMBRELLA (p02:9BEE), que acaba con las figuras de tipo 0x0E (p03:B5EA)",
     0x27: "en la pantalla de objetos del castillo, la cifra 1-9 lleva a la puerta de ese mundo si ya esta abierta (p02:9A99)",
-    0x28: "nivel 1 de 0xE097",
+    0x28: "nivel 1 de 0xE097: en guardia se paran los disparos de la primera lista de p04:65BC (p04:659B -> p03:B3E7)",
     0x29: "p09:A345 (sin mirar)",
     0x2A: "hace falta para las puertas de vuelta de tipo 3 (p02:9A84)",
-    0x2B: "nivel 2 de 0xE097",
-    0x2C: "nivel 3 de 0xE097",
+    0x2B: "nivel 2 de 0xE097: la segunda lista de disparos que se paran (p04:65BC); pide antes el 0x28",
+    0x2C: "nivel 3 de 0xE097: la tercera lista (p04:65BC); pide antes el 0x2B",
 }
 
 

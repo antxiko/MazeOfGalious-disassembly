@@ -368,11 +368,11 @@ L_424C:
 	push af			;424c
 	call bancos_4_5_6		;424d   ; bancos_4_5_6: pone los bancos 4, 5 y 6 (y sus copias en 0xF0F1-0xF0F3)
 	pop af			;4250
-	call 06551h		;4251
+	call 06551h		;4251   ; crea_figura_hl: crea la figura A en DE con HL en 0xF014
 	jp bancos_1_2_3		;4254   ; bancos_1_2_3: pone los bancos 1, 2 y 3 (y sus copias en 0xF0F1-0xF0F3)
 L_4257:
 	call bancos_4_5_6		;4257   ; bancos_4_5_6: pone los bancos 4, 5 y 6 (y sus copias en 0xF0F1-0xF0F3)
-	call 0b41ch		;425a
+	call 0b41ch		;425a   ; acaba_figura: la figura se acaba: el hueco vacio y una menos
 	jp bancos_1_2_3		;425d   ; bancos_1_2_3: pone los bancos 1, 2 y 3 (y sus copias en 0xF0F1-0xF0F3)
 L_4260:
 	call bancos_7_8_9		;4260   ; bancos_7_8_9: pone los bancos 7, 8 y 9 (y sus copias en 0xF0F1-0xF0F3)
@@ -2397,11 +2397,11 @@ monta_lo_de_la_sala:		; lo que va encima de la sala: figuras, cosas, puertas, es
 	call 0656eh		;515c   ; huecos_de_la_sala: 0xE614 y cuantos huecos de figura (tablas 0xBA2E, 0xBA28)
 	call a000_banco_3		;515f   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 	call bancos_4_5_6		;5162   ; con los bancos 4, 5 y 6: p04:6054, p04:6000 y p04:6186
-	call 06054h		;5165
-	call 06000h		;5168
+	call 06054h		;5165   ; sala_sin_vuelta: 0xE612 en las salas de 0x60EE: las figuras vencidas no vuelven
+	call 06000h		;5168   ; figuras_de_la_sala: crea las figuras de la lista de la sala (0xB5CB, banco 6)
 	xor a			;516b
-	ld (0e612h),a		;516c
-	call 06186h		;516f
+	ld (0e612h),a		;516c   ; guarda las figuras vencidas no vuelven en esta sala
+	call 06186h		;516f   ; especiales_de_la_sala: lo especial de cada sala (0xE650-0xE66F)
 	call bancos_1_2_3		;5172   ; bancos_1_2_3: pone los bancos 1, 2 y 3 (y sus copias en 0xF0F1-0xF0F3)
 	xor a			;5175   ; 0xE6A1 a 0
 	ld (0e6a1h),a		;5176
@@ -2658,8 +2658,8 @@ cuadro_de_partida:		; un cuadro de la partida: todas las rutinas de cada banco
 	call 0b3c5h		;53c6
 	call 0aecch		;53c9
 	call 0afe8h		;53cc
-	call 062dbh		;53cf
-	call 069d2h		;53d2
+	call 062dbh		;53cf   ; generadores: cada cuadro, las figuras que salen solas en las salas especiales
+	call 069d2h		;53d2   ; humos: cada 16 cuadros un humo (figura 0x5B) alrededor de 0xE6C0
 	call bancos_1_2_3		;53d5   ; con 14 y 15: las figuras de 0xEB00 otra vez
 	call p8000_banco_14		;53d8   ; p8000_banco_14: pone el banco 14 en 0x8000
 	call a000_banco_15		;53db   ; a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
