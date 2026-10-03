@@ -1985,18 +1985,18 @@ azar:		; A = R con el contador de cuadros
 	ret			;4dec
 sonido_a_cero:		; el estado del sonido a cero y los canales callados
 	ld a,0bch		;4ded   ; el sonido desde cero: 0xE1B1 = 0xBC y lo demas a 0
-	ld (0e1b1h),a		;4def
+	ld (0e1b1h),a		;4def   ; guarda la copia del mezclador del PSG (registro 7)
 	xor a			;4df2
-	ld (0e1c0h),a		;4df3
-	ld (0e1c1h),a		;4df6
+	ld (0e1c0h),a		;4df3   ; guarda apagandose: la espera entre pasos
+	ld (0e1c1h),a		;4df6   ; guarda el volumen general (baja al apagarse)
 	ld (0e1c2h),a		;4df9
 	ld (0e1c6h),a		;4dfc
 	ld (0e1c5h),a		;4dff   ; guarda lo herido que esta el jefe (0, 1, 2)
 calla:		; los programas de canal al vacio de 0x6075
 	xor a			;4e02   ; calla: los cuatro programas de canal (0xE100-0xE106)...
 	ld (0e1c7h),a		;4e03   ; guarda la musica que suena
-	ld (0e1b0h),a		;4e06
-	ld (0e1b2h),a		;4e09
+	ld (0e1b0h),a		;4e06   ; guarda el efecto que suena
+	ld (0e1b2h),a		;4e09   ; guarda la pausa (bit 0) y el 0xFB (bit 1)
 	ld (0e1c3h),a		;4e0c
 	ld hl,06075h		;4e0f   ; ...apuntan al programa vacio de 0x6075
 	ld (0e100h),hl		;4e12   ; guarda los programas de los cuatro canales de sonido (0xE100-0xE107) y el byte siguiente (16 bits)
@@ -2107,11 +2107,11 @@ L_4EB6:
 	ld (0e104h),hl		;4edc
 	ld a,(0e1b2h)		;4edf   ; sin el bit 1 de 0xE1B2
 	and 0fdh		;4ee2
-	ld (0e1b2h),a		;4ee4
+	ld (0e1b2h),a		;4ee4   ; guarda la pausa (bit 0) y el 0xFB (bit 1)
 L_4EE7:
 	xor a			;4ee7   ; 0xE1C0, 0xE1C1 y 0xE1C3 a 0, 0xE1C2 = 7
-	ld (0e1c0h),a		;4ee8
-	ld (0e1c1h),a		;4eeb
+	ld (0e1c0h),a		;4ee8   ; guarda apagandose: la espera entre pasos
+	ld (0e1c1h),a		;4eeb   ; guarda el volumen general (baja al apagarse)
 	ld (0e1c3h),a		;4eee
 	ld a,007h		;4ef1
 	ld (0e1c2h),a		;4ef3
@@ -2150,7 +2150,7 @@ L_4F1F:
 	ret			;4f2b
 L_4F2C:
 	ld a,c			;4f2c   ; el efecto que suena...
-	ld (0e1b0h),a		;4f2d
+	ld (0e1b0h),a		;4f2d   ; guarda el efecto que suena
 	ld de,0e15dh		;4f30   ; ...su canal 0xE15D desde la plantilla...
 	ld hl,04ef7h		;4f33
 	ld bc,0001bh		;4f36
@@ -2184,7 +2184,7 @@ sonido_especial:		; 0xFA/0xFF se apaga, 0xFB/0xFC, 0xFD/0xFE la pausa
 	ld a,0ffh		;4f6c
 	ld (0e1c4h),a		;4f6e
 	ld a,030h		;4f71
-	ld (0e1c0h),a		;4f73
+	ld (0e1c0h),a		;4f73   ; guarda apagandose: la espera entre pasos
 	ret			;4f76
 L_4F77:
 	ld a,001h		;4f77   ; 0xFA: se apaga mas deprisa (0xE1C4 = 0xFA, 0x0A)
@@ -2192,26 +2192,26 @@ L_4F77:
 	ld a,0fah		;4f7c
 	ld (0e1c4h),a		;4f7e
 	ld a,00ah		;4f81
-	ld (0e1c0h),a		;4f83
+	ld (0e1c0h),a		;4f83   ; guarda apagandose: la espera entre pasos
 	ret			;4f86
 pausa_del_sonido:		; 0xFD: guarda la musica y el PSG y calla
 	ld a,001h		;4f87   ; 0xFD, la pausa: 0xE1C9 = 1 y el bit 0 de 0xE1B2...
 	ld (0e1c9h),a		;4f89
-	ld a,(0e1b2h)		;4f8c
+	ld a,(0e1b2h)		;4f8c   ; lee la pausa (bit 0) y el 0xFB (bit 1)
 	or 001h		;4f8f
-	ld (0e1b2h),a		;4f91
+	ld (0e1b2h),a		;4f91   ; guarda la pausa (bit 0) y el 0xFB (bit 1)
 	ld a,(0e1c0h)		;4f94   ; ...guarda el estado de la musica en 0xE1B3-0xE1B6...
 	ld (0e1b3h),a		;4f97
-	ld a,(0e1c1h)		;4f9a
+	ld a,(0e1c1h)		;4f9a   ; lee el volumen general (baja al apagarse)
 	ld (0e1b4h),a		;4f9d
-	ld a,(0e1b1h)		;4fa0
+	ld a,(0e1b1h)		;4fa0   ; lee la copia del mezclador del PSG (registro 7)
 	ld (0e1b5h),a		;4fa3
 	ld a,(0e1c2h)		;4fa6
 	ld (0e1b6h),a		;4fa9
 	xor a			;4fac
 	ld (0e1c2h),a		;4fad
 	ld a,0bfh		;4fb0   ; ...0xE1B1 = 0xBF (el mezclador sin nada)...
-	ld (0e1b1h),a		;4fb2
+	ld (0e1b1h),a		;4fb2   ; guarda la copia del mezclador del PSG (registro 7)
 	xor a			;4fb5   ; ...guarda los registros 0, 1, 8, 9 y 10 del PSG...
 	call 00096h		;4fb6   ; BIOS RDPSG - Reads value from PSG-register
 	ld (0e1b7h),a		;4fb9
@@ -2237,9 +2237,9 @@ pausa_del_sonido:		; 0xFD: guarda la musica y el PSG y calla
 	ld e,000h		;4fec
 	call 00093h		;4fee   ; BIOS WRTPSG - Writes data to PSG-register
 	xor a			;4ff1
-	ld (0e1aeh),a		;4ff2
+	ld (0e1aeh),a		;4ff2   ; guarda el canal del PSG que se toca
 	ld a,005h		;4ff5
-	ld (0e1afh),a		;4ff7
+	ld (0e1afh),a		;4ff7   ; guarda el programa que se toca (0-3)
 	ld hl,06104h		;4ffa   ; el programa de la pausa, 0x6104, en el canal 0xE10A...
 	ld (0e10ah),hl		;4ffd
 	ld de,0e193h		;5000
@@ -2252,15 +2252,15 @@ pausa_del_sonido:		; 0xFD: guarda la musica y el PSG y calla
 fin_de_la_pausa_del_sonido:		; 0xFE: la musica y el PSG como estaban
 	xor a			;5014   ; 0xFE, fin de la pausa: todo como estaba
 	ld (0e1c9h),a		;5015
-	ld a,(0e1b2h)		;5018
+	ld a,(0e1b2h)		;5018   ; lee la pausa (bit 0) y el 0xFB (bit 1)
 	and 0feh		;501b
-	ld (0e1b2h),a		;501d
+	ld (0e1b2h),a		;501d   ; guarda la pausa (bit 0) y el 0xFB (bit 1)
 	ld a,(0e1b3h)		;5020
-	ld (0e1c0h),a		;5023
+	ld (0e1c0h),a		;5023   ; guarda apagandose: la espera entre pasos
 	ld a,(0e1b4h)		;5026
-	ld (0e1c1h),a		;5029
+	ld (0e1c1h),a		;5029   ; guarda el volumen general (baja al apagarse)
 	ld a,(0e1b5h)		;502c
-	ld (0e1b1h),a		;502f
+	ld (0e1b1h),a		;502f   ; guarda la copia del mezclador del PSG (registro 7)
 	ld a,(0e1b6h)		;5032
 	ld (0e1c2h),a		;5035
 	ld a,(0e1b7h)		;5038   ; los registros del PSG guardados, otra vez
@@ -2286,7 +2286,7 @@ fin_de_la_pausa_del_sonido:		; 0xFE: la musica y el PSG como estaban
 L_5064:
 	ld a,(0e1b2h)		;5064   ; 0xFB: el bit 1 de 0xE1B2...
 	or 002h		;5067
-	ld (0e1b2h),a		;5069
+	ld (0e1b2h),a		;5069   ; guarda la pausa (bit 0) y el 0xFB (bit 1)
 	ld a,(0e1b1h)		;506c   ; ...guarda el mezclador...
 	ld (0e1bch),a		;506f
 	ld a,(0e1b0h)		;5072   ; ...sin efecto sonando, todo apagado (0xBF)...
@@ -2298,7 +2298,7 @@ L_507C:
 	ld a,(0e1b1h)		;507c   ; ...con uno, sin los canales A y B
 	or 01bh		;507f
 L_5081:
-	ld (0e1b1h),a		;5081
+	ld (0e1b1h),a		;5081   ; guarda la copia del mezclador del PSG (registro 7)
 	xor a			;5084   ; guarda los registros 0, 1 y 8 del PSG
 	call 00096h		;5085   ; BIOS RDPSG - Reads value from PSG-register
 	ld (0e1bdh),a		;5088
@@ -2321,23 +2321,23 @@ L_50B3:
 	ld a,(0e1b2h)		;50b3   ; 0xFC: deshace el 0xFB si lo hay
 	bit 1,a		;50b6
 	ret z			;50b8
-	ld a,(0e1b2h)		;50b9
+	ld a,(0e1b2h)		;50b9   ; lee la pausa (bit 0) y el 0xFB (bit 1)
 	and 0fdh		;50bc
-	ld (0e1b2h),a		;50be
+	ld (0e1b2h),a		;50be   ; guarda la pausa (bit 0) y el 0xFB (bit 1)
 	ld a,(0e1b0h)		;50c1   ; el mezclador como estaba...
 	or a			;50c4
 	ld a,(0e1bch)		;50c5
 	jr z,L_50D8		;50c8
 	ld b,a			;50ca   ; ...dejando lo del efecto
-	ld a,(0e1b1h)		;50cb
+	ld a,(0e1b1h)		;50cb   ; lee la copia del mezclador del PSG (registro 7)
 	or 0dbh		;50ce
 	and b			;50d0
 	ld b,a			;50d1
-	ld a,(0e1b1h)		;50d2
+	ld a,(0e1b1h)		;50d2   ; lee la copia del mezclador del PSG (registro 7)
 	and 024h		;50d5
 	or b			;50d7
 L_50D8:
-	ld (0e1b1h),a		;50d8
+	ld (0e1b1h),a		;50d8   ; guarda la copia del mezclador del PSG (registro 7)
 	ld a,(0e1bdh)		;50db   ; y los registros 0, 1 y 8 del PSG
 	ld e,a			;50de
 	xor a			;50df

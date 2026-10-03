@@ -15,71 +15,71 @@
 
 
 L_6000:
-	ld a,00ah		;6000
+	ld a,00ah		;6000   ; apagandose rapido: 0x0A
 	jr L_6049		;6002
-L_6004:
-	ld a,(0e1b1h)		;6004
+sonido_cada_cuadro:		; cada cuadro: el mezclador, el apagado y los cuatro canales
+	ld a,(0e1b1h)		;6004   ; cada cuadro: el mezclador (registro 7) desde 0xE1B1...
 	ld e,a			;6007
 	ld a,007h		;6008
 	call 00093h		;600a   ; BIOS WRTPSG - Writes data to PSG-register
-	ld a,(0e1b2h)		;600d
+	ld a,(0e1b2h)		;600d   ; ...en la pausa (bit 0 de 0xE1B2), solo su programa...
 	bit 0,a		;6010
 	jp nz,L_6099		;6012
-	bit 1,a		;6015
+	bit 1,a		;6015   ; ...con el 0xFB (bit 1), su canal...
 	jp nz,L_609D		;6017
-	ld a,(0e1c0h)		;601a
+	ld a,(0e1c0h)		;601a   ; ...apagandose (0xE1C0): cada paso...
 	dec a			;601d
 	jp m,L_604C		;601e
 	jp nz,L_6049		;6021
-	ld a,(0e1c1h)		;6024
+	ld a,(0e1c1h)		;6024   ; ...el volumen general (0xE1C1) baja...
 	dec a			;6027
-	ld (0e1c1h),a		;6028
-	cp 0f0h		;602b
+	ld (0e1c1h),a		;6028   ; guarda el volumen general (baja al apagarse)
+	cp 0f0h		;602b   ; ...a -16, los tres canales callados
 	jp nz,L_6040		;602d
-	ld hl,L_6075		;6030
+	ld hl,canal_vacio		;6030
 	ld (0e100h),hl		;6033   ; guarda los programas de los cuatro canales de sonido (0xE100-0xE107) y el byte siguiente (16 bits)
 	ld (0e102h),hl		;6036
 	ld (0e104h),hl		;6039
 	xor a			;603c
 	jp L_6049		;603d
 L_6040:
-	ld a,(0e1c4h)		;6040
+	ld a,(0e1c4h)		;6040   ; la espera entre pasos: 0x0A (0xFA) o 0x30 (0xFF)
 	cp 0fah		;6043
 	jr z,L_6000		;6045
 	ld a,030h		;6047
 L_6049:
-	ld (0e1c0h),a		;6049
+	ld (0e1c0h),a		;6049   ; guarda apagandose: la espera entre pasos
 L_604C:
-	xor a			;604c
+	xor a			;604c   ; los tres canales de musica (A, B, C)...
 	ld b,a			;604d
 	ld hl,(0e100h)		;604e   ; lee los programas de los cuatro canales de sonido (0xE100-0xE107) y el byte siguiente (16 bits)
-	call L_606D		;6051
+	call toca_canal		;6051   ; toca_canal: el canal A y el programa B: salta a su programa HL
 	ld a,001h		;6054
 	ld b,a			;6056
 	ld hl,(0e102h)		;6057
-	call L_606D		;605a
+	call toca_canal		;605a   ; toca_canal: el canal A y el programa B: salta a su programa HL
 	ld a,002h		;605d
 	ld b,a			;605f
 	ld hl,(0e104h)		;6060
 L_6063:
-	call L_606D		;6063
+	call toca_canal		;6063   ; ...y el de efectos, en el C
 	ld a,002h		;6066
 	ld b,003h		;6068
 	ld hl,(0e106h)		;606a
-L_606D:
-	ld (0e1aeh),a		;606d
+toca_canal:		; el canal A y el programa B: salta a su programa HL
+	ld (0e1aeh),a		;606d   ; el canal (0xE1AE) y el programa (0xE1AF)
 	ld a,b			;6070
-	ld (0e1afh),a		;6071
+	ld (0e1afh),a		;6071   ; guarda el programa que se toca (0-3)
 	jp (hl)			;6074
-L_6075:
-	ld a,(0e1afh)		;6075
+canal_vacio:		; el programa vacio: calla el canal
+	ld a,(0e1afh)		;6075   ; el programa vacio: con el de efectos acabado, sin efecto (0xE1B0)...
 	cp 003h		;6078
 	jp nz,L_6084		;607a
 	xor a			;607d
-	ld (0e1b0h),a		;607e
-	ld a,(0e1afh)		;6081
+	ld (0e1b0h),a		;607e   ; guarda el efecto que suena
+	ld a,(0e1afh)		;6081   ; lee el programa que se toca (0-3)
 L_6084:
-	rlca			;6084
+	rlca			;6084   ; ...su programa pasa a ser un ret...
 	ld hl,0e100h		;6085   ; apunta a los programas de los cuatro canales de sonido (0xE100-0xE107)
 	add a,l			;6088
 	ld l,a			;6089
@@ -90,57 +90,57 @@ L_608D:
 	ld (hl),e			;6090
 	inc hl			;6091
 	ld (hl),d			;6092
-	ld e,000h		;6093
-	jp L_60B2		;6095
+	ld e,000h		;6093   ; ...y su volumen a 0
+	jp volumen		;6095   ; volumen: el volumen E del canal
 L_6098:
 	ret			;6098
 L_6099:
-	ld hl,(0e10ah)		;6099
+	ld hl,(0e10ah)		;6099   ; la pausa: su programa (0xE10A)
 	jp (hl)			;609c
 L_609D:
-	xor a			;609d
+	xor a			;609d   ; el 0xFB: su canal 0xE108 como cuarto
 	ld b,004h		;609e
 	ld hl,(0e108h)		;60a0
 	jp L_6063		;60a3
-L_60A6:
-	ld a,(0e1aeh)		;60a6
+periodo:		; el periodo D, E en los registros del canal
+	ld a,(0e1aeh)		;60a6   ; el periodo D, E en los registros del canal
 	rlca			;60a9
 	call 00093h		;60aa   ; BIOS WRTPSG - Writes data to PSG-register
 	inc a			;60ad
 	ld e,d			;60ae
 	jp 00093h		;60af   ; BIOS WRTPSG - Writes data to PSG-register
-L_60B2:
-	ld a,(0e1aeh)		;60b2
+volumen:		; el volumen E del canal
+	ld a,(0e1aeh)		;60b2   ; el volumen E (registro 8 + canal)
 	add a,008h		;60b5
 	jp 00093h		;60b7   ; BIOS WRTPSG - Writes data to PSG-register
-L_60BA:
-	push hl			;60ba
+mezcla_ruido:		; el canal con ruido y sin tono
+	push hl			;60ba   ; el mezclador: el canal con ruido y sin tono...
 	ld hl,060feh		;60bb
-	jp L_60D3		;60be
-L_60C1:
-	push hl			;60c1
+	jp mezcla		;60be   ; mezcla: el registro 7 con la mascara del canal de la tabla HL
+mezcla_los_dos:		; el canal con tono y ruido
+	push hl			;60c1   ; ...con los dos...
 	ld hl,060f8h		;60c2
-	jp L_60D3		;60c5
-L_60C8:
-	push hl			;60c8
+	jp mezcla		;60c5   ; mezcla: el registro 7 con la mascara del canal de la tabla HL
+mezcla_nada:		; el canal sin tono ni ruido
+	push hl			;60c8   ; ...sin ninguno...
 	ld hl,060f2h		;60c9
-	jp L_60D3		;60cc
-L_60CF:
-	push hl			;60cf
+	jp mezcla		;60cc   ; mezcla: el registro 7 con la mascara del canal de la tabla HL
+mezcla_tono:		; el canal con tono y sin ruido
+	push hl			;60cf   ; ...con tono y sin ruido
 	ld hl,060ech		;60d0
-L_60D3:
-	ld a,(0e1aeh)		;60d3
+mezcla:		; el registro 7 con la mascara del canal de la tabla HL
+	ld a,(0e1aeh)		;60d3   ; la mascara del canal (AND) y lo que se pone (OR)...
 	rlca			;60d6
 	add a,l			;60d7
 	ld l,a			;60d8
 	jr nc,L_60DC		;60d9
 	inc h			;60db
 L_60DC:
-	ld a,(0e1b1h)		;60dc
+	ld a,(0e1b1h)		;60dc   ; lee la copia del mezclador del PSG (registro 7)
 	and (hl)			;60df
 	inc hl			;60e0
 	or (hl)			;60e1
-	ld (0e1b1h),a		;60e2
+	ld (0e1b1h),a		;60e2   ; ...al registro 7
 	pop hl			;60e5
 	ld e,a			;60e6
 	ld a,007h		;60e7
@@ -191,34 +191,34 @@ DATA_mezclador_3:
 ; ======================================================================
 
 
-L_6104:
-	ld ix,0e193h		;6104
-	jp L_611D		;6108
-L_610B:
-	ld ix,0e10ch		;610b
-	jp L_611D		;610f
-L_6112:
-	ld ix,0e127h		;6112
-	jp L_611D		;6116
-L_6119:
-	ld ix,0e142h		;6119
-L_611D:
-	ld a,(0e1afh)		;611d
+canal_de_pausa:		; el canal de la pausa (0xE193)
+	ld ix,0e193h		;6104   ; los canales: el de la pausa (0xE193)...
+	jp canal		;6108   ; canal: un canal: la nota que suena o la siguiente de la partitura
+canal_a:		; el canal A de la musica (0xE10C)
+	ld ix,0e10ch		;610b   ; ...A (0xE10C)...
+	jp canal		;610f   ; canal: un canal: la nota que suena o la siguiente de la partitura
+canal_b:		; el canal B (0xE127)
+	ld ix,0e127h		;6112   ; ...B (0xE127)...
+	jp canal		;6116   ; canal: un canal: la nota que suena o la siguiente de la partitura
+canal_c:		; el canal C (0xE142)
+	ld ix,0e142h		;6119   ; ...C (0xE142)
+canal:		; un canal: la nota que suena o la siguiente de la partitura
+	ld a,(0e1afh)		;611d   ; el canal C con un efecto sonando se calla (bit 5)
 	cp 002h		;6120
 	jp nz,L_6130		;6122
-	ld a,(0e1b0h)		;6125
+	ld a,(0e1b0h)		;6125   ; lee el efecto que suena
 	or a			;6128
 	jp z,L_6130		;6129
 	set 5,(ix+002h)		;612c
 L_6130:
-	dec (ix+009h)		;6130
-	jp z,L_6191		;6133
-	bit 0,(ix+002h)		;6136
+	dec (ix+009h)		;6130   ; la nota sigue? (0x09 la cuenta)...
+	jp z,nota_siguiente		;6133   ; nota_siguiente: la nota siguiente de la partitura
+	bit 0,(ix+002h)		;6136   ; ...tono: el vibrato (0x16)...
 	jp z,L_616F		;613a
 	ld a,(ix+016h)		;613d
 	or a			;6140
-	call nz,L_6449		;6141
-	ld a,(ix+009h)		;6144
+	call nz,vibrato		;6141   ; vibrato: el vibrato del canal
+	ld a,(ix+009h)		;6144   ; ...el final de la nota: el volumen baja...
 	cp (ix+00bh)		;6147
 	jp nc,L_6151		;614a
 	cp (ix+006h)		;614d
@@ -228,9 +228,9 @@ L_6151:
 	dec e			;6154
 	ret m			;6155
 	ld (ix+00ah),e		;6156
-	bit 5,(ix+002h)		;6159
+	bit 5,(ix+002h)		;6159   ; ...callado, nada...
 	ret nz			;615d
-	ld a,(0e1c6h)		;615e
+	ld a,(0e1c6h)		;615e   ; ...con 0xE1C6 y sin pausa, a 0
 	or a			;6161
 	jr z,L_616C		;6162
 	ld a,(0e1c9h)		;6164
@@ -238,9 +238,9 @@ L_6151:
 	jr nz,L_616C		;6168
 	ld e,000h		;616a
 L_616C:
-	jp L_60B2		;616c
+	jp volumen		;616c   ; volumen: el volumen E del canal
 L_616F:
-	bit 5,(ix+002h)		;616f
+	bit 5,(ix+002h)		;616f   ; ruido: la envolvente (p13:64B0)...
 	ret nz			;6173
 	bit 7,(ix+002h)		;6174
 	ret nz			;6178
@@ -250,29 +250,29 @@ L_616F:
 	ld a,001h		;617f
 	ld (ix+01ah),a		;6181
 L_6184:
-	call L_64B0		;6184
+	call paso_de_envolvente		;6184   ; paso_de_envolvente: un paso de la envolvente o del efecto; C al acabar
 	ret nc			;6187
-	set 7,(ix+002h)		;6188
+	set 7,(ix+002h)		;6188   ; ...acabada, volumen 0
 	ld e,000h		;618c
-	jp L_60B2		;618e
-L_6191:
-	ld l,(ix+000h)		;6191
+	jp volumen		;618e   ; volumen: el volumen E del canal
+nota_siguiente:		; la nota siguiente de la partitura
+	ld l,(ix+000h)		;6191   ; la nota siguiente de la partitura (0x00-0x01)...
 	ld h,(ix+001h)		;6194
 L_6197:
 	ld a,(hl)			;6197
 	inc hl			;6198
 	ld c,a			;6199
-	cp 0d0h		;619a
+	cp 0d0h		;619a   ; ...0xD0 y mas: ordenes (p13:6348)...
 	jp nc,L_6348		;619c
 	ld (ix+000h),l		;619f
 	ld (ix+001h),h		;61a2
-	cp 0c0h		;61a5
+	cp 0c0h		;61a5   ; ...0xC0-0xCF: silencio...
 	jp nc,L_6318		;61a7
-	and 00fh		;61aa
+	and 00fh		;61aa   ; ...0x00-0xBF: el nibble bajo + 1 es la duracion...
 	inc a			;61ac
 	ld b,a			;61ad
-	ld e,(ix+003h)		;61ae
-	ld a,(0e1c5h)		;61b1   ; lee lo herido que esta el jefe (0, 1, 2)
+	ld e,(ix+003h)		;61ae   ; ...x la base (0x03)...
+	ld a,(0e1c5h)		;61b1   ; ...con el jefe herido (0xE1C5), la base 1 o 2 menos: mas deprisa
 	or a			;61b4
 	jr z,L_61C6		;61b5
 	ld a,(0e1c9h)		;61b7
@@ -289,23 +289,23 @@ L_61C6:
 L_61C7:
 	add a,e			;61c7
 	djnz L_61C7		;61c8
-	ld (ix+009h),a		;61ca
-	ld a,(0e1afh)		;61cd
+	ld (ix+009h),a		;61ca   ; la cuenta de la nota
+	ld a,(0e1afh)		;61cd   ; lee el programa que se toca (0-3)
 	cp 002h		;61d0
 	jp nz,L_61E0		;61d2
-	ld a,(0e1b0h)		;61d5
+	ld a,(0e1b0h)		;61d5   ; lee el efecto que suena
 	or a			;61d8
 	jp nz,L_61E0		;61d9
 	res 5,(ix+002h)		;61dc
 L_61E0:
-	bit 0,(ix+002h)		;61e0
+	bit 0,(ix+002h)		;61e0   ; tono: el nibble alto es la nota...
 	jp z,L_627A		;61e4
-	ld a,(ix+009h)		;61e7
+	ld a,(ix+009h)		;61e7   ; ...cuando empieza a bajar (0x0B)...
 	sub (ix+005h)		;61ea
 	ld (ix+00bh),a		;61ed
 	bit 5,(ix+002h)		;61f0
 	ret nz			;61f4
-	ld a,(0e1c5h)		;61f5   ; lee lo herido que esta el jefe (0, 1, 2)
+	ld a,(0e1c5h)		;61f5   ; ...con el jefe herido, la tabla de periodos 0x62E8 (1) o 0x6300 (2)...
 	or a			;61f8
 	jr z,L_621E		;61f9
 	ld a,(0e1c9h)		;61fb
@@ -322,15 +322,15 @@ L_61E0:
 	ld hl,06300h		;620e
 	jr L_6227		;6211
 L_6213:
-	ld a,c			;6213
+	ld a,c			;6213   ; herido 1: la tabla 0x62E8
 	and 0f0h		;6214
 	rrca			;6216
 	rrca			;6217
 	rrca			;6218
-	ld hl,062e8h		;6219
+	ld hl,062e8h		;6219   ; su periodo
 	jr L_6227		;621c
 L_621E:
-	ld a,c			;621e
+	ld a,c			;621e   ; ...si no, la 0x62D0
 	and 0f0h		;621f
 	rrca			;6221
 	rrca			;6222
@@ -342,15 +342,15 @@ L_6227:
 	jr nc,L_622C		;6229
 	inc h			;622b
 L_622C:
-	ld e,(hl)			;622c
+	ld e,(hl)			;622c   ; el periodo de la nota...
 	inc hl			;622d
 	ld d,(hl)			;622e
-	ld b,(ix+007h)		;622f
+	ld b,(ix+007h)		;622f   ; ...en su octava (0x07 desplazamientos)
 L_6232:
 	srl d		;6232
 	rr e		;6234
 	djnz L_6232		;6236
-	xor a			;6238
+	xor a			;6238   ; vibrato desde 0
 	ld (ix+018h),a		;6239
 	ld a,(ix+016h)		;623c
 	or a			;623f
@@ -358,21 +358,21 @@ L_6232:
 	ld a,0ech		;6242
 	ld (ix+016h),a		;6244
 L_6247:
-	bit 6,(ix+002h)		;6247
+	bit 6,(ix+002h)		;6247   ; con el bit 6, un punto mas
 	jp z,L_624F		;624b
 	inc de			;624e
 L_624F:
-	ld (ix+014h),d		;624f
+	ld (ix+014h),d		;624f   ; el periodo a la ficha y al PSG
 	ld (ix+015h),e		;6252
-	call L_60A6		;6255
-	ld a,(0e1c1h)		;6258
+	call periodo		;6255   ; periodo: el periodo D, E en los registros del canal
+	ld a,(0e1c1h)		;6258   ; el volumen: el general (0xE1C1) + el del canal (0x04)...
 	add a,(ix+004h)		;625b
 	jp p,L_6262		;625e
 	xor a			;6261
 L_6262:
 	ld (ix+00ah),a		;6262
 	ld e,a			;6265
-	ld a,(0e1c6h)		;6266
+	ld a,(0e1c6h)		;6266   ; ...0 con 0xE1C6 y sin pausa
 	or a			;6269
 	jr z,L_6274		;626a
 	ld a,(0e1c9h)		;626c
@@ -380,23 +380,23 @@ L_6262:
 	jr nz,L_6274		;6270
 	ld e,000h		;6272
 L_6274:
-	call L_60B2		;6274
-	jp L_60CF		;6277
+	call volumen		;6274   ; y con tono
+	jp mezcla_tono		;6277   ; mezcla_tono: el canal con tono y sin ruido
 L_627A:
-	ld a,(ix+008h)		;627a
-	cp 001h		;627d
+	ld a,(ix+008h)		;627a   ; ruido: la envolvente del instrumento (0x08): 1-5 o la de 0x661F...
+	cp 001h		;627d   ; instrumento 1 (0x65A7)...
 	jr z,L_62B2		;627f
 	cp 002h		;6281
 	jr z,L_62B8		;6283
 	cp 003h		;6285
 	jr z,L_62BE		;6287
-	cp 004h		;6289
+	cp 004h		;6289   ; ...4 (0x65EF)...
 	jr z,L_62C4		;628b
 	cp 005h		;628d
 	jr z,L_62CA		;628f
 	ld hl,0661fh		;6291
 L_6294:
-	ld a,c			;6294
+	ld a,c			;6294   ; ...la de la nota...
 	and 0f0h		;6295
 	rrca			;6297
 	rrca			;6298
@@ -406,12 +406,12 @@ L_6294:
 	jr nc,L_629F		;629c
 	inc h			;629e
 L_629F:
-	ld a,(hl)			;629f
+	ld a,(hl)			;629f   ; ...en 0x0C-0x0D...
 	ld (ix+00ch),a		;62a0
 	inc hl			;62a3
 	ld a,(hl)			;62a4
 	ld (ix+00dh),a		;62a5
-	res 7,(ix+002h)		;62a8
+	res 7,(ix+002h)		;62a8   ; ...desde el principio
 	ld a,001h		;62ac
 	ld (ix+00eh),a		;62ae
 	ret			;62b1
@@ -494,11 +494,11 @@ DATA_notas_6300:
 
 
 L_6318:
-	and 00fh		;6318
+	and 00fh		;6318   ; silencio: su duracion como la de una nota...
 	inc a			;631a
 	ld b,a			;631b
 	ld e,(ix+003h)		;631c
-	ld a,(0e1c5h)		;631f   ; lee lo herido que esta el jefe (0, 1, 2)
+	ld a,(0e1c5h)		;631f   ; ...mas corta con el jefe herido...
 	or a			;6322
 	jr z,L_6334		;6323
 	ld a,(0e1c9h)		;6325
@@ -515,84 +515,84 @@ L_6334:
 L_6335:
 	add a,e			;6335
 	djnz L_6335		;6336
-	ld (ix+009h),a		;6338
-	bit 5,(ix+002h)		;633b
+	ld (ix+009h),a		;6338   ; ...la cuenta...
+	bit 5,(ix+002h)		;633b   ; ...y volumen 0
 	ret nz			;633f
 	ld e,000h		;6340
 	ld (ix+00ah),e		;6342
-	jp L_60B2		;6345
+	jp volumen		;6345   ; volumen: el volumen E del canal
 L_6348:
-	and 0f0h		;6348
+	and 0f0h		;6348   ; ordenes: 0xD0-0xDF la base de duracion...
 	cp 0d0h		;634a
 	jp z,L_639A		;634c
-	cp 0e0h		;634f
+	cp 0e0h		;634f   ; ...0xE0-0xEF...
 	jp z,L_63A3		;6351
-	ld a,c			;6354
+	ld a,c			;6354   ; ...0xFF acaba el canal...
 	and 00fh		;6355
 	cp 00fh		;6357
 	jp z,L_6434		;6359
-	cp 00eh		;635c
+	cp 00eh		;635c   ; ...0xFE repite: [veces][dir]...
 	jp nz,L_6381		;635e
-	ld a,(ix+010h)		;6361
+	ld a,(ix+010h)		;6361   ; ...cuenta las vueltas (0x10)...
 	dec a			;6364
 	jp z,L_6378		;6365
 	jp p,L_636D		;6368
-	ld a,(hl)			;636b
+	ld a,(hl)			;636b   ; ...la primera vez, las veces del byte...
 	dec a			;636c
 L_636D:
 	inc hl			;636d
 	ld (ix+010h),a		;636e
-	ld a,(hl)			;6371
+	ld a,(hl)			;6371   ; ...y salta a la direccion...
 	inc hl			;6372
 	ld h,(hl)			;6373
 	ld l,a			;6374
 	jp L_6197		;6375
 L_6378:
-	ld (ix+010h),a		;6378
+	ld (ix+010h),a		;6378   ; ...acabadas, sigue detras
 	inc hl			;637b
 	inc hl			;637c
 	inc hl			;637d
 	jp L_6197		;637e
 L_6381:
-	inc a			;6381
+	inc a			;6381   ; 0xF0-0xFD: el volumen (nibble + 1) y [caida][corte] en 0x05 y 0x06
 	ld (ix+004h),a		;6382
-	ld a,(hl)			;6385
+	ld a,(hl)			;6385   ; el byte de detras...
 	rrca			;6386
 	rrca			;6387
 	rrca			;6388
 	rrca			;6389
 	and 00fh		;638a
 	dec a			;638c
-	ld (ix+005h),a		;638d
+	ld (ix+005h),a		;638d   ; ...la caida (nibble alto - 1)...
 	ld a,(hl)			;6390
 	inc hl			;6391
 	and 00fh		;6392
-	ld (ix+006h),a		;6394
+	ld (ix+006h),a		;6394   ; ...el corte (nibble bajo)
 	jp L_6197		;6397
 L_639A:
-	ld a,c			;639a
+	ld a,c			;639a   ; 0xD0-0xDF: la base de duracion (0x03)
 	and 00fh		;639b
 	ld (ix+003h),a		;639d
 	jp L_6197		;63a0
 L_63A3:
-	ld a,c			;63a3
+	ld a,c			;63a3   ; 0xE0-0xEF: 0xEC vibrato...
 	and 00fh		;63a4
 	cp 00ch		;63a6
 	jr z,L_6409		;63a8
-	cp 006h		;63aa
+	cp 006h		;63aa   ; ...0xE0-0xE5 la octava...
 	jp c,L_63E9		;63ac
-	jp z,L_63F3		;63af
-	cp 007h		;63b2
+	jp z,L_63F3		;63af   ; ...0xE6 y 0xEB 0xE1C3...
+	cp 007h		;63b2   ; ...0xE7 el bit 6...
 	jp z,L_6402		;63b4
-	cp 00ah		;63b7
+	cp 00ah		;63b7   ; ...0xEA salta...
 	jp z,L_6416		;63b9
 	cp 00bh		;63bc
 	jp z,L_63FB		;63be
-	cp 00dh		;63c1
+	cp 00dh		;63c1   ; ...0xED llama, 0xEE vuelve...
 	jp z,L_641D		;63c3
 	cp 00eh		;63c6
 	jp z,L_642B		;63c8
-	and 007h		;63cb
+	and 007h		;63cb   ; ...0xE8 y 0xE9: el instrumento (bits 0-2 de las banderas)...
 	ld b,a			;63cd
 	ld a,(ix+002h)		;63ce
 	and 0f8h		;63d1
@@ -600,7 +600,7 @@ L_63A3:
 	ld (ix+002h),a		;63d4
 	ld a,c			;63d7
 	and 00fh		;63d8
-	cp 008h		;63da
+	cp 008h		;63da   ; ...0xE8 lleva la envolvente de ruido detras
 	jr z,L_63E1		;63dc
 	jp L_6197		;63de
 L_63E1:
@@ -609,36 +609,36 @@ L_63E1:
 	ld (ix+008h),a		;63e3
 	jp L_6197		;63e6
 L_63E9:
-	neg		;63e9
+	neg		;63e9   ; la octava: 6 - n
 	add a,006h		;63eb
 	ld (ix+007h),a		;63ed
 	jp L_6197		;63f0
 L_63F3:
-	ld a,001h		;63f3
+	ld a,001h		;63f3   ; 0xE6: 0xE1C3 = 1 (no entran efectos)
 	ld (0e1c3h),a		;63f5
 	jp L_6197		;63f8
 L_63FB:
-	xor a			;63fb
+	xor a			;63fb   ; 0xEB: 0xE1C3 = 0
 	ld (0e1c3h),a		;63fc
 	jp L_6197		;63ff
 L_6402:
-	set 6,(ix+002h)		;6402
+	set 6,(ix+002h)		;6402   ; 0xE7: el periodo un punto mas
 	jp L_6197		;6406
 L_6409:
-	ld a,0ech		;6409
+	ld a,0ech		;6409   ; 0xEC: vibrato con su byte
 	ld (ix+016h),a		;640b
 	ld a,(hl)			;640e
 	inc hl			;640f
 	ld (ix+017h),a		;6410
 	jp L_6197		;6413
 L_6416:
-	ld a,(hl)			;6416
+	ld a,(hl)			;6416   ; 0xEA: salta
 	inc hl			;6417
 	ld h,(hl)			;6418
 	ld l,a			;6419
 	jp L_6197		;641a
 L_641D:
-	ld e,(hl)			;641d
+	ld e,(hl)			;641d   ; 0xED: llama, guardando la vuelta en 0x12-0x13
 	inc hl			;641e
 	ld d,(hl)			;641f
 	inc hl			;6420
@@ -647,11 +647,11 @@ L_641D:
 	ex de,hl			;6427
 	jp L_6197		;6428
 L_642B:
-	ld l,(ix+012h)		;642b
+	ld l,(ix+012h)		;642b   ; 0xEE: vuelve
 	ld h,(ix+013h)		;642e
 	jp L_6197		;6431
 L_6434:
-	ld a,(0e1afh)		;6434
+	ld a,(0e1afh)		;6434   ; se acabo el canal: su bit fuera de 0xE1C2...
 	inc a			;6437
 	ld b,a			;6438
 	ld a,07fh		;6439
@@ -662,9 +662,9 @@ L_643B:
 	ld a,(0e1c2h)		;643f
 	and b			;6442
 	ld (0e1c2h),a		;6443
-	jp L_6075		;6446
-L_6449:
-	bit 0,(ix+016h)		;6449
+	jp canal_vacio		;6446   ; ...y su programa, el vacio
+vibrato:		; el vibrato del canal
+	bit 0,(ix+016h)		;6449   ; el vibrato: primero espera 10 cuadros...
 	jr nz,L_645D		;644d
 	ld a,(ix+018h)		;644f
 	inc a			;6452
@@ -674,23 +674,23 @@ L_6449:
 	xor a			;645a
 	jr L_649A		;645b
 L_645D:
-	ld a,(ix+017h)		;645d
+	ld a,(ix+017h)		;645d   ; ...luego cada (nibble alto) cuadros...
 	and 0f0h		;6460
 	rrca			;6462
 	rrca			;6463
 	rrca			;6464
 	rrca			;6465
 	ld e,a			;6466
-	ld a,(ix+018h)		;6467
+	ld a,(ix+018h)		;6467   ; la cuenta del vibrato
 	inc a			;646a
 	cp e			;646b
 	jr c,L_649A		;646c
-	ld e,(ix+015h)		;646e
+	ld e,(ix+015h)		;646e   ; ...el periodo sube o baja (nibble bajo) alternando...
 	ld d,(ix+014h)		;6471
 	ld a,(ix+017h)		;6474
 	and 00fh		;6477
 	ld b,a			;6479
-	ld a,(ix+019h)		;647a
+	ld a,(ix+019h)		;647a   ; el sentido cambia cada vez
 	cpl			;647d
 	ld (ix+019h),a		;647e
 	and a			;6481
@@ -707,41 +707,41 @@ L_648C:
 	jr nc,L_6491		;648e
 	dec d			;6490
 L_6491:
-	bit 5,(ix+002h)		;6491
+	bit 5,(ix+002h)		;6491   ; ...al PSG
 	ret nz			;6495
-	call L_60A6		;6496
+	call periodo		;6496   ; periodo: el periodo D, E en los registros del canal
 	xor a			;6499
 L_649A:
 	ld (ix+018h),a		;649a
 	ret			;649d
-L_649E:
-	ld ix,0e178h		;649e
+canal_fb:		; el programa del 0xFB (0xE178)
+	ld ix,0e178h		;649e   ; el programa del 0xFB: su canal 0xE178
 	jp L_64A9		;64a2
-L_64A5:
-	ld ix,0e15dh		;64a5
+canal_de_efectos:		; el programa de los efectos (0xE15D)
+	ld ix,0e15dh		;64a5   ; el de los efectos: 0xE15D
 L_64A9:
-	call L_64B0		;64a9
+	call paso_de_envolvente		;64a9   ; un paso del efecto; acabado, el programa vacio
 	ret nc			;64ac
-	jp L_6075		;64ad
-L_64B0:
-	dec (ix+00eh)		;64b0
+	jp canal_vacio		;64ad   ; canal_vacio: el programa vacio: calla el canal
+paso_de_envolvente:		; un paso de la envolvente o del efecto; C al acabar
+	dec (ix+00eh)		;64b0   ; un paso de la envolvente: cada (0x0F) cuadros...
 	jp nz,L_65A3		;64b3
 	ld a,(ix+00fh)		;64b6
 	ld (ix+00eh),a		;64b9
 	ld l,(ix+00ch)		;64bc
 	ld h,(ix+00dh)		;64bf
 L_64C2:
-	ld a,(hl)			;64c2
+	ld a,(hl)			;64c2   ; ...el byte: 0xFF acaba (C)...
 	cp 0ffh		;64c3
 	jp z,L_65A5		;64c5
 	inc hl			;64c8
 	ld c,a			;64c9
-	cp 0feh		;64ca
+	cp 0feh		;64ca   ; ...0xFE repite...
 	jp z,L_6530		;64cc
-	and 0f0h		;64cf
+	and 0f0h		;64cf   ; ...0x2x mezcla...
 	cp 020h		;64d1
 	jp z,L_6550		;64d3
-	cp 010h		;64d6
+	cp 010h		;64d6   ; ...0x1x: el ruido (registro 6) y sigue...
 	jp nz,L_64EA		;64d8
 	ld a,c			;64db
 	and 00fh		;64dc
@@ -754,28 +754,28 @@ L_64C2:
 	ld c,a			;64e7
 	and 0f0h		;64e8
 L_64EA:
-	rrca			;64ea
+	rrca			;64ea   ; ...el volumen (nibble alto)...
 	rrca			;64eb
 	rrca			;64ec
 	rrca			;64ed
 	ld e,a			;64ee
-	bit 4,(ix+00ah)		;64ef
+	bit 4,(ix+00ah)		;64ef   ; ...con la envolvente del PSG, el registro 13...
 	jp z,L_64FE		;64f3
 	ld a,00dh		;64f6
 	call 00093h		;64f8   ; BIOS WRTPSG - Writes data to PSG-register
 	jp L_6521		;64fb
 L_64FE:
-	ld a,(0e1afh)		;64fe
+	ld a,(0e1afh)		;64fe   ; ...si no, mas el volumen general (musica)...
 	cp 003h		;6501
 	jp nc,L_650F		;6503
-	ld a,(0e1c1h)		;6506
+	ld a,(0e1c1h)		;6506   ; lee el volumen general (baja al apagarse)
 	add a,e			;6509
 	jp p,L_650E		;650a
 	xor a			;650d
 L_650E:
 	ld e,a			;650e
 L_650F:
-	ld a,(ix+01ah)		;650f
+	ld a,(ix+01ah)		;650f   ; ...callado con las musicas 0x86 y siguientes y 0x1A...
 	or a			;6512
 	jr z,L_651E		;6513
 	ld a,(0e1c7h)		;6515   ; lee la musica que suena
@@ -783,27 +783,27 @@ L_650F:
 	jr c,L_651E		;651a
 	ld e,000h		;651c
 L_651E:
-	call L_60B2		;651e
+	call volumen		;651e   ; volumen: el volumen E del canal
 L_6521:
-	ld a,c			;6521
+	ld a,c			;6521   ; ...y el periodo (nibble bajo y el byte siguiente)
 	and 00fh		;6522
 	ld d,a			;6524
 	ld e,(hl)			;6525
 	inc hl			;6526
 	ld (ix+00ch),l		;6527
 	ld (ix+00dh),h		;652a
-	jp L_60A6		;652d
+	jp periodo		;652d   ; periodo: el periodo D, E en los registros del canal
 L_6530:
-	ld a,(ix+011h)		;6530
+	ld a,(ix+011h)		;6530   ; 0xFE: repite como en las partituras
 	dec a			;6533
 	jp z,L_6547		;6534
 	jp p,L_653C		;6537
 	ld a,(hl)			;653a
 	dec a			;653b
 L_653C:
-	inc hl			;653c
+	inc hl			;653c   ; la cuenta de vueltas...
 	ld (ix+011h),a		;653d
-	ld a,(hl)			;6540
+	ld a,(hl)			;6540   ; ...y salta
 	inc hl			;6541
 	ld h,(hl)			;6542
 	ld l,a			;6543
@@ -815,34 +815,34 @@ L_6547:
 	inc hl			;654c
 	jp L_64C2		;654d
 L_6550:
-	bit 0,c		;6550
+	bit 0,c		;6550   ; 0x2x: tono y ruido segun los bits 0 y 1...
 	jp nz,L_6566		;6552
 	bit 1,c		;6555
 	jp nz,L_6560		;6557
-	call L_60BA		;655a
+	call mezcla_ruido		;655a   ; mezcla_ruido: el canal con ruido y sin tono
 	jp L_6574		;655d
 L_6560:
-	call L_60CF		;6560
+	call mezcla_tono		;6560   ; mezcla_tono: el canal con tono y sin ruido
 	jp L_6574		;6563
 L_6566:
 	bit 1,c		;6566
 	jp nz,L_6571		;6568
-	call L_60C8		;656b
+	call mezcla_nada		;656b   ; mezcla_nada: el canal sin tono ni ruido
 	jp L_6574		;656e
 L_6571:
-	call L_60C1		;6571
+	call mezcla_los_dos		;6571   ; mezcla_los_dos: el canal con tono y ruido
 L_6574:
-	ld a,c			;6574
+	ld a,c			;6574   ; ...el bit 3 a la envolvente del PSG (bit 4 del volumen)...
 	rlca			;6575
 	and 010h		;6576
 	ld (ix+00ah),a		;6578
 	ld e,a			;657b
-	call L_60B2		;657c
-	ld a,(hl)			;657f
+	call volumen		;657c   ; volumen: el volumen E del canal
+	ld a,(hl)			;657f   ; ...la duracion de cada paso...
 	inc hl			;6580
 	ld (ix+00eh),a		;6581
 	ld (ix+00fh),a		;6584
-	ld a,c			;6587
+	ld a,c			;6587   ; ...0x28 y mas: el periodo de la envolvente (registros 12 y 11)
 	cp 020h		;6588
 	jp z,L_65A3		;658a
 	cp 028h		;658d
@@ -857,10 +857,10 @@ L_6574:
 	call 00093h		;659d   ; BIOS WRTPSG - Writes data to PSG-register
 	jp L_64C2		;65a0
 L_65A3:
-	or a			;65a3
+	or a			;65a3   ; NC: sigue
 	ret			;65a4
 L_65A5:
-	scf			;65a5
+	scf			;65a5   ; C: acabado
 	ret			;65a6
 
 ; ----------------------------------------------------------------------

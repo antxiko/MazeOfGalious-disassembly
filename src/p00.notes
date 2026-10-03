@@ -1459,8 +1459,13 @@ C 0x4D84 apunta a las llaves (BCD)
 C 0x4DBE casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 C 0x4DDE lee quien juega (0 Afrodita)
 C 0x4DE8 apunta a el contador de cuadros
+C 0x4DEF guarda la copia del mezclador del PSG (registro 7)
+C 0x4DF3 guarda apagandose: la espera entre pasos
+C 0x4DF6 guarda el volumen general (baja al apagarse)
 C 0x4DFF guarda lo herido que esta el jefe (0, 1, 2)
 C 0x4E03 guarda la musica que suena
+C 0x4E06 guarda el efecto que suena
+C 0x4E09 guarda la pausa (bit 0) y el 0xFB (bit 1)
 C 0x4E12 guarda los programas de los cuatro canales de sonido (0xE100-0xE107) y el byte siguiente (16 bits)
 C 0x4E20 pide_sonido_ya: como pide_sonido, sin mirar la pausa
 C 0x4E39 lee la copia del banco de 0x6000
@@ -1479,8 +1484,33 @@ C 0x4E71 sonido_especial: 0xFA/0xFF se apaga, 0xFB/0xFC, 0xFD/0xFE la pausa
 C 0x4E75 efecto: el efecto A si no suena uno mayor (tabla 0x73DC, canal 0xE15D)
 C 0x4E8A lee la musica que suena
 C 0x4ED0 guarda los programas de los cuatro canales de sonido (0xE100-0xE107) y el byte siguiente (16 bits)
+C 0x4EE4 guarda la pausa (bit 0) y el 0xFB (bit 1)
+C 0x4EE8 guarda apagandose: la espera entre pasos
+C 0x4EEB guarda el volumen general (baja al apagarse)
 C 0x4F23 lee en el agua
+C 0x4F2D guarda el efecto que suena
 C 0x4F64 fin_de_la_pausa_del_sonido: 0xFE: la musica y el PSG como estaban
+C 0x4F73 guarda apagandose: la espera entre pasos
+C 0x4F83 guarda apagandose: la espera entre pasos
+C 0x4F8C lee la pausa (bit 0) y el 0xFB (bit 1)
+C 0x4F91 guarda la pausa (bit 0) y el 0xFB (bit 1)
+C 0x4F9A lee el volumen general (baja al apagarse)
+C 0x4FA0 lee la copia del mezclador del PSG (registro 7)
+C 0x4FB2 guarda la copia del mezclador del PSG (registro 7)
+C 0x4FF2 guarda el canal del PSG que se toca
+C 0x4FF7 guarda el programa que se toca (0-3)
+C 0x5018 lee la pausa (bit 0) y el 0xFB (bit 1)
+C 0x501D guarda la pausa (bit 0) y el 0xFB (bit 1)
+C 0x5023 guarda apagandose: la espera entre pasos
+C 0x5029 guarda el volumen general (baja al apagarse)
+C 0x502F guarda la copia del mezclador del PSG (registro 7)
+C 0x5069 guarda la pausa (bit 0) y el 0xFB (bit 1)
+C 0x5081 guarda la copia del mezclador del PSG (registro 7)
+C 0x50B9 lee la pausa (bit 0) y el 0xFB (bit 1)
+C 0x50BE guarda la pausa (bit 0) y el 0xFB (bit 1)
+C 0x50CB lee la copia del mezclador del PSG (registro 7)
+C 0x50D2 lee la copia del mezclador del PSG (registro 7)
+C 0x50D8 guarda la copia del mezclador del PSG (registro 7)
 C 0x510E borra_e540: 0xE51C, 0xE51D y 0xE540-0xE5FF a cero
 C 0x5111 graficos_de_la_sala: la carga grafica de la sala (tools/vram.py carga_sala)
 C 0x5114 entra_el_personaje: el personaje al entrar: estado a cero y el sitio de la tabla 0xB106
