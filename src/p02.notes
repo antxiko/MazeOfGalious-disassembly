@@ -892,8 +892,7 @@ C 0x8053 quieto_en_x: velocidad de lado 0
 C 0x806F sonido_cada_16: cada 16 cuadros el sonido 0x0A
 C 0x8078 mira el bit 7 de la velocidad vertical de la figura (alta)
 C 0x808C de_negado: DE = -DE
-C 0x8098 el mosaico de la figura = 0x0C
-C 0x809C la espera de la figura = 0x3C
+C 0x8098 el dibujo (o el mosaico) de la figura = 0x0C
 C 0x80A0 el paso de la figura = 0x02
 C 0x80A7 quieto_en_y: velocidad vertical 0
 C 0x80AC pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
@@ -905,10 +904,10 @@ C 0x80E5 lee la y de la figura
 C 0x80F3 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0x80FC guarda la espera hasta que el jefe escupe
 C 0x810A guarda la espera o el sitio siguiente del jefe
-C 0x8112 el mosaico de la figura = 0x0C
-C 0x8122 el mosaico de la figura = 0x0E
+C 0x8112 el dibujo (o el mosaico) de la figura = 0x0C
+C 0x8122 el dibujo (o el mosaico) de la figura = 0x0E
 C 0x8126 la y de la figura = 0x60
-C 0x8131 el mosaico de la figura = 0x0D
+C 0x8131 el dibujo (o el mosaico) de la figura = 0x0D
 C 0x813A lee la x del jefe
 C 0x814C lee el mosaico del jefe
 C 0x8153 mosaico_cada_8: cada 8 cuadros el bit 0 del mosaico
@@ -926,10 +925,9 @@ C 0x81C1 despacha: salta a la entrada A de la tabla de palabras que va detras de
 C 0x81CF mira el bit 5 de la ficha del tipo (bit 7 sprites, bit 6, bit 4 filas de 0x1A)
 C 0x81D5 lee el contador de cuadros de partida
 C 0x81DB sube el ancho del mosaico
-C 0x81EC la espera de la figura = 0x1E
 C 0x81F0 quita_bit_4: quita el bit 4 de las banderas
 C 0x81F5 mira el bit 5 de la ficha del tipo (bit 7 sprites, bit 6, bit 4 filas de 0x1A)
-C 0x81FD guarda el mosaico de la figura
+C 0x81FD guarda el dibujo (o el mosaico) de la figura
 C 0x8205 sube el paso de la figura
 C 0x820E mira el bit 5 de la ficha del tipo (bit 7 sprites, bit 6, bit 4 filas de 0x1A)
 C 0x8214 cabeza_jefe_2: A = la x de la cabeza del jefe 2
@@ -937,7 +935,7 @@ C 0x821C lee la x del jefe
 C 0x8224 lee la y del jefe
 C 0x8235 mira el bit 5 de la ficha del tipo (bit 7 sprites, bit 6, bit 4 filas de 0x1A)
 C 0x823D pone a uno el bit 4 de las banderas de la figura (bit 7: en pantalla)
-C 0x8241 guarda el mosaico de la figura
+C 0x8241 guarda el dibujo (o el mosaico) de la figura
 C 0x824E mira el bit 5 de la ficha del tipo (bit 7 sprites, bit 6, bit 4 filas de 0x1A)
 C 0x8254 lee el contador de cuadros de partida
 C 0x825A baja el ancho del mosaico
@@ -966,11 +964,10 @@ C 0x8366 lee la y del personaje
 C 0x8380 le suma la x de la figura
 C 0x8387 la y de la figura = 0x90
 C 0x838B la x de la figura = 0x60
-C 0x838F el mosaico de la figura = 0x3A
+C 0x838F el dibujo (o el mosaico) de la figura = 0x3A
 C 0x8397 guarda la espera del jefe
 C 0x83A1 de_negado: DE = -DE
 C 0x83BB compara con la y de la figura
-C 0x83C0 baja la espera de la figura
 C 0x83CC lee la x del jefe
 C 0x83D4 lee la x del personaje
 C 0x83EF guarda la espera hasta que el jefe escupe
@@ -986,23 +983,22 @@ C 0x845E lee las veces que el jefe ha cambiado de sitio
 C 0x8471 la y de la figura = 0x48
 C 0x8475 la x de la figura = 0x68
 C 0x8489 lee la espera del jefe
-C 0x848F el mosaico de la figura = 0x11
+C 0x848F el dibujo (o el mosaico) de la figura = 0x11
 C 0x8497 guarda la espera del jefe
-C 0x849A el mosaico de la figura = 0x12
+C 0x849A el dibujo (o el mosaico) de la figura = 0x12
 C 0x84AB lee el mosaico del jefe
 C 0x84B0 guarda el mosaico del jefe
 C 0x84BE le suma la x de la figura
 C 0x84C2 lee la y de la figura
 C 0x84CF pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
-C 0x84D6 la espera de la figura = 0x14
 C 0x84E2 paso_0_del_jefe: el paso del jefe a 0
 C 0x84E8 guarda la espera del jefe
-C 0x84EB el mosaico de la figura = 0x10
+C 0x84EB el dibujo (o el mosaico) de la figura = 0x10
 C 0x84F4 el ancho del mosaico = 0x00
 C 0x84F8 las banderas de la figura (bit 7: en pantalla) = 0xF0
 C 0x84FC la y de la figura = 0x60
 C 0x8500 la x de la figura = 0x70
-C 0x8504 el mosaico de la figura = 0x1C
+C 0x8504 el dibujo (o el mosaico) de la figura = 0x1C
 C 0x8527 guarda la espera hasta que el jefe escupe
 C 0x855B lee la fila de la cola del jefe 10
 C 0x8563 le suma la y de la figura
@@ -1027,11 +1023,11 @@ C 0x861E el paso de la figura = 0x00
 C 0x8629 AND con las banderas de la figura (bit 7: en pantalla)
 C 0x862F la x de la figura = 0x68
 C 0x8633 la y de la figura = 0x40
-C 0x863B el mosaico de la figura = 0x18
+C 0x863B el dibujo (o el mosaico) de la figura = 0x18
 C 0x8664 lee el jefe 7 ha mordido
-C 0x866D el mosaico de la figura = 0x1B
-C 0x8677 el mosaico de la figura = 0x1A
-C 0x8685 el mosaico de la figura = 0x18
+C 0x866D el dibujo (o el mosaico) de la figura = 0x1B
+C 0x8677 el dibujo (o el mosaico) de la figura = 0x1A
+C 0x8685 el dibujo (o el mosaico) de la figura = 0x18
 C 0x8689 pone a uno el bit 4 de las banderas de la figura (bit 7: en pantalla)
 C 0x8693 muerde_jefe_7: el jefe 7 muerde
 C 0x8699 despacha: salta a la entrada A de la tabla de palabras que va detras del call
@@ -1051,11 +1047,11 @@ C 0x8703 jefe_vertical: velocidad 0x100 arriba o abajo
 C 0x8706 lee la y del jefe
 C 0x870F lengua_jefe_7: cada 0x10 cuadros saca la lengua (figura 0x65)
 C 0x8716 el paso de la figura = 0x00
-C 0x872E el mosaico de la figura = 0x19
+C 0x872E el dibujo (o el mosaico) de la figura = 0x19
 C 0x8740 lee la y del jefe
 C 0x874F pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0x8757 azar: A = R con el contador de cuadros
-C 0x8771 el mosaico de la figura = 0x1A
+C 0x8771 el dibujo (o el mosaico) de la figura = 0x1A
 C 0x877E el paso de la figura = 0x01
 C 0x8799 el paso de la figura = 0x03
 C 0x87B3 lee la y del jefe
@@ -1066,7 +1062,7 @@ C 0x87E8 OR con las banderas de la figura (bit 7: en pantalla)
 C 0x87EE la x de la figura = 0x80
 C 0x87F4 guarda la y del jefe
 C 0x87F7 guarda el suelo del jefe 11
-C 0x87FA el mosaico de la figura = 0x2B
+C 0x87FA el dibujo (o el mosaico) de la figura = 0x2B
 C 0x8818 despacha: salta a la entrada A de la tabla de palabras que va detras del call
 C 0x8833 mira el bit 7 de la velocidad de lado de la figura (alta)
 C 0x8837 lee la x del jefe
@@ -1078,23 +1074,19 @@ C 0x8874 guarda la fila de la cola del jefe 10
 C 0x887B pone a uno el bit 4 de las banderas de la figura (bit 7: en pantalla)
 C 0x887F sube el paso de la figura
 C 0x8887 sube el paso de la figura
-C 0x888A la espera de la figura = 0x08
-C 0x88D6 el mosaico de la figura = 0x2B
+C 0x88D6 el dibujo (o el mosaico) de la figura = 0x2B
 C 0x88E0 guarda el mosaico del jefe
 C 0x88E6 compara con la y de la figura
-C 0x88EE la espera de la figura = 0x20
 C 0x88F2 lee la espera o el sitio siguiente del jefe
 C 0x88F7 guarda el mosaico del jefe
 C 0x88FA sube el paso de la figura
 C 0x890B pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0x892B compara con la x de la figura
-C 0x893A la espera de la figura = 0x01
 C 0x894D lee el mosaico del jefe
 C 0x8958 guarda el mosaico del jefe
 C 0x8960 la y de la figura = 0x70
 C 0x8964 la x de la figura = 0x58
-C 0x8968 el mosaico de la figura = 0x34
-C 0x896C la gravedad de la figura = 0x10
+C 0x8968 el dibujo (o el mosaico) de la figura = 0x34
 C 0x8977 guarda el suelo del jefe 11
 C 0x897D la velocidad de lado de la figura = 0x80
 C 0x8981 guarda la velocidad de lado de la figura (alta)
@@ -1106,20 +1098,18 @@ C 0x89DC la velocidad de lado de la figura = 0x00
 C 0x89E0 lee la x del jefe
 C 0x89E6 la velocidad de lado de la figura = 0x80
 C 0x89F9 azar: A = R con el contador de cuadros
-C 0x8A06 baja la gravedad de la figura (alta)
 C 0x8A15 guarda el mosaico del jefe
 C 0x8A2B lee el suelo del jefe 11
 C 0x8A30 guarda el suelo del jefe 11
 C 0x8A33 pone a uno el bit 4 de las banderas de la figura (bit 7: en pantalla)
 C 0x8A37 lee el suelo del jefe 11
-C 0x8A48 la gravedad de la figura = 0x18
 C 0x8A58 palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x8A5D le suma la y de la figura
 C 0x8A63 le suma la x de la figura
 C 0x8A82 las banderas de la figura (bit 7: en pantalla) = 0xF0
 C 0x8A86 la y de la figura = 0x20
 C 0x8A8A la x de la figura = 0x68
-C 0x8A8E el mosaico de la figura = 0x28
+C 0x8A8E el dibujo (o el mosaico) de la figura = 0x28
 C 0x8AA1 quieto_en_y: velocidad vertical 0
 C 0x8AA7 lee el paso del jefe
 C 0x8AAD despacha: salta a la entrada A de la tabla de palabras que va detras del call
@@ -1136,38 +1126,35 @@ C 0x8B17 lee la x del jefe
 C 0x8B21 sube el paso de la figura
 C 0x8B2B jefe_8_ancho: y - 8, x + 8
 C 0x8B2E quieto_en_x: velocidad de lado 0
-C 0x8B31 el mosaico de la figura = 0x2A
+C 0x8B31 el dibujo (o el mosaico) de la figura = 0x2A
 C 0x8B35 jefe_baja: velocidad vertical 4
 C 0x8B40 jefe_8_estrecho: y + 8, x - 8
 C 0x8B43 quieto_en_y: velocidad vertical 0
-C 0x8B54 el mosaico de la figura = 0x25
+C 0x8B54 el dibujo (o el mosaico) de la figura = 0x25
 C 0x8B58 sube el paso de la figura
 C 0x8B5B jefe_a_la_derecha: velocidad de lado 0x80 a la derecha
-C 0x8B62 el mosaico de la figura = 0x25
+C 0x8B62 el dibujo (o el mosaico) de la figura = 0x25
 C 0x8B66 sube el paso de la figura
 C 0x8B69 jefe_a_la_izquierda: velocidad de lado 0x80 a la izquierda
 C 0x8B74 el paso de la figura = 0x04
 C 0x8B81 quieto_en_x: velocidad de lado 0
-C 0x8B84 el mosaico de la figura = 0x24
+C 0x8B84 el dibujo (o el mosaico) de la figura = 0x24
 C 0x8B88 jefe_sube: velocidad vertical -2
-C 0x8B90 compara con la gravedad de la figura
 C 0x8B9E lee la x del jefe
 C 0x8BB0 sube el paso de la figura
-C 0x8BB3 el mosaico de la figura = 0x2A
+C 0x8BB3 el dibujo (o el mosaico) de la figura = 0x2A
 C 0x8BB7 pone a uno el bit 4 de las banderas de la figura (bit 7: en pantalla)
 C 0x8BBB jefe_8_ancho: y - 8, x + 8
-C 0x8BC1 compara con la gravedad de la figura
 C 0x8BC5 jefe_8_estrecho: y + 8, x - 8
-C 0x8BCC el mosaico de la figura = 0x25
+C 0x8BCC el dibujo (o el mosaico) de la figura = 0x25
 C 0x8BD0 quieto_en_y: velocidad vertical 0
 C 0x8BD7 el paso de la figura = 0x06
 C 0x8BDB lee la x del jefe
-C 0x8BDE compara con la gravedad de la figura (alta)
 C 0x8BE1 jefe_a_la_izquierda: velocidad de lado 0x80 a la izquierda
-C 0x8BED el mosaico de la figura = 0x28
+C 0x8BED el dibujo (o el mosaico) de la figura = 0x28
 C 0x8BFB el paso de la figura = 0x00
-C 0x8C0C el mosaico de la figura = 0x27
-C 0x8C14 el mosaico de la figura = 0x24
+C 0x8C0C el dibujo (o el mosaico) de la figura = 0x27
+C 0x8C14 el dibujo (o el mosaico) de la figura = 0x24
 C 0x8C1C pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0x8C26 lee la y del jefe
 C 0x8C2C lee la x del jefe
@@ -1188,15 +1175,14 @@ C 0x8CA9 guarda el suelo del jefe 11
 C 0x8CAC el paso de la figura = 0x07
 C 0x8CB0 lee el mosaico del jefe
 C 0x8CB3 guarda la espera hasta que el jefe escupe
-C 0x8CB6 el mosaico de la figura = 0x24
+C 0x8CB6 el dibujo (o el mosaico) de la figura = 0x24
 C 0x8CC0 guarda la y del jefe
 C 0x8CC3 lee la x del jefe
 C 0x8CC8 guarda la x del jefe
 C 0x8CD1 guarda la y del jefe
 C 0x8CD4 lee la x del jefe
 C 0x8CD9 guarda la x del jefe
-C 0x8CE5 la espera de la figura = 0xFA
-C 0x8CE9 el mosaico de la figura = 0x37
+C 0x8CE9 el dibujo (o el mosaico) de la figura = 0x37
 C 0x8CF1 la x de la figura = 0x60
 C 0x8CF5 la y de la figura = 0x40
 C 0x8D0B byte_de_tabla (por 0x4083): A = el byte HL + A
@@ -1220,8 +1206,6 @@ C 0x8DB4 el paso de la figura = 0x03
 C 0x8DD1 OR con las banderas de la figura (bit 7: en pantalla)
 C 0x8DD4 guarda las banderas de la figura (bit 7: en pantalla)
 C 0x8DD9 banderas_a_cero: las banderas altas a 0: no se ve
-C 0x8DE8 la gravedad de la figura (alta) = 0x30
-C 0x8DEC la espera de la figura = 0xFA
 C 0x8DF0 el paso de la figura = 0x00
 C 0x8DF4 banderas_e0: banderas 0xE0
 C 0x8E1C guarda el paso de la figura
@@ -1233,7 +1217,7 @@ C 0x8E5A hl_mas_a: HL += A
 C 0x8E66 hl_mas_a: HL += A
 C 0x8E70 apunta a los huecos de figura (32 bytes cada uno)
 C 0x8E73 hl_mas_a: HL += A
-C 0x8E89 el mosaico de la figura = 0x37
+C 0x8E89 el dibujo (o el mosaico) de la figura = 0x37
 C 0x8EFC lee la sala
 C 0x8F06 guarda la sala especial (pista o tienda)
 C 0x8F21 guarda el paso de la sala especial

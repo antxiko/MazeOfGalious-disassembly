@@ -113,8 +113,8 @@ L_8084:
 	jr escupe_jefe_1		;8093
 L_8095:
 	call espera_de_saltar		;8095   ; en el suelo: espera al azar, mosaico 12, 0x3C cuadros quieto, paso 2
-	ld (ix+00ah),00ch		;8098   ; el mosaico de la figura = 0x0C
-	ld (ix+008h),03ch		;809c   ; la espera de la figura = 0x3C
+	ld (ix+00ah),00ch		;8098   ; el dibujo (o el mosaico) de la figura = 0x0C
+	ld (ix+008h),03ch		;809c
 	ld (ix+001h),002h		;80a0   ; el paso de la figura = 0x02
 	call quita_bit_4		;80a4   ; p02:8775 y p02:871A
 	call quieto_en_y		;80a7   ; quieto_en_y: velocidad vertical 0
@@ -171,20 +171,20 @@ espera_de_saltar:		; 0xE71D al azar
 	ret			;810d
 cabeza_jefe_1:		; la cabeza del jefe 1 sube y baja (mosaicos 12-14)
 	ld (ix+005h),068h		;810e   ; la cabeza: abajo (mosaico 12)...
-	ld (ix+00ah),00ch		;8112   ; el mosaico de la figura = 0x0C
+	ld (ix+00ah),00ch		;8112   ; el dibujo (o el mosaico) de la figura = 0x0C
 	bit 7,(ix+00fh)		;8116   ; ...hacia la izquierda...
 	jr nz,L_812B		;811a
 	ld a,(0e604h)		;811c   ; ...cada 16 cuadros arriba (mosaico 14, y = 0x60)
 	bit 4,a		;811f
 	ret nz			;8121
-	ld (ix+00ah),00eh		;8122   ; el mosaico de la figura = 0x0E
+	ld (ix+00ah),00eh		;8122   ; el dibujo (o el mosaico) de la figura = 0x0E
 	ld (ix+005h),060h		;8126   ; la y de la figura = 0x60
 	ret			;812a
 L_812B:
 	ld a,(0e604h)		;812b   ; hacia la derecha, cada 16 cuadros el 13
 	bit 4,a		;812e
 	ret nz			;8130
-	ld (ix+00ah),00dh		;8131   ; el mosaico de la figura = 0x0D
+	ld (ix+00ah),00dh		;8131   ; el dibujo (o el mosaico) de la figura = 0x0D
 	ret			;8135
 borde_jefe_1:		; C al llegar a su borde
 	bit 7,(ix+00fh)		;8136   ; C al llegar a su borde: x < 0x92 yendo a la izquierda...
@@ -307,14 +307,14 @@ L_81E6:
 	ret nz			;81e8
 L_81E9:
 	inc (ix+001h)		;81e9   ; entero: al paso siguiente, 0x1E cuadros
-	ld (ix+008h),01eh		;81ec   ; la espera de la figura = 0x1E
+	ld (ix+008h),01eh		;81ec
 	call quita_bit_4		;81f0   ; quita_bit_4: quita el bit 4 de las banderas
 	ld b,00ah		;81f3   ; mosaico 10 u 11 segun hacia donde mira
 	bit 5,(ix+009h)		;81f5   ; mira el bit 5 de la ficha del tipo (bit 7 sprites, bit 6, bit 4 filas de 0x1A)
 	jr z,L_81FD		;81f9
 	ld b,00bh		;81fb
 L_81FD:
-	ld (ix+00ah),b		;81fd   ; guarda el mosaico de la figura
+	ld (ix+00ah),b		;81fd   ; guarda el dibujo (o el mosaico) de la figura
 	ret			;8200
 L_8201:
 	dec (ix+008h)		;8201   ; paso: espera y escupe una figura 0x57 desde la boca
@@ -348,7 +348,7 @@ L_822F:
 	ld b,006h		;823b
 	set 4,(ix+002h)		;823d   ; pone a uno el bit 4 de las banderas de la figura (bit 7: en pantalla)
 L_8241:
-	ld (ix+00ah),b		;8241   ; guarda el mosaico de la figura
+	ld (ix+00ah),b		;8241   ; guarda el dibujo (o el mosaico) de la figura
 L_8244:
 	ld (ix+001h),003h		;8244   ; al paso 3
 	jp 07fach		;8248
@@ -543,7 +543,7 @@ sale_jefe_3:		; el jefe 3 sale (y 0x90, x 0x60)
 	call espera_de_soplar		;8384   ; el jefe 3 sale: y 0x90, x 0x60, mosaico 58
 	ld (ix+005h),090h		;8387   ; la y de la figura = 0x90
 	ld (ix+007h),060h		;838b   ; la x de la figura = 0x60
-	ld (ix+00ah),03ah		;838f   ; el mosaico de la figura = 0x3A
+	ld (ix+00ah),03ah		;838f   ; el dibujo (o el mosaico) de la figura = 0x3A
 jefe_3_a_un_lado:		; espera y velocidad al azar a un lado
 	ld a,r		;8393   ; espera al azar...
 	and 01fh		;8395
@@ -565,7 +565,7 @@ jefe_3:		; el jefe 3 (mundo 6): anda de lado y sopla burbujas
 	ld a,(0e505h)		;83b8   ; ...el personaje encima: cambia de lado al azar...
 	cp (ix+005h)		;83bb   ; compara con la y de la figura
 	jr nc,L_83C6		;83be
-	dec (ix+008h)		;83c0   ; baja la espera de la figura
+	dec (ix+008h)		;83c0
 	ret nz			;83c3
 	jr jefe_3_a_un_lado		;83c4
 L_83C6:
@@ -676,12 +676,12 @@ jefe_4:		; el jefe 4 (mundo 2): se abre y suelta semillas
 	ld a,(0e708h)		;8489   ; lee la espera del jefe
 	cp 014h		;848c
 	ret nc			;848e
-	ld (ix+00ah),011h		;848f   ; el mosaico de la figura = 0x11
+	ld (ix+00ah),011h		;848f   ; el dibujo (o el mosaico) de la figura = 0x11
 	ret			;8493
 L_8494:
 	call azar_50_cf		;8494   ; abre: mosaico 18
 	ld (0e708h),a		;8497   ; guarda la espera del jefe
-	ld (ix+00ah),012h		;849a   ; el mosaico de la figura = 0x12
+	ld (ix+00ah),012h		;849a   ; el dibujo (o el mosaico) de la figura = 0x12
 	jr paso_del_jefe		;849e
 L_84A0:
 	dec (ix+008h)		;84a0   ; paso 1: abierto...
@@ -709,7 +709,7 @@ L_84A0:
 	jp 04059h		;84cf   ; pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_84D2:
 	ld (ix+00ah),011h		;84d2   ; se cierra: mosaico 17 y 0x14 cuadros
-	ld (ix+008h),014h		;84d6   ; la espera de la figura = 0x14
+	ld (ix+008h),014h		;84d6
 paso_del_jefe:		; sube el paso del jefe (ix+1)
 	inc (ix+001h)		;84da   ; al paso siguiente
 	ret			;84dd
@@ -720,7 +720,7 @@ L_84DE:
 L_84E5:
 	call azar_50_cf		;84e5   ; ...y vuelve a empezar, mosaico 16
 	ld (0e708h),a		;84e8   ; guarda la espera del jefe
-	ld (ix+00ah),010h		;84eb   ; el mosaico de la figura = 0x10
+	ld (ix+00ah),010h		;84eb   ; el dibujo (o el mosaico) de la figura = 0x10
 	ret			;84ef
 sale_jefe_10:		; el jefe 10 sale (y 0x60, x 0x70, mosaico 28)
 	set 6,(ix+009h)		;84f0   ; el jefe 10 sale: de mosaico (bit 6), y 0x60, x 0x70, mosaico 28
@@ -728,7 +728,7 @@ sale_jefe_10:		; el jefe 10 sale (y 0x60, x 0x70, mosaico 28)
 	ld (ix+002h),0f0h		;84f8   ; las banderas de la figura (bit 7: en pantalla) = 0xF0
 	ld (ix+005h),060h		;84fc   ; la y de la figura = 0x60
 	ld (ix+007h),070h		;8500   ; la x de la figura = 0x70
-	ld (ix+00ah),01ch		;8504   ; el mosaico de la figura = 0x1C
+	ld (ix+00ah),01ch		;8504   ; el dibujo (o el mosaico) de la figura = 0x1C
 	ld (ix+018h),023h		;8508   ; su cola: 0x23 y 0x1E en 0xE718 y 0xE719
 	ld (ix+019h),01eh		;850c
 	ld (ix+01ch),001h		;8510
@@ -872,7 +872,7 @@ sale_jefe_7:		; el jefe 7 sale (y 0x40, x 0x68, mosaico 24)
 	ld (ix+007h),068h		;862f   ; la x de la figura = 0x68
 	ld (ix+005h),040h		;8633   ; la y de la figura = 0x40
 	ld (ix+024h),030h		;8637   ; su ancho, 0x30
-	ld (ix+00ah),018h		;863b   ; el mosaico de la figura = 0x18
+	ld (ix+00ah),018h		;863b   ; el dibujo (o el mosaico) de la figura = 0x18
 	inc (ix+01eh)		;863f
 	inc (ix+01fh)		;8642
 	ld (ix+030h),010h		;8645   ; 0x10 cuadros hasta sacar la lengua; 0xB0 hasta morder
@@ -891,15 +891,15 @@ jefe_7:		; el jefe 7 (mundo 7): se mueve, saca la lengua y muerde
 	ld a,(0e722h)		;8664   ; lee el jefe 7 ha mordido
 	cp 002h		;8667
 	ld (ix+021h),020h		;8669
-	ld (ix+00ah),01bh		;866d   ; el mosaico de la figura = 0x1B
+	ld (ix+00ah),01bh		;866d   ; el dibujo (o el mosaico) de la figura = 0x1B
 	jr z,L_868D		;8671
 	ld (ix+021h),020h		;8673
-	ld (ix+00ah),01ah		;8677   ; el mosaico de la figura = 0x1A
+	ld (ix+00ah),01ah		;8677   ; el dibujo (o el mosaico) de la figura = 0x1A
 	jr L_868D		;867b
 L_867D:
 	ld (ix+020h),000h		;867d   ; ...luego cierra: mosaico 24
 	ld (ix+022h),000h		;8681
-	ld (ix+00ah),018h		;8685   ; el mosaico de la figura = 0x18
+	ld (ix+00ah),018h		;8685   ; el dibujo (o el mosaico) de la figura = 0x18
 	set 4,(ix+002h)		;8689   ; pone a uno el bit 4 de las banderas de la figura (bit 7: en pantalla)
 L_868D:
 	ld hl,0e500h		;868d   ; hundiendose el personaje, muerde (p02:8765)
@@ -984,7 +984,7 @@ lengua_jefe_7:		; cada 0x10 cuadros saca la lengua (figura 0x65)
 	dec (ix+030h)		;8725
 	jr nz,L_8752		;8728
 	ld (ix+030h),010h		;872a   ; ...mosaico 25...
-	ld (ix+00ah),019h		;872e   ; el mosaico de la figura = 0x19
+	ld (ix+00ah),019h		;872e   ; el dibujo (o el mosaico) de la figura = 0x19
 	ld (ix+020h),001h		;8732
 	ld (ix+021h),018h		;8736
 	ld a,(0e707h)		;873a   ; ...y saca una lengua (figura 0x65)...
@@ -1012,7 +1012,7 @@ muerde_jefe_7:		; el jefe 7 muerde
 	ld (ix+020h),001h		;8765   ; ...muerde: mosaico 26 tres veces
 	ld (ix+022h),003h		;8769
 	ld (ix+021h),020h		;876d
-	ld (ix+00ah),01ah		;8771   ; el mosaico de la figura = 0x1A
+	ld (ix+00ah),01ah		;8771   ; el dibujo (o el mosaico) de la figura = 0x1A
 quita_bit_4:		; quita el bit 4 de las banderas
 	res 4,(ix+002h)		;8775   ; quita el bit 4
 	ret			;8779
@@ -1073,7 +1073,7 @@ sale_jefe_11:		; el jefe 11 sale (x 0x80, y 0x70, mosaico 43)
 	ld a,070h		;87f2
 	ld (0e705h),a		;87f4   ; guarda la y del jefe
 	ld (0e71bh),a		;87f7   ; guarda el suelo del jefe 11
-	ld (ix+00ah),02bh		;87fa   ; el mosaico de la figura = 0x2B
+	ld (ix+00ah),02bh		;87fa   ; el dibujo (o el mosaico) de la figura = 0x2B
 	ld (ix+018h),008h		;87fe   ; 8 y su ancho 0x40
 	ld (ix+024h),040h		;8802
 	ld a,r		;8806   ; velocidad 0x80 a un lado al azar
@@ -1152,7 +1152,7 @@ L_8883:
 	dec (ix+018h)		;8883   ; paso 2: espera; salta...
 	ret nz			;8886
 	inc (ix+001h)		;8887   ; sube el paso de la figura
-	ld (ix+008h),008h		;888a   ; la espera de la figura = 0x08
+	ld (ix+008h),008h		;888a
 	ld (ix+019h),000h		;888e
 	bit 7,(ix+00fh)		;8892   ; ...de lado 0x180...
 	ld de,00180h		;8896
@@ -1182,7 +1182,7 @@ L_88C5:
 	jr nc,L_88DB		;88d0
 	cp 020h		;88d2
 	jr nc,L_88DB		;88d4
-	ld (ix+00ah),02bh		;88d6   ; el mosaico de la figura = 0x2B
+	ld (ix+00ah),02bh		;88d6   ; el dibujo (o el mosaico) de la figura = 0x2B
 	ret			;88da
 L_88DB:
 	ld a,(0e71ch)		;88db   ; ...luego el contrario...
@@ -1192,7 +1192,7 @@ L_88DB:
 	cp (ix+005h)		;88e6   ; compara con la y de la figura
 	ret nc			;88e9
 	ld (ix+005h),070h		;88ea   ; en el suelo: 0x20 cuadros quieto
-	ld (ix+008h),020h		;88ee   ; la espera de la figura = 0x20
+	ld (ix+008h),020h		;88ee
 	ld a,(0e71dh)		;88f2   ; lee la espera o el sitio siguiente del jefe
 	xor 003h		;88f5
 	ld (0e70ah),a		;88f7   ; guarda el mosaico del jefe
@@ -1224,7 +1224,7 @@ L_892E:
 	ld de,00080h		;8933
 L_8936:
 	ld (ix+001h),000h		;8936   ; y al paso 0, arrastrandose a 0x80
-	ld (ix+008h),001h		;893a   ; la espera de la figura = 0x01
+	ld (ix+008h),001h		;893a
 	ld (ix+018h),008h		;893e
 	jp 07fa3h		;8942
 mosaico_jefe_11:		; cada 8 cuadros, mosaico 43 o 44
@@ -1243,8 +1243,8 @@ sale_jefe_6:		; el jefe 6 sale (y 0x70, x 0x58) y las cuatro figuras 0x69
 	ld (ix+002h),0f0h		;895c   ; el jefe 6 sale: y 0x70, x 0x58, mosaico 52
 	ld (ix+005h),070h		;8960   ; la y de la figura = 0x70
 	ld (ix+007h),058h		;8964   ; la x de la figura = 0x58
-	ld (ix+00ah),034h		;8968   ; el mosaico de la figura = 0x34
-	ld (ix+016h),010h		;896c   ; la gravedad de la figura = 0x10
+	ld (ix+00ah),034h		;8968   ; el dibujo (o el mosaico) de la figura = 0x34
+	ld (ix+016h),010h		;896c
 	xor a			;8970   ; sin velocidad
 	ld (0e70ch),a		;8971
 	ld (0e70dh),a		;8974
@@ -1315,7 +1315,7 @@ cabezas_jefe_6:		; otras cabezas al azar (tabla 0x8A1E)
 	add a,003h		;89fe
 	ld (0e716h),a		;8a00
 	ld hl,08a1eh		;8a03   ; ...el mosaico de la tabla 0x8A1E (52, 53 o 54)...
-	dec (ix+017h)		;8a06   ; baja la gravedad de la figura (alta)
+	dec (ix+017h)		;8a06
 	jr z,L_8A0D		;8a09
 	inc hl			;8a0b
 	inc hl			;8a0c
@@ -1359,7 +1359,7 @@ L_8A33:
 	dec (ix+019h)		;8a40
 	ret nz			;8a43
 	ld (ix+019h),010h		;8a44
-	ld (ix+016h),018h		;8a48   ; la gravedad de la figura = 0x18
+	ld (ix+016h),018h		;8a48
 	ld a,(0e717h)		;8a4c   ; ...desde la boca de la cabeza de la tabla 0x8A6E...
 	cp 003h		;8a4f
 	jr nz,L_8A55		;8a51
@@ -1407,7 +1407,7 @@ sale_jefe_8:		; el jefe 8 sale (y 0x20, x 0x68, mosaico 40)
 	ld (ix+002h),0f0h		;8a82   ; las banderas de la figura (bit 7: en pantalla) = 0xF0
 	ld (ix+005h),020h		;8a86   ; la y de la figura = 0x20
 	ld (ix+007h),068h		;8a8a   ; la x de la figura = 0x68
-	ld (ix+00ah),028h		;8a8e   ; el mosaico de la figura = 0x28
+	ld (ix+00ah),028h		;8a8e   ; el dibujo (o el mosaico) de la figura = 0x28
 	ld (ix+018h),030h		;8a92
 	ld (ix+01ch),080h		;8a96
 	ld (ix+01eh),00ah		;8a9a
@@ -1489,7 +1489,7 @@ L_8B21:
 	jr z,L_8B38		;8b29
 	call jefe_8_ancho		;8b2b   ; jefe_8_ancho: y - 8, x + 8
 	call quieto_en_x		;8b2e   ; quieto_en_x: velocidad de lado 0
-	ld (ix+00ah),02ah		;8b31   ; el mosaico de la figura = 0x2A
+	ld (ix+00ah),02ah		;8b31   ; el dibujo (o el mosaico) de la figura = 0x2A
 	jp jefe_baja		;8b35   ; jefe_baja: velocidad vertical 4
 L_8B38:
 	jr L_8B6C		;8b38
@@ -1505,13 +1505,13 @@ L_8B3A:
 	jr nz,L_8B5E		;8b4e
 	cp 080h		;8b50
 	jr c,L_8B6C		;8b52
-	ld (ix+00ah),025h		;8b54   ; el mosaico de la figura = 0x25
+	ld (ix+00ah),025h		;8b54   ; el dibujo (o el mosaico) de la figura = 0x25
 	inc (ix+001h)		;8b58   ; sube el paso de la figura
 	jp jefe_a_la_derecha		;8b5b   ; jefe_a_la_derecha: velocidad de lado 0x80 a la derecha
 L_8B5E:
 	cp 080h		;8b5e
 	jr nc,L_8B6C		;8b60
-	ld (ix+00ah),025h		;8b62   ; el mosaico de la figura = 0x25
+	ld (ix+00ah),025h		;8b62   ; el dibujo (o el mosaico) de la figura = 0x25
 	inc (ix+001h)		;8b66   ; sube el paso de la figura
 	jp jefe_a_la_izquierda		;8b69   ; jefe_a_la_izquierda: velocidad de lado 0x80 a la izquierda
 L_8B6C:
@@ -1524,11 +1524,11 @@ L_8B6C:
 	ld d,a			;8b7f
 	ld e,a			;8b80
 	call quieto_en_x		;8b81   ; quieto_en_x: velocidad de lado 0
-	ld (ix+00ah),024h		;8b84   ; el mosaico de la figura = 0x24
+	ld (ix+00ah),024h		;8b84   ; el dibujo (o el mosaico) de la figura = 0x24
 	call jefe_sube		;8b88   ; jefe_sube: velocidad vertical -2
 	ld a,(0e705h)		;8b8b   ; si ya esta a la altura del personaje, al paso 6
 	sub 008h		;8b8e
-	cp (ix+016h)		;8b90   ; compara con la gravedad de la figura
+	cp (ix+016h)		;8b90
 	jr z,L_8BC8		;8b93
 	ret			;8b95
 L_8B96:
@@ -1547,29 +1547,29 @@ L_8BAC:
 	dec (ix+020h)		;8bac   ; paso 4: espera; luego mosaico 42 y sube
 	ret nz			;8baf
 	inc (ix+001h)		;8bb0   ; sube el paso de la figura
-	ld (ix+00ah),02ah		;8bb3   ; el mosaico de la figura = 0x2A
+	ld (ix+00ah),02ah		;8bb3   ; el dibujo (o el mosaico) de la figura = 0x2A
 	set 4,(ix+002h)		;8bb7   ; pone a uno el bit 4 de las banderas de la figura (bit 7: en pantalla)
 	jp jefe_8_ancho		;8bbb   ; jefe_8_ancho: y - 8, x + 8
 L_8BBE:
 	ld a,(0e705h)		;8bbe   ; paso 5: hasta la fila del personaje
-	cp (ix+016h)		;8bc1   ; compara con la gravedad de la figura
+	cp (ix+016h)		;8bc1
 	ret nz			;8bc4
 	call jefe_8_estrecho		;8bc5   ; jefe_8_estrecho: y + 8, x - 8
 L_8BC8:
 	set 4,(ix+002h)		;8bc8   ; al paso 6: mosaico 37, 0x50 cuadros, hacia el personaje
-	ld (ix+00ah),025h		;8bcc   ; el mosaico de la figura = 0x25
+	ld (ix+00ah),025h		;8bcc   ; el dibujo (o el mosaico) de la figura = 0x25
 	call quieto_en_y		;8bd0   ; quieto_en_y: velocidad vertical 0
 	ld (ix+018h),050h		;8bd3
 	ld (ix+001h),006h		;8bd7   ; el paso de la figura = 0x06
 	ld a,(0e707h)		;8bdb   ; lee la x del jefe
-	cp (ix+017h)		;8bde   ; compara con la gravedad de la figura (alta)
+	cp (ix+017h)		;8bde
 	jp nc,jefe_a_la_izquierda		;8be1   ; jefe_a_la_izquierda: velocidad de lado 0x80 a la izquierda
 	jr jefe_a_la_derecha		;8be4
 L_8BE6:
 	call mosaicos_cada_4		;8be6   ; paso 6: de lado hasta que vence; luego mosaico 40, quieto y al paso 0
 	dec (ix+018h)		;8be9
 	ret nz			;8bec
-	ld (ix+00ah),028h		;8bed   ; el mosaico de la figura = 0x28
+	ld (ix+00ah),028h		;8bed   ; el dibujo (o el mosaico) de la figura = 0x28
 	ld de,00000h		;8bf1
 	call 07fa3h		;8bf4
 	ld (ix+018h),030h		;8bf7
@@ -1581,11 +1581,11 @@ jefe_8_herido:		; el jefe 8 herido escupe figuras 0x68
 	ld a,(0e71dh)		;8c05   ; ...a 0x20, mosaico 39...
 	cp 020h		;8c08
 	jr nz,L_8C10		;8c0a
-	ld (ix+00ah),027h		;8c0c   ; el mosaico de la figura = 0x27
+	ld (ix+00ah),027h		;8c0c   ; el dibujo (o el mosaico) de la figura = 0x27
 L_8C10:
 	cp 010h		;8c10   ; ...por debajo de 0x10, mosaico 36...
 	jr nc,L_8C20		;8c12
-	ld (ix+00ah),024h		;8c14   ; el mosaico de la figura = 0x24
+	ld (ix+00ah),024h		;8c14   ; el dibujo (o el mosaico) de la figura = 0x24
 	cp 009h		;8c18   ; ...y en el 9 el sonido 0x1B
 	ld a,01bh		;8c1a
 	jp z,04e1fh		;8c1c   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
@@ -1654,7 +1654,7 @@ jefe_8_vida:		; si baja la vida, el jefe 8 queda herido
 	ld (ix+001h),007h		;8cac   ; el paso de la figura = 0x07
 	ld a,(0e70ah)		;8cb0   ; lee el mosaico del jefe
 	ld (0e71fh),a		;8cb3   ; guarda la espera hasta que el jefe escupe
-	ld (ix+00ah),024h		;8cb6   ; el mosaico de la figura = 0x24
+	ld (ix+00ah),024h		;8cb6   ; el dibujo (o el mosaico) de la figura = 0x24
 	ret			;8cba
 jefe_8_estrecho:		; y + 8, x - 8
 	ld a,(0e705h)		;8cbb   ; y + 8, x - 8 (el mosaico estrecho)
@@ -1675,8 +1675,8 @@ jefe_8_ancho:		; y - 8, x + 8
 sale_jefe_9:		; GALIOUS sale (y 0x40, x 0x60) con ocho figuras 0x67
 	ld (ix+017h),030h		;8cdd   ; el jefe 9 sale: 0x30 cuadros, mosaico 55, x 0x60, y 0x40
 	ld (ix+034h),001h		;8ce1
-	ld (ix+008h),0fah		;8ce5   ; la espera de la figura = 0xFA
-	ld (ix+00ah),037h		;8ce9   ; el mosaico de la figura = 0x37
+	ld (ix+008h),0fah		;8ce5
+	ld (ix+00ah),037h		;8ce9   ; el dibujo (o el mosaico) de la figura = 0x37
 	ld (ix+033h),001h		;8ced
 	ld (ix+007h),060h		;8cf1   ; la x de la figura = 0x60
 	ld (ix+005h),040h		;8cf5   ; la y de la figura = 0x40
@@ -1796,8 +1796,8 @@ L_8DDC:
 	ld (ix+019h),a		;8de1
 	dec (ix+008h)		;8de4   ; ...y al acabar, 0xFA cuadros y al paso 0
 	ret nz			;8de7
-	ld (ix+017h),030h		;8de8   ; la gravedad de la figura (alta) = 0x30
-	ld (ix+008h),0fah		;8dec   ; la espera de la figura = 0xFA
+	ld (ix+017h),030h		;8de8
+	ld (ix+008h),0fah		;8dec
 	ld (ix+001h),000h		;8df0   ; el paso de la figura = 0x00
 	jp banderas_e0		;8df4   ; banderas_e0: banderas 0xE0
 L_8DF7:
@@ -1877,7 +1877,7 @@ cuenta_jefe_9:		; cuenta (ix+0x34); NZ si dispara
 	dec (ix+034h)		;8e82   ; cuenta (ix+0x34); a 0, mosaico 55...
 	ret nz			;8e85
 	inc (ix+034h)		;8e86
-	ld (ix+00ah),037h		;8e89   ; el mosaico de la figura = 0x37
+	ld (ix+00ah),037h		;8e89   ; el dibujo (o el mosaico) de la figura = 0x37
 	bit 0,(ix+023h)		;8e8d   ; ...NZ con 0x23 o con la marca 0x1F
 	ret nz			;8e91
 	bit 0,(ix+01fh)		;8e92
