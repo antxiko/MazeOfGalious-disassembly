@@ -37,7 +37,7 @@ L_6004:
 	cp 0f0h		;602b
 	jp nz,L_6040		;602d
 	ld hl,L_6075		;6030
-	ld (0e100h),hl		;6033
+	ld (0e100h),hl		;6033   ; guarda los programas de los cuatro canales de sonido (0xE100-0xE107) y el byte siguiente (16 bits)
 	ld (0e102h),hl		;6036
 	ld (0e104h),hl		;6039
 	xor a			;603c
@@ -52,7 +52,7 @@ L_6049:
 L_604C:
 	xor a			;604c
 	ld b,a			;604d
-	ld hl,(0e100h)		;604e
+	ld hl,(0e100h)		;604e   ; lee los programas de los cuatro canales de sonido (0xE100-0xE107) y el byte siguiente (16 bits)
 	call L_606D		;6051
 	ld a,001h		;6054
 	ld b,a			;6056
@@ -80,7 +80,7 @@ L_6075:
 	ld a,(0e1afh)		;6081
 L_6084:
 	rlca			;6084
-	ld hl,0e100h		;6085
+	ld hl,0e100h		;6085   ; apunta a los programas de los cuatro canales de sonido (0xE100-0xE107)
 	add a,l			;6088
 	ld l,a			;6089
 	jr nc,L_608D		;608a
@@ -778,7 +778,7 @@ L_650F:
 	ld a,(ix+01ah)		;650f
 	or a			;6512
 	jr z,L_651E		;6513
-	ld a,(0e1c7h)		;6515
+	ld a,(0e1c7h)		;6515   ; lee la musica que suena
 	cp 086h		;6518
 	jr c,L_651E		;651a
 	ld e,000h		;651c

@@ -85,8 +85,15 @@ C 0x600D guarda la y del personaje
 C 0x6011 guarda la x del personaje
 C 0x6030 guarda la sala especial (pista o tienda)
 C 0x6050 lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
+C 0x6053 pinta_flechas: las flechas en la fila 0, columna 24
+C 0x6056 pinta_monedas: las monedas en la fila 1, columna 24
+C 0x6059 pinta_llaves: las llaves en la fila 2, columna 24
+C 0x606E vram_para_escribir: SETWRT de HL y C' = el puerto de datos del VDP
 C 0x60A3 apunta a la vida de Popolon
 C 0x60AD apunta a la vida de Afrodita
+C 0x610F figuras_quietas: 0xE602 = 1: no se tocan los sprites
+C 0x6115 vram_para_escribir: SETWRT de HL y C' = el puerto de datos del VDP
+C 0x6123 figuras_sueltas: 0xE602 = 0
 C 0x612D lee quien juega (0 Afrodita)
 C 0x6130 apunta a el cambio de vida pendiente de Afrodita (con signo)
 C 0x6155 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
@@ -96,6 +103,7 @@ C 0x6165 guarda la experiencia de Afrodita
 C 0x6169 lee la experiencia de Popolon
 C 0x616D guarda la experiencia de Popolon
 C 0x6175 lee el estado del personaje (5 = hundirse)
+C 0x617B lee el contador de cuadros de partida
 C 0x619A apunta a la vida de Afrodita
 C 0x619D apunta a el cambio de vida pendiente de Afrodita (con signo)
 C 0x61A3 lee la vida de Afrodita
@@ -106,13 +114,23 @@ C 0x61C3 apunta a el cambio de vida pendiente de Popolon (con signo)
 C 0x61C9 lee la vida de Popolon
 C 0x61CF lee quien juega (0 Afrodita)
 C 0x61D3 muere: la vida y la experiencia del que juega a cero
+C 0x6215 esconde_sprites: la copia de la tabla de sprites (0xEC80) con y = 0xE0
+C 0x621B apunta a la copia de la tabla de sprites (128 bytes)
 C 0x6232 lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
+C 0x6239 guarda el umbral de pared (0xBA, 0xF0 con jefe)
+C 0x6240 guarda en juego (a 0 se acaba la vida: estado 6)
+C 0x624B nombres_a_vram_bc: BC bytes de 0xED00 a 0x3800
+C 0x624E sprites_a_vram: la copia de la tabla de sprites (0xEC80) a 0x3B00
 C 0x625E despacha: salta a la entrada A de la tabla de palabras que va detras del call
+C 0x6294 guarda en juego (a 0 se acaba la vida: estado 6)
+C 0x6298 lee el contador de cuadros
+C 0x629E apunta a el umbral de pared (0xBA, 0xF0 con jefe)
 C 0x62A4 despacha: salta a la entrada A de la tabla de palabras que va detras del call
 C 0x62F3 lee el mapa (0xE041) y la sala (0xE042) de un tiron
 C 0x634B casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x636B lee la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)
 C 0x6398 lee tiene el objeto 0x21
-C 0x639D lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+C 0x639D lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 C 0x63EA lee el mapa (0xE041) y la sala (0xE042) de un tiron
 C 0x6450 lee el mapa (1 el castillo, 2-11 los mundos)
 C 0x645D lee la sala
@@ -123,12 +141,16 @@ C 0x6578 lee el mapa (0xE041) y la sala (0xE042) de un tiron
 C 0x65A0 palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x65A3 guarda cuantos huecos de figura hay y el byte siguiente (16 bits)
 C 0x65A8 a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
+C 0x65AE esconde_sprites: la copia de la tabla de sprites (0xEC80) con y = 0xE0
+C 0x65C0 sala_a_vram: la pantalla de la sala (0xED80) a las filas 4-23
 C 0x65C3 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x65C6 lee quien juega (0 Afrodita)
 C 0x65CA apunta a el cambio de vida pendiente de Afrodita (con signo)
 C 0x65D8 lee quien juega (0 Afrodita)
+C 0x65DB apunta a las vidas de Afrodita (BCD)
 C 0x65EA lee quien juega (0 Afrodita)
 C 0x65FA apunta a tiene el objeto 0x01
+C 0x660D apunta a la pantalla de la sala en la copia (filas 4-23)
 C 0x661B lee tiene el objeto 0x0A
 C 0x662E lee el mapa (1 el castillo, 2-11 los mundos)
 C 0x6633 palabra_de_tabla: DE = la palabra A de la tabla de HL
@@ -136,40 +158,72 @@ C 0x666C lee el mapa (1 el castillo, 2-11 los mundos)
 C 0x6672 palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x6676 lee la sala
 C 0x667E lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x6686 guarda el umbral de pared (0xBA, 0xF0 con jefe)
 C 0x668F lee tiene el objeto 0x1A
 C 0x6694 lee el mapa (1 el castillo, 2-11 los mundos)
 C 0x669A byte_de_tabla: A = el byte HL + A
+C 0x669D guarda el umbral de pared (0xBA, 0xF0 con jefe)
+C 0x66AE lee el umbral de pared (0xBA, 0xF0 con jefe)
+C 0x66C2 apunta a las vidas de Afrodita (BCD)
+C 0x66CA apunta a las vidas de Popolon (BCD)
 C 0x6724 apunta a tiene el objeto 0x0D
 C 0x6734 apunta a tiene el objeto 0x07
 C 0x677E apunta a tiene el objeto 0x01
 C 0x67E2 a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
+C 0x67E5 sala_a_vram: la pantalla de la sala (0xED80) a las filas 4-23
+C 0x67E8 lee_el_mando: el mando en 0xE009 (apretado) y 0xE008 (recien apretado)
 C 0x67F1 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
-C 0x67F4 lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
-C 0x680A lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+C 0x67F4 lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
+C 0x680A lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 C 0x683D lee el mapa (1 el castillo, 2-11 los mundos)
 C 0x6844 lee tiene el objeto 0x23
 C 0x684F lee tiene el objeto 0x0D
-C 0x6854 lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+C 0x6854 lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
+C 0x6861 apunta a las vidas de Afrodita (BCD)
 C 0x686C pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x6899 apunta a la copia de la tabla de sprites (128 bytes)
+C 0x68A2 lee el contador de cuadros
+C 0x68C6 lee el contador de cuadros
 C 0x68D8 de_mas_a: DE += A
+C 0x68ED lee el contador de cuadros
 C 0x6907 guarda quien juega (0 Afrodita)
+C 0x690A apunta a las vidas de Afrodita (BCD)
 C 0x691A lee el mapa (0xE041) y la sala (0xE042) de un tiron
 C 0x6925 palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x6943 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x6960 rle_con_destino: el rle de la direccion que hay en DE
 C 0x699A hl_mas_a: HL += A
+C 0x69BD apunta a la pantalla de la sala en la copia (filas 4-23)
+C 0x69D2 sala_a_vram: la pantalla de la sala (0xED80) a las filas 4-23
 C 0x69DD palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x69E0 lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
 C 0x69E3 lee el mapa (1 el castillo, 2-11 los mundos)
 C 0x69EC palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x69EF lee la sala
+C 0x6A1E pantalla_a_cero: la copia de la tabla de nombres a cero y a la VRAM
+C 0x6A21 caracteres_2160: el rle de 0x9AA2 en 0x2160
+C 0x6A24 caracteres_2168: el rle de 0x9ABD en 0x2168 en color 0xF0
 C 0x6A46 apunta a los huecos de figura (32 bytes cada uno)
 C 0x6A70 hl_mas_a: HL += A
+C 0x6A89 ldirvm_tres_tercios: LDIRVM en los tres tercios
+C 0x6AAF filvrm_tres_tercios: FILVRM en los tres tercios
 C 0x6AB5 apunta a los huecos de figura (32 bytes cada uno)
+C 0x6AC2 filvrm_tres_tercios: FILVRM en los tres tercios
+C 0x6ACD guarda el umbral de pared (0xBA, 0xF0 con jefe) y el byte siguiente (16 bits)
+C 0x6ADC lee el contador de cuadros
+C 0x6B10 nombres_a_vram: la copia de la tabla de nombres (0xED00) a 0x3800
+C 0x6B1B apunta a la copia de la tabla de nombres (0x300 bytes)
 C 0x6B35 hl_mas_a: HL += A
 C 0x6B39 de_mas_a: DE += A
+C 0x6B49 lee el umbral de pared (0xBA, 0xF0 con jefe) y el byte siguiente (16 bits)
+C 0x6B54 pide_sonido_ya: como pide_sonido, sin mirar la pausa
 C 0x6B65 de_mas_a: DE += A
+C 0x6B6E guarda el umbral de pared (0xBA, 0xF0 con jefe) y el byte siguiente (16 bits)
+C 0x6B77 guarda el umbral de pared (0xBA, 0xF0 con jefe) y el byte siguiente (16 bits)
 C 0x6B8F apunta a los huecos de figura (32 bytes cada uno)
 C 0x6BA5 apunta a los huecos de figura (32 bytes cada uno)
+C 0x6BA8 ldirvm_tres_tercios: LDIRVM en los tres tercios
+C 0x6BAC guarda los textos estan subiendo
 C 0x6BB0 lee el estado del jefe
 C 0x6BB5 apunta a el tipo del jefe (el hueco 0xE700 es el jefe)
 C 0x6BB9 lee el tipo del jefe (el hueco 0xE700 es el jefe)
@@ -179,7 +233,11 @@ C 0x6BF0 palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x6C01 de_mas_a: DE += A
 C 0x6C14 de_mas_a: DE += A
 C 0x6C2F de_mas_a: DE += A
+C 0x6C56 lee el hueco de la cosa de la sala: tipo, y, x
+C 0x6C65 lee la casilla de la cosa de la sala y el byte siguiente (16 bits)
 C 0x6C7F palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x6C82 lee la casilla de la cosa de la sala y el byte siguiente (16 bits)
+C 0x6C95 apunta a el mundo elegido (mapa - 1)
 C 0x6CA1 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 C 0x6CBF de_mas_a: DE += A
 C 0x6D26 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
@@ -197,6 +255,8 @@ C 0x71C5 hl_mas_a: HL += A
 C 0x7272 palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x72B1 palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x72C6 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x73D6 apunta a la copia de la tabla de sprites (128 bytes)
+C 0x73DE apunta a la copia de la tabla de sprites (128 bytes)
 C 0x73E7 lee el ESTADO del juego
 C 0x73F7 palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x7400 lee la y del personaje
@@ -205,9 +265,13 @@ C 0x7425 lee el ESTADO del juego
 C 0x742C lee el estado del personaje (5 = hundirse)
 C 0x7443 lee el ESTADO del juego
 C 0x744C apunta a quien juega (0 Afrodita)
+C 0x745C lee el contador de cuadros de partida
+C 0x74AF lee el contador de cuadros de partida
 C 0x76D8 apunta a los huecos de figura (32 bytes cada uno)
 C 0x7706 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 C 0x7786 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x7794 lee el hueco de la cosa de la sala: tipo, y, x
+C 0x7799 lee la casilla de la cosa de la sala y el byte siguiente (16 bits)
 C 0x77A9 lee el estado del jefe
 C 0x77AE apunta a el tipo del jefe (el hueco 0xE700 es el jefe)
 C 0x77B2 lee el tipo de la figura
@@ -222,13 +286,33 @@ C 0x79F7 apunta a el tipo del jefe (el hueco 0xE700 es el jefe)
 C 0x79FB lee el tipo del jefe (el hueco 0xE700 es el jefe)
 C 0x7A36 apunta a los huecos de figura (32 bytes cada uno)
 C 0x7A8F de_mas_a: DE += A
+C 0x7AE5 lee el hueco de la cosa de la sala: tipo, y, x
+C 0x7AEA lee la casilla de la cosa de la sala y el byte siguiente (16 bits)
+C 0x7D86 partida_nueva: RAM a cero, sala 1 del castillo, Popolon y las vidas de 0x4CE6
 C 0x7D93 palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x7D96 guarda el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x7D9B guarda el contador de cuadros de partida
+C 0x7D9E monta_la_sala: la sala entera con todo lo que lleva
 C 0x7DA3 guarda tiene el objeto 0x01
 C 0x7DAC guarda las flechas (BCD, 16 bits)
 C 0x7DB8 byte_de_tabla: A = el byte HL + A
+C 0x7DC4 musica_del_mapa: A = 0x88 en el castillo, 0x8A en los mundos
+C 0x7DC7 musica: la musica A (0xE021 = 1 salvo 0x87-0x8B)
+C 0x7DCB guarda el lado por el que se sale de la sala: 1 arriba, 2 abajo, 3 izquierda, 4 derecha
+C 0x7DD2 guarda en juego (a 0 se acaba la vida: estado 6)
+C 0x7DE8 sprites_turnados: la tabla de sprites a la VRAM empezando cada cuadro por otro
+C 0x7DEB cuadro_de_partida: un cuadro de la partida: todas las rutinas de cada banco
+C 0x7DEE lee el contador de cuadros de partida
 C 0x7E01 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x7E04 lee el lado por el que se sale de la sala: 1 arriba, 2 abajo, 3 izquierda, 4 derecha
+C 0x7E09 sin_sprites: 0xD0 en la tabla de sprites: no se ve ninguno
+C 0x7E0C borra_la_sala: sin sprites y las filas 4-23 de la pantalla a 0
+C 0x7E11 guarda la espera del paso, en cuadros
+C 0x7E14 vecina_del_lado: A = la vecina 0xE647 + 0xE01A
 C 0x7E17 guarda la sala
+C 0x7E1A monta_otra_sala: la sala al pasar a otra
+C 0x7E1E guarda el lado por el que se sale de la sala: 1 arriba, 2 abajo, 3 izquierda, 4 derecha
+C 0x7E31 guarda en juego (a 0 se acaba la vida: estado 6)
 C 0x7E38 a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
 C 0x7E41 palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x7E52 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
@@ -245,6 +329,8 @@ C 0x7EA6 guarda el cambio de vida pendiente de Afrodita (con signo)
 C 0x7EAC guarda el cambio de vida pendiente de Popolon (con signo)
 C 0x7EAF guarda la experiencia de Afrodita
 C 0x7EB2 guarda la experiencia de Popolon
+C 0x7EB5 guarda las vidas de Popolon (BCD)
+C 0x7EB9 guarda las vidas de Afrodita (BCD)
 C 0x7EBC guarda quien juega (0 Afrodita)
 C 0x7EBF guarda ya se ha seguido con F5
 C 0x7EC2 lee el tope de la vida de Afrodita
@@ -277,5 +363,6 @@ C 0x7FBE a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
 C 0x7FC4 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x7FC7 a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
 C 0x7FCD a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x7FD8 musica_ya: sin musica esperando, la musica A
 C 0x7FF1 palabra_de_tabla: DE = la palabra A de la tabla de HL
 # --- fin de las anotaciones de anota.py ---

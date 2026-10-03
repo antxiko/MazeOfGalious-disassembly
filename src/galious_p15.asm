@@ -985,7 +985,7 @@ L_B7E9:
 	ret			;b7f1
 L_B7F2:
 	ld bc,00460h		;b7f2
-	ld hl,0ec80h		;b7f5
+	ld hl,0ec80h		;b7f5   ; apunta a la copia de la tabla de sprites (128 bytes)
 	ld de,0baf1h		;b7f8
 L_B7FB:
 	ld a,040h		;b7fb
@@ -1037,7 +1037,7 @@ L_B847:
 	ld a,(0f031h)		;b847
 	or a			;b84a
 	jr z,L_B85A		;b84b
-	ld a,(0e003h)		;b84d
+	ld a,(0e003h)		;b84d   ; lee el contador de cuadros
 	bit 0,a		;b850
 	jr nz,L_B85A		;b852
 	ld hl,0f02bh		;b854
@@ -1064,10 +1064,10 @@ DATA_tabla_B860:
 
 L_B868:
 	xor a			;b868
-	ld (0e608h),a		;b869
+	ld (0e608h),a		;b869   ; guarda un paso de varios cuadros en marcha
 	ret			;b86c
 L_B86D:
-	ld a,(0e003h)		;b86d
+	ld a,(0e003h)		;b86d   ; lee el contador de cuadros
 	and 003h		;b870
 	ret nz			;b872
 	ld hl,0eca0h		;b873
@@ -1096,7 +1096,7 @@ L_B89A:
 	ld a,(0f032h)		;b89d
 	or a			;b8a0
 	ret nz			;b8a1
-	ld a,(0e003h)		;b8a2
+	ld a,(0e003h)		;b8a2   ; lee el contador de cuadros
 	and 03fh		;b8a5
 	ret nz			;b8a7
 	ld a,r		;b8a8
@@ -1118,7 +1118,7 @@ L_B8B4:
 	ld (0eedah),a		;b8cc
 	ret			;b8cf
 L_B8D0:
-	ld a,(0e003h)		;b8d0
+	ld a,(0e003h)		;b8d0   ; lee el contador de cuadros
 	and 003h		;b8d3
 	ret nz			;b8d5
 	ld a,(0f02fh)		;b8d6
@@ -1148,7 +1148,7 @@ L_B8FF:
 	ld (hl),a			;b903
 	ret			;b904
 L_B905:
-	ld a,(0e003h)		;b905
+	ld a,(0e003h)		;b905   ; lee el contador de cuadros
 	and 00fh		;b908
 	ret nz			;b90a
 	ld hl,0f01fh		;b90b
@@ -1173,7 +1173,7 @@ L_B925:
 	ld a,(0f022h)		;b92b
 	or a			;b92e
 	jr nz,L_B968		;b92f
-	ld a,(0e003h)		;b931
+	ld a,(0e003h)		;b931   ; lee el contador de cuadros
 	and 00fh		;b934
 	ret nz			;b936
 	ld hl,0f023h		;b937
@@ -1206,7 +1206,7 @@ L_B963:
 	inc (hl)			;b966
 	ret			;b967
 L_B968:
-	ld a,(0e003h)		;b968
+	ld a,(0e003h)		;b968   ; lee el contador de cuadros
 	and 007h		;b96b
 	ret nz			;b96d
 	jr L_B970		;b96e
@@ -1700,7 +1700,7 @@ L_BDA1:
 	ld a,(0e619h)		;bda1
 	and a			;bda4
 	ret z			;bda5
-	ld a,(0e003h)		;bda6
+	ld a,(0e003h)		;bda6   ; lee el contador de cuadros
 	and 003h		;bda9
 	ret nz			;bdab
 	ld hl,0e61ah		;bdac
@@ -1827,7 +1827,7 @@ L_BE5C:
 	cp 005h		;be76
 	jr c,L_BE57		;be78
 	xor a			;be7a
-	ld (0e698h),a		;be7b
+	ld (0e698h),a		;be7b   ; guarda el humo del jefe en marcha
 	ret			;be7e
 L_BE7F:
 	ld a,(0e69ah)		;be7f

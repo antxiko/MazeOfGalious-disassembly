@@ -22,9 +22,14 @@ C 0x9D16 lee la sala
 C 0x9D4E despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
 C 0x9D5F lee el mapa (0xE041) y la sala (0xE042) de un tiron
 C 0x9D67 despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0x9D8D lee la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)
+C 0x9D95 lee la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)
 C 0x9D9F pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0x9E52 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0x9E61 lee la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)
 C 0x9E67 lee el mapa (0xE041) y la sala (0xE042) de un tiron
 C 0x9F1A lee el mapa (0xE041) y la sala (0xE042) de un tiron
 C 0x9F87 lee tiene el objeto 0x12
+C 0x9F97 lee las cinco subidas hechas
+C 0x9FA7 apunta a la pantalla de la sala en la copia (filas 4-23)
 # --- fin de las anotaciones de anota.py ---

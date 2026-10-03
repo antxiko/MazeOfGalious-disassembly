@@ -118,7 +118,7 @@ L_6078:
 L_6087:
 	rla			;6087
 	djnz L_6087		;6088
-	ld hl,(0e60ch)		;608a
+	ld hl,(0e60ch)		;608a   ; lee la direccion del byte de la sala en el tramo del mapa y el byte siguiente (16 bits)
 	and (hl)			;608d
 	pop bc			;608e
 	pop hl			;608f
@@ -973,12 +973,12 @@ L_6622:
 L_6626:
 	push hl			;6626
 	pop ix		;6627
-	ld (0f020h),hl		;6629
+	ld (0f020h),hl		;6629   ; guarda el umbral de pared (0xBA, 0xF0 con jefe) y el byte siguiente (16 bits)
 	ld hl,0e620h		;662c
 	inc (hl)			;662f
 	call L_6562		;6630
 	call L_659B		;6633
-	ld hl,(0f020h)		;6636
+	ld hl,(0f020h)		;6636   ; lee el umbral de pared (0xBA, 0xF0 con jefe) y el byte siguiente (16 bits)
 	ld a,(0f019h)		;6639
 	ld (hl),a			;663c
 	inc l			;663d
@@ -1460,7 +1460,7 @@ L_6A77:
 	ld hl,06a9eh		;6a80
 	add hl,bc			;6a83
 	ld c,05eh		;6a84
-	ld a,(0e604h)		;6a86
+	ld a,(0e604h)		;6a86   ; lee el contador de cuadros de partida
 	ld b,a			;6a89
 	ld a,r		;6a8a
 	add a,b			;6a8c
@@ -1649,7 +1649,7 @@ L_6BEE:
 L_6BFD:
 	add a,(ix+007h)		;6bfd
 	ld h,a			;6c00
-	jp 0406eh		;6c01
+	jp 0406eh		;6c01   ; casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 L_6C04:
 	ld bc,0ffe0h		;6c04
 	bit 7,(ix+00fh)		;6c07
@@ -1910,7 +1910,7 @@ DATA_sin_nombrar_6dc6:
 
 
 L_6DFE:
-	ld a,(0e604h)		;6dfe
+	ld a,(0e604h)		;6dfe   ; lee el contador de cuadros de partida
 	and 07fh		;6e01
 	add a,040h		;6e03
 	ld (ix+007h),a		;6e05
@@ -1923,7 +1923,7 @@ L_6DFE:
 	call L_6E90		;6e17
 	ld (ix+013h),008h		;6e1a
 L_6E1E:
-	ld a,(0e604h)		;6e1e
+	ld a,(0e604h)		;6e1e   ; lee el contador de cuadros de partida
 	ld bc,0ccd4h		;6e21
 	bit 3,a		;6e24
 	jr z,L_6E2B		;6e26
@@ -1948,7 +1948,7 @@ L_6E4E:
 	dec (ix+015h)		;6e4e
 	jr z,L_6E65		;6e51
 	call L_6E1E		;6e53
-	ld a,(0e604h)		;6e56
+	ld a,(0e604h)		;6e56   ; lee el contador de cuadros de partida
 	bit 2,a		;6e59
 	jr nz,L_6E61		;6e5b
 	inc (ix+005h)		;6e5d
@@ -2127,9 +2127,9 @@ L_6F89:
 	add a,008h		;6f9a
 	ld l,a			;6f9c
 	ld h,(ix+007h)		;6f9d
-	call 0406eh		;6fa0
+	call 0406eh		;6fa0   ; casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 	jr c,L_6FB6		;6fa3
-	call 04071h		;6fa5
+	call 04071h		;6fa5   ; casilla_derecha (por 0x4071): compara 0xB9 con el caracter de HL + 1
 	jr c,L_6FB6		;6fa8
 	ld a,(ix+005h)		;6faa
 	add a,008h		;6fad
@@ -2220,7 +2220,7 @@ L_703E:
 	scf			;7060
 	ret			;7061
 L_7062:
-	ld a,(0e604h)		;7062
+	ld a,(0e604h)		;7062   ; lee el contador de cuadros de partida
 	and 003h		;7065
 	ret nz			;7067
 	ld a,(ix+00ah)		;7068
@@ -2242,7 +2242,7 @@ L_7083:
 L_7087:
 	ld l,a			;7087
 	ld h,(ix+007h)		;7088
-	call 0406eh		;708b
+	call 0406eh		;708b   ; casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 	jr c,L_7093		;708e
 	inc hl			;7090
 	cp (hl)			;7091
@@ -2414,7 +2414,7 @@ L_71BF:
 	ld (ix+00ah),b		;71bf
 	ret			;71c2
 L_71C3:
-	ld a,(0e604h)		;71c3
+	ld a,(0e604h)		;71c3   ; lee el contador de cuadros de partida
 	and 01fh		;71c6
 	ret			;71c8
 L_71C9:
@@ -2757,7 +2757,7 @@ L_7434:
 L_743A:
 	dec (ix+015h)		;743a
 	jr z,L_7453		;743d
-	ld hl,0e604h		;743f
+	ld hl,0e604h		;743f   ; apunta a el contador de cuadros de partida
 	bit 3,(hl)		;7442
 L_7444:
 	ld a,0b0h		;7444
@@ -3164,7 +3164,7 @@ L_7730:
 	ld (ix+00bh),002h		;7740
 	ld l,0b8h		;7744
 	ld h,(ix+013h)		;7746
-	call 0406eh		;7749
+	call 0406eh		;7749   ; casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 	jp nc,0b41ch		;774c
 	ld (ix+008h),030h		;774f
 	ld (ix+00ah),0b4h		;7753
@@ -3907,7 +3907,7 @@ L_7CFD:
 	jr z,L_7D07		;7d03
 	ld a,0c0h		;7d05
 L_7D07:
-	ld hl,0e604h		;7d07
+	ld hl,0e604h		;7d07   ; apunta a el contador de cuadros de partida
 	bit 2,(hl)		;7d0a
 	jp z,L_7B33		;7d0c
 	add a,004h		;7d0f
@@ -4042,9 +4042,9 @@ L_7E17:
 	ld h,(ix+007h)		;7e17
 	ld l,(ix+005h)		;7e1a
 	dec l			;7e1d
-	call 0406eh		;7e1e
+	call 0406eh		;7e1e   ; casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 	ret nc			;7e21
-	jp 04071h		;7e22
+	jp 04071h		;7e22   ; casilla_derecha (por 0x4071): compara 0xB9 con el caracter de HL + 1
 L_7E25:
 	push af			;7e25
 	ld hl,07e49h		;7e26
@@ -4158,7 +4158,7 @@ L_7ED3:
 	ret c			;7ed4
 	ld h,a			;7ed5
 	ld e,008h		;7ed6
-	call 0407ah		;7ed8
+	call 0407ah		;7ed8   ; pared_en (por 0x407A): C si la casilla (y+E) llega al umbral de 0xF020
 	ret nc			;7edb
 	ld a,058h		;7edc
 	ld (ix+011h),a		;7ede
@@ -4190,7 +4190,7 @@ L_7F0E:
 	ret nc			;7f18
 	ld l,a			;7f19
 	ld de,0020dh		;7f1a
-	jp 04074h		;7f1d
+	jp 04074h		;7f1d   ; pared_en_fila (por 0x4074): C si una de las casillas (y+B, x+D) o (y+B, x+E) llega al umbral de 0xF020
 L_7F20:
 	ld d,004h		;7f20
 	ld b,001h		;7f22

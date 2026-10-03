@@ -1082,11 +1082,11 @@ L_9D7E:
 	ld (0e0a2h),a		;9d88
 	jr L_9E07		;9d8b
 L_9D8D:
-	ld hl,(0e60eh)		;9d8d
+	ld hl,(0e60eh)		;9d8d   ; lee la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)
 	set 3,(hl)		;9d90
 	call L_9E61		;9d92
 L_9D95:
-	ld hl,(0e60eh)		;9d95
+	ld hl,(0e60eh)		;9d95   ; lee la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)
 	bit 4,(hl)		;9d98
 	ret nz			;9d9a
 	set 4,(hl)		;9d9b
@@ -1203,7 +1203,7 @@ L_9E4E:
 	set 3,(hl)		;9e5e
 	ret			;9e60
 L_9E61:
-	ld hl,(0e60eh)		;9e61
+	ld hl,(0e60eh)		;9e61   ; lee la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)
 	bit 3,(hl)		;9e64
 	ret z			;9e66
 	ld de,(0e041h)		;9e67   ; lee el mapa (0xE041) y la sala (0xE042) de un tiron
@@ -1358,7 +1358,7 @@ L_9F1A:
 	call L_9D95		;9f91
 	jp L_9EF4		;9f94
 L_9F97:
-	ld a,(0e0a1h)		;9f97
+	ld a,(0e0a1h)		;9f97   ; lee las cinco subidas hechas
 	or a			;9f9a
 	ret nz			;9f9b
 	ld a,001h		;9f9c
@@ -1368,7 +1368,7 @@ L_9FA2:
 	ld a,(0e0a2h)		;9fa2
 	or a			;9fa5
 	ret nz			;9fa6
-	ld de,0ed80h		;9fa7
+	ld de,0ed80h		;9fa7   ; apunta a la pantalla de la sala en la copia (filas 4-23)
 	jr L_9FD4		;9faa
 L_9FAC:
 	ld a,(0e0a3h)		;9fac

@@ -116,6 +116,7 @@ C 0x6009 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 C 0x600D lee la sala
 C 0x6058 lee el mapa (0xE041) y la sala (0xE042) de un tiron
 C 0x6063 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0x608A lee la direccion del byte de la sala en el tramo del mapa y el byte siguiente (16 bits)
 C 0x6095 lee el mapa (0xE041) y la sala (0xE042) de un tiron
 C 0x609E palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 C 0x61A8 lee el mapa (0xE041) y la sala (0xE042) de un tiron
@@ -133,16 +134,20 @@ C 0x6416 de_mas_a (por 0x4065): DE += A
 C 0x659F lee el nivel de los objetos 0x28/0x2B/0x2C
 C 0x65A7 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 C 0x65EE lee cuantos huecos de figura hay
+C 0x6629 guarda el umbral de pared (0xBA, 0xF0 con jefe) y el byte siguiente (16 bits)
+C 0x6636 lee el umbral de pared (0xBA, 0xF0 con jefe) y el byte siguiente (16 bits)
 C 0x66B1 despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
 C 0x6794 apunta a los huecos de figura (32 bytes cada uno)
 C 0x6797 lee cuantos huecos de figura hay
 C 0x67A8 lee cuantos huecos de figura hay
 C 0x6A2B byte_de_tabla (por 0x4083): A = el byte HL + A
 C 0x6A57 byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0x6A86 lee el contador de cuadros de partida
 C 0x6AB4 casilla_de_yx (por 0x4056): HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 C 0x6AF3 de_negado (por 0x4068): DE = -DE
 C 0x6BB5 lee la x del personaje
 C 0x6BBE de_negado (por 0x4068): DE = -DE
+C 0x6C01 casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 C 0x6C25 lee la y del personaje
 C 0x6CBE palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 C 0x6D53 casilla_de_yx (por 0x4056): HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
@@ -150,17 +155,25 @@ C 0x6D8F hl_mas_a (por 0x4062): HL += A
 C 0x6D96 byte_de_tabla (por 0x4083): A = el byte HL + A
 C 0x6DAC de_negado (por 0x4068): DE = -DE
 C 0x6DB7 de_negado (por 0x4068): DE = -DE
+C 0x6DFE lee el contador de cuadros de partida
+C 0x6E1E lee el contador de cuadros de partida
+C 0x6E56 lee el contador de cuadros de partida
 C 0x6E98 lee el mapa (0xE041) y la sala (0xE042) de un tiron
 C 0x6EC2 lee el mapa (1 el castillo, 2-11 los mundos)
 C 0x6ED2 byte_de_tabla (por 0x4083): A = el byte HL + A
 C 0x6F6F casilla_de_yx (por 0x4056): HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x6FA0 casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
+C 0x6FA5 casilla_derecha (por 0x4071): compara 0xB9 con el caracter de HL + 1
 C 0x6FF6 lee la y del personaje
 C 0x7001 lee la y del personaje
 C 0x701A de_negado (por 0x4068): DE = -DE
 C 0x702A pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x7062 lee el contador de cuadros de partida
+C 0x708B casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 C 0x70AF despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
 C 0x70E7 byte_de_tabla (por 0x4083): A = el byte HL + A
 C 0x70FF lee la y del personaje
+C 0x71C3 lee el contador de cuadros de partida
 C 0x71EA lee la x del personaje
 C 0x71F3 de_negado (por 0x4068): DE = -DE
 C 0x720F de_negado (por 0x4068): DE = -DE
@@ -170,6 +183,7 @@ C 0x729B byte_de_tabla (por 0x4083): A = el byte HL + A
 C 0x7323 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0x7368 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 C 0x73C5 de_negado (por 0x4068): DE = -DE
+C 0x743F apunta a el contador de cuadros de partida
 C 0x748D de_negado (por 0x4068): DE = -DE
 C 0x74A8 lee la x del personaje
 C 0x74BB lee el mapa (0xE041) y la sala (0xE042) de un tiron
@@ -187,6 +201,7 @@ C 0x76CA pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con lo
 C 0x76D7 despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
 C 0x76E7 hl_mas_a (por 0x4062): HL += A
 C 0x76ED byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0x7749 casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 C 0x7761 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0x779A byte_de_tabla (por 0x4083): A = el byte HL + A
 C 0x77A9 byte_de_tabla (por 0x4083): A = el byte HL + A
@@ -211,9 +226,14 @@ C 0x7CA0 de_negado (por 0x4068): DE = -DE
 C 0x7CA9 lee la x del personaje
 C 0x7CD7 casilla_de_yx (por 0x4056): HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 C 0x7CE9 casilla_de_yx (por 0x4056): HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x7D07 apunta a el contador de cuadros de partida
 C 0x7D3D despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0x7E1E casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
+C 0x7E22 casilla_derecha (por 0x4071): compara 0xB9 con el caracter de HL + 1
 C 0x7E29 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 C 0x7E3C palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0x7ED8 pared_en (por 0x407A): C si la casilla (y+E) llega al umbral de 0xF020
+C 0x7F1D pared_en_fila (por 0x4074): C si una de las casillas (y+B, x+D) o (y+B, x+E) llega al umbral de 0xF020
 C 0x7F75 despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
 C 0x7F8A byte_de_tabla (por 0x4083): A = el byte HL + A
 C 0x7FC6 de_negado (por 0x4068): DE = -DE

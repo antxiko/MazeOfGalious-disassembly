@@ -174,14 +174,14 @@ L_810E:
 	ld (ix+00ah),00ch		;8112
 	bit 7,(ix+00fh)		;8116
 	jr nz,L_812B		;811a
-	ld a,(0e604h)		;811c
+	ld a,(0e604h)		;811c   ; lee el contador de cuadros de partida
 	bit 4,a		;811f
 	ret nz			;8121
 	ld (ix+00ah),00eh		;8122
 	ld (ix+005h),060h		;8126
 	ret			;812a
 L_812B:
-	ld a,(0e604h)		;812b
+	ld a,(0e604h)		;812b   ; lee el contador de cuadros de partida
 	bit 4,a		;812e
 	ret nz			;8130
 	ld (ix+00ah),00dh		;8131
@@ -197,7 +197,7 @@ L_8142:
 	ccf			;8144
 	ret			;8145
 L_8146:
-	ld a,(0e604h)		;8146
+	ld a,(0e604h)		;8146   ; lee el contador de cuadros de partida
 	and 003h		;8149
 	ret nz			;814b
 	ld a,(0e70ah)		;814c   ; lee el mosaico del jefe
@@ -206,13 +206,13 @@ L_8146:
 L_8153:
 	call L_8161		;8153
 L_8156:
-	ld a,(0e604h)		;8156
+	ld a,(0e604h)		;8156   ; lee el contador de cuadros de partida
 	and 00fh		;8159
 	ret nz			;815b
 	ld a,00ah		;815c
 	jp 04e1fh		;815e   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_8161:
-	ld a,(0e604h)		;8161
+	ld a,(0e604h)		;8161   ; lee el contador de cuadros de partida
 	and 007h		;8164
 	ret nz			;8166
 	ld a,(0e70ah)		;8167   ; lee el mosaico del jefe
@@ -294,7 +294,7 @@ L_81CC:
 	call L_8161		;81cc
 	bit 5,(ix+009h)		;81cf
 	jr z,L_81E3		;81d3
-	ld a,(0e604h)		;81d5
+	ld a,(0e604h)		;81d5   ; lee el contador de cuadros de partida
 	and 003h		;81d8
 	ret nz			;81da
 	inc (ix+00bh)		;81db
@@ -356,7 +356,7 @@ L_824B:
 	call L_8161		;824b
 	bit 5,(ix+009h)		;824e
 	jr z,L_825D		;8252
-	ld a,(0e604h)		;8254
+	ld a,(0e604h)		;8254   ; lee el contador de cuadros de partida
 	and 003h		;8257
 	ret nz			;8259
 	dec (ix+00bh)		;825a
@@ -469,13 +469,13 @@ L_8309:
 	call 04155h		;8319   ; byte_de_tabla: A = el byte HL + A
 	ld (0e705h),a		;831c
 	ld a,001h		;831f
-	ld (0e61bh),a		;8321
+	ld (0e61bh),a		;8321   ; guarda el paso de los graficos del jefe 2
 	ret			;8324
 L_8325:
 	push ix		;8325
-	call 0587bh		;8327
+	call 0587bh		;8327   ; un_paso_del_jefe_2: un paso de los graficos del jefe 2
 	pop ix		;832a
-	ld a,(0e61bh)		;832c
+	ld a,(0e61bh)		;832c   ; lee el paso de los graficos del jefe 2
 	and a			;832f
 	ret nz			;8330
 	bit 0,(ix+01dh)		;8331
@@ -569,7 +569,7 @@ L_83A7:
 	ret nz			;83c3
 	jr L_8393		;83c4
 L_83C6:
-	ld a,(0e604h)		;83c6
+	ld a,(0e604h)		;83c6   ; lee el contador de cuadros de partida
 	and 01fh		;83c9
 	ret nz			;83cb
 	ld a,(0e707h)		;83cc
@@ -648,7 +648,7 @@ L_844F:
 	ld (ix+007h),b		;844f
 	jp 07fa3h		;8452
 L_8455:
-	ld a,(0e604h)		;8455
+	ld a,(0e604h)		;8455   ; lee el contador de cuadros de partida
 	and 007h		;8458
 	ret nz			;845a
 	inc (ix+019h)		;845b
@@ -858,7 +858,7 @@ L_860C:
 	dec (ix+01eh)		;860c
 	ret nz			;860f
 	set 4,(ix+002h)		;8610
-	call 04de3h		;8614
+	call 04de3h		;8614   ; azar: A = R con el contador de cuadros
 	and 01fh		;8617
 	add a,008h		;8619
 	ld (ix+01eh),a		;861b
@@ -927,10 +927,10 @@ DATA_tabla_869C:
 L_86A4:
 	bit 0,(ix+01eh)		;86a4
 	jr z,L_86BC		;86a8
-	call 04de3h		;86aa
+	call 04de3h		;86aa   ; azar: A = R con el contador de cuadros
 	and 001h		;86ad
 	jr z,L_86BC		;86af
-	call 04de3h		;86b1
+	call 04de3h		;86b1   ; azar: A = R con el contador de cuadros
 	and 001h		;86b4
 	ld (0e71ch),a		;86b6
 	jp L_877A		;86b9
@@ -952,7 +952,7 @@ L_86DA:
 L_86E0:
 	bit 0,(ix+01fh)		;86e0
 	jr z,L_86F8		;86e4
-	call 04de3h		;86e6
+	call 04de3h		;86e6   ; azar: A = R con el contador de cuadros
 	and 001h		;86e9
 	jr z,L_86F8		;86eb
 	ld a,(0e71dh)		;86ed
@@ -1002,7 +1002,7 @@ L_8752:
 	ld a,(0e722h)		;8752
 	or a			;8755
 	ret nz			;8756
-	call 04de3h		;8757
+	call 04de3h		;8757   ; azar: A = R con el contador de cuadros
 	and 001h		;875a
 	ret nz			;875c
 	dec (ix+023h)		;875d
@@ -1124,7 +1124,7 @@ L_8844:
 	ld b,02eh		;8847
 	ret nc			;8849
 L_884A:
-	call 04de3h		;884a
+	call 04de3h		;884a   ; azar: A = R con el contador de cuadros
 	and 003h		;884d
 	ret z			;884f
 	ld a,b			;8850
@@ -1162,7 +1162,7 @@ L_889E:
 	call 07fa3h		;889e
 	ld de,00040h		;88a1
 	call 07fbeh		;88a4
-	call 04de3h		;88a7
+	call 04de3h		;88a7   ; azar: A = R con el contador de cuadros
 	and 003h		;88aa
 	cp 001h		;88ac
 	ld de,0fb80h		;88ae
@@ -1310,7 +1310,7 @@ L_89EB:
 L_89F5:
 	dec (ix+016h)		;89f5
 	ret nz			;89f8
-	call 04de3h		;89f9
+	call 04de3h		;89f9   ; azar: A = R con el contador de cuadros
 	and 01fh		;89fc
 	add a,003h		;89fe
 	ld (0e716h),a		;8a00
@@ -1760,7 +1760,7 @@ L_8D82:
 L_8D8B:
 	dec (ix+008h)		;8d8b
 	ret nz			;8d8e
-	call 04de3h		;8d8f
+	call 04de3h		;8d8f   ; azar: A = R con el contador de cuadros
 	and 007h		;8d92
 	ld hl,08edfh		;8d94
 	call 0414ch		;8d97   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
@@ -1802,7 +1802,7 @@ L_8DDC:
 	jp L_8D24		;8df4
 L_8DF7:
 	ld (ix+017h),030h		;8df7
-	call 04de3h		;8dfb
+	call 04de3h		;8dfb   ; azar: A = R con el contador de cuadros
 	and 001h		;8dfe
 	ld a,080h		;8e00
 	jr nz,L_8E05		;8e02
@@ -1813,7 +1813,7 @@ L_8E05:
 	ld a,004h		;8e0b
 	ld (ix+022h),a		;8e0d
 	ld (ix+01bh),a		;8e10
-	call 04de3h		;8e13
+	call 04de3h		;8e13   ; azar: A = R con el contador de cuadros
 	and 00fh		;8e16
 	ld (ix+020h),a		;8e18
 	xor a			;8e1b
@@ -2055,7 +2055,7 @@ DATA_tabla_8F78:
 
 L_8F84:
 	call L_916F		;8f84
-	ld hl,0e058h		;8f87
+	ld hl,0e058h		;8f87   ; apunta a las vidas de Afrodita (BCD)
 	ld a,(0e501h)		;8f8a   ; lee quien juega (0 Afrodita)
 	xor 001h		;8f8d
 	add a,l			;8f8f
@@ -2116,7 +2116,7 @@ L_8FE9:
 	ret			;8fe9
 L_8FEA:
 	call L_930F		;8fea
-	ld a,(0e008h)		;8fed   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+	ld a,(0e008h)		;8fed   ; lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 	and 010h		;8ff0
 	ret z			;8ff2
 	ld a,(0e692h)		;8ff3   ; lee el articulo elegido en la tienda
@@ -2142,8 +2142,8 @@ L_900F:
 	ld hl,0e046h		;901e   ; apunta a las flechas (BCD)
 	ld bc,00100h		;9021
 	call resta_bcd		;9024   ; resta_bcd: (HL) -= BC en BCD
-	call 05f8fh		;9027
-	call 05f79h		;902a
+	call 05f8fh		;9027   ; pinta_llaves: las llaves en la fila 2, columna 24
+	call 05f79h		;902a   ; pinta_flechas: las flechas en la fila 0, columna 24
 	ld a,(0e501h)		;902d   ; lee quien juega (0 Afrodita)
 	or a			;9030
 	ld hl,0e050h		;9031
@@ -2190,7 +2190,7 @@ L_906E:
 	ret nz			;9072
 	jr L_90BA		;9073
 L_9075:
-	ld a,(0e003h)		;9075
+	ld a,(0e003h)		;9075   ; lee el contador de cuadros
 	and 001h		;9078
 	ret nz			;907a
 	ld hl,0ecbch		;907b
@@ -2262,7 +2262,7 @@ L_90CE:
 	jp L_91E5		;90db
 L_90DE:
 	call L_930F		;90de
-	ld a,(0e008h)		;90e1   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+	ld a,(0e008h)		;90e1   ; lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 	and 010h		;90e4
 	ret z			;90e6
 	ld a,(0e692h)		;90e7   ; lee el articulo elegido en la tienda
@@ -2284,7 +2284,7 @@ L_9100:
 	ld a,003h		;9108
 	jp L_8FBC		;910a
 L_910D:
-	ld a,(0e008h)		;910d   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+	ld a,(0e008h)		;910d   ; lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 	and 010h		;9110
 	ret z			;9112
 	ld hl,00000h		;9113
@@ -2359,7 +2359,7 @@ L_917C:
 	call L_930F		;917c
 	ld a,005h		;917f
 	call c,mensaje		;9181   ; mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
-	ld a,(0e008h)		;9184   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+	ld a,(0e008h)		;9184   ; lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 	and 010h		;9187
 	ret z			;9189
 	jr L_91E5		;918a
@@ -2455,7 +2455,7 @@ L_922A:
 paga:		; resta BC (BCD) de las monedas de 0xE048 y las repinta
 	ld hl,0e048h		;922b   ; apunta a las monedas (BCD)
 	call resta_bcd		;922e   ; resta_bcd: (HL) -= BC en BCD
-	jp 05f84h		;9231
+	jp 05f84h		;9231   ; pinta_monedas: las monedas en la fila 1, columna 24
 resta_bcd:		; (HL) -= BC en BCD
 	ld a,(hl)			;9234
 	sub c			;9235
@@ -2579,7 +2579,7 @@ DATA_siete_mensajes:
 
 
 L_930F:
-	ld a,(0e008h)		;930f   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+	ld a,(0e008h)		;930f   ; lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 	bit 2,a		;9312
 	jr nz,L_931B		;9314
 	bit 3,a		;9316
@@ -2665,12 +2665,12 @@ L_9382:
 	jr nz,L_9380		;938b
 	ret			;938d
 L_938E:
-	ld hl,0ec80h		;938e
+	ld hl,0ec80h		;938e   ; apunta a la copia de la tabla de sprites (128 bytes)
 	ld (0e60ah),hl		;9391
 	call 073e4h		;9394
 	call L_9578		;9397
 	call L_9561		;939a
-	call 054bfh		;939d
+	call 054bfh		;939d   ; sala_a_vram: la pantalla de la sala (0xED80) a las filas 4-23
 	jp L_958B		;93a0
 L_93A3:
 	ld a,0afh		;93a3
@@ -2679,12 +2679,12 @@ L_93A3:
 	ld (0e507h),a		;93aa   ; guarda la x del personaje
 	ret			;93ad
 L_93AE:
-	ld hl,0ed80h		;93ae
+	ld hl,0ed80h		;93ae   ; apunta a la pantalla de la sala en la copia (filas 4-23)
 	ld de,0ed81h		;93b1
 	ld bc,0027fh		;93b4
 	ld (hl),000h		;93b7
 	ldir		;93b9
-	ld hl,0ed80h		;93bb
+	ld hl,0ed80h		;93bb   ; apunta a la pantalla de la sala en la copia (filas 4-23)
 	ld bc,013f0h		;93be
 	call L_9454		;93c1
 	ld hl,0ed81h		;93c4
@@ -2696,7 +2696,7 @@ L_93AE:
 	ld hl,0ed9fh		;93d4
 	ld b,013h		;93d7
 	call L_9454		;93d9
-	ld hl,0ed80h		;93dc
+	ld hl,0ed80h		;93dc   ; apunta a la pantalla de la sala en la copia (filas 4-23)
 	ld de,0ed81h		;93df
 	ld (hl),c			;93e2
 	ld bc,0001fh		;93e3
@@ -2967,7 +2967,7 @@ L_95A0:
 	ld a,004h		;95b6
 	ld c,001h		;95b8
 	call L_96C4		;95ba
-	ld de,0e063h		;95bd
+	ld de,0e063h		;95bd   ; apunta a las marcas del mapa 2 (bits 7-4: objetos 09 08 07 0A; bit 2: jefe vencido)
 	ld a,00ah		;95c0
 	ld c,000h		;95c2
 	call L_96C4		;95c4
@@ -3120,7 +3120,7 @@ L_969C:
 	djnz L_969C		;96a0
 	ret			;96a2
 L_96A3:
-	ld hl,(0e058h)		;96a3
+	ld hl,(0e058h)		;96a3   ; lee las vidas de Afrodita (BCD) y el byte siguiente (16 bits)
 	ld de,(0e05ah)		;96a6
 	ld a,h			;96aa
 	rlca			;96ab
@@ -3239,10 +3239,10 @@ L_974A:
 	ret			;9750
 L_9751:
 	ld a,001h		;9751
-	ld (0e02dh),a		;9753
+	ld (0e02dh),a		;9753   ; guarda hecho (estado 0x12)
 	ret			;9756
 L_9757:
-	ld a,(0e008h)		;9757   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+	ld a,(0e008h)		;9757   ; lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 	and 00ch		;975a
 	ret z			;975c
 	and 008h		;975d
@@ -3293,7 +3293,7 @@ L_979A:
 L_979E:
 	ld e,03eh		;979e
 L_97A0:
-	ld hl,0ec80h		;97a0
+	ld hl,0ec80h		;97a0   ; apunta a la copia de la tabla de sprites (128 bytes)
 	ld (hl),e			;97a3
 	inc hl			;97a4
 	ld (hl),d			;97a5
@@ -3301,7 +3301,7 @@ L_97A0:
 	ld (hl),000h		;97a7
 	inc hl			;97a9
 	ld (hl),008h		;97aa
-	jp 05474h		;97ac
+	jp 05474h		;97ac   ; sprites_a_vram: la copia de la tabla de sprites (0xEC80) a 0x3B00
 L_97AF:
 	ld hl,03908h		;97af
 	ld de,0eb00h		;97b2
@@ -3332,7 +3332,7 @@ L_97DD:
 	call L_980E		;97e0
 	ret z			;97e3
 	ld a,001h		;97e4
-	ld (0e02dh),a		;97e6
+	ld (0e02dh),a		;97e6   ; guarda hecho (estado 0x12)
 	ret			;97e9
 L_97EA:
 	ld hl,0eb00h		;97ea
@@ -3398,7 +3398,7 @@ L_982B:
 	ld c,001h		;9840
 	call L_98AD		;9842
 	ld de,0eb51h		;9845
-	ld hl,0e063h		;9848
+	ld hl,0e063h		;9848   ; apunta a las marcas del mapa 2 (bits 7-4: objetos 09 08 07 0A; bit 2: jefe vencido)
 	ld a,00ah		;984b
 	ld c,000h		;984d
 	call L_98AD		;984f
@@ -3447,7 +3447,7 @@ L_988D:
 	ld (0e097h),a		;988e   ; guarda el nivel de los objetos 0x28/0x2B/0x2C
 L_9891:
 	ld a,(0eb6ah)		;9891
-	ld hl,0e058h		;9894
+	ld hl,0e058h		;9894   ; apunta a las vidas de Afrodita (BCD)
 	ld b,004h		;9897
 L_9899:
 	ld (hl),000h		;9899
@@ -3566,7 +3566,7 @@ L_9949:
 	inc hl			;994c
 	inc c			;994d
 	djnz L_9949		;994e
-	ld a,(0e06ch)		;9950
+	ld a,(0e06ch)		;9950   ; lee las marcas del mapa 11 (bits 7-4: objetos 09 08 07 0A; bit 2: jefe vencido)
 	and 003h		;9953
 	ret z			;9955
 	ld a,(0e06dh)		;9956
@@ -3583,7 +3583,7 @@ L_996A:
 	ld hl,09997h		;996b
 	call 0414ch		;996e   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 L_9971:
-	ld hl,0e688h		;9971
+	ld hl,0e688h		;9971   ; apunta a el mundo elegido (mapa - 1)
 	ld (hl),c			;9974
 	inc l			;9975
 	inc l			;9976
@@ -3663,7 +3663,7 @@ DATA_cuatro_salas_99c4:
 
 
 L_99C8:
-	ld hl,(0e688h)		;99c8
+	ld hl,(0e688h)		;99c8   ; lee el mundo elegido (mapa - 1) y el byte siguiente (16 bits)
 	ld a,l			;99cb
 	or a			;99cc
 	ret z			;99cd
@@ -3700,9 +3700,9 @@ L_99E9:
 	ld (0e07bh),a		;99fb   ; guarda tiene el objeto 0x0C
 	ret			;99fe
 L_99FF:
-	call 044eah		;99ff
+	call 044eah		;99ff   ; personaje_4_a_7: C si el estado del personaje es 4-7
 	ret c			;9a02
-	ld hl,0e688h		;9a03
+	ld hl,0e688h		;9a03   ; apunta a el mundo elegido (mapa - 1)
 	ld a,(hl)			;9a06
 	or a			;9a07
 	ret z			;9a08
@@ -3723,7 +3723,7 @@ L_99FF:
 L_9A25:
 	ld a,(0e501h)		;9a25   ; lee quien juega (0 Afrodita)
 	ld b,a			;9a28
-	ld a,(0e688h)		;9a29
+	ld a,(0e688h)		;9a29   ; lee el mundo elegido (mapa - 1)
 	cp 005h		;9a2c
 	jr nz,L_9A3A		;9a2e
 	dec b			;9a30
@@ -3741,13 +3741,13 @@ L_9A3A:
 	or a			;9a44
 	ret z			;9a45
 L_9A46:
-	ld a,(0e009h)		;9a46   ; lee el mando (la otra copia que cambia p03:A8BE)
+	ld a,(0e009h)		;9a46   ; lee lo apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 	and 002h		;9a49
 	ret z			;9a4b
 	call L_9A56		;9a4c
 	ret nc			;9a4f
 	ld a,001h		;9a50
-	ld (0e01fh),a		;9a52
+	ld (0e01fh),a		;9a52   ; guarda 1 = estado 8, 2 = estado 0x0D
 	ret			;9a55
 L_9A56:
 	ld hl,0e68ah		;9a56
@@ -3769,7 +3769,7 @@ L_9A65:
 	cp 005h		;9a73
 	ret			;9a75
 L_9A76:
-	call 044eah		;9a76
+	call 044eah		;9a76   ; personaje_4_a_7: C si el estado del personaje es 4-7
 	ret c			;9a79
 	ld hl,0e680h		;9a7a
 	ld a,(hl)			;9a7d
@@ -3781,13 +3781,13 @@ L_9A76:
 	or a			;9a87
 	ret z			;9a88
 L_9A89:
-	ld a,(0e009h)		;9a89   ; lee el mando (la otra copia que cambia p03:A8BE)
+	ld a,(0e009h)		;9a89   ; lee lo apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 	and 002h		;9a8c
 	ret z			;9a8e
 	call L_9A5F		;9a8f
 	ret nc			;9a92
 	ld a,001h		;9a93
-	ld (0e01ch),a		;9a95
+	ld (0e01ch),a		;9a95   ; guarda estado 0x10 pedido
 	ret			;9a98
 L_9A99:
 	ld a,(0e096h)		;9a99   ; lee tiene el objeto 0x27
@@ -3803,7 +3803,7 @@ L_9A99:
 	cp 009h		;9aaa
 	ret nc			;9aac
 	ld b,a			;9aad
-	ld hl,0e063h		;9aae
+	ld hl,0e063h		;9aae   ; apunta a las marcas del mapa 2 (bits 7-4: objetos 09 08 07 0A; bit 2: jefe vencido)
 	call 04136h		;9ab1   ; hl_mas_a: HL += A
 	ld a,(hl)			;9ab4
 	rr a		;9ab5
@@ -3823,7 +3823,7 @@ L_9AC9:
 	ld a,(0e0d2h)		;9ace   ; lee el estado del jefe
 	and a			;9ad1
 	ret nz			;9ad2
-	ld a,(0e0d4h)		;9ad3
+	ld a,(0e0d4h)		;9ad3   ; lee la cosa del jefe vencido puesta
 	and a			;9ad6
 	ret nz			;9ad7
 	call tecla_ascii		;9ad8   ; tecla_ascii: A = el ASCII de la primera tecla apretada (0 si ninguna)
@@ -3839,7 +3839,7 @@ L_9AE3:
 L_9AE5:
 	xor a			;9ae5
 	ld (0e615h),a		;9ae6
-	call 05de4h		;9ae9
+	call 05de4h		;9ae9   ; sala_del_jefe: Z en la sala del jefe del mapa sin vencer
 	ret nz			;9aec
 	ld a,(0e0d2h)		;9aed   ; lee el estado del jefe
 	or a			;9af0
@@ -4308,7 +4308,7 @@ L_9E6F:
 	jr nz,L_9EC0		;9e88
 L_9E8A:
 	xor a			;9e8a
-	ld (0e608h),a		;9e8b
+	ld (0e608h),a		;9e8b   ; guarda un paso de varios cuadros en marcha
 	ret			;9e8e
 L_9E8F:
 	xor a			;9e8f
@@ -4348,7 +4348,7 @@ L_9EC7:
 	ld h,a			;9ed3
 	exx			;9ed4
 L_9ED5:
-	ld hl,0ec80h		;9ed5
+	ld hl,0ec80h		;9ed5   ; apunta a la copia de la tabla de sprites (128 bytes)
 	ld b,008h		;9ed8
 L_9EDA:
 	push hl			;9eda
@@ -4450,12 +4450,12 @@ L_9F68:
 	jr z,L_9F76		;9f72
 	ld b,00eh		;9f74
 L_9F76:
-	jp 04c63h		;9f76
+	jp 04c63h		;9f76   ; color_de_fondo: el registro 7 del VDP = B
 L_9F79:
 	xor a			;9f79
 	ld (0e64ch),a		;9f7a
 	ld b,001h		;9f7d
-	jp 04c63h		;9f7f
+	jp 04c63h		;9f7f   ; color_de_fondo: el registro 7 del VDP = B
 L_9F82:
 	ld a,(0e539h)		;9f82
 	and a			;9f85
@@ -4493,7 +4493,7 @@ L_9FC1:
 	ld a,(0e08ah)		;9fc1   ; lee tiene el objeto 0x1B
 	and a			;9fc4
 	ret nz			;9fc5
-	ld a,(0e066h)		;9fc6
+	ld a,(0e066h)		;9fc6   ; lee las marcas del mapa 5 (bits 7-4: objetos 09 08 07 0A; bit 2: jefe vencido)
 	bit 2,a		;9fc9
 	ret z			;9fcb
 	ld a,(0e536h)		;9fcc

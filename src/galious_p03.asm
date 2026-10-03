@@ -28,7 +28,7 @@ L_A003:
 	ld a,(0e094h)		;a003   ; lee tiene el objeto 0x25
 	and a			;a006
 	ret nz			;a007
-	ld a,(0e068h)		;a008
+	ld a,(0e068h)		;a008   ; lee las marcas del mapa 7 (bits 7-4: objetos 09 08 07 0A; bit 2: jefe vencido)
 	bit 2,a		;a00b
 	ret z			;a00d
 	ld c,025h		;a00e
@@ -53,7 +53,7 @@ L_A01A:
 	jr z,L_A049		;a031
 	call 04155h		;a033   ; byte_de_tabla: A = el byte HL + A
 	ld d,a			;a036
-	ld a,(0e008h)		;a037   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+	ld a,(0e008h)		;a037   ; lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 	and a			;a03a
 	ret z			;a03b
 	and d			;a03c
@@ -69,7 +69,7 @@ L_A044:
 L_A049:
 	ld a,001h		;a049
 	ld (0e539h),a		;a04b
-	call 05d88h		;a04e
+	call 05d88h		;a04e   ; pon_cosa: la cosa C en la y D, x E (hueco 0xE740)
 	ld a,02eh		;a051
 	jp 04e1fh		;a053   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 
@@ -86,7 +86,7 @@ DATA_cuatro_bytes_a056:
 
 
 L_A05A:
-	ld hl,0ed80h		;a05a
+	ld hl,0ed80h		;a05a   ; apunta a la pantalla de la sala en la copia (filas 4-23)
 	ld (0e6aah),hl		;a05d
 	ld hl,02014h		;a060
 	ld (0e6ach),hl		;a063
@@ -371,7 +371,7 @@ L_A251:
 	add a,b			;a252
 	jp L_A893		;a253
 L_A256:
-	ld a,(0e008h)		;a256   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+	ld a,(0e008h)		;a256   ; lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 	and 001h		;a259
 	ret z			;a25b
 	call L_AEE1		;a25c
@@ -394,7 +394,7 @@ L_A265:
 	ld (0e500h),a		;a285   ; guarda el estado del personaje (5 = hundirse)
 	jp L_A911		;a288
 L_A28B:
-	ld a,(0e008h)		;a28b   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+	ld a,(0e008h)		;a28b   ; lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 	and 001h		;a28e
 	ret z			;a290
 	ld a,(0e500h)		;a291   ; lee el estado del personaje (5 = hundirse)
@@ -408,7 +408,7 @@ L_A28B:
 	ld a,001h		;a2a1
 	jp 04e1fh		;a2a3   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_A2A6:
-	ld a,(0e008h)		;a2a6   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+	ld a,(0e008h)		;a2a6   ; lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 	and 002h		;a2a9
 	jp z,L_A178		;a2ab
 	call L_AEF2		;a2ae
@@ -424,7 +424,7 @@ L_A2C4:
 	ld a,(0e508h)		;a2c4
 	and a			;a2c7
 	ret nz			;a2c8
-	ld a,(0e604h)		;a2c9
+	ld a,(0e604h)		;a2c9   ; lee el contador de cuadros de partida
 	and 003h		;a2cc
 	ret nz			;a2ce
 	jp L_A458		;a2cf
@@ -455,7 +455,7 @@ DATA_tabla_A2E4:
 
 L_A2EC:
 	ld b,001h		;a2ec
-	ld a,(0e009h)		;a2ee   ; lee el mando (la otra copia que cambia p03:A8BE)
+	ld a,(0e009h)		;a2ee   ; lee lo apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 	rra			;a2f1
 	rra			;a2f2
 	and 003h		;a2f3
@@ -497,7 +497,7 @@ L_A336:
 	push bc			;a336
 	cp b			;a337
 	jr c,L_A376		;a338
-	ld a,(0e009h)		;a33a   ; lee el mando (la otra copia que cambia p03:A8BE)
+	ld a,(0e009h)		;a33a   ; lee lo apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 	rra			;a33d
 	rra			;a33e
 	and 003h		;a33f
@@ -548,7 +548,7 @@ L_A376:
 	cp 006h		;a38e
 	jr c,L_A399		;a390
 L_A392:
-	ld a,(0e009h)		;a392   ; lee el mando (la otra copia que cambia p03:A8BE)
+	ld a,(0e009h)		;a392   ; lee lo apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 	and 001h		;a395
 	jr z,L_A3A7		;a397
 L_A399:
@@ -703,7 +703,7 @@ L_A4A8:
 	ld a,(0e511h)		;a4ac
 	and a			;a4af
 	jr z,L_A4B8		;a4b0
-	ld a,(0e604h)		;a4b2
+	ld a,(0e604h)		;a4b2   ; lee el contador de cuadros de partida
 	and 003h		;a4b5
 	ret nz			;a4b7
 L_A4B8:
@@ -811,7 +811,7 @@ L_A570:
 	jr z,L_A589		;a577
 	jp p,L_A59F		;a579
 	ld (hl),004h		;a57c
-	call 05cc9h		;a57e
+	call 05cc9h		;a57e   ; sin_musica_esperando: 0xE01D-0xE01E a cero
 	ld a,094h		;a581
 	call 04e1fh		;a583   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_A586:
@@ -847,7 +847,7 @@ L_A5B2:
 	dec (hl)			;a5b2
 	ret nz			;a5b3
 	xor a			;a5b4
-	ld (0e019h),a		;a5b5
+	ld (0e019h),a		;a5b5   ; guarda en juego (a 0 se acaba la vida: estado 6)
 	jr L_A557		;a5b8
 L_A5BA:
 	ld a,(0ea01h)		;a5ba
@@ -875,7 +875,7 @@ L_A5E3:
 	ld hl,(0e506h)		;a5e3
 	add hl,de			;a5e6
 	ld (0e506h),hl		;a5e7
-	ld a,(0e604h)		;a5ea
+	ld a,(0e604h)		;a5ea   ; lee el contador de cuadros de partida
 	and c			;a5ed
 	jr nz,L_A5F1		;a5ee
 	inc b			;a5f0
@@ -1026,7 +1026,7 @@ L_A6EA:
 	ld (0e51bh),a		;a6eb
 	ld (0e526h),a		;a6ee
 	ld (0e538h),a		;a6f1
-	ld a,(0e604h)		;a6f4
+	ld a,(0e604h)		;a6f4   ; lee el contador de cuadros de partida
 	bit 1,a		;a6f7
 	ld a,(0e507h)		;a6f9   ; lee la x del personaje
 	ld b,001h		;a6fc
@@ -1047,7 +1047,7 @@ L_A715:
 	call L_A76F		;a718
 	jp L_A9CF		;a71b
 L_A71E:
-	ld a,(0e008h)		;a71e   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+	ld a,(0e008h)		;a71e   ; lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 	bit 4,a		;a721
 	push af			;a723
 	call nz,L_A747		;a724
@@ -1135,7 +1135,7 @@ L_A7B1:
 	ld a,(0e505h)		;a7b2   ; lee la y del personaje
 	sub 008h		;a7b5
 	ld l,a			;a7b7
-	call 04dc8h		;a7b8
+	call 04dc8h		;a7b8   ; casilla_b9: C si el caracter de la casilla de HL pasa de 0xB9
 	ret nc			;a7bb
 L_A7BC:
 	xor a			;a7bc
@@ -1213,13 +1213,13 @@ L_A82A:
 	call L_A897		;a841
 	ld a,004h		;a844
 L_A846:
-	ld (0e01ah),a		;a846
+	ld (0e01ah),a		;a846   ; guarda el lado por el que se sale de la sala: 1 arriba, 2 abajo, 3 izquierda, 4 derecha
 	ret			;a849
 L_A84A:
 	bit 1,(hl)		;a84a
 	jr z,L_A865		;a84c
 L_A84E:
-	ld a,(0e648h)		;a84e
+	ld a,(0e648h)		;a84e   ; lee las vecinas de la sala: arriba, abajo, izquierda, derecha
 	inc a			;a851
 	ret z			;a852
 	ld b,a			;a853
@@ -1266,7 +1266,7 @@ L_A897:
 	cp 0f6h		;a897
 	ret c			;a899
 	ld a,002h		;a89a
-	ld (0e01fh),a		;a89c
+	ld (0e01fh),a		;a89c   ; guarda 1 = estado 8, 2 = estado 0x0D
 	ret			;a89f
 cambia_izquierda_derecha:		; en el mapa 9 sin el objeto 0x13 cambia los bits 2 y 3 del mando
 	ld a,(0e041h)		;a8a0   ; lee el mapa (1 el castillo, 2-11 los mundos)
@@ -1275,12 +1275,12 @@ cambia_izquierda_derecha:		; en el mapa 9 sin el objeto 0x13 cambia los bits 2 y
 	ld a,(0e082h)		;a8a6   ; lee tiene el objeto 0x13
 	or a			;a8a9
 	ret nz			;a8aa
-	ld a,(0e009h)		;a8ab   ; lee el mando (la otra copia que cambia p03:A8BE)
+	ld a,(0e009h)		;a8ab   ; lee lo apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 	call L_A8BE		;a8ae
-	ld (0e009h),a		;a8b1   ; guarda el mando (la otra copia que cambia p03:A8BE)
-	ld a,(0e008h)		;a8b4   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+	ld (0e009h),a		;a8b1   ; guarda lo apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
+	ld a,(0e008h)		;a8b4   ; lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 	call L_A8BE		;a8b7
-	ld (0e008h),a		;a8ba   ; guarda el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+	ld (0e008h),a		;a8ba   ; guarda lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 	ret			;a8bd
 L_A8BE:
 	ld b,a			;a8be
@@ -1305,11 +1305,11 @@ L_A8CE:
 	ret			;a8d8
 L_A8D9:
 	ld hl,0e52eh		;a8d9
-	ld a,(0e009h)		;a8dc   ; lee el mando (la otra copia que cambia p03:A8BE)
+	ld a,(0e009h)		;a8dc   ; lee lo apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 	and 00fh		;a8df
 	ld b,a			;a8e1
 	jr z,L_A8F0		;a8e2
-	ld a,(0e008h)		;a8e4   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+	ld a,(0e008h)		;a8e4   ; lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 	and 00fh		;a8e7
 	jr nz,L_A8F0		;a8e9
 	ld a,b			;a8eb
@@ -1569,7 +1569,7 @@ L_AA99:
 	ld hl,0e046h		;aa99   ; apunta a las flechas (BCD)
 	ld bc,00001h		;aa9c
 	call 09234h		;aa9f   ; resta_bcd: (HL) -= BC en BCD
-	jp 05f79h		;aaa2
+	jp 05f79h		;aaa2   ; pinta_flechas: las flechas en la fila 0, columna 24
 L_AAA5:
 	ld a,(iy+007h)		;aaa5
 	bit 7,(iy+00fh)		;aaa8
@@ -1808,13 +1808,13 @@ L_AC92:
 	ld a,002h		;acb1
 	add a,h			;acb3
 	ld h,a			;acb4
-	call 04dc8h		;acb5
+	call 04dc8h		;acb5   ; casilla_b9: C si el caracter de la casilla de HL pasa de 0xB9
 	pop hl			;acb8
 	jp nc,L_AD76		;acb9
 	ld a,00dh		;acbc
 	add a,h			;acbe
 	ld h,a			;acbf
-	call 04dc8h		;acc0
+	call 04dc8h		;acc0   ; casilla_b9: C si el caracter de la casilla de HL pasa de 0xB9
 	jp nc,L_AD76		;acc3
 	ld (iy+014h),080h		;acc6
 	inc (iy+001h)		;acca
@@ -1890,7 +1890,7 @@ L_AD3A:
 	ld a,(0e510h)		;ad3a
 	cp 006h		;ad3d
 	ret nz			;ad3f
-	ld a,(0e008h)		;ad40   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+	ld a,(0e008h)		;ad40   ; lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 	and 020h		;ad43
 	ret z			;ad45
 	ld a,001h		;ad46
@@ -1958,7 +1958,7 @@ L_ADB9:
 	ld h,(iy+007h)		;adb9
 	ld l,(iy+005h)		;adbc
 	ld de,00008h		;adbf
-	jp 054ffh		;adc2
+	jp 054ffh		;adc2   ; pared_en_fila: C si una de las casillas (y+B, x+D) o (y+B, x+E) llega al umbral de 0xF020
 L_ADC5:
 	ld a,(iy+007h)		;adc5
 	bit 7,(iy+00fh)		;adc8
@@ -1983,9 +1983,9 @@ L_ADE1:
 	ld a,(iy+000h)		;ade7
 	ld de,00103h		;adea
 	cp 003h		;aded
-	jp nz,0551fh		;adef
+	jp nz,0551fh		;adef   ; pared_en_columna: C si una de las casillas (x+B) o (y+D) llega al umbral de 0xF020
 	ld e,007h		;adf2
-	jp 0551fh		;adf4
+	jp 0551fh		;adf4   ; pared_en_columna: C si una de las casillas (x+B) o (y+D) llega al umbral de 0xF020
 L_ADF7:
 	ld b,010h		;adf7
 	ld a,(iy+00fh)		;adf9
@@ -2001,7 +2001,7 @@ L_AE04:
 	bit 7,(iy+014h)		;ae0b
 	ret nz			;ae0f
 	ld e,000h		;ae10
-	jp 0553eh		;ae12
+	jp 0553eh		;ae12   ; pared_en: C si la casilla (y+E) llega al umbral de 0xF020
 L_AE15:
 	ld a,(iy+007h)		;ae15
 	add a,004h		;ae18
@@ -2009,14 +2009,14 @@ L_AE15:
 	ld a,(iy+005h)		;ae1b
 	add a,b			;ae1e
 	ld l,a			;ae1f
-	jp 04dc8h		;ae20
+	jp 04dc8h		;ae20   ; casilla_b9: C si el caracter de la casilla de HL pasa de 0xB9
 L_AE23:
 	ld c,000h		;ae23
 	jr L_AE29		;ae25
 L_AE27:
 	ld c,001h		;ae27
 L_AE29:
-	ld a,(0e604h)		;ae29
+	ld a,(0e604h)		;ae29   ; lee el contador de cuadros de partida
 L_AE2C:
 	dec c			;ae2c
 	jp m,L_AE33		;ae2d
@@ -2258,7 +2258,7 @@ L_AFB5:
 	ld l,a			;afbc
 	ld b,000h		;afbd
 	ld de,0fc04h		;afbf
-	jp 054ffh		;afc2
+	jp 054ffh		;afc2   ; pared_en_fila: C si una de las casillas (y+B, x+D) o (y+B, x+E) llega al umbral de 0xF020
 L_AFC5:
 	ld a,(0e507h)		;afc5   ; lee la x del personaje
 	ld h,a			;afc8
@@ -2266,7 +2266,7 @@ L_AFC5:
 	ld l,a			;afcc
 	ld b,0f0h		;afcd
 	ld de,0fc04h		;afcf
-	jp 054ffh		;afd2
+	jp 054ffh		;afd2   ; pared_en_fila: C si una de las casillas (y+B, x+D) o (y+B, x+E) llega al umbral de 0xF020
 L_AFD5:
 	ld a,(0e507h)		;afd5   ; lee la x del personaje
 	ld h,a			;afd8
@@ -2276,7 +2276,7 @@ L_AFDB:
 	sub 008h		;afde
 	ld l,a			;afe0
 	ld de,0ff07h		;afe1
-	jp 0551fh		;afe4
+	jp 0551fh		;afe4   ; pared_en_columna: C si una de las casillas (x+B) o (y+D) llega al umbral de 0xF020
 L_AFE7:
 	xor a			;afe7
 	ld (0e51ah),a		;afe8
@@ -2348,7 +2348,7 @@ L_B05A:
 	ld a,024h		;b063
 	call 04e1fh		;b065   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_B068:
-	call 044eah		;b068
+	call 044eah		;b068   ; personaje_4_a_7: C si el estado del personaje es 4-7
 	ccf			;b06b
 	ret nc			;b06c
 	ld a,(0e501h)		;b06d   ; lee quien juega (0 Afrodita)
@@ -2532,7 +2532,7 @@ L_B194:
 	cp 021h		;b1b7
 	ret nc			;b1b9
 	ld a,(0e678h)		;b1ba
-	ld (0e01bh),a		;b1bd
+	ld (0e01bh),a		;b1bd   ; guarda estado 0x0C pedido
 	ret			;b1c0
 L_B1C1:
 	xor a			;b1c1
@@ -2686,7 +2686,7 @@ L_B2AD:
 	inc a			;b2c3
 	ld (hl),a			;b2c4
 	ld a,001h		;b2c5
-	ld (0e024h),a		;b2c7
+	ld (0e024h),a		;b2c7   ; guarda el final (estado 0x11)
 	ret			;b2ca
 L_B2CB:
 	push af			;b2cb
@@ -2765,7 +2765,7 @@ L_B352:
 L_B35E:
 	ld a,005h		;b35e
 	call L_B366		;b360
-	jp 05832h		;b363
+	jp 05832h		;b363   ; dibujos_de_hundirse: los dibujos de sprite de hundirse (0x7B34 en 0x1900)
 L_B366:
 	ld (0e500h),a		;b366   ; guarda el estado del personaje (5 = hundirse)
 	xor a			;b369
@@ -2817,12 +2817,12 @@ DATA_cuatro_bytes_b3ae:
 
 
 L_B3B2:
-	call 041f4h		;b3b2
+	call 041f4h		;b3b2   ; p6000_banco_4: pone el banco 4 en 0x6000
 	ld b,000h		;b3b5
 	ld hl,064e5h		;b3b7
 	add hl,bc			;b3ba
 	ld b,(hl)			;b3bb
-	call 041e9h		;b3bc
+	call 041e9h		;b3bc   ; p6000_banco_1: pone el banco 1 en 0x6000
 L_B3BF:
 	ld a,(0e088h)		;b3bf   ; lee tiene el objeto 0x19
 	or a			;b3c2
@@ -3286,7 +3286,7 @@ L_B6F6:
 	jp L_B575		;b6fe
 L_B701:
 	call L_B8A0		;b701
-	ld hl,0e740h		;b704
+	ld hl,0e740h		;b704   ; apunta a el hueco de la cosa de la sala: tipo, y, x
 	ld a,(hl)			;b707
 	or a			;b708
 	ret z			;b709
@@ -3341,7 +3341,7 @@ L_B734:
 	call 04136h		;b755   ; hl_mas_a: HL += A
 	ld (hl),001h		;b758
 L_B75A:
-	ld hl,(0e60eh)		;b75a
+	ld hl,(0e60eh)		;b75a   ; lee la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)
 	set 0,(hl)		;b75d
 	ld a,c			;b75f
 	cp 00ch		;b760
@@ -3394,11 +3394,11 @@ L_B7A5:
 	ld a,08bh		;b7af
 	inc b			;b7b1
 L_B7B2:
-	call 05d12h		;b7b2
+	call 05d12h		;b7b2   ; musica_espera: deja esperando la musica A
 	ld a,b			;b7b5
-	ld (0e031h),a		;b7b6
+	ld (0e031h),a		;b7b6   ; guarda estado 0x14 pedido
 	xor a			;b7b9
-	ld (0e0d4h),a		;b7ba
+	ld (0e0d4h),a		;b7ba   ; guarda la cosa del jefe vencido puesta
 	ret			;b7bd
 L_B7BE:
 	push af			;b7be
@@ -3502,7 +3502,7 @@ L_B86D:
 	rla			;b86d
 	djnz L_B86D		;b86e
 	pop bc			;b870
-	ld hl,(0e60eh)		;b871
+	ld hl,(0e60eh)		;b871   ; lee la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)
 	or (hl)			;b874
 	ld (hl),a			;b875
 	ret			;b876
@@ -3637,7 +3637,7 @@ L_B933:
 	ld c,b			;b935
 	ld a,(ix+009h)		;b936
 	and 007h		;b939
-	ld (0f020h),a		;b93b
+	ld (0f020h),a		;b93b   ; guarda el umbral de pared (0xBA, 0xF0 con jefe)
 	bit 0,(ix+015h)		;b93e
 	jr z,L_B94A		;b942
 	add a,a			;b944
@@ -3647,14 +3647,14 @@ L_B933:
 	ld c,a			;b949
 L_B94A:
 	ld h,007h		;b94a
-	ld a,(0f020h)		;b94c
+	ld a,(0f020h)		;b94c   ; lee el umbral de pared (0xBA, 0xF0 con jefe)
 	add a,a			;b94f
 	add a,a			;b950
 	add a,a			;b951
 	ld l,a			;b952
 	ret			;b953
 L_B954:
-	call 0420ah		;b954
+	call 0420ah		;b954   ; p8000_banco_14: pone el banco 14 en 0x8000
 	ld l,(ix+011h)		;b957
 	ld h,000h		;b95a
 	add hl,hl			;b95c
@@ -3669,7 +3669,7 @@ L_B954:
 	inc hl			;b967
 	ld h,(hl)			;b968
 	ld l,a			;b969
-	jp 041ffh		;b96a
+	jp 041ffh		;b96a   ; p8000_banco_2: pone el banco 2 en 0x8000
 L_B96D:
 	ld a,e			;b96d
 	sub (ix+005h)		;b96e
@@ -3931,9 +3931,9 @@ DATA_once_bytes_bad3:
 L_BADE:
 	call L_BB04		;bade
 L_BAE1:
-	call 0420ah		;bae1
+	call 0420ah		;bae1   ; p8000_banco_14: pone el banco 14 en 0x8000
 	call L_BAEA		;bae4
-	jp 041ffh		;bae7
+	jp 041ffh		;bae7   ; p8000_banco_2: pone el banco 2 en 0x8000
 L_BAEA:
 	ld a,(0e705h)		;baea
 	add a,(hl)			;baed
@@ -3956,7 +3956,7 @@ L_BAF8:
 	add a,(hl)			;bb02
 	ret			;bb03
 L_BB04:
-	call 0420ah		;bb04
+	call 0420ah		;bb04   ; p8000_banco_14: pone el banco 14 en 0x8000
 	ld hl,0928ah		;bb07
 	ld a,(0e700h)		;bb0a   ; lee el tipo del jefe (el hueco 0xE700 es el jefe)
 	add a,a			;bb0d
@@ -3974,7 +3974,7 @@ L_BB04:
 	ld c,a			;bb1d
 	ld b,000h		;bb1e
 	add hl,bc			;bb20
-	jp 041ffh		;bb21
+	jp 041ffh		;bb21   ; p8000_banco_2: pone el banco 2 en 0x8000
 L_BB24:
 	ld iy,0e540h		;bb24
 	ld b,006h		;bb28
@@ -3990,7 +3990,7 @@ L_BB37:
 	ld a,(0e500h)		;bb37   ; lee el estado del personaje (5 = hundirse)
 	cp 005h		;bb3a
 	ret z			;bb3c
-	ld a,(0e02ch)		;bb3d
+	ld a,(0e02ch)		;bb3d   ; lee el jefe vencido (estado 0x13)
 	or a			;bb40
 	ret nz			;bb41
 	ld a,(iy+000h)		;bb42
@@ -4179,7 +4179,7 @@ L_BC60:
 	jr L_BC6F		;bc67
 L_BC69:
 	call L_BB04		;bc69
-	call 0420ah		;bc6c
+	call 0420ah		;bc6c   ; p8000_banco_14: pone el banco 14 en 0x8000
 L_BC6F:
 	call L_BD8D		;bc6f
 	jp L_BBB0		;bc72
@@ -4297,7 +4297,7 @@ L_BD32:
 	xor a			;bd32
 	ld (0e1c5h),a		;bd33
 	inc a			;bd36
-	ld (0e02ch),a		;bd37
+	ld (0e02ch),a		;bd37   ; guarda el jefe vencido (estado 0x13)
 	ld a,084h		;bd3a
 	call 04e1fh		;bd3c   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	ld a,(0e041h)		;bd3f   ; lee el mapa (1 el castillo, 2-11 los mundos)
@@ -4306,7 +4306,7 @@ L_BD32:
 	jr nz,L_BD4A		;bd46
 	ld a,08bh		;bd48
 L_BD4A:
-	jp 05d12h		;bd4a
+	jp 05d12h		;bd4a   ; musica_espera: deja esperando la musica A
 L_BD4D:
 	call L_AE4B		;bd4d
 	ld a,027h		;bd50
@@ -4325,7 +4325,7 @@ L_BD55:
 	ld a,001h		;bd6b
 	jp L_BC90		;bd6d
 L_BD70:
-	call 0420ah		;bd70
+	call 0420ah		;bd70   ; p8000_banco_14: pone el banco 14 en 0x8000
 	ld hl,091ech		;bd73
 	ld a,(0e700h)		;bd76   ; lee el tipo del jefe (el hueco 0xE700 es el jefe)
 	add a,a			;bd79
@@ -4353,7 +4353,7 @@ L_BD8D:
 	inc hl			;bd92
 	ld h,(hl)			;bd93
 	ld l,a			;bd94
-	jp 041ffh		;bd95
+	jp 041ffh		;bd95   ; p8000_banco_2: pone el banco 2 en 0x8000
 L_BD98:
 	ld hl,01010h		;bd98
 	jr L_BDA0		;bd9b
@@ -4505,7 +4505,7 @@ L_BE7A:
 	ret			;be80
 L_BE81:
 	call 073d6h		;be81
-	call 05435h		;be84
+	call 05435h		;be84   ; vram_del_estado: lo de la VRAM en la interrupcion segun el estado (tabla 0x543B)
 	ld a,(0e50eh)		;be87
 	and a			;be8a
 	jr nz,L_BEC7		;be8b
@@ -4550,7 +4550,7 @@ L_BEC7:
 	ldir		;bee0
 	ld a,(0e041h)		;bee2   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	ld (0ee55h),a		;bee5
-	call 054bfh		;bee8
+	call 054bfh		;bee8   ; sala_a_vram: la pantalla de la sala (0xED80) a las filas 4-23
 	ld hl,0eb00h		;beeb
 	ld de,0ee41h		;beee
 	ld bc,0001dh		;bef1

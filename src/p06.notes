@@ -76,9 +76,16 @@ F 0xBFD8 16
 # --- fin de los bloques de bloques.py ---
 
 # --- ANOTACIONES AUTOMATICAS (seccion que reescribe tools/anota.py; no editar a mano) ---
+C 0xA004 casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
+C 0xA009 casilla_derecha (por 0x4071): compara 0xB9 con el caracter de HL + 1
+C 0xA022 casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
+C 0xA036 casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 C 0xA0BD palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0xA160 lee el contador de cuadros de partida
 C 0xA168 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0xA16B lee el contador de cuadros de partida
 C 0xA1BB despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0xA20F casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 C 0xA231 lee la x del personaje
 C 0xA25D apunta a la y del personaje
 C 0xA279 apunta a la x del personaje
@@ -105,17 +112,24 @@ C 0xA718 byte_de_tabla (por 0x4083): A = el byte HL + A
 C 0xA722 hl_mas_a (por 0x4062): HL += A
 C 0xA7BD de_negado (por 0x4068): DE = -DE
 C 0xA82B pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0xA886 casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
+C 0xA88C casilla_derecha (por 0x4071): compara 0xB9 con el caracter de HL + 1
 C 0xA8A8 de_negado (por 0x4068): DE = -DE
 C 0xA963 hl_mas_a (por 0x4062): HL += A
+C 0xA96A multiplica (por 0x406B): HL = H x E
 C 0xAA0F de_negado (por 0x4068): DE = -DE
+C 0xAB2F casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 C 0xAB33 lee la x del personaje
 C 0xAB55 lee la y del personaje
 C 0xAB9E de_negado (por 0x4068): DE = -DE
 C 0xABCB pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0xABED casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 C 0xAC95 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0xACBC casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 C 0xACC8 lee la y del personaje
 C 0xACD1 lee la x del personaje
 C 0xACE2 byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0xAD22 lee el contador de cuadros de partida
 C 0xAD79 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0xAD82 casilla_de_yx (por 0x4056): HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 C 0xADEE byte_de_tabla (por 0x4083): A = el byte HL + A
@@ -132,14 +146,19 @@ C 0xB05A hl_mas_a (por 0x4062): HL += A
 C 0xB098 byte_de_tabla (por 0x4083): A = el byte HL + A
 C 0xB165 de_negado (por 0x4068): DE = -DE
 C 0xB175 de_negado (por 0x4068): DE = -DE
+C 0xB185 lee el contador de cuadros de partida
 C 0xB1C2 de_negado (por 0x4068): DE = -DE
 C 0xB1D4 de_negado (por 0x4068): DE = -DE
 C 0xB223 lee la y del personaje
 C 0xB22B lee la x del personaje
 C 0xB25A hl_mas_a (por 0x4062): HL += A
+C 0xB266 multiplica (por 0x406B): HL = H x E
 C 0xB3C2 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0xB3C5 apunta a los huecos de figura (32 bytes cada uno)
 C 0xB3C9 lee cuantos huecos de figura hay
+C 0xB3EC lee el contador de cuadros de partida
+C 0xB3FC lee el contador de cuadros de partida
+C 0xB44C lee la direccion del byte de la sala en el tramo del mapa y el byte siguiente (16 bits)
 C 0xB46F despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
 C 0xB54E byte_de_tabla (por 0x4083): A = el byte HL + A
 C 0xB560 byte_de_tabla (por 0x4083): A = el byte HL + A

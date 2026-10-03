@@ -45,4 +45,8 @@ F 0x7DF2 16
 # --- fin de los bloques de bloques.py ---
 
 # --- ANOTACIONES AUTOMATICAS (seccion que reescribe tools/anota.py; no editar a mano) ---
+C 0x6033 guarda los programas de los cuatro canales de sonido (0xE100-0xE107) y el byte siguiente (16 bits)
+C 0x604E lee los programas de los cuatro canales de sonido (0xE100-0xE107) y el byte siguiente (16 bits)
+C 0x6085 apunta a los programas de los cuatro canales de sonido (0xE100-0xE107)
+C 0x6515 lee la musica que suena
 # --- fin de las anotaciones de anota.py ---

@@ -117,7 +117,7 @@ L_A081:
 	ret nz			;a087
 	call L_A109		;a088
 	ret nz			;a08b
-	ld a,(0e009h)		;a08c   ; lee el mando (la otra copia que cambia p03:A8BE)
+	ld a,(0e009h)		;a08c   ; lee lo apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 	and c			;a08f
 	jr z,L_A0F7		;a090
 	dec (ix+007h)		;a092
@@ -257,7 +257,7 @@ L_A179:
 	ret nz			;a17f
 	call L_A109		;a180
 	ret nz			;a183
-	ld a,(0e009h)		;a184   ; lee el mando (la otra copia que cambia p03:A8BE)
+	ld a,(0e009h)		;a184   ; lee lo apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 	and c			;a187
 	jp z,L_A205		;a188
 	dec (ix+005h)		;a18b
@@ -327,7 +327,7 @@ L_A1F2:
 	sbc a,000h		;a1fe
 	daa			;a200
 	ld (hl),a			;a201
-	jp 0408ch		;a202
+	jp 0408ch		;a202   ; pinta_llaves (por 0x408C): las llaves en la fila 2, columna 24
 L_A205:
 	ld (ix+005h),01eh		;a205
 	ret			;a209
@@ -396,7 +396,7 @@ L_A257:
 	ret nz			;a25d
 	call L_A109		;a25e
 	ret nz			;a261
-	ld a,(0e009h)		;a262   ; lee el mando (la otra copia que cambia p03:A8BE)
+	ld a,(0e009h)		;a262   ; lee lo apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 	and c			;a265
 	jr z,L_A299		;a266
 	inc hl			;a268
@@ -568,7 +568,7 @@ L_A398:
 	jr nz,L_A38E		;a39b
 	call L_A109		;a39d
 	ret nz			;a3a0
-	ld a,(0e009h)		;a3a1   ; lee el mando (la otra copia que cambia p03:A8BE)
+	ld a,(0e009h)		;a3a1   ; lee lo apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 	and c			;a3a4
 	jr z,L_A38E		;a3a5
 	dec (iy+006h)		;a3a7
@@ -622,7 +622,7 @@ L_A40F:
 L_A415:
 	ld a,0f0h		;a415
 	ld (0eaa8h),a		;a417
-	ld hl,(0e60eh)		;a41a
+	ld hl,(0e60eh)		;a41a   ; lee la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)
 	bit 1,(hl)		;a41d
 	call nz,L_A431		;a41f
 	ld hl,0eaa0h		;a422
@@ -711,7 +711,7 @@ L_A498:
 	ld a,(hl)			;a4ae
 	cp 003h		;a4af
 	ret nz			;a4b1
-	ld hl,(0e60eh)		;a4b2
+	ld hl,(0e60eh)		;a4b2   ; lee la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)
 	set 1,(hl)		;a4b5
 L_A4B7:
 	ld hl,0eaa1h		;a4b7
@@ -945,7 +945,7 @@ DATA_cuatro_bytes_a630:
 
 
 L_A634:
-	ld hl,(0e60eh)		;a634
+	ld hl,(0e60eh)		;a634   ; lee la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)
 	ld a,(hl)			;a637
 	rra			;a638
 	rra			;a639
@@ -1028,7 +1028,7 @@ L_A69D:
 	inc hl			;a6a4
 	dec (hl)			;a6a5
 	ret nz			;a6a6
-	ld hl,(0e60eh)		;a6a7
+	ld hl,(0e60eh)		;a6a7   ; lee la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)
 	set 2,(hl)		;a6aa
 	xor a			;a6ac
 	ld (0ea20h),a		;a6ad
@@ -1048,7 +1048,7 @@ L_A6BA:
 	djnz L_A6BA		;a6c8
 	ret			;a6ca
 L_A6CB:
-	ld a,(0e604h)		;a6cb
+	ld a,(0e604h)		;a6cb   ; lee el contador de cuadros de partida
 	and 01fh		;a6ce
 	ret nz			;a6d0
 	inc l			;a6d1

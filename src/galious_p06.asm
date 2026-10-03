@@ -17,9 +17,9 @@
 L_A000:
 	ld l,a			;a000
 	ld h,(ix+007h)		;a001
-	call 0406eh		;a004
+	call 0406eh		;a004   ; casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 	jr c,L_A00D		;a007
-	call 04071h		;a009
+	call 04071h		;a009   ; casilla_derecha (por 0x4071): compara 0xB9 con el caracter de HL + 1
 	ret nc			;a00c
 L_A00D:
 	inc (ix+014h)		;a00d
@@ -31,7 +31,7 @@ L_A011:
 	ld h,(ix+007h)		;a01b
 	dec h			;a01e
 	ld l,(ix+005h)		;a01f
-	call 0406eh		;a022
+	call 0406eh		;a022   ; casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 	jr c,L_A03F		;a025
 	call L_A043		;a027
 	jr c,L_A03F		;a02a
@@ -41,7 +41,7 @@ L_A02D:
 	add a,011h		;a030
 	ld h,a			;a032
 	ld l,(ix+005h)		;a033
-	call 0406eh		;a036
+	call 0406eh		;a036   ; casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 	jr c,L_A03F		;a039
 	call L_A043		;a03b
 	ret nc			;a03e
@@ -205,13 +205,13 @@ L_A15A:
 	ld a,(ix+000h)		;a15a
 	cp 049h		;a15d
 	ret nz			;a15f
-	ld a,(0e604h)		;a160
+	ld a,(0e604h)		;a160   ; lee el contador de cuadros de partida
 	and 00fh		;a163
 	ret nz			;a165
 	ld a,00ah		;a166
 	jp 04059h		;a168   ; pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_A16B:
-	ld a,(0e604h)		;a16b
+	ld a,(0e604h)		;a16b   ; lee el contador de cuadros de partida
 	and 007h		;a16e
 	ret nz			;a170
 	ld a,(ix+000h)		;a171
@@ -299,7 +299,7 @@ L_A208:
 	ld a,(ix+005h)		;a209
 	add a,018h		;a20c
 	ld l,a			;a20e
-	call 0406eh		;a20f
+	call 0406eh		;a20f   ; casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 	jr nc,L_A218		;a212
 	call 06c04h		;a214
 	ret nc			;a217
@@ -1165,9 +1165,9 @@ L_A879:
 	ld (ix+01fh),a		;a880
 	add a,010h		;a883
 	ld l,a			;a885
-	call 0406eh		;a886
+	call 0406eh		;a886   ; casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 	jp nc,L_B15F		;a889
-	call 04071h		;a88c
+	call 04071h		;a88c   ; casilla_derecha (por 0x4071): compara 0xB9 con el caracter de HL + 1
 	jp nc,L_B15F		;a88f
 	call 096feh		;a892
 	jp nc,L_B15F		;a895
@@ -1263,7 +1263,7 @@ L_A95E:
 	call 04062h		;a963   ; hl_mas_a (por 0x4062): HL += A
 	ld e,(hl)			;a966
 	ld h,(ix+017h)		;a967
-	call 0406bh		;a96a
+	call 0406bh		;a96a   ; multiplica (por 0x406B): HL = H x E
 	ld a,h			;a96d
 	bit 7,c		;a96e
 	ret z			;a970
@@ -1478,7 +1478,7 @@ L_AB20:
 	add a,008h		;ab2c
 L_AB2E:
 	ld l,a			;ab2e
-	call 0406eh		;ab2f
+	call 0406eh		;ab2f   ; casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 	ret			;ab32
 L_AB33:
 	ld a,(0e507h)		;ab33   ; lee la x del personaje
@@ -1567,7 +1567,7 @@ L_ABE1:
 	ld a,(ix+007h)		;abe7
 	add a,008h		;abea
 	ld h,a			;abec
-	call 0406eh		;abed
+	call 0406eh		;abed   ; casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 	ret			;abf0
 L_ABF1:
 	call 06c15h		;abf1
@@ -1663,7 +1663,7 @@ L_ACB5:
 	ld a,(ix+005h)		;acb6
 	add a,0feh		;acb9
 	ld l,a			;acbb
-	call 0406eh		;acbc
+	call 0406eh		;acbc   ; casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 	ret nc			;acbf
 	call 06beeh		;acc0
 	call 06c04h		;acc3
@@ -1715,7 +1715,7 @@ L_AD1C:
 	call L_AD22		;ad1c
 	jp L_B14C		;ad1f
 L_AD22:
-	ld a,(0e604h)		;ad22
+	ld a,(0e604h)		;ad22   ; lee el contador de cuadros de partida
 	and 001h		;ad25
 	ret nz			;ad27
 	inc (ix+01eh)		;ad28
@@ -2379,7 +2379,7 @@ L_B17F:
 L_B183:
 	ld c,003h		;b183
 L_B185:
-	ld a,(0e604h)		;b185
+	ld a,(0e604h)		;b185   ; lee el contador de cuadros de partida
 	and c			;b188
 	ret nz			;b189
 	jp L_B0DD		;b18a
@@ -2516,7 +2516,7 @@ L_B250:
 L_B262:
 	ld a,(0e609h)		;b262
 	ld h,a			;b265
-	call 0406bh		;b266
+	call 0406bh		;b266   ; multiplica (por 0x406B): HL = H x E
 	xor a			;b269
 	add hl,hl			;b26a
 	adc a,a			;b26b
@@ -2597,7 +2597,7 @@ L_B3CF:
 L_B3E7:
 	bit 5,(ix+003h)		;b3e7
 	ret z			;b3eb
-	ld a,(0e604h)		;b3ec
+	ld a,(0e604h)		;b3ec   ; lee el contador de cuadros de partida
 	and 00fh		;b3ef
 	ret nz			;b3f1
 	res 5,(ix+003h)		;b3f2
@@ -2605,7 +2605,7 @@ L_B3E7:
 L_B3F7:
 	bit 4,(ix+003h)		;b3f7
 	ret z			;b3fb
-	ld a,(0e604h)		;b3fc
+	ld a,(0e604h)		;b3fc   ; lee el contador de cuadros de partida
 	and 01fh		;b3ff
 	ret nz			;b401
 	res 4,(ix+003h)		;b402
@@ -2653,7 +2653,7 @@ L_B43D:
 L_B449:
 	rla			;b449
 	djnz L_B449		;b44a
-	ld hl,(0e60ch)		;b44c
+	ld hl,(0e60ch)		;b44c   ; lee la direccion del byte de la sala en el tramo del mapa y el byte siguiente (16 bits)
 	or (hl)			;b44f
 	ld (hl),a			;b450
 	ret			;b451

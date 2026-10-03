@@ -86,9 +86,9 @@ L_602F:
 L_604D:
 	ld de,07caeh		;604d
 	call 05c25h		;6050   ; lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
-	call 05f79h		;6053
-	call 05f84h		;6056
-	call 05f8fh		;6059
+	call 05f79h		;6053   ; pinta_flechas: las flechas en la fila 0, columna 24
+	call 05f84h		;6056   ; pinta_monedas: las monedas en la fila 1, columna 24
+	call 05f8fh		;6059   ; pinta_llaves: las llaves en la fila 2, columna 24
 	call L_606B		;605c
 	call L_60A3		;605f
 	call L_60AD		;6062
@@ -96,7 +96,7 @@ L_604D:
 	jp L_60C1		;6068
 L_606B:
 	ld hl,0383ch		;606b
-	call 05bc8h		;606e
+	call 05bc8h		;606e   ; vram_para_escribir: SETWRT de HL y C' = el puerto de datos del VDP
 	exx			;6071
 	ld a,(0e510h)		;6072
 	add a,a			;6075
@@ -201,16 +201,16 @@ L_60FB:
 	ld (hl),a			;6109
 	ld hl,0f00fh		;610a
 	ld (hl),037h		;610d
-	call 054ddh		;610f
+	call 054ddh		;610f   ; figuras_quietas: 0xE602 = 1: no se tocan los sprites
 	ld hl,(0f000h)		;6112
-	call 05bc8h		;6115
+	call 05bc8h		;6115   ; vram_para_escribir: SETWRT de HL y C' = el puerto de datos del VDP
 	exx			;6118
 	ld hl,0f008h		;6119
 	ld b,008h		;611c
 L_611E:
 	outi		;611e
 	jp nz,L_611E		;6120
-	jp 054e1h		;6123
+	jp 054e1h		;6123   ; figuras_sueltas: 0xE602 = 0
 L_6126:
 	ld c,a			;6126
 	ld a,(0f000h)		;6127
@@ -270,7 +270,7 @@ L_6171:
 	ld a,(0e500h)		;6175   ; lee el estado del personaje (5 = hundirse)
 	cp 005h		;6178
 	ret z			;617a
-	ld a,(0e604h)		;617b
+	ld a,(0e604h)		;617b   ; lee el contador de cuadros de partida
 	inc a			;617e
 	and 003h		;617f
 	ret nz			;6181
@@ -369,9 +369,9 @@ L_620F:
 	scf			;6213
 	ret			;6214
 L_6215:
-	call 05280h		;6215
+	call 05280h		;6215   ; esconde_sprites: la copia de la tabla de sprites (0xEC80) con y = 0xE0
 	ld hl,093e7h		;6218
-	ld de,0ec80h		;621b
+	ld de,0ec80h		;621b   ; apunta a la copia de la tabla de sprites (128 bytes)
 	ld bc,00010h		;621e
 	ldir		;6221
 	ld de,0ed29h		;6223
@@ -382,16 +382,16 @@ L_6215:
 	call 05c25h		;6232   ; lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
 	xor a			;6235
 	ld (0f01fh),a		;6236
-	ld (0f020h),a		;6239
+	ld (0f020h),a		;6239   ; guarda el umbral de pared (0xBA, 0xF0 con jefe)
 	ld (0f031h),a		;623c
 	inc a			;623f
-	ld (0e019h),a		;6240
+	ld (0e019h),a		;6240   ; guarda en juego (a 0 se acaba la vida: estado 6)
 	ld a,030h		;6243
 	ld (0f02bh),a		;6245
 L_6248:
 	ld bc,001a0h		;6248
-	call 054f6h		;624b
-	jp 05474h		;624e
+	call 054f6h		;624b   ; nombres_a_vram_bc: BC bytes de 0xED00 a 0x3800
+	jp 05474h		;624e   ; sprites_a_vram: la copia de la tabla de sprites (0xEC80) a 0x3B00
 L_6251:
 	call L_6248		;6251
 	ld a,(0f031h)		;6254
@@ -444,13 +444,13 @@ L_628E:
 	dec (hl)			;6291
 	ret nz			;6292
 	xor a			;6293
-	ld (0e019h),a		;6294
+	ld (0e019h),a		;6294   ; guarda en juego (a 0 se acaba la vida: estado 6)
 	ret			;6297
 L_6298:
-	ld a,(0e003h)		;6298
+	ld a,(0e003h)		;6298   ; lee el contador de cuadros
 	and 00fh		;629b
 	ret nz			;629d
-	ld hl,0f020h		;629e
+	ld hl,0f020h		;629e   ; apunta a el umbral de pared (0xBA, 0xF0 con jefe)
 	inc (hl)			;62a1
 	ld a,(hl)			;62a2
 	dec a			;62a3
@@ -597,7 +597,7 @@ L_635D:
 L_6368:
 	rla			;6368
 	djnz L_6368		;6369
-	ld hl,(0e60eh)		;636b
+	ld hl,(0e60eh)		;636b   ; lee la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)
 	and (hl)			;636e
 	exx			;636f
 	ret			;6370
@@ -628,7 +628,7 @@ L_6398:
 	ld a,(0e090h)		;6398   ; lee tiene el objeto 0x21
 	or a			;639b
 	ret z			;639c
-	ld a,(0e008h)		;639d   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+	ld a,(0e008h)		;639d   ; lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 	and 010h		;63a0
 	ret z			;63a2
 	ld hl,0e632h		;63a3
@@ -912,13 +912,13 @@ L_6594:
 L_65A8:
 	call 0422bh		;65a8   ; a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
 	call L_660D		;65ab
-	call 05280h		;65ae
+	call 05280h		;65ae   ; esconde_sprites: la copia de la tabla de sprites (0xEC80) con y = 0xE0
 	call L_65C6		;65b1
 	call L_66C2		;65b4
 	call L_6715		;65b7
 	call L_677A		;65ba
 	call L_661B		;65bd
-	call 054bfh		;65c0
+	call 054bfh		;65c0   ; sala_a_vram: la pantalla de la sala (0xED80) a las filas 4-23
 	jp 04215h		;65c3   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 L_65C6:
 	ld a,(0e501h)		;65c6   ; lee quien juega (0 Afrodita)
@@ -933,7 +933,7 @@ L_65D1:
 	ld (hl),000h		;65d6
 L_65D8:
 	ld a,(0e501h)		;65d8   ; lee quien juega (0 Afrodita)
-	ld hl,0e058h		;65db
+	ld hl,0e058h		;65db   ; apunta a las vidas de Afrodita (BCD)
 	add a,l			;65de
 	ld l,a			;65df
 	ld a,(hl)			;65e0
@@ -967,7 +967,7 @@ L_6607:
 	ld (0e510h),a		;6609
 	ret			;660c
 L_660D:
-	ld hl,0ed80h		;660d
+	ld hl,0ed80h		;660d   ; apunta a la pantalla de la sala en la copia (filas 4-23)
 	ld de,0ed81h		;6610
 	ld bc,0027fh		;6613
 	ld (hl),000h		;6616
@@ -1026,7 +1026,7 @@ L_664A:
 	dec a			;6681
 	ld hl,0e670h		;6682
 	ld a,(de)			;6685
-	ld (0f020h),a		;6686
+	ld (0f020h),a		;6686   ; guarda el umbral de pared (0xBA, 0xF0 con jefe)
 	ret z			;6689
 	ld c,008h		;668a
 	call L_66A5		;668c
@@ -1036,7 +1036,7 @@ L_664A:
 	ld a,(0e041h)		;6694   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	ld hl,0b0fch		;6697
 	call 04155h		;669a   ; byte_de_tabla: A = el byte HL + A
-	ld (0f020h),a		;669d
+	ld (0f020h),a		;669d   ; guarda el umbral de pared (0xBA, 0xF0 con jefe)
 	ld hl,0e674h		;66a0
 	ld c,005h		;66a3
 L_66A5:
@@ -1046,7 +1046,7 @@ L_66A5:
 	and 03ch		;66a9
 	add a,090h		;66ab
 	ld (hl),a			;66ad
-	ld a,(0f020h)		;66ae
+	ld a,(0f020h)		;66ae   ; lee el umbral de pared (0xBA, 0xF0 con jefe)
 	rla			;66b1
 	rla			;66b2
 	rla			;66b3
@@ -1073,10 +1073,10 @@ DATA_tres_bytes_66bf:
 
 
 L_66C2:
-	ld hl,0e058h		;66c2
+	ld hl,0e058h		;66c2   ; apunta a las vidas de Afrodita (BCD)
 	ld c,000h		;66c5
 	call L_66D5		;66c7
-	ld hl,0e059h		;66ca
+	ld hl,0e059h		;66ca   ; apunta a las vidas de Popolon (BCD)
 	ld c,002h		;66cd
 	call L_66D5		;66cf
 	jp L_688E		;66d2
@@ -1276,13 +1276,13 @@ L_67DC:
 	ret			;67e1
 L_67E2:
 	call 0422bh		;67e2   ; a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
-	call 054bfh		;67e5
-	call 04c68h		;67e8
+	call 054bfh		;67e5   ; sala_a_vram: la pantalla de la sala (0xED80) a las filas 4-23
+	call 04c68h		;67e8   ; lee_el_mando: el mando en 0xE009 (apretado) y 0xE008 (recien apretado)
 	call L_67F4		;67eb
 	call L_6885		;67ee
 	jp 04215h		;67f1   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 L_67F4:
-	ld a,(0e008h)		;67f4   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+	ld a,(0e008h)		;67f4   ; lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 	and 003h		;67f7
 	call nz,L_686F		;67f9
 	ld a,(0e04ch)		;67fc
@@ -1292,7 +1292,7 @@ L_67F4:
 	or a			;6805
 	ret z			;6806
 	ld hl,0e04eh		;6807
-	ld a,(0e008h)		;680a   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+	ld a,(0e008h)		;680a   ; lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 	and 00ch		;680d
 	ret z			;680f
 	bit 3,a		;6810
@@ -1343,14 +1343,14 @@ L_684B:
 	or a			;6852
 	ret z			;6853
 L_6854:
-	ld a,(0e008h)		;6854   ; lee el mando: bits 2 y 3 los que p03:A8BE cambia en el mapa 9
+	ld a,(0e008h)		;6854   ; lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 	and 00ch		;6857
 	ret z			;6859
 	ld hl,0e04dh		;685a
 	ld a,(hl)			;685d
 	xor 001h		;685e
 	ld c,a			;6860
-	ld de,0e058h		;6861
+	ld de,0e058h		;6861   ; apunta a las vidas de Afrodita (BCD)
 	add a,e			;6864
 	ld e,a			;6865
 	ld a,(de)			;6866
@@ -1390,11 +1390,11 @@ L_688E:
 	ld a,061h		;6896
 L_6898:
 	ld b,a			;6898
-	ld de,0ec80h		;6899
+	ld de,0ec80h		;6899   ; apunta a la copia de la tabla de sprites (128 bytes)
 	ld a,(0e04ch)		;689c
 	or a			;689f
 	jr nz,L_68AA		;68a0
-	ld a,(0e003h)		;68a2
+	ld a,(0e003h)		;68a2   ; lee el contador de cuadros
 	bit 3,a		;68a5
 	jp z,L_6E23		;68a7
 L_68AA:
@@ -1415,7 +1415,7 @@ L_68B6:
 	ld a,(0e04ch)		;68c0
 	or a			;68c3
 	jr z,L_68CE		;68c4
-	ld a,(0e003h)		;68c6
+	ld a,(0e003h)		;68c6   ; lee el contador de cuadros
 	bit 3,a		;68c9
 	jp z,L_6E23		;68cb
 L_68CE:
@@ -1448,7 +1448,7 @@ DATA_seis_dibujos_68e4:
 
 L_68EA:
 	ld de,0ec88h		;68ea
-	ld a,(0e003h)		;68ed
+	ld a,(0e003h)		;68ed   ; lee el contador de cuadros
 	bit 3,a		;68f0
 	jr z,L_68FD		;68f2
 	ld hl,0e670h		;68f4
@@ -1462,7 +1462,7 @@ L_6903:
 	ld de,0e04dh		;6903
 	ld a,(de)			;6906
 	ld (0e501h),a		;6907   ; guarda quien juega (0 Afrodita)
-	ld hl,0e058h		;690a
+	ld hl,0e058h		;690a   ; apunta a las vidas de Afrodita (BCD)
 	add a,l			;690d
 	ld l,a			;690e
 	ld a,(hl)			;690f
@@ -1522,7 +1522,7 @@ L_6957:
 	ld hl,00000h		;6957
 	ld (0e00eh),hl		;695a
 	ld de,0bcefh		;695d
-	call 05c40h		;6960
+	call 05c40h		;6960   ; rle_con_destino: el rle de la direccion que hay en DE
 	ld hl,00a00h		;6963
 	ld bc,003f0h		;6966
 	xor a			;6969
@@ -1579,7 +1579,7 @@ L_69A4:
 L_69B9:
 	xor a			;69b9
 	ld de,0ed81h		;69ba
-	ld hl,0ed80h		;69bd
+	ld hl,0ed80h		;69bd   ; apunta a la pantalla de la sala en la copia (filas 4-23)
 	ld (hl),a			;69c0
 	ld bc,0027fh		;69c1
 	ldir		;69c4
@@ -1587,7 +1587,7 @@ L_69B9:
 	ld hl,0bbcfh		;69c9
 	ld bc,00c18h		;69cc
 	call L_6D49		;69cf
-	call 054bfh		;69d2
+	call 054bfh		;69d2   ; sala_a_vram: la pantalla de la sala (0xED80) a las filas 4-23
 	ld a,(0e678h)		;69d5
 	or a			;69d8
 	ret m			;69d9
@@ -1640,9 +1640,9 @@ L_6A18:
 	ld (hl),e			;6a1c
 	ret			;6a1d
 L_6A1E:
-	call 054e6h		;6a1e
-	call 05e6ch		;6a21
-	call 05e7bh		;6a24
+	call 054e6h		;6a1e   ; pantalla_a_cero: la copia de la tabla de nombres a cero y a la VRAM
+	call 05e6ch		;6a21   ; caracteres_2160: el rle de 0x9AA2 en 0x2160
+	call 05e7bh		;6a24   ; caracteres_2168: el rle de 0x9ABD en 0x2168 en color 0xF0
 	ld hl,02008h		;6a27
 	call L_6AB5		;6a2a
 	ld hl,0e948h		;6a2d
@@ -1689,7 +1689,7 @@ L_6A5F:
 	ld hl,0f000h		;6a82
 	ex de,hl			;6a85
 	ld bc,00008h		;6a86
-	call 05bd8h		;6a89
+	call 05bd8h		;6a89   ; ldirvm_tres_tercios: LDIRVM en los tres tercios
 	pop bc			;6a8c
 	dec b			;6a8d
 	jp p,L_6A5F		;6a8e
@@ -1709,7 +1709,7 @@ L_6A96:
 	ld hl,00000h		;6aa7
 	ld a,0f0h		;6aaa
 	ld bc,007f8h		;6aac
-	call 05bebh		;6aaf
+	call 05bebh		;6aaf   ; filvrm_tres_tercios: FILVRM en los tres tercios
 	ld hl,02010h		;6ab2
 L_6AB5:
 	ld de,0e800h		;6ab5   ; apunta a los huecos de figura (32 bytes cada uno)
@@ -1719,14 +1719,14 @@ L_6ABE:
 	ld bc,006d8h		;6abe
 L_6AC1:
 	xor a			;6ac1
-	jp 05bebh		;6ac2
+	jp 05bebh		;6ac2   ; filvrm_tres_tercios: FILVRM en los tres tercios
 L_6AC5:
 	ld hl,0ae28h		;6ac5
 	jr L_6ACD		;6ac8
 L_6ACA:
 	ld hl,0a84ah		;6aca
 L_6ACD:
-	ld (0f020h),hl		;6acd
+	ld (0f020h),hl		;6acd   ; guarda el umbral de pared (0xBA, 0xF0 con jefe) y el byte siguiente (16 bits)
 	xor a			;6ad0
 	ld (0f01fh),a		;6ad1
 	ld (0f022h),a		;6ad4
@@ -1734,7 +1734,7 @@ L_6ACD:
 	ld (0f02bh),a		;6ad8
 	ret			;6adb
 L_6ADC:
-	ld a,(0e003h)		;6adc
+	ld a,(0e003h)		;6adc   ; lee el contador de cuadros
 	bit 0,a		;6adf
 	ret z			;6ae1
 	ld a,(0f022h)		;6ae2
@@ -1757,13 +1757,13 @@ L_6B05:
 	xor 001h		;6b0b
 	ld (0f01fh),a		;6b0d
 L_6B10:
-	call 054f3h		;6b10
+	call 054f3h		;6b10   ; nombres_a_vram: la copia de la tabla de nombres (0xED00) a 0x3800
 	ld hl,0f02bh		;6b13
 	inc (hl)			;6b16
 	ret			;6b17
 L_6B18:
 	ld hl,0ed40h		;6b18
-	ld de,0ed00h		;6b1b
+	ld de,0ed00h		;6b1b   ; apunta a la copia de la tabla de nombres (0x300 bytes)
 	call L_6B26		;6b1e
 	ld de,0efc0h		;6b21
 	jr L_6B05		;6b24
@@ -1794,13 +1794,13 @@ L_6B44:
 	inc de			;6b45
 	djnz L_6B44		;6b46
 	pop de			;6b48
-	ld hl,(0f020h)		;6b49
+	ld hl,(0f020h)		;6b49   ; lee el umbral de pared (0xBA, 0xF0 con jefe) y el byte siguiente (16 bits)
 	ld a,(hl)			;6b4c
 	inc hl			;6b4d
 	cp 0fbh		;6b4e
 	jr nz,L_6B59		;6b50
 	ld a,0ffh		;6b52
-	call 04e34h		;6b54
+	call 04e34h		;6b54   ; pide_sonido_ya: como pide_sonido, sin mirar la pausa
 	ld a,(hl)			;6b57
 	inc hl			;6b58
 L_6B59:
@@ -1816,13 +1816,13 @@ L_6B59:
 	inc hl			;6b6b
 	ldir		;6b6c
 L_6B6E:
-	ld (0f020h),hl		;6b6e
+	ld (0f020h),hl		;6b6e   ; guarda el umbral de pared (0xBA, 0xF0 con jefe) y el byte siguiente (16 bits)
 	ret			;6b71
 L_6B72:
 	ld a,(hl)			;6b72
 	ld (0f023h),a		;6b73
 	inc hl			;6b76
-	ld (0f020h),hl		;6b77
+	ld (0f020h),hl		;6b77   ; guarda el umbral de pared (0xBA, 0xF0 con jefe) y el byte siguiente (16 bits)
 	ld a,001h		;6b7a
 	ld (0f022h),a		;6b7c
 	ret			;6b7f
@@ -1851,10 +1851,10 @@ L_6B92:
 	ld hl,02010h		;6ba2
 L_6BA5:
 	ld de,0e800h		;6ba5   ; apunta a los huecos de figura (32 bytes cada uno)
-	jp 05bd8h		;6ba8
+	jp 05bd8h		;6ba8   ; ldirvm_tres_tercios: LDIRVM en los tres tercios
 L_6BAB:
 	xor a			;6bab
-	ld (0e02eh),a		;6bac
+	ld (0e02eh),a		;6bac   ; guarda los textos estan subiendo
 	ret			;6baf
 L_6BB0:
 	ld a,(0e0d2h)		;6bb0   ; lee el estado del jefe
@@ -1949,7 +1949,7 @@ L_6C41:
 	djnz L_6C41		;6c53
 	ret			;6c55
 L_6C56:
-	ld a,(0e740h)		;6c56
+	ld a,(0e740h)		;6c56   ; lee el hueco de la cosa de la sala: tipo, y, x
 	or a			;6c59
 	ret z			;6c5a
 	cp 007h		;6c5b
@@ -1958,7 +1958,7 @@ L_6C56:
 	jr nc,L_6C76		;6c61
 	ld a,076h		;6c63
 L_6C65:
-	ld hl,(0e744h)		;6c65
+	ld hl,(0e744h)		;6c65   ; lee la casilla de la cosa de la sala y el byte siguiente (16 bits)
 	ld (hl),a			;6c68
 	inc a			;6c69
 	inc l			;6c6a
@@ -1979,7 +1979,7 @@ L_6C76:
 L_6C7C:
 	ld hl,l6c87h		;6c7c
 	call 0414ch		;6c7f   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
-	ld hl,(0e744h)		;6c82
+	ld hl,(0e744h)		;6c82   ; lee la casilla de la cosa de la sala y el byte siguiente (16 bits)
 	ld (hl),d			;6c85
 	inc l			;6c86
 L_6C87:
@@ -2004,7 +2004,7 @@ DATA_seis_parejas_6c89:
 
 
 L_6C95:
-	ld hl,0e688h		;6c95
+	ld hl,0e688h		;6c95   ; apunta a el mundo elegido (mapa - 1)
 	ld a,(hl)			;6c98
 	or a			;6c99
 	ret z			;6c9a
@@ -3265,10 +3265,10 @@ DATA_bloque_73d2:
 
 
 L_73D6:
-	ld de,0ec80h		;73d6
+	ld de,0ec80h		;73d6   ; apunta a la copia de la tabla de sprites (128 bytes)
 	ld b,00fh		;73d9
 	call L_6E1D		;73db
-	ld hl,0ec80h		;73de
+	ld hl,0ec80h		;73de   ; apunta a la copia de la tabla de sprites (128 bytes)
 	ld (0e60ah),hl		;73e1
 L_73E4:
 	ld hl,07529h		;73e4
@@ -3349,7 +3349,7 @@ L_7456:
 	djnz L_7400		;7459
 	ret			;745b
 L_745C:
-	ld a,(0e604h)		;745c
+	ld a,(0e604h)		;745c   ; lee el contador de cuadros de partida
 	bit 1,a		;745f
 	jr nz,L_746A		;7461
 	ld a,b			;7463
@@ -3396,7 +3396,7 @@ L_74A1:
 	ret nz			;74ac
 	jr $+103		;74ad
 L_74AF:
-	ld a,(0e604h)		;74af
+	ld a,(0e604h)		;74af   ; lee el contador de cuadros de partida
 	ld hl,074d8h		;74b2
 	bit 2,a		;74b5
 	jr z,L_74BC		;74b7
@@ -3737,10 +3737,10 @@ L_7776:
 	ldi		;7791
 	ret			;7793
 L_7794:
-	ld a,(0e740h)		;7794
+	ld a,(0e740h)		;7794   ; lee el hueco de la cosa de la sala: tipo, y, x
 	or a			;7797
 	ret z			;7798
-	ld hl,(0e744h)		;7799
+	ld hl,(0e744h)		;7799   ; lee la casilla de la cosa de la sala y el byte siguiente (16 bits)
 	ldi		;779c
 	ldi		;779e
 	ld bc,0001eh		;77a0
@@ -4287,10 +4287,10 @@ L_7AD0:
 	ldi		;7ae2
 	ret			;7ae4
 L_7AE5:
-	ld a,(0e740h)		;7ae5
+	ld a,(0e740h)		;7ae5   ; lee el hueco de la cosa de la sala: tipo, y, x
 	or a			;7ae8
 	ret z			;7ae9
-	ld de,(0e744h)		;7aea
+	ld de,(0e744h)		;7aea   ; lee la casilla de la cosa de la sala y el byte siguiente (16 bits)
 	ldi		;7aee
 	ldi		;7af0
 	ld a,01eh		;7af2
@@ -4680,7 +4680,7 @@ DATA_lista_vram_7D71:
 L_7D82:
 	ld hl,(0e022h)		;7d82
 	exx			;7d85
-	call 04cb0h		;7d86
+	call 04cb0h		;7d86   ; partida_nueva: RAM a cero, sala 1 del castillo, Popolon y las vidas de 0x4CE6
 	exx			;7d89
 	ld (0e022h),hl		;7d8a
 	ld a,(0e023h)		;7d8d
@@ -4688,8 +4688,8 @@ L_7D82:
 	call 0414ch		;7d93   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ld (0e041h),de		;7d96   ; guarda el mapa (0xE041) y la sala (0xE042) de un tiron
 	xor a			;7d9a
-	ld (0e604h),a		;7d9b
-	call 0510bh		;7d9e
+	ld (0e604h),a		;7d9b   ; guarda el contador de cuadros de partida
+	call 0510bh		;7d9e   ; monta_la_sala: la sala entera con todo lo que lleva
 	ld a,001h		;7da1
 	ld (0e070h),a		;7da3   ; guarda tiene el objeto 0x01
 	ld (0e510h),a		;7da6
@@ -4703,14 +4703,14 @@ L_7D82:
 	ld a,(0e00dh)		;7dbe
 	or a			;7dc1
 	jr nz,L_7DCA		;7dc2
-	call 05d1ah		;7dc4
-	call 05cafh		;7dc7
+	call 05d1ah		;7dc4   ; musica_del_mapa: A = 0x88 en el castillo, 0x8A en los mundos
+	call 05cafh		;7dc7   ; musica: la musica A (0xE021 = 1 salvo 0x87-0x8B)
 L_7DCA:
 	xor a			;7dca
-	ld (0e01ah),a		;7dcb
+	ld (0e01ah),a		;7dcb   ; guarda el lado por el que se sale de la sala: 1 arriba, 2 abajo, 3 izquierda, 4 derecha
 	ld (0e00bh),a		;7dce
 	inc a			;7dd1
-	ld (0e019h),a		;7dd2
+	ld (0e019h),a		;7dd2   ; guarda en juego (a 0 se acaba la vida: estado 6)
 	ld (0e00ch),a		;7dd5
 	ret			;7dd8
 
@@ -4739,9 +4739,9 @@ DATA_cinco_bytes_7de3:
 
 
 L_7DE8:
-	call 05488h		;7de8
-	call 052f5h		;7deb
-	ld a,(0e604h)		;7dee
+	call 05488h		;7de8   ; sprites_turnados: la tabla de sprites a la VRAM empezando cada cuadro por otro
+	call 052f5h		;7deb   ; cuadro_de_partida: un cuadro de la partida: todas las rutinas de cada banco
+	ld a,(0e604h)		;7dee   ; lee el contador de cuadros de partida
 	and 01fh		;7df1
 	jr nz,L_7E04		;7df3
 	ld hl,0e033h		;7df5
@@ -4753,18 +4753,18 @@ L_7DE8:
 	ld a,0ffh		;7dff
 	call 04e1fh		;7e01   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_7E04:
-	ld a,(0e01ah)		;7e04
+	ld a,(0e01ah)		;7e04   ; lee el lado por el que se sale de la sala: 1 arriba, 2 abajo, 3 izquierda, 4 derecha
 	and a			;7e07
 	ret z			;7e08
-	call 04d38h		;7e09
-	call 04d47h		;7e0c
+	call 04d38h		;7e09   ; sin_sprites: 0xD0 en la tabla de sprites: no se ve ninguno
+	call 04d47h		;7e0c   ; borra_la_sala: sin sprites y las filas 4-23 de la pantalla a 0
 	ld a,020h		;7e0f
-	ld (0e004h),a		;7e11
-	call 04792h		;7e14
+	ld (0e004h),a		;7e11   ; guarda la espera del paso, en cuadros
+	call 04792h		;7e14   ; vecina_del_lado: A = la vecina 0xE647 + 0xE01A
 	ld (0e042h),a		;7e17   ; guarda la sala
-	call 051cdh		;7e1a
+	call 051cdh		;7e1a   ; monta_otra_sala: la sala al pasar a otra
 	xor a			;7e1d
-	ld (0e01ah),a		;7e1e
+	ld (0e01ah),a		;7e1e   ; guarda el lado por el que se sale de la sala: 1 arriba, 2 abajo, 3 izquierda, 4 derecha
 	ret			;7e21
 L_7E22:
 	ld hl,0e00ch		;7e22
@@ -4775,7 +4775,7 @@ L_7E28:
 	cp 0ffh		;7e2b
 	jp nz,04c6bh		;7e2d
 	xor a			;7e30
-	ld (0e019h),a		;7e31
+	ld (0e019h),a		;7e31   ; guarda en juego (a 0 se acaba la vida: estado 6)
 	ret			;7e34
 L_7E35:
 	dec hl			;7e35
@@ -4861,9 +4861,9 @@ L_7E8C:
 	ld (0e061h),a		;7eac   ; guarda el cambio de vida pendiente de Popolon (con signo)
 	ld (0e05ch),hl		;7eaf   ; guarda la experiencia de Afrodita
 	ld (0e05fh),hl		;7eb2   ; guarda la experiencia de Popolon
-	ld (0e059h),a		;7eb5
+	ld (0e059h),a		;7eb5   ; guarda las vidas de Popolon (BCD)
 	inc a			;7eb8
-	ld (0e058h),a		;7eb9
+	ld (0e058h),a		;7eb9   ; guarda las vidas de Afrodita (BCD)
 	ld (0e501h),a		;7ebc   ; guarda quien juega (0 Afrodita)
 	ld (0e026h),a		;7ebf   ; guarda ya se ha seguido con F5
 	ld a,(0e053h)		;7ec2   ; lee el tope de la vida de Afrodita
@@ -5039,7 +5039,7 @@ L_7FD0:
 	ld a,041h		;7fd1
 	ld (0e640h),a		;7fd3
 	ld a,090h		;7fd6
-	jp 05cc4h		;7fd8
+	jp 05cc4h		;7fd8   ; musica_ya: sin musica esperando, la musica A
 L_7FDB:
 	ld hl,0e640h		;7fdb
 	ld a,(hl)			;7fde

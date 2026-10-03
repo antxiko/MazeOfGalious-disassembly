@@ -72,7 +72,7 @@ L_8037:
 	ld (ix+012h),a		;8041
 	ret			;8044
 L_8045:
-	ld a,(0e604h)		;8045
+	ld a,(0e604h)		;8045   ; lee el contador de cuadros de partida
 	and 008h		;8048
 	add a,b			;804a
 	ret			;804b
@@ -94,7 +94,7 @@ L_8063:
 L_8068:
 	add a,(ix+007h)		;8068
 	ld h,a			;806b
-	jp 0406eh		;806c
+	jp 0406eh		;806c   ; casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 L_806F:
 	ld bc,0ffdfh		;806f
 	add hl,bc			;8072
@@ -334,7 +334,7 @@ L_81F1:
 	rrca			;81f3
 	rrca			;81f4
 	rrca			;81f5
-	ld hl,0e003h		;81f6
+	ld hl,0e003h		;81f6   ; apunta a el contador de cuadros
 	xor (hl)			;81f9
 	ret			;81fa
 L_81FB:
@@ -402,7 +402,7 @@ L_8264:
 	ld a,083h		;827e
 	call 04059h		;8280   ; pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	ld a,088h		;8283
-	call 04086h		;8285
+	call 04086h		;8285   ; musica_espera (por 0x4086): deja esperando la musica A
 	ld a,001h		;8288
 	ld (0e63dh),a		;828a
 L_828D:
@@ -490,7 +490,7 @@ L_8330:
 	ld (ix+01ah),004h		;8347
 	ld (ix+01bh),080h		;834b
 	ld a,089h		;834f
-	jp 04080h		;8351
+	jp 04080h		;8351   ; musica_ya (por 0x4080): sin musica esperando, la musica A
 L_8354:
 	ld a,(ix+01bh)		;8354
 	xor (ix+00fh)		;8357
@@ -748,7 +748,7 @@ L_8544:
 L_8567:
 	ld bc,00ccch		;8567
 	inc d			;856a
-	call 0405ch		;856b
+	call 0405ch		;856b   ; hl_negado (por 0x405C): HL = -HL
 L_856E:
 	ld a,(ix+005h)		;856e
 	add a,b			;8571
@@ -1211,7 +1211,7 @@ L_8939:
 	ld (ix+01fh),a		;893e
 	ret			;8941
 L_8942:
-	ld a,(0e003h)		;8942
+	ld a,(0e003h)		;8942   ; lee el contador de cuadros
 	and 03fh		;8945
 	jr nz,L_894E		;8947
 	ld a,006h		;8949
@@ -1462,7 +1462,7 @@ L_8B4B:
 	add a,010h		;8b52
 	ld l,a			;8b54
 	ld h,(ix+007h)		;8b55
-	call 0406eh		;8b58
+	call 0406eh		;8b58   ; casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 	jr nc,L_8B60		;8b5b
 	inc (ix+017h)		;8b5d
 L_8B60:
@@ -1617,7 +1617,7 @@ L_8C7A:
 	res 4,(ix+002h)		;8c87
 	ret			;8c8b
 L_8C8C:
-	ld a,(0e604h)		;8c8c
+	ld a,(0e604h)		;8c8c   ; lee el contador de cuadros de partida
 	bit 2,a		;8c8f
 	jr z,L_8C98		;8c91
 	set 0,(ix+00ah)		;8c93
@@ -1649,7 +1649,7 @@ L_8CC9:
 	and 07fh		;8ccb
 	add a,030h		;8ccd
 	ld (ix+007h),a		;8ccf
-	ld a,(0e604h)		;8cd2
+	ld a,(0e604h)		;8cd2   ; lee el contador de cuadros de partida
 	and 07fh		;8cd5
 	add a,020h		;8cd7
 	ld (ix+005h),a		;8cd9
@@ -1716,7 +1716,7 @@ L_8D5B:
 	call 0b15fh		;8d5b
 	jp 0b16fh		;8d5e
 L_8D61:
-	ld a,(0e604h)		;8d61
+	ld a,(0e604h)		;8d61   ; lee el contador de cuadros de partida
 	bit 3,a		;8d64
 	ld a,004h		;8d66
 	jr z,L_8D6B		;8d68
@@ -1817,7 +1817,7 @@ L_8E3D:
 	ld a,(ix+01eh)		;8e3d
 	or a			;8e40
 	jr z,L_8E4D		;8e41
-	ld a,(0e604h)		;8e43
+	ld a,(0e604h)		;8e43   ; lee el contador de cuadros de partida
 	and 01fh		;8e46
 	jr nz,L_8E4D		;8e48
 	dec (ix+01eh)		;8e4a
@@ -1875,7 +1875,7 @@ L_8EB2:
 	call L_8F75		;8eb5
 	call L_8ED2		;8eb8
 L_8EBB:
-	ld a,(0e604h)		;8ebb
+	ld a,(0e604h)		;8ebb   ; lee el contador de cuadros de partida
 	ld b,a			;8ebe
 	and 007h		;8ebf
 	ret nz			;8ec1
@@ -2260,7 +2260,7 @@ L_918C:
 L_9198:
 	dec (ix+008h)		;9198
 	jr z,L_91D5		;919b
-	ld a,(0e604h)		;919d
+	ld a,(0e604h)		;919d   ; lee el contador de cuadros de partida
 	and 007h		;91a0
 	ret nz			;91a2
 	ld a,(0e507h)		;91a3   ; lee la x del personaje
@@ -2299,7 +2299,7 @@ L_91DF:
 	ret			;91df
 L_91E0:
 	call 06c42h		;91e0
-	ld a,(0e604h)		;91e3
+	ld a,(0e604h)		;91e3   ; lee el contador de cuadros de partida
 	and 01fh		;91e6
 	sub 008h		;91e8
 	add a,(ix+005h)		;91ea
@@ -2400,7 +2400,7 @@ L_9293:
 	ld h,(ix+007h)		;9295
 	ld l,(ix+005h)		;9298
 	ld de,0000fh		;929b
-	jp 04074h		;929e
+	jp 04074h		;929e   ; pared_en_fila (por 0x4074): C si una de las casillas (y+B, x+D) o (y+B, x+E) llega al umbral de 0xF020
 L_92A1:
 	ld a,(ix+005h)		;92a1
 	ld b,a			;92a4
@@ -2474,7 +2474,7 @@ L_9332:
 	call nc,0b15fh		;9334
 	ret			;9337
 L_9338:
-	ld a,(0e604h)		;9338
+	ld a,(0e604h)		;9338   ; lee el contador de cuadros de partida
 	and 007h		;933b
 	ret nz			;933d
 	ld d,00ch		;933e
@@ -2924,7 +2924,7 @@ L_96BE:
 	ld (ix+01fh),a		;96d0
 	add a,010h		;96d3
 	ld l,a			;96d5
-	call 0406eh		;96d6
+	call 0406eh		;96d6   ; casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 	ret nc			;96d9
 	inc hl			;96da
 	cp (hl)			;96db
@@ -2955,7 +2955,7 @@ L_9706:
 	ld h,(ix+007h)		;9706
 	ld l,(ix+005h)		;9709
 L_970C:
-	call 0406eh		;970c
+	call 0406eh		;970c   ; casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 	ccf			;970f
 	ret nc			;9710
 	inc hl			;9711
@@ -3155,7 +3155,7 @@ L_986D:
 L_9871:
 	ld c,003h		;9871
 L_9873:
-	ld a,(0e604h)		;9873
+	ld a,(0e604h)		;9873   ; lee el contador de cuadros de partida
 	and c			;9876
 	ret nz			;9877
 	bit 7,(ix+00fh)		;9878
@@ -3192,7 +3192,7 @@ L_98B1:
 	add a,b			;98b4
 	ld h,a			;98b5
 	ld l,(ix+005h)		;98b6
-	call 0406eh		;98b9
+	call 0406eh		;98b9   ; casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 	jp c,0b41ch		;98bc
 	ret			;98bf
 L_98C0:
@@ -3337,7 +3337,7 @@ L_99D9:
 	ld a,(ix+007h)		;99d9
 	add a,e			;99dc
 	ld h,a			;99dd
-	jp 0406eh		;99de
+	jp 0406eh		;99de   ; casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 L_99E1:
 	ld a,(ix+01ch)		;99e1
 	and a			;99e4
@@ -3392,7 +3392,7 @@ L_9A46:
 	jr z,L_9A50		;9a4c
 	ld a,0b8h		;9a4e
 L_9A50:
-	ld hl,0e604h		;9a50
+	ld hl,0e604h		;9a50   ; apunta a el contador de cuadros de partida
 	bit 2,(hl)		;9a53
 	jp z,L_98E0		;9a55
 	add a,004h		;9a58
@@ -3469,7 +3469,7 @@ L_9AC2:
 	sub 008h		;9ac3
 	cp 0e8h		;9ac5
 	ret nc			;9ac7
-	call 0406eh		;9ac8
+	call 0406eh		;9ac8   ; casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 	ccf			;9acb
 	ret nc			;9acc
 	call L_9AD1		;9acd
@@ -3790,7 +3790,7 @@ L_9CD4:
 	sub 010h		;9cd5
 	cp 0e0h		;9cd7
 	ret nc			;9cd9
-	call 0406eh		;9cda
+	call 0406eh		;9cda   ; casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 	ret nc			;9cdd
 	call L_9D2D		;9cde
 	ret nc			;9ce1
@@ -4013,9 +4013,9 @@ L_9E54:
 	ld (ix+01fh),a		;9e68
 	add a,009h		;9e6b
 	ld l,a			;9e6d
-	call 0406eh		;9e6e
+	call 0406eh		;9e6e   ; casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 	jr nc,L_9E8B		;9e71
-	call 04071h		;9e73
+	call 04071h		;9e73   ; casilla_derecha (por 0x4071): compara 0xB9 con el caracter de HL + 1
 	jr nc,L_9E8B		;9e76
 	call L_96FE		;9e78
 	jr nc,L_9E8B		;9e7b
@@ -4193,7 +4193,7 @@ L_9FB1:
 	add a,(ix+007h)		;9fb1
 	ld h,a			;9fb4
 	ld (ix+017h),b		;9fb5
-	call 0406eh		;9fb8
+	call 0406eh		;9fb8   ; casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 	jr nc,L_9FCB		;9fbb
 	ld a,(ix+015h)		;9fbd
 	add a,(ix+014h)		;9fc0
@@ -4216,9 +4216,9 @@ L_9FD8:
 	ld l,(ix+005h)		;9fe9
 	dec l			;9fec
 	ld h,(ix+007h)		;9fed
-	call 0406eh		;9ff0
+	call 0406eh		;9ff0   ; casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 	jr c,$+26		;9ff3
-	call 04071h		;9ff5
+	call 04071h		;9ff5   ; casilla_derecha (por 0x4071): compara 0xB9 con el caracter de HL + 1
 	jr c,$+21		;9ff8
 	ret			;9ffa
 L_9FFB:
