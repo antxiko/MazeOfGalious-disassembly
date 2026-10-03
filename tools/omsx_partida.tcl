@@ -11,11 +11,14 @@
 # Vuelca (como omsx_vuelca.tcl) a los cuadros de GO_FOTOS contados desde la
 # llegada: <dir>/vMMSS_<cuadro>.vram/.ram/.png. En <dir>/traza.txt cada
 # cambio de 0xE000/0xE001 con su cuadro.
+# Con GO_F2=1, GO_ESPERA cuadros despues de llegar pulsa F2 (fila 6, bit 6;
+# lo lee p02:9E07) durante 5 cuadros.
 # GO_OUT=<dir>, GO_SEGS, GO_SALA="MM:SS" (hex), GO_FOTOS="40 200 ...".
 set OUT $::env(GO_OUT)
 set SEGS $::env(GO_SEGS)
 lassign [split $::env(GO_SALA) :] ::M ::S
 set ::FOTOS $::env(GO_FOTOS)
+set ::F2 [expr {[info exists ::env(GO_F2)] && $::env(GO_F2) eq "1"}]
 set ::JEFE [expr {[info exists ::env(GO_JEFE)] && $::env(GO_JEFE) eq "1"}]
 set ::ESPERA [expr {[info exists ::env(GO_ESPERA)] && $::env(GO_ESPERA) ne "" ? $::env(GO_ESPERA) : 60}]
 set ::fase arranca
@@ -61,6 +64,8 @@ proc mira {} {
         dentro {
             set n [expr {$::cuadros - $::llegada}]
             if {$::JEFE && $n == $::ESPERA} { debug write memory 0xE020 1; apunta "E020=1" }
+            if {$::F2 && $n == $::ESPERA} { keymatrixdown 6 0x40; apunta "F2" }
+            if {$::F2 && $n == $::ESPERA + 5} { keymatrixup 6 0x40 }
             if {[lsearch $::FOTOS $n] >= 0} { vuelca "${::M}${::S}_$n" }
             if {$n >= [lindex $::FOTOS end]} { fin }
         }

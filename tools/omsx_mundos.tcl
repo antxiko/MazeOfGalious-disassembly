@@ -19,6 +19,11 @@ set ::enfria 0
 set ::hechos [dict create]
 set ::cuadros 0
 set ::err ""
+# GO_FIG=1: <dir>/figuras.txt, una linea por cada [mapa:sala tipo dibujo
+# color sprite] distinto de los huecos de figura 0xE800-0xE9FF (32 bytes:
+# (ix+0) tipo, (ix+0x0A) dibujo, (ix+0x0B) color, bit 7 de (ix+0x14) sprite)
+set ::FIG [expr {[info exists ::env(GO_FIG)] && $::env(GO_FIG) ne ""}]
+set ::figs [dict create]
 proc vuelca {k} {
     set b [file join $::OUT "v$k"]
     if {[catch {save_debuggable VRAM "$b.vram"} e]} { append ::err " vram:$e" }
@@ -28,8 +33,18 @@ proc vuelca {k} {
     puts -nonewline $f $s; close $f
     if {[catch {screenshot "$b.png"} e]} { append ::err " png:$e" }
 }
+proc figuras {} {
+    set k [format "%02X:%02X" [debug read memory 0xE041] [debug read memory 0xE042]]
+    for {set a 0xE800} {$a < 0xEA00} {incr a 0x20} {
+        set t [debug read memory $a]
+        if {$t == 0} continue
+        set l [format "%s %02X %02X %02X %02X" $k $t [debug read memory [expr {$a + 0x0A}]]             [debug read memory [expr {$a + 0x0B}]] [expr {[debug read memory [expr {$a + 0x14}]] >> 7}]]
+        if {![dict exists $::figs $l]} { dict set ::figs $l $::cuadros }
+    }
+}
 proc mira {} {
     incr ::cuadros
+    if {$::FIG} figuras
     set k [format "%02X:%02X" [debug read memory 0xE041] [debug read memory 0xE042]]
     if {$k ne $::ult} { set ::ult $k; set ::espera $::ESPERA; return }
     if {$::espera > 0} {
@@ -57,6 +72,11 @@ proc fin {} {
     set f [open [file join $::OUT traza.txt] w]
     puts $f "cuadros $::cuadros hechos [dict keys $::hechos] faltan $::pend err $::err"
     close $f
+    if {$::FIG} {
+        set f [open [file join $::OUT figuras.txt] w]
+        dict for {l c} $::figs { puts $f "$l $c" }
+        close $f
+    }
     exit
 }
 set throttle off
@@ -72,4 +92,21 @@ if {[info exists ::env(GO_DE)] && $::env(GO_DE) ne ""} {
         flush $::fe
     }
     debug set_watchpoint write_mem [list $::env(GO_DE) $::env(GO_A)] {} apunta
+}
+# Opcional: GO_SPR=1 apunta en <dir>/sprites.txt cada direccion de escritura
+# de la VRAM en 0x1800-0x1FFF (puerto 0x99): mapa:sala, PC y la pila.
+if {[info exists ::env(GO_SPR)] && $::env(GO_SPR) ne ""} {
+    set ::fs [open [file join $OUT sprites.txt] w]
+    set ::bajo -1
+    proc apunta99 {} {
+        set v $::wp_last_value
+        if {$::bajo < 0} { set ::bajo $v; return }
+        set a [expr {(($v & 0x3F) << 8) | $::bajo}]
+        set ::bajo -1
+        if {($v & 0xC0) != 0x40 || $a < 0x1800 || $a > 0x1FFF} return
+        set sp [reg sp]
+        puts $::fs [format "%02X:%02X cuadro %d pc %04X vram %04X pila %04X %04X %04X %04X"             [debug read memory 0xE041] [debug read memory 0xE042] $::cuadros [reg pc] $a             [peek16 $sp] [peek16 [expr {$sp+2}]] [peek16 [expr {$sp+4}]] [peek16 [expr {$sp+6}]]]
+        flush $::fs
+    }
+    debug set_watchpoint write_io 0x99 {} apunta99
 }
