@@ -285,10 +285,10 @@ L_A19A:
 L_A1A7:
 	ld a,001h		;a1a7
 	ld (0e503h),a		;a1a9
-	ld a,(0e502h)		;a1ac
+	ld a,(0e502h)		;a1ac   ; lee la pose del personaje
 	and 001h		;a1af
 	or 002h		;a1b1
-	ld (0e502h),a		;a1b3
+	ld (0e502h),a		;a1b3   ; guarda la pose del personaje
 L_A1B6:
 	ld a,(0e520h)		;a1b6
 	and a			;a1b9
@@ -322,9 +322,9 @@ L_A1F2:
 L_A1F5:
 	xor a			;a1f5
 	ld (0e503h),a		;a1f6
-	ld a,(0e502h)		;a1f9
+	ld a,(0e502h)		;a1f9   ; lee la pose del personaje
 	and 001h		;a1fc
-	ld (0e502h),a		;a1fe
+	ld (0e502h),a		;a1fe   ; guarda la pose del personaje
 L_A201:
 	ld a,(0e520h)		;a201
 	and a			;a204
@@ -384,7 +384,7 @@ L_A265:
 	ld (0e50bh),a		;a269
 	ld (0e522h),a		;a26c
 	ld (0e530h),a		;a26f
-	ld a,(0e502h)		;a272
+	ld a,(0e502h)		;a272   ; lee la pose del personaje
 	ld (0e50dh),a		;a275
 	ld a,(0e503h)		;a278
 	ld (0e516h),a		;a27b
@@ -474,8 +474,8 @@ L_A304:
 	ld a,(0ec12h)		;a308
 	and 001h		;a30b
 	ld (0e52bh),a		;a30d
-	ld a,(0ec10h)		;a310
-	ld (0e52dh),a		;a313
+	ld a,(0ec10h)		;a310   ; lee la figura de sala en sala que esta en esta sala
+	ld (0e52dh),a		;a313   ; guarda la figura que lleva al personaje
 	ld a,(0e508h)		;a316
 	and a			;a319
 	ld b,004h		;a31a
@@ -660,7 +660,7 @@ L_A44C:
 	ld a,e			;a454
 	ld (0e503h),a		;a455
 L_A458:
-	ld a,(0e502h)		;a458
+	ld a,(0e502h)		;a458   ; lee la pose del personaje
 	xor 001h		;a45b
 	jp L_A912		;a45d
 L_A460:
@@ -825,7 +825,7 @@ L_A589:
 	jr z,L_A595		;a591
 	ld a,017h		;a593
 L_A595:
-	ld (0e502h),a		;a595
+	ld (0e502h),a		;a595   ; guarda la pose del personaje
 	ld a,006h		;a598
 	ld (0e50fh),a		;a59a
 	jr L_A586		;a59d
@@ -835,7 +835,7 @@ L_A59F:
 	dec (hl)			;a5a2
 	ret nz			;a5a3
 	ld (hl),006h		;a5a4
-	ld hl,0e502h		;a5a6
+	ld hl,0e502h		;a5a6   ; apunta a la pose del personaje
 	inc (hl)			;a5a9
 	ld a,(hl)			;a5aa
 	cp b			;a5ab
@@ -1054,7 +1054,7 @@ L_A71E:
 	pop af			;a727
 	bit 5,a		;a728
 	ret z			;a72a
-	ld a,(0e510h)		;a72b
+	ld a,(0e510h)		;a72b   ; lee el arma elegida
 	cp 006h		;a72e
 	ret z			;a730
 	cp 005h		;a731
@@ -1067,7 +1067,7 @@ L_A73D:
 	ld a,b			;a73d
 	and a			;a73e
 	ret z			;a73f
-	ld a,(0e510h)		;a740
+	ld a,(0e510h)		;a740   ; lee el arma elegida
 	ld (iy+000h),a		;a743
 	ret			;a746
 L_A747:
@@ -1332,7 +1332,7 @@ L_A8FC:
 	ld (0e518h),a		;a900
 	ret			;a903
 L_A904:
-	ld a,(0e502h)		;a904
+	ld a,(0e502h)		;a904   ; lee la pose del personaje
 	ld (0e50dh),a		;a907
 L_A90A:
 	ld a,(0e503h)		;a90a
@@ -1342,10 +1342,10 @@ L_A90A:
 L_A911:
 	ld a,b			;a911
 L_A912:
-	ld (0e502h),a		;a912
+	ld (0e502h),a		;a912   ; guarda la pose del personaje
 	ret			;a915
 L_A916:
-	ld ix,0ec10h		;a916
+	ld ix,0ec10h		;a916   ; apunta a la figura de sala en sala que esta en esta sala
 	exx			;a91a
 	ld b,002h		;a91b
 	ld de,00010h		;a91d
@@ -1392,11 +1392,11 @@ DATA_curva_del_salto:
 
 
 L_A96D:
-	ld iy,0e5a0h		;a96d
+	ld iy,0e5a0h		;a96d   ; apunta a tres huecos de 32 bytes de tres sprites
 	call L_A9AE		;a971
 	jr L_A97D		;a974
 L_A976:
-	ld iy,0e540h		;a976
+	ld iy,0e540h		;a976   ; apunta a tres huecos de 32 bytes (armas)
 	call L_A995		;a97a
 L_A97D:
 	ret z			;a97d
@@ -1422,7 +1422,7 @@ L_A995:
 	ld b,003h		;a99c
 	ld de,0e08ch		;a99e   ; apunta a tiene el objeto 0x1D
 	ld hl,0e51ch		;a9a1
-	ld a,(0e510h)		;a9a4
+	ld a,(0e510h)		;a9a4   ; lee el arma elegida
 	dec a			;a9a7
 	cp 002h		;a9a8
 	jr nc,L_A9C1		;a9aa
@@ -1454,7 +1454,7 @@ L_A9CB:
 	ret			;a9ce
 L_A9CF:
 	call L_AD3A		;a9cf
-	ld iy,0e540h		;a9d2
+	ld iy,0e540h		;a9d2   ; apunta a tres huecos de 32 bytes (armas)
 	exx			;a9d6
 	ld b,006h		;a9d7
 	ld de,00020h		;a9d9
@@ -1465,10 +1465,10 @@ L_A9DC:
 	add iy,de		;a9e1
 	djnz L_A9DC		;a9e3
 	exx			;a9e5
-	ld iy,0e540h		;a9e6
+	ld iy,0e540h		;a9e6   ; apunta a tres huecos de 32 bytes (armas)
 	ld hl,0e51ch		;a9ea
 	call L_A9F7		;a9ed
-	ld iy,0e5a0h		;a9f0
+	ld iy,0e5a0h		;a9f0   ; apunta a tres huecos de 32 bytes de tres sprites
 	ld hl,0e51dh		;a9f4
 L_A9F7:
 	ld (hl),000h		;a9f7
@@ -1887,7 +1887,7 @@ L_AD34:
 	ret nz			;ad37
 	jr L_AD76		;ad38
 L_AD3A:
-	ld a,(0e510h)		;ad3a
+	ld a,(0e510h)		;ad3a   ; lee el arma elegida
 	cp 006h		;ad3d
 	ret nz			;ad3f
 	ld a,(0e008h)		;ad40   ; lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
@@ -1897,7 +1897,7 @@ L_AD3A:
 	ld (0e517h),a		;ad48
 	ret			;ad4b
 L_AD4C:
-	ld iy,0e540h		;ad4c
+	ld iy,0e540h		;ad4c   ; apunta a tres huecos de 32 bytes (armas)
 	exx			;ad50
 	ld b,006h		;ad51
 	ld de,00020h		;ad53
@@ -2082,7 +2082,7 @@ L_AEA5:
 	ret nc			;aea8
 	add a,008h		;aea9
 	ld (hl),a			;aeab
-	call 0604dh		;aeac
+	call 0604dh		;aeac   ; cabecera: los rotulos, flechas, monedas, llaves, arma y las cuatro barras
 	ld a,001h		;aeaf
 	ld (0e61eh),a		;aeb1
 	call L_B301		;aeb4
@@ -2376,7 +2376,7 @@ L_B093:
 	xor a			;b093
 	ret			;b094
 L_B095:
-	ld ix,0ec10h		;b095
+	ld ix,0ec10h		;b095   ; apunta a la figura de sala en sala que esta en esta sala
 	exx			;b099
 	ld b,002h		;b09a
 	ld de,00010h		;b09c
@@ -2387,7 +2387,7 @@ L_B09F:
 	add ix,de		;b0a4
 	djnz L_B09F		;b0a6
 	exx			;b0a8
-	ld a,(0ec10h)		;b0a9
+	ld a,(0ec10h)		;b0a9   ; lee la figura de sala en sala que esta en esta sala
 	and a			;b0ac
 	ret z			;b0ad
 	ld c,a			;b0ae
@@ -2513,7 +2513,7 @@ L_B194:
 	or a			;b198
 	ret z			;b199
 	ld (hl),000h		;b19a
-	ld hl,0e678h		;b19c
+	ld hl,0e678h		;b19c   ; apunta a lo de la sala del estado 0x0C (0xE678-0xE67A)
 	ld a,(hl)			;b19f
 	or a			;b1a0
 	ret z			;b1a1
@@ -2531,7 +2531,7 @@ L_B194:
 	add a,010h		;b1b5
 	cp 021h		;b1b7
 	ret nc			;b1b9
-	ld a,(0e678h)		;b1ba
+	ld a,(0e678h)		;b1ba   ; lee lo de la sala del estado 0x0C (0xE678-0xE67A)
 	ld (0e01bh),a		;b1bd   ; guarda estado 0x0C pedido
 	ret			;b1c0
 L_B1C1:
@@ -2543,7 +2543,7 @@ L_B1C1:
 	ld a,(0e635h)		;b1cf   ; lee cuantos huecos de figura hay
 	ld (0e623h),a		;b1d2
 L_B1D5:
-	bit 6,(ix+002h)		;b1d5
+	bit 6,(ix+002h)		;b1d5   ; mira el bit 6 de las banderas de la figura (bit 7: en pantalla)
 	call nz,L_B1ED		;b1d9
 	ld a,(0e61fh)		;b1dc
 	or a			;b1df
@@ -2752,13 +2752,13 @@ muere:		; la vida y la experiencia del que juega a cero
 	ld h,a			;b33e
 	ld (0e1c5h),a		;b33f
 	jr nz,L_B352		;b342
-	ld (0e050h),a		;b344
+	ld (0e050h),a		;b344   ; guarda la experiencia de Afrodita (barra)
 	ld (0e052h),a		;b347   ; guarda la vida de Afrodita
 	ld (0e05ch),hl		;b34a   ; guarda la experiencia de Afrodita
 	ld (0e05eh),a		;b34d   ; guarda el cambio de vida pendiente de Afrodita (con signo)
 	jr L_B35E		;b350
 L_B352:
-	ld (0e054h),a		;b352
+	ld (0e054h),a		;b352   ; guarda la experiencia de Popolon (barra)
 	ld (0e056h),a		;b355   ; guarda la vida de Popolon
 	ld (0e05fh),hl		;b358   ; guarda la experiencia de Popolon
 	ld (0e061h),a		;b35b   ; guarda el cambio de vida pendiente de Popolon (con signo)
@@ -2881,7 +2881,7 @@ L_B40C:
 	ld a,(0e507h)		;b417   ; lee la x del personaje
 	sub 008h		;b41a
 	ld b,a			;b41c
-	ld iy,0e5a0h		;b41d
+	ld iy,0e5a0h		;b41d   ; apunta a tres huecos de 32 bytes de tres sprites
 	ld a,003h		;b421
 	ld (0e623h),a		;b423
 L_B426:
@@ -2953,7 +2953,7 @@ L_B48B:
 	set 3,(iy+002h)		;b48b
 	jp L_B483		;b48f
 L_B492:
-	ld iy,0e540h		;b492
+	ld iy,0e540h		;b492   ; apunta a tres huecos de 32 bytes (armas)
 	ld b,006h		;b496
 L_B498:
 	push bc			;b498
@@ -3415,7 +3415,7 @@ L_B7BE:
 	jp 04d5ah		;b7d2   ; suma_flechas: suma A (BCD) a las flechas de 0xE046, hasta 999
 L_B7D5:
 	call L_B877		;b7d5
-	ld iy,0e540h		;b7d8
+	ld iy,0e540h		;b7d8   ; apunta a tres huecos de 32 bytes (armas)
 	ld b,006h		;b7dc
 L_B7DE:
 	push bc			;b7de
@@ -3433,7 +3433,7 @@ L_B7EB:
 	bit 0,(iy+002h)		;b7f2
 	ret z			;b7f6
 	call L_B8B2		;b7f7
-	ld ix,0ec30h		;b7fa
+	ld ix,0ec30h		;b7fa   ; apunta a tres huecos de 8 bytes de la lista de la sala (0xB8A2)
 	ld a,003h		;b7fe
 	ld (0e623h),a		;b800
 L_B803:
@@ -3511,7 +3511,7 @@ L_B877:
 	or a			;b87a
 	ret z			;b87b
 	call L_B8FB		;b87c
-	ld ix,0ec30h		;b87f
+	ld ix,0ec30h		;b87f   ; apunta a tres huecos de 8 bytes de la lista de la sala (0xB8A2)
 	ld a,003h		;b883
 	ld (0e623h),a		;b885
 L_B888:
@@ -3637,7 +3637,7 @@ L_B933:
 	ld c,b			;b935
 	ld a,(ix+009h)		;b936
 	and 007h		;b939
-	ld (0f020h),a		;b93b   ; guarda el umbral de pared (0xBA, 0xF0 con jefe)
+	ld (0f020h),a		;b93b
 	bit 0,(ix+015h)		;b93e
 	jr z,L_B94A		;b942
 	add a,a			;b944
@@ -3647,7 +3647,7 @@ L_B933:
 	ld c,a			;b949
 L_B94A:
 	ld h,007h		;b94a
-	ld a,(0f020h)		;b94c   ; lee el umbral de pared (0xBA, 0xF0 con jefe)
+	ld a,(0f020h)		;b94c
 	add a,a			;b94f
 	add a,a			;b950
 	add a,a			;b951
@@ -3976,7 +3976,7 @@ L_BB04:
 	add hl,bc			;bb20
 	jp 041ffh		;bb21   ; p8000_banco_2: pone el banco 2 en 0x8000
 L_BB24:
-	ld iy,0e540h		;bb24
+	ld iy,0e540h		;bb24   ; apunta a tres huecos de 32 bytes (armas)
 	ld b,006h		;bb28
 L_BB2A:
 	push bc			;bb2a
@@ -4205,7 +4205,7 @@ L_BC90:
 	dec (ix+010h)		;bc99
 	jp z,L_BD32		;bc9c
 L_BC9F:
-	ld a,(0e710h)		;bc9f
+	ld a,(0e710h)		;bc9f   ; lee la vida del jefe
 	ld b,a			;bca2
 	ld c,000h		;bca3
 	ld a,(0e700h)		;bca5   ; lee el tipo del jefe (el hueco 0xE700 es el jefe)
@@ -4456,7 +4456,7 @@ L_BE22:
 	ret			;be25
 L_BE26:
 	ld a,01ch		;be26
-	ld (0e53dh),a		;be28
+	ld (0e53dh),a		;be28   ; guarda la pose del personaje en la pausa
 	ld hl,00258h		;be2b
 	ld (0e53ah),hl		;be2e
 	xor a			;be31
@@ -4476,7 +4476,7 @@ L_BE36:
 	ld hl,0e53ch		;be48
 	inc (hl)			;be4b
 L_BE4C:
-	ld (0e53dh),a		;be4c
+	ld (0e53dh),a		;be4c   ; guarda la pose del personaje en la pausa
 	ret			;be4f
 L_BE50:
 	ld hl,0e53ah		;be50
@@ -4484,14 +4484,14 @@ L_BE50:
 	ld a,(hl)			;be54
 	and 007h		;be55
 	ret nz			;be57
-	ld a,(0e53dh)		;be58
+	ld a,(0e53dh)		;be58   ; lee la pose del personaje en la pausa
 	xor 001h		;be5b
 	jr L_BE4C		;be5d
 L_BE5F:
 	ld a,(0e505h)		;be5f   ; lee la y del personaje
 	ld (0e53eh),a		;be62
 	ld a,004h		;be65
-	ld (0e502h),a		;be67
+	ld (0e502h),a		;be67   ; guarda la pose del personaje
 	ld a,009h		;be6a
 	ld (0e50fh),a		;be6c
 	xor a			;be6f
@@ -4504,7 +4504,7 @@ L_BE7A:
 	ld (0e512h),hl		;be7d
 	ret			;be80
 L_BE81:
-	call 073d6h		;be81
+	call 073d6h		;be81   ; sprites_del_personaje: 15 sprites escondidos y la pose del personaje
 	call 05435h		;be84   ; vram_del_estado: lo de la VRAM en la interrupcion segun el estado (tabla 0x543B)
 	ld a,(0e50eh)		;be87
 	and a			;be8a
@@ -4540,7 +4540,7 @@ L_BEC7:
 	ld hl,0e50fh		;bec7
 	dec (hl)			;beca
 	jr z,L_BEF7		;becb
-	ld de,0eb00h		;becd
+	ld de,0eb00h		;becd   ; apunta a lo que hay debajo de las figuras
 	ld bc,0001dh		;bed0
 	ld hl,0ee41h		;bed3
 	ldir		;bed6
@@ -4551,7 +4551,7 @@ L_BEC7:
 	ld a,(0e041h)		;bee2   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	ld (0ee55h),a		;bee5
 	call 054bfh		;bee8   ; sala_a_vram: la pantalla de la sala (0xED80) a las filas 4-23
-	ld hl,0eb00h		;beeb
+	ld hl,0eb00h		;beeb   ; apunta a lo que hay debajo de las figuras
 	ld de,0ee41h		;beee
 	ld bc,0001dh		;bef1
 	ldir		;bef4

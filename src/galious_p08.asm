@@ -976,7 +976,7 @@ L_9CFA:
 	ld (0f008h),hl		;9cfd
 	ld hl,0ea30h		;9d00
 	ld (0f00ah),hl		;9d03
-	ld hl,0ea00h		;9d06
+	ld hl,0ea00h		;9d06   ; apunta a las puertas del castillo (figura 1, dos de 16 bytes)
 	ld (0f00ch),hl		;9d09
 	ld a,(0e041h)		;9d0c   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	ld hl,0a7bch		;9d0f
@@ -1354,7 +1354,7 @@ L_9F1A:
 	or a			;9f8a
 	ret z			;9f8b
 	ld a,001h		;9f8c
-	ld (0eac8h),a		;9f8e
+	ld (0eac8h),a		;9f8e   ; guarda lo que abre el objeto 0x12
 	call L_9D95		;9f91
 	jp L_9EF4		;9f94
 L_9F97:

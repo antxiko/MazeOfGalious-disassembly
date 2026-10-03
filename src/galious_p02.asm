@@ -2146,7 +2146,7 @@ L_900F:
 	call 05f79h		;902a   ; pinta_flechas: las flechas en la fila 0, columna 24
 	ld a,(0e501h)		;902d   ; lee quien juega (0 Afrodita)
 	or a			;9030
-	ld hl,0e050h		;9031
+	ld hl,0e050h		;9031   ; apunta a la experiencia de Afrodita (barra)
 	jr nz,L_9038		;9034
 	ld l,054h		;9036
 L_9038:
@@ -2222,7 +2222,7 @@ L_9099:
 	ld a,(de)			;90a5
 	dec e			;90a6
 	ld (de),a			;90a7
-	call 0604dh		;90a8
+	call 0604dh		;90a8   ; cabecera: los rotulos, flechas, monedas, llaves, arma y las cuatro barras
 	ld a,030h		;90ab
 	call 04e1fh		;90ad   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	ld a,0b4h		;90b0
@@ -2667,7 +2667,7 @@ L_9382:
 L_938E:
 	ld hl,0ec80h		;938e   ; apunta a la copia de la tabla de sprites (128 bytes)
 	ld (0e60ah),hl		;9391
-	call 073e4h		;9394
+	call 073e4h		;9394   ; pose_del_personaje: la pose 0xE502 (0xE53D en la pausa) de la tabla 0x7529
 	call L_9578		;9397
 	call L_9561		;939a
 	call 054bfh		;939d   ; sala_a_vram: la pantalla de la sala (0xED80) a las filas 4-23
@@ -2958,12 +2958,12 @@ L_958B:
 L_95A0:
 	call L_9708		;95a0
 	call L_9653		;95a3
-	ld hl,0eb00h		;95a6
+	ld hl,0eb00h		;95a6   ; apunta a lo que hay debajo de las figuras
 	ld de,0e046h		;95a9   ; apunta a las flechas (BCD)
 	ld a,006h		;95ac
 	ld c,000h		;95ae
 	call L_96C4		;95b0
-	ld de,0e051h		;95b3
+	ld de,0e051h		;95b3   ; apunta a el tope de la experiencia de Afrodita
 	ld a,004h		;95b6
 	ld c,001h		;95b8
 	call L_96C4		;95ba
@@ -2996,7 +2996,7 @@ L_95E0:
 	call L_96A3		;95e4
 	pop hl			;95e7
 	ld (hl),a			;95e8
-	ld hl,0eb00h		;95e9
+	ld hl,0eb00h		;95e9   ; apunta a lo que hay debajo de las figuras
 	ld de,0eb40h		;95ec
 	ld b,02bh		;95ef
 L_95F1:
@@ -3196,7 +3196,7 @@ L_9704:
 	xor a			;9704
 	ld (0e02bh),a		;9705
 L_9708:
-	ld hl,0eb00h		;9708
+	ld hl,0eb00h		;9708   ; apunta a lo que hay debajo de las figuras
 	ld de,0eb01h		;970b
 	ld (hl),000h		;970e
 	ld bc,000ffh		;9710
@@ -3220,7 +3220,7 @@ L_9722:
 	ret z			;972f
 	ld hl,0e02bh		;9730
 	ld a,(hl)			;9733
-	ld de,0eb00h		;9734
+	ld de,0eb00h		;9734   ; apunta a lo que hay debajo de las figuras
 	call 0413bh		;9737   ; de_mas_a: DE += A
 	ld a,(0e030h)		;973a
 	cp 00dh		;973d
@@ -3304,7 +3304,7 @@ L_97A0:
 	jp 05474h		;97ac   ; sprites_a_vram: la copia de la tabla de sprites (0xEC80) a 0x3B00
 L_97AF:
 	ld hl,03908h		;97af
-	ld de,0eb00h		;97b2
+	ld de,0eb00h		;97b2   ; apunta a lo que hay debajo de las figuras
 	call L_97C7		;97b5
 	ld hl,03948h		;97b8
 	ld de,0eb10h		;97bb
@@ -3335,7 +3335,7 @@ L_97DD:
 	ld (0e02dh),a		;97e6   ; guarda hecho (estado 0x12)
 	ret			;97e9
 L_97EA:
-	ld hl,0eb00h		;97ea
+	ld hl,0eb00h		;97ea   ; apunta a lo que hay debajo de las figuras
 	ld de,0eb40h		;97ed
 	ld b,02bh		;97f0
 L_97F2:
@@ -3363,7 +3363,7 @@ L_9800:
 	djnz L_97F2		;980b
 	ret			;980d
 L_980E:
-	ld de,0eb00h		;980e
+	ld de,0eb00h		;980e   ; apunta a lo que hay debajo de las figuras
 	ld l,000h		;9811
 	ld b,02bh		;9813
 L_9815:
@@ -3393,7 +3393,7 @@ L_982B:
 	ld c,000h		;9833
 	call L_98AD		;9835
 	ld de,0eb4ah		;9838
-	ld hl,0e051h		;983b
+	ld hl,0e051h		;983b   ; apunta a el tope de la experiencia de Afrodita
 	ld a,004h		;983e
 	ld c,001h		;9840
 	call L_98AD		;9842
@@ -3592,7 +3592,7 @@ L_9971:
 	ld (hl),d			;9979
 	inc l			;997a
 	ld b,000h		;997b
-	ld hl,0e062h		;997d
+	ld hl,0e062h		;997d   ; apunta a las barras que repintar (bits 0-3)
 	add hl,bc			;9980
 	ld a,(hl)			;9981
 	and 003h		;9982
@@ -3600,7 +3600,7 @@ L_9971:
 	bit 0,a		;9987
 	ret z			;9989
 	ld a,002h		;998a
-	ld (0e68ch),a		;998c
+	ld (0e68ch),a		;998c   ; guarda el dibujo de la puerta del mundo elegido
 	ret			;998f
 
 ; ----------------------------------------------------------------------
@@ -3684,7 +3684,7 @@ L_99C8:
 	inc l			;99e1
 	ld (hl),006h		;99e2
 	dec a			;99e4
-	ld (0e68ch),a		;99e5
+	ld (0e68ch),a		;99e5   ; guarda el dibujo de la puerta del mundo elegido
 	ret			;99e8
 L_99E9:
 	ld hl,0e689h		;99e9
@@ -3692,7 +3692,7 @@ L_99E9:
 	dec l			;99ee
 	ld c,(hl)			;99ef
 	ld b,000h		;99f0
-	ld hl,0e062h		;99f2
+	ld hl,0e062h		;99f2   ; apunta a las barras que repintar (bits 0-3)
 	add hl,bc			;99f5
 	set 0,(hl)		;99f6
 	res 1,(hl)		;99f8
@@ -3771,7 +3771,7 @@ L_9A65:
 L_9A76:
 	call 044eah		;9a76   ; personaje_4_a_7: C si el estado del personaje es 4-7
 	ret c			;9a79
-	ld hl,0e680h		;9a7a
+	ld hl,0e680h		;9a7a   ; apunta a hay puerta de vuelta en la sala
 	ld a,(hl)			;9a7d
 	or a			;9a7e
 	ret z			;9a7f
@@ -4192,7 +4192,7 @@ L_9DBB:
 	jp L_9DBB		;9dc2
 L_9DC5:
 	inc hl			;9dc5
-	ld de,0e680h		;9dc6
+	ld de,0e680h		;9dc6   ; apunta a hay puerta de vuelta en la sala
 	ldi		;9dc9
 	inc e			;9dcb
 	ldi		;9dcc
@@ -4275,7 +4275,7 @@ L_9E3B:
 	ld (0e0d1h),a		;9e54
 	ld a,00eh		;9e57
 L_9E59:
-	ld (0e502h),a		;9e59
+	ld (0e502h),a		;9e59   ; guarda la pose del personaje
 	ld a,082h		;9e5c
 	call 04e1fh		;9e5e   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 	ld hl,01f80h		;9e61
@@ -4376,7 +4376,7 @@ L_9EDA:
 	inc l			;9ef6
 	djnz L_9EDA		;9ef7
 	ld (0e60ah),hl		;9ef9
-	jp 073e4h		;9efc
+	jp 073e4h		;9efc   ; pose_del_personaje: la pose 0xE502 (0xE53D en la pausa) de la tabla 0x7529
 
 ; ----------------------------------------------------------------------
 ; DATOS ocho_direcciones: 8 parejas [dX][dY] (0xE8, 0, 0x10, 0xF8...), una por

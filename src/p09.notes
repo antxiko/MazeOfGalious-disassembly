@@ -97,6 +97,7 @@ F 0xBFE9 16
 # --- fin de los bloques de bloques.py ---
 
 # --- ANOTACIONES AUTOMATICAS (seccion que reescribe tools/anota.py; no editar a mano) ---
+C 0xA036 apunta a las puertas del castillo (figura 1, dos de 16 bytes)
 C 0xA053 despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
 C 0xA05E lee las llaves (BCD, 16 bits)
 C 0xA06B lee la y del personaje
@@ -140,6 +141,10 @@ C 0xA4CE lee la x del personaje
 C 0xA4DD guarda la x del personaje
 C 0xA4E9 guarda la x del personaje
 C 0xA4EC apunta a los huecos de figura (32 bytes cada uno)
+C 0xA4FE lee la y de la figura
+C 0xA509 lee la x de la figura
+C 0xA518 guarda la x de la figura
+C 0xA524 guarda la x de la figura
 C 0xA54C lee la y del personaje
 C 0xA553 lee la x del personaje
 C 0xA55D lee la x del personaje

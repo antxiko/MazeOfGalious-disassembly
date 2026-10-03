@@ -36,6 +36,824 @@ F 0x7DD9 2
 D 0x7DE3 0x7DE8 cinco_bytes_7de3  5 bytes, uno por demo, que p01:7DB5 pone en 0xE033 (solo se usan los dos primeros)
 D 0x7E88 0x7E8C zeus  Z E U S en ASCII: p01:7E6B compara cada letra pulsada con la de 0x7E88 + (0xE028) y cuenta los aciertos (una palabra secreta)
 D 0x7F98 0x7FA3 once_bytes_7f98  11 bytes que p01:7F5C lee en 0x7F97 + (0xE700) (0x4155), detras de la tabla de despacho de 0x7F82
+C 0x6003 el sitio de partida del mapa: tabla 0x6017...
+C 0x600c ...E = la y, D = la x
+C 0x6015 el sitio guardado en 0xE0D0
+C 0x602f al entrar en una sala: sin sala especial...
+C 0x6033 ...0xE603, 0xE536, 0xE539 y 0xE520 a 0...
+C 0x603f ...y 0xE620-0xE63F a cero
+C 0x604d la cabecera: los rotulos (POPOLON, APHRODITE, VIT, EXP)...
+C 0x6053 ...flechas, monedas y llaves...
+C 0x605c ...el arma elegida y las cuatro barras
+C 0x606b el arma elegida (0xE510): dos caracteres de 0x5F6B en la fila 1, columna 28
+C 0x607f al puerto del VDP
+C 0x6085 las barras que hay que repintar (bits de 0xE062)
+C 0x608a bit 0: la vida de Popolon
+C 0x6090 bit 1: la experiencia de Popolon
+C 0x6096 bit 2: la vida de Afrodita
+C 0x609c bit 3: la experiencia de Afrodita
+C 0x60a3 la vida de Popolon: fila 1, columna 2, caracteres azules (0x2D)
+C 0x60ad la de Afrodita: fila 1, columna 13, rojos (0x38)
+C 0x60b7 la experiencia de Popolon: fila 2, columna 2
+C 0x60c1 la de Afrodita: fila 2, columna 13
+C 0x60c9 la barra se monta en 0xF008: B' = los caracteres de color
+C 0x60d0 el extremo izquierdo (0x36)...
+C 0x60d5 ...y 6 vacios (0x35)
+C 0x60df el valor / 8: caracteres llenos (B' + 7)
+C 0x60f1 el resto: un caracter a medias (B' - 1 + resto)
+C 0x60fb el tope / 8...
+C 0x6107 ...lleva la marca 0x2C
+C 0x610d y el extremo derecho (0x37)
+C 0x6112 los 8 a la VRAM
+C 0x6126 con el personaje de 0xF000
+C 0x6130 el cambio pendiente del que juega: 0xE05E Afrodita, 0xE061 Popolon
+C 0x6138 sumar...
+C 0x613d ...sin pasar de 0x7F
+C 0x6142 restar sin pasar de -0x80
+C 0x6145 se suma al pendiente
+C 0x614b si es un golpe (negativo)...
+C 0x614e ...y no hay 0xE61E...
+C 0x6153 ...el sonido 0x29
+C 0x6158 A x 256...
+C 0x6161 ...a la de Afrodita...
+C 0x6169 ...o a la de Popolon
+C 0x6171 cada 4 cuadros, salvo hundiendose...
+C 0x6182 ...lo pendiente de los dos...
+C 0x6188 ...y las barras que han cambiado a 0xE062
+C 0x618d Afrodita: la experiencia (0xE050) con su pendiente (0xE05D)...
+C 0x619a ...la vida (0xE052) con la suya (0xE05E)
+C 0x61a3 sin vida, si es la que juega, muere
+C 0x61b2 Popolon: la experiencia (0xE054) con 0xE060...
+C 0x61c0 ...la vida (0xE056) con 0xE061
+C 0x61c9 sin vida, si es el que juega, muere
+C 0x61d8 un paso de la experiencia...
+C 0x61e0 ...si llega al tope (el byte siguiente)...
+C 0x61e5 ...vuelve a empezar desde lo que sobra...
+C 0x61e8 ...y si la vida no esta en su tope...
+C 0x61ec ...se le suma el tope de la vida: barra de experiencia llena = vida
+C 0x61f3 un paso de la vida...
+C 0x61fb ...sin pasar del tope
+C 0x6203 el pendiente: negativo, uno menos y el pendiente sube...
+C 0x620f ...positivo, uno mas y el pendiente baja
+C 0x6215 el titulo: sin sprites...
+C 0x6218 ...4 sprites de 0x93E7...
+C 0x6223 ...el rotulo de 0x933F (14 x 12) en la fila 1...
+C 0x622f ...y la lista de 0x7D51
+C 0x6235 los pasos del titulo a 0
+C 0x6243 0x30 cuadros antes de empezar
+C 0x6248 la mitad de arriba de la pantalla y los sprites a la VRAM
+C 0x6251 cada cuadro del titulo
+C 0x625b el paso 0xF01F (tabla que sigue)
+C 0x6267 el sprite baja de 2 en 2...
+C 0x626d ...en las y 0x6E, 0x7C y 0x8A cambia de dibujo...
+C 0x6279 ...y en la 0x98 se esconde: paso siguiente
+C 0x6286 el dibujo siguiente (+4)
+C 0x628e cuenta 0xF02C; a 0 acaba el titulo (0xE019 = 0)
+C 0x6298 cada 16 cuadros, el paso siguiente de 0xF020
+C 0x62b1 8 bytes de sprites de 0x93F7...
+C 0x62b4 ...a la copia de la tabla de sprites
+C 0x62bd o los de 0x93FF
+C 0x62c2 los dos sprites escondidos (y = 0xE0)...
+C 0x62d3 ...y 0x78 cuadros
+C 0x62da espera 0xF02B cuadros...
+C 0x62df ...y el sprite de 0x9407
+C 0x62ef 0xE6A0 a 0; solo en el castillo
+C 0x62f9 la lista de la sala en 0xB8A2 (listas acabadas en 0, una por sala)
+C 0x6309 cada entrada...
+C 0x630d ...si su bit en las marcas de la sala esta puesto, no sale
+C 0x6313 [y:3 x:5]: y en los 3 bits altos (+8)...
+C 0x6319 ...x en los 5 bajos (x 8)
+C 0x6325 a un hueco de 0xEC30
+C 0x632c tres huecos de 8 bytes en 0xEC30: el primero libre
+C 0x633c [1][0][y][x]...
+C 0x634b ...[casilla de la copia de nombres]...
+C 0x6355 ...[0x0F][numero en la lista]
+C 0x635d el numero siguiente (0xE6A0)...
+C 0x6363 ...su bit (numero + 5) en las marcas de la sala
+C 0x6371 los tres huecos de 0xEC30
+C 0x6385 los que estan en marcha (byte 1)...
+C 0x638f ...cuentan el byte 6; a 0 se vacian
+C 0x6398 con el objeto 0x21...
+C 0x639d ...el boton A...
+C 0x63a3 ...una sola vez (0xE632)...
+C 0x63ab ...llama a p15:B85C con cada hueco de 0xEC30 en uso
+C 0x63c2 las seis figuras de 0xE4A0 que van de sala en sala: tablas 0xBB24 y 0xBB54
+C 0x63cf la sala de partida...
+C 0x63d8 ...con C = 0x80
+C 0x63ea en el castillo, la sala en la tabla 0xBA53 (15 de [sala][ficha])...
+C 0x6404 ...su ficha en 0xEC20
+C 0x640b [E][sala][C][B][0][y][0][x]...
+C 0x642d ...y 6 bytes de la ficha detras
+C 0x643c mueve las seis de 0xE4A0
+C 0x6450 en el castillo, la que esta en esta sala...
+C 0x6466 ...ninguna: 0xEC10 a 0 y su sprite escondido
+C 0x6470 ...se copia en 0xEC10
+C 0x647a la mueve (p01:64EE)
+C 0x6481 subiendo (bit 1)...
+C 0x6487 ...si lleva al personaje (0xE52D)...
+C 0x6495 ...al pasar por arriba de la pantalla (y < 0x28)...
+C 0x649b ...a la sala de encima, por abajo (y = 0xB9)
+C 0x64a2 bajando, al pasar por abajo (y >= 0xC0)...
+C 0x64a8 ...a la de debajo, por arriba (y = 0x28)
+C 0x64ad la sala nueva: lista de 0xBA80 de la figura
+C 0x64cd si es la que se ve en esta sala...
+C 0x64d4 ...y lleva al personaje, lo suelta (0xE52B, 0xE52D)
+C 0x64e3 con el bit 0 de 0xEC12, el bit 2
+C 0x64ee la y (16 bits) mas la velocidad...
+C 0x6501 ...subiendo: hasta la sala y la y de arriba (bytes 0x0C-0x0D)...
+C 0x6516 ...bajando: hasta las de abajo (0x0E-0x0F)
+C 0x651f y da la vuelta: velocidad negada...
+C 0x6528 ...y el bit 1 cambiado
+C 0x6531 la figura de 0xEC20: la y mas la velocidad...
+C 0x654f ...lo que se ha movido en 0xEC2A
+C 0x6555 subiendo, hasta 0xEC2D...
+C 0x6562 ...bajando, hasta 0xEC2F
+C 0x656e 0xE614 a 0 y 16 + 17 huecos de figura
+C 0x657c en el castillo...
+C 0x657e ...dos bits por sala en 0xBA2E...
+C 0x6594 ...0 y 3: nada
+C 0x659a 1 o 2: en 0xE614, y los huecos de la tabla 0xBA28
+C 0x65a8 con el banco 9
+C 0x65c6 el pendiente de vida del que juega...
+C 0x65d1 ...si es negativo, a 0
+C 0x65d8 las vidas del que juega + 1 (BCD)
+C 0x65e5 0xE04C = 0, 0xE04D = quien juega, 0xE04E = el arma
+C 0x65f4 sin arma, la primera de 1-6 que se tenga
+C 0x6607 sin ninguna, 0
+C 0x660d la pantalla de la sala en la copia, a cero
+C 0x661b con el objeto 0x0A del mundo...
+C 0x6620 ...el rotulo de 0x66BF...
+C 0x662b ...y el mapa del mundo: tabla 0xAF2A...
+C 0x6637 ...[destino][ancho][alto] y las filas
+C 0x664a una fila del mapa...
+C 0x665c ...y a la siguiente
+C 0x666c el sitio de la sala en el mapa: tabla 0xB038...
+C 0x6685 ...a 0xF020
+C 0x668a su marca: los sprites de 0xE670
+C 0x668f con el objeto 0x1A, otra marca: el sitio de 0xB0FC del mapa, en 0xE674
+C 0x66a5 la y del sprite: nibble alto x 4 + 0x90...
+C 0x66ae ...la x: nibble bajo x 8 + 1...
+C 0x66b9 ...el dibujo 0xA4 y el color C
+C 0x66c2 los dos personajes: Afrodita...
+C 0x66ca ...y Popolon
+C 0x66d5 con vidas o sin ellas (+1)...
+C 0x66da ...su dibujo de 2 x 2 de la tabla 0x66F7
+C 0x6715 la pantalla de objetos: el rotulo de 0x6776...
+C 0x6720 ...los objetos 0x0D-0x2A, tres filas de diez...
+C 0x6730 ...y los 0x07-0x0A, una de seis
+C 0x673d el objeto: si se tiene, 2 x 2 caracteres...
+C 0x6745 ...y la casilla siguiente
+C 0x675a los caracteres del objeto, de 4 en 4 desde L...
+C 0x675f ...si se tiene
+C 0x6767 2 x 2
+C 0x677a las armas 0x01-0x06...
+C 0x6784 ...las que se tengan...
+C 0x678c ...separadas 3 casillas (2 en medio)
+C 0x679c el marco de las armas: dos filas de 0x40 entre 0x42/0x48 y 0x43/0x49
+C 0x67ae y sus esquinas (0x41)
+C 0x67b9 el arma: sus dos caracteres de 0x5F6B
+C 0x67d6 D, 15 x 0x40 y E
+C 0x67e2 cada cuadro de la pantalla de objetos
+C 0x67f4 arriba o abajo: de fila (personaje o arma)
+C 0x67fc en la fila de las armas...
+C 0x6807 ...izquierda o derecha...
+C 0x6810 ...a la derecha (bit 3)...
+C 0x6814 ...a la izquierda: la anterior que se tenga (de 6 vuelve a dar la vuelta)
+C 0x6823 el arma elegida
+C 0x6829 a la derecha: la siguiente que se tenga
+C 0x683d en la fila del personaje: en el mapa 6 hace falta el objeto 0x23...
+C 0x684b ...y en el mapa 8 el 0x0D
+C 0x6854 izquierda o derecha...
+C 0x685a ...el otro personaje...
+C 0x6866 ...si le quedan vidas
+C 0x686a el sonido 0x2C
+C 0x686f cambia de fila (0xE04C)...
+C 0x687b ...a la de armas solo si hay alguna
+C 0x6885 los sprites de la pantalla de objetos
+C 0x688e la mano que señala: en Afrodita (0x91) o en Popolon (0x61)...
+C 0x689c ...parpadea si su fila esta elegida
+C 0x68aa [y 0x27][x][dibujo 0xA0][color 3]
+C 0x68b6 la mano de las armas...
+C 0x68c6 ...parpadea si su fila esta elegida
+C 0x68ce [y 0xA3][x del arma, tabla 0x68E3][dibujo 0xA0][color 15]
+C 0x68ea las marcas del mapa parpadean (bit 3 del contador)
+C 0x6903 al salir de la pantalla de objetos: juega el elegido...
+C 0x690a ...con una vida menos...
+C 0x6914 ...y el arma elegida
+C 0x691a no en el mapa 12
+C 0x6922 la lista de la sala en 0xB25D (listas acabadas en 0)...
+C 0x693e ...cada byte es un sitio del tramo de RAM del mapa (0xAF09)...
+C 0x6952 ...que se pone a 0
+C 0x6957 el logotipo de Konami: el rle de 0xBCEF...
+C 0x6963 ...sus colores a 0...
+C 0x696d ...y 6 filas de 21 caracteres desde el 0x40 en la fila 8, columna 7
+C 0x6985 cada cuadro una columna mas del logotipo (0xE00E/0xE00F)...
+C 0x69a2 ...sus 21 caracteres en color 0xF0
+C 0x69aa 8 por columna...
+C 0x69b3 ...y 6 columnas: Z al acabar
+C 0x69b9 la pantalla del estado 0x0C: la sala a 0...
+C 0x69c6 ...el dibujo de 0xBBCF (24 x 12) en la fila 4...
+C 0x69d5 ...y con 0xE678 la lista de 0xBB58
+C 0x69e3 en los mundos, la lista de 0x9C83 del mapa: [sala][b][c]...
+C 0x69fe ...la de esta sala: 0xE678 = el nibble bajo (0xFF si es 0)...
+C 0x6a03 ...y y, x en 0xE679-0xE67A
+C 0x6a1e los textos que suben: la fuente grande...
+C 0x6a27 ...0x2A0 bytes de dibujos a 0xE800...
+C 0x6a2d ...corridos para hacer las letras de dos medias filas...
+C 0x6a4e ...de vuelta a la VRAM
+C 0x6a5d 36 caracteres...
+C 0x6a8e ...a sus sitios nuevos (2 x caracter + 8)
+C 0x6aa7 todo en color 0xF0
+C 0x6ac5 STORY (0xAE28)
+C 0x6aca EPILOGUE (0xA84A)
+C 0x6acd el texto en 0xF020, sin espera
+C 0x6adc cada dos cuadros...
+C 0x6ae2 ...si no hay espera...
+C 0x6ae9 ...las letras suben un pixel...
+C 0x6aec ...y cada 8, media fila de caracteres
+C 0x6af9 las filas impares suben...
+C 0x6b02 ...y la linea nueva abajo
+C 0x6b05 una media fila o la otra
+C 0x6b10 la pantalla a la VRAM
+C 0x6b26 11 filas de 32, de dos en dos
+C 0x6b40 la linea nueva: a cero...
+C 0x6b49 ...del texto: 0xFB delante calla la musica...
+C 0x6b59 ...0xFD n espera n...
+C 0x6b5d ...0xFE linea vacia...
+C 0x6b61 ...0xFF acaba...
+C 0x6b65 ...[columna][largo][caracteres]
+C 0x6b72 la espera en 0xF023
+C 0x6b80 cuenta la espera
+C 0x6b8a los dibujos de las letras suben un pixel: 35 caracteres de 16 bytes...
+C 0x6b96 ...el byte de arriba pasa abajo
+C 0x6b9f y a la VRAM
+C 0x6bab el texto se acabo
+C 0x6bb0 el jefe en la copia de nombres: con jefe...
+C 0x6bbe ...el 6 va aparte...
+C 0x6bc2 ...los demas, con el bit 7...
+C 0x6bc7 ...segun los bits 6 y 5 de 0xE709
+C 0x6bd5 el jefe 6: 9 filas de 15 caracteres
+C 0x6bea el mosaico del jefe (0x9E0A) y su sitio en la copia (0xE712)
+C 0x6bf9 el jefe en tres trozos: el mosaico de 0xE70A (4 filas de 6, desde la columna 4)...
+C 0x6c09 ...el de 0xE719 (4 de 2, fila 1 columna 2)...
+C 0x6c1c ...y el de 0xE718 (1 de 2, en la fila de 0xE71C)
+C 0x6c34 C' = lo que sobra de cada fila del mosaico
+C 0x6c38 con el bit 4 de la ficha, las filas de (ix+0x1A)
+C 0x6c41 una fila...
+C 0x6c48 ...y a la siguiente de la pantalla y del mosaico
+C 0x6c56 la cosa de la sala en la copia de nombres...
+C 0x6c5b ...7-0x2C: 2 x 2 desde el caracter 0x76...
+C 0x6c5f ...0x2D-0x2F: 2 x 2 desde 0x60 + 4 x (tipo - 0x2D)
+C 0x6c7c ...1-6: una pareja de la tabla 0x6C87
+C 0x6c95 la puerta del mundo elegido...
+C 0x6c9d ...en su sitio (0xE68A-0xE68B)...
+C 0x6ca5 ...el dibujo 0xE68C de 0x6CC7 (12 caracteres)...
+C 0x6cb4 ...3 filas de 4
+C 0x6ceb una figura de mosaico entra: su tamaño (0x9D90)...
+C 0x6cf4 ...lo que cabe en pantalla...
+C 0x6cfd ...con el bit 4 de la ficha, las filas de (ix+0x1A)
+C 0x6d06 guarda lo que hay debajo
+C 0x6d14 lo mismo, con su casilla desde la y y la x
+C 0x6d34 vuelve a poner lo que habia debajo
+C 0x6d49 B filas de C bytes de HL a DE (filas de 32)
+C 0x6d5e el mosaico (ix+0x0A) encima, sin los 0...
+C 0x6d74 ...lo que sobra de cada fila del mosaico
+C 0x6d87 los 0 no se pintan
+C 0x6da0 lo mismo empezando mas a la derecha en el mosaico (lo que no cabe por la izquierda)
+C 0x6ddc la casilla de la figura (y, x)...
+C 0x6deb ...y las columnas que caben antes del borde derecho
+C 0x6df7 las figuras de los huecos: A = 0 las de detras, 1 las de delante
+C 0x6dfa sus sprites desde 0xECBC
+C 0x6e02 los huecos de 0xE635 (B), y C mas
+C 0x6e13 los sprites que sobran...
+C 0x6e1d ...escondidos
+C 0x6e23 el sprite de DE escondido (y = 0xE0)
+C 0x6e2b solo las que estan en pantalla (bit 7)
+C 0x6e30 bit 7 de la ficha: de sprites
+C 0x6e36 los tipos 0x5D-0x5E van en la otra pasada
+C 0x6e4e bit 6 de la ficha: p01:6F2C
+C 0x6e54 el tipo 0x5C: 2 x 2 desde 0xBA
+C 0x6e5b el 0x6B: 2 x 2 desde 0x7A
+C 0x6e61 2 x 2 caracteres seguidos en su casilla
+C 0x6e79 los demas: su mosaico (ix+0x0A)...
+C 0x6e8f ...fila a fila
+C 0x6ea7 C = ancho y B = alto del mosaico A (0x9D90)
+C 0x6eb3 de sprites, solo en la primera pasada
+C 0x6eb8 la ficha: bits 0-2 cuantos sprites, 3-5 como se ponen
+C 0x6ec8 bit 6: p01:6F2C
+C 0x6ed1 los desplazamientos de cada sprite segun los bits 3-5
+C 0x6eff el segundo sprite, desplazado: y - 1 + H...
+C 0x6f06 ...x + L...
+C 0x6f0c ...y el dibujo y color de (ix+0x12) y (ix+0x13)
+C 0x6f16 el primero: [y - 1][x][dibujo (ix+0x0A)][color (ix+0x0B)]
+C 0x6f2c bit 6 de la ficha: por el ancho (ix+0x0B), tabla que sigue
+C 0x6f54 una columna: 0xB5 arriba...
+C 0x6f6a ...0xB4 en medio...
+C 0x6f6f ...y 0x99 abajo (el tipo 4)
+C 0x6f73 2 x 2 caracteres desde (ix+0x0A)
+C 0x6f8a una fila de (ix+0x1F) caracteres de la tabla 0xA77E...
+C 0x6f99 ...en el mapa 10, con 0x22 menos
+C 0x6fb5 cuatro sprites de color 15 y uno mas (dibujo 0xA0, color 12)
+C 0x6fce cuatro sprites de 16 x 16 en cuadro, del color de A:
+C 0x6fe4 sus dibujos de la tabla 0x7039 (4 por figura)...
+C 0x6ff1 ...el de arriba a la izquierda...
+C 0x7006 ...arriba a la derecha (x + 16)...
+C 0x7016 ...abajo a la izquierda (y + 16)...
+C 0x7026 ...y abajo a la derecha
+C 0x7079 dos sprites de color 6, el segundo 3 mas a la derecha...
+C 0x707f ...o 3 mas a la izquierda
+C 0x7083 sus dibujos de la tabla 0x70BE (2 por figura)
+C 0x70a7 el segundo: y + 3, x + 0xF005, color 11
+C 0x70c6 una cadena de sprites de color 8: (bits 0-2 de la ficha) - 1 eslabones...
+C 0x70d6 ...la cabeza...
+C 0x70f4 ...cada uno 16 mas abajo (o mas arriba con (ix+0x15))...
+C 0x7102 ...dibujo 0xD4 (0xC8 en el tipo 0x62)
+C 0x7111 la cabeza: dibujo 0xD0 color 4 (0xC8 color 8 en el tipo 0x62)
+C 0x7131 cuatro sprites: dos 0xC4 de color 4 encima y 0xC8/0xCC debajo
+C 0x717b una fila de (ix+0x16) sprites con sus dibujos desde (ix+0x18)...
+C 0x718f ...[y][x][dibujo][color (ix+0x15)]...
+C 0x71aa ...la x del siguiente segun los anchos de las tablas 0x71D9 y 0x71DE
+C 0x71e3 las figuras del castillo de cada cuadro
+C 0x7204 con 0xEAC8 (lo que abre el objeto 0x12)...
+C 0x7209 ...16 caracteres 0xC4 en la fila 11
+C 0x7214 la columna de 0xEAA0
+C 0x7219 las dos puertas de 0xEA00 (figura 1)
+C 0x7231 si esta y tiene alto (byte 4)...
+C 0x723b ...su casilla (bytes 5-6) y su caracter (byte 8)...
+C 0x7244 ...en columna
+C 0x724c las dos de 0xEA30 (figura 2): dibujos de 0xA6FB
+C 0x7261 el dibujo (byte 4), ancho y alto (bytes 8-9), en su casilla (6-7)
+C 0x727c fila a fila
+C 0x7290 las cuatro de 0xEA60 (figura 4): dibujos de 0xA74C
+C 0x72b6 la de 0xEA50 (figura 3): dibujos de 0xA726
+C 0x72c9 en su casilla, 3 filas de 1 (dibujo 0) o de 3
+C 0x72ec con 0xEAB0, las dos de 0xEAB8: 0xC2 0xC3 en su casilla
+C 0x730b con 0xEA20 (figura 7), los 3 x 4 de 0xA772 en 0xEA24
+C 0x732f las escaleras de 0xEC08...
+C 0x733c ...y 0xEC00: columnas de 0x9A 0x9B
+C 0x7355 con 0xEAC9, 3 x 4 de 0xF0 en la fila 4, columna 28
+C 0x735f con 0xEAC0, 3 x 4 de 0xF0 en 0xEAC2
+C 0x7378 los tres huecos de 0xEC30 en la copia de nombres
+C 0x738b su casilla (bytes 4-5)...
+C 0x7396 ...2 x 2 de 0x73AF, o de 0x73B3 si el byte 1 no es 0
+C 0x73b7 la puerta de vuelta (0xE680): 2 x 2 de 0x73D2 en 0xE684
+C 0x73d6 15 sprites escondidos y el personaje en los primeros
+C 0x73e4 la pose del personaje: tabla 0x7529...
+C 0x73ec ...0xE53D en la pausa, 0xE502 si no...
+C 0x73f4 ...0xFF: ninguna
+C 0x73fe [cuantos] y [dy][dx][dibujo][color] cada sprite
+C 0x7400 la y + dy - 1
+C 0x7408 la x + dx
+C 0x740d el tercero se esconde con 0xE523
+C 0x7421 el dibujo
+C 0x742c al hundirse (4) o con 0xE533 = 1, parpadea
+C 0x743a el color: el segundo sprite (y el tercero en la pausa) siempre el de la tabla
+C 0x744b Afrodita (bit 0 de 0xE501 a 0) lleva el 9
+C 0x745c parpadeo: cada dos cuadros el 6 (salvo el segundo sprite)
+C 0x746d los tres huecos de 0xE540 a los sprites de 0xEC8C
+C 0x7486 y los tres de 0xE5A0, tres sprites cada uno, desde 0xEC98
+C 0x74a1 con el bit 2...
+C 0x74a7 ...o el tipo 5
+C 0x74af tres sprites de la tabla 0x74D8 o 0x74E1 (bit 2 del contador)...
+C 0x74be ...[dy][dx][dibujo], color 15
+C 0x74ea un hueco de 0xE540: con el bit 7 de (ix+0x14) aparte
+C 0x74f5 el caracter (ix+0x0A) en la casilla (ix+0x15)
+C 0x74ff y el siguiente caracter (+1 o -1 segun el bit 0 de (ix+0x10)) al lado
+C 0x750c con el bit 7 de (ix+0x14), los tipos 1-4 son un sprite
+C 0x766c las figuras de sala en sala de esta sala (0xE614 de ellas)...
+C 0x7674 ...sus sprites en 0xECF8 (o 0xECF0 con dos)
+C 0x767c la de 0xEC10...
+C 0x7688 ...y la de 0xEC20
+C 0x7694 y las que no estan, escondidas
+C 0x769c dos sprites 0xE4 de color 15, uno al lado del otro (x + 16)
+C 0x76c6 lo que hay debajo de las figuras, a 0xEB00
+C 0x76d8 los 16 huecos de figura
+C 0x76ed solo en pantalla y de caracteres (sin el bit 7 de la ficha)
+C 0x76f7 bit 6: aparte
+C 0x76fa el tamaño del mosaico...
+C 0x7700 ...su casilla...
+C 0x770f ...y lo que hay debajo, fila a fila
+C 0x7720 los de bit 6, por el ancho: 0 una columna, 1 una fila, 6 un cuadro de 2 x 2
+C 0x773f una columna de (ix+0x14) + 1
+C 0x7753 una fila de (ix+0x1F)
+C 0x7761 los tres huecos de 0xE540
+C 0x7776 los de caracteres (sin el bit 7 de (ix+0x14)): su casilla y dos caracteres
+C 0x7794 la cosa de la sala: sus 2 x 2
+C 0x77a9 el jefe
+C 0x77ca de 5 x 14
+C 0x77ee las figuras del castillo: lo de debajo
+C 0x780f con 0xEAC8, la fila 11 entera (16 casillas)
+C 0x781d la columna de 0xEAA0
+C 0x7822 las dos puertas de 0xEA00
+C 0x783a si esta: su casilla desde la y y la x (bytes 2-3)...
+C 0x7849 ...a los bytes 5-6...
+C 0x7852 ...y su columna de (byte 4) casillas
+C 0x7862 las dos de 0xEA30
+C 0x7877 su casilla (bytes 2-3 a 6-7)...
+C 0x7894 ...su ancho y alto de la tabla 0x78BA a (ix+8) y (ix+9)...
+C 0x78a8 ...y lo de debajo, fila a fila
+C 0x78c4 las cuatro de 0xEA60
+C 0x78d9 la de 0xEA50
+C 0x78e6 la x (byte 2) y la y (byte 4), 8 mas arriba si el dibujo no es el 0...
+C 0x78f8 ...su casilla a los bytes 7-8
+C 0x7904 3 filas de 1 o de 3
+C 0x791e con 0xEAB0, las dos de 0xEAB7: su casilla y dos caracteres
+C 0x794d con 0xEA20: su casilla (0xEA24) y 3 x 4
+C 0x796d las escaleras de 0xEC08 y 0xEC00: columnas de 2
+C 0x7991 los bloques de 0xEAC9 y 0xEAC0: 3 x 4
+C 0x79b2 los tres huecos de 0xEC30: 2 x 2 de su casilla
+C 0x79dd vuelve a poner lo que habia debajo de las figuras (0xEB00)
+C 0x79ec y debajo del jefe
+C 0x7a05 segun los bits 6 y 5 de 0xE709
+C 0x7a13 el de 5 x 14
+C 0x7a36 los 16 huecos de figura
+C 0x7a4b en pantalla y de caracteres...
+C 0x7a58 ...el mosaico entero en su casilla
+C 0x7a77 los de bit 6: columna, fila o 2 x 2
+C 0x7abb los tres de 0xE540: dos caracteres
+C 0x7ae5 la cosa de la sala: 2 x 2
+C 0x7afe lo de 0xEB00 de vuelta en las figuras del castillo
+C 0x7b1f con 0xEAC8, la fila 11
+C 0x7b4a si esta: su alto (byte 4) y su casilla (bytes 5-6)...
+C 0x7b5c ...en columna
+C 0x7b7e su casilla (6-7), ancho y alto (8-9)...
+C 0x7b8f ...fila a fila
+C 0x7bbc su dibujo (byte 5) y su casilla (7-8)...
+C 0x7bd0 ...3 filas de 1 o de 3
+C 0x7beb con 0xEAB0, las dos de 0xEAB8: dos caracteres
+C 0x7c11 con 0xEA20, 3 x 4
+C 0x7c4c columnas de 2
+C 0x7c6d 3 filas de 4
+C 0x7c7e los tres huecos de 0xEC30: 2 x 2 en su casilla
+C 0x7d82 la demostracion: una partida nueva...
+C 0x7d8d ...en la sala de 0x7DD9 de la demostracion 0xE023 (se usan la 0 y la 1)...
+C 0x7d9e ...montada...
+C 0x7da1 ...con el arma 1 y 100 flechas
+C 0x7db2 lo que dura: tabla 0x7DE3
+C 0x7dbe con musica si no esta callada
+C 0x7dca 0xE01A y 0xE00B a 0; en juego; 0xE00C = 1
+C 0x7de8 un cuadro de la demostracion: los sprites y la partida...
+C 0x7dee ...cada 32 cuadros baja lo que queda (0xE033)...
+C 0x7dff ...a cero se apaga la musica
+C 0x7e04 al salir por un lado...
+C 0x7e09 ...la sala vecina, montada
+C 0x7e22 las teclas de la demostracion: cuenta 0xE00C...
+C 0x7e28 ...la tecla 0xE022 hace de mando (0xFF acaba la demostracion)
+C 0x7e35 la pareja siguiente de la tabla 0xBAFD (banco 15) de la demostracion...
+C 0x7e49 ...[cuadros][teclas]
+C 0x7e57 solo en la sala 1 del castillo
+C 0x7e5f la tecla...
+C 0x7e66 ...recien apretada...
+C 0x7e6b ...comparada con la letra que toca de ZEUS (0x7E88)
+C 0x7e79 una que no va: vuelta a empezar
+C 0x7e7c las cuatro: ZEUS tecleado
+C 0x7e8c al acabar la partida, una sola vez...
+C 0x7e91 ...con ZEUS...
+C 0x7e96 ...y F5...
+C 0x7e9a ...se borra F5 CONTINUE...
+C 0x7ea0 ...sin experiencia ni pendientes...
+C 0x7eb5 ...una vida para Afrodita y ninguna para Popolon...
+C 0x7ebc ...y la vida llena
+C 0x7edd F5 en la demostracion: C la primera vez que se aprieta (0xE032)
+C 0x7ef1 la fila 7 del teclado: el bit 1 es F5
+C 0x7efc el jefe cada cuadro: 0xE0D2 = 1...
+C 0x7f06 ...2, el humo...
+C 0x7f0d ...4, en pie: p06:B3E7 y p06:B3F7
+C 0x7f1d mientras 0xE0D5, nada mas
+C 0x7f22 lo de su tipo
+C 0x7f2a con el bit 4, p06:B0ED
+C 0x7f38 por el tipo del jefe (tabla que sigue)
+C 0x7f56 3: el jefe sale: su tipo...
+C 0x7f5c ...su vida de la tabla 0x7F97...
+C 0x7f63 ...a la mitad con el objeto 0x07 del mundo...
+C 0x7f6c ...en (ix+0x10)
+C 0x7f73 paso 0 y banderas 0xF0
+C 0x7f7b y lo de entrar de su tipo
+C 0x7fd0 1: a 2, 0x41 cuadros de humo y la musica 0x90
+C 0x7fdb 2: el humo...
+C 0x7fe2 ...cada 8 cuadros...
+C 0x7fe7 ...una nube (figura 0x63) en uno de los 8 sitios de 0x8003
+C 0x6fe5 4 dibujos por figura (ix+0x0A)
+C 0x6ff5 la x
+C 0x6ff9 [y]...
+C 0x6ffb ...[x]...
+C 0x6ffe ...[dibujo]...
+C 0x7003 ...[color]
+C 0x7008 x + 16
+C 0x700e su dibujo
+C 0x7013 y el color
+C 0x701c la x de partida
+C 0x701f su dibujo
+C 0x7029 x + 16 otra vez
+C 0x702f el cuarto dibujo
+C 0x7034 y el color
+C 0x7038 DE queda tras los cuatro
+C 0x7134 la y - 1...
+C 0x7138 ...y la x
+C 0x713c arriba: la y de (ix+0x16) - 1...
+C 0x7144 ...dibujo 0xC4 color 4...
+C 0x714c ...y otro a su derecha (x + 16)
+C 0x715f abajo: dibujo 0xC8 de color 8...
+C 0x716b ...y a su derecha...
+C 0x7172 ...el 0xCC
+C 0x7192 [y]...
+C 0x7197 ...[x]...
+C 0x7199 ...[dibujo de la lista]...
+C 0x719c ...[color (ix+0x15)]
+C 0x71a1 quedan sprites?
+C 0x71ab el ancho por la derecha del dibujo (0x71D9)...
+C 0x71bb ...y por la izquierda del siguiente (0x71DE)...
+C 0x71cc ...dan la x del siguiente...
+C 0x71d1 ...16 mas abajo
+C 0x6eb7 en la de delante no
+C 0x6ebc bits 0-5: como se ponen y cuantos
+C 0x6ebf C' = 7 - cuantos
+C 0x6ecc 1: un sprite
+C 0x6ecf 2: dos, el segundo desplazado...
+C 0x6ed2 ...segun los bits 3-5:
+C 0x6ed8 0: encima
+C 0x6ede 1: 16 a la derecha
+C 0x6ee3 2: 16 a la izquierda
+C 0x6ee8 3: 16 abajo
+C 0x6eee 4: 16 arriba
+C 0x6ef3 5: 16 arriba y 16 a la derecha
+C 0x6ef9 6: 16 arriba y 16 a la izquierda
+C 0x7085 lo que se mueve el segundo, en 0xF005
+C 0x7088 2 dibujos por figura (ix+0x0A)
+C 0x7093 la y - 1 y la x
+C 0x709b [y][x]...
+C 0x70a0 ...[dibujo]...
+C 0x70a5 ...[color 6]
+C 0x70a8 el segundo 3 mas abajo...
+C 0x70ad ...y movido
+C 0x70b4 su dibujo...
+C 0x70b8 ...de color 11
+C 0x769f la y (byte 5)...
+C 0x76a5 ...- 1
+C 0x76aa la x (byte 7)...
+C 0x76ac ...y la del de al lado
+C 0x76b0 dibujo 0xE4...
+C 0x76b4 ...color 15
+C 0x76b9 el de la derecha, igual
+C 0x76c4 C: estaba
+C 0x640e la sala
+C 0x6411 las banderas (C)
+C 0x6414 B
+C 0x6417 la y: fraccion 0...
+C 0x641b ...y la de la tabla
+C 0x6420 la x: fraccion 0...
+C 0x6423 ...y la de la tabla
+C 0x6428 la segunda mitad de la ficha (+8)...
+C 0x6430 ...la velocidad (2 bytes)...
+C 0x6434 ...y los topes (4 bytes, desde +0x0C)
+C 0x7bbf si esta...
+C 0x7bc9 ...su dibujo (byte 5)...
+C 0x7bcc ...su casilla (bytes 7-8)
+C 0x7bd4 3 filas de 1 con el dibujo 0, de 3 con los demas
+C 0x67ba el arma siguiente...
+C 0x67bd ...si se tiene...
+C 0x67c0 ...su numero (7 - lo que queda)...
+C 0x67c7 ...sus dos caracteres de 0x5F6B...
+C 0x67cf ...a la pantalla
+C 0x67d4 C: se tiene
+C 0x66db 6 bytes por dibujo...
+C 0x66e2 ...en 0x66F7: [casilla]...
+C 0x66ea ...[2 caracteres arriba]...
+C 0x66f2 ...[2 abajo]
+C 0x792b la y y la x...
+C 0x792e ...sin x, no esta
+C 0x793a su casilla a la ficha
+C 0x7940 y sus dos caracteres de debajo
+C 0x70e0 [y]...
+C 0x70e2 ...[x]...
+C 0x70e4 ...[dibujo]...
+C 0x70e7 ...[color 8]
+C 0x70ea mas eslabones?
+C 0x70f6 hacia arriba con (ix+0x15)
+C 0x74c1 + dy
+C 0x74c5 la x...
+C 0x74c8 ...+ dx
+C 0x74cc el dibujo
+C 0x74cf color 15
+C 0x74d4 los tres
+C 0x78e0 si esta...
+C 0x78ea ...el dibujo (byte 5)...
+C 0x78ef ...la y (byte 4)
+C 0x78f2 8 mas arriba
+C 0x7b4d el alto (byte 4)...
+C 0x7b55 ...y la casilla (bytes 5-6)
+C 0x7b59 sin alto, nada
+C 0x79c5 si esta...
+C 0x79c8 ...su casilla (bytes 4-5)...
+C 0x79d0 ...y sus 2 x 2 de debajo
+C 0x6d8c el siguiente
+C 0x6d90 fila siguiente de la pantalla...
+C 0x6d97 ...y del mosaico (lo que sobra)
+C 0x6d9d B filas
+C 0x7724 0: una columna
+C 0x7727 1: una fila
+C 0x7729 6: 2 x 2
+C 0x772c de su casilla...
+C 0x7736 ...la fila de abajo
+C 0x60d8 6 vacios
+C 0x60e3 los llenos
+C 0x60e8 B' (el color)...
+C 0x60eb ...+ 7: lleno
+C 0x6f79 el caracter de (ix+0x0A)...
+C 0x6f7e ...y los tres siguientes
+C 0x6f80 la fila de abajo
+C 0x7114 [y (ix+0x16)]...
+C 0x7116 ...[x]...
+C 0x711f ...[0xD0][4]
+C 0x7128 el tipo 0x62: [0xC8][8]
+C 0x6e67 el caracter A...
+C 0x6e69 ...el siguiente a la derecha...
+C 0x6e6b ...y los dos de abajo
+C 0x6f19 la y - 1...
+C 0x6f1c ...la x...
+C 0x6f21 ...el dibujo (ix+0x0A)...
+C 0x6f26 ...y el color (ix+0x0B)
+C 0x727d una fila...
+C 0x7281 ...y a la siguiente: 32 - ancho
+C 0x728d B filas
+C 0x72dc una fila de C...
+C 0x72e0 ...y a la siguiente
+C 0x72e9 3 filas
+C 0x73bc la casilla de la puerta...
+C 0x73c0 ...2 x 2 de 0x73D2...
+C 0x73c8 ...la fila de abajo
+C 0x7b90 una fila...
+C 0x7b94 ...y a la siguiente: 32 - ancho
+C 0x7ba0 B filas
+C 0x7bdb una fila de C...
+C 0x7bdf ...y a la siguiente
+C 0x7be8 3 filas
+C 0x7bf8 si esta...
+C 0x7bfd ...su casilla...
+C 0x7c04 ...y sus dos caracteres
+C 0x6748 la casilla siguiente
+C 0x674a C por fila
+C 0x674e la fila siguiente (2 filas mas abajo)
+C 0x6753 10 por fila
+C 0x6755 B filas
+C 0x6c65 la casilla de la cosa: A...
+C 0x6c69 ...A + 1 a la derecha...
+C 0x6c6c ...y los dos de abajo
+C 0x7514 [y]...
+C 0x7519 ...[x]...
+C 0x751e ...[dibujo]...
+C 0x7523 ...[color]
+C 0x694a el sitio...
+C 0x694c ...0 acaba
+C 0x6d4d una fila...
+C 0x6d51 ...y la siguiente de 32
+C 0x72f7 si esta...
+C 0x72fc ...su casilla...
+C 0x72ff ...0xC2 y 0xC3
+C 0x78ab una fila...
+C 0x78ad ...y a la siguiente: 32 - ancho
+C 0x7912 una fila de C...
+C 0x7914 ...y a la siguiente
+C 0x7a2a una fila de 14...
+C 0x7a2c ...y la siguiente de 32
+C 0x7c93 si esta...
+C 0x7c98 ...su casilla...
+C 0x7c9e ...2 de arriba...
+C 0x7ca2 ...y 2 de abajo
+C 0x6dcd el siguiente
+C 0x6dd1 la fila siguiente de 32
+C 0x6dd9 B filas
+C 0x6f5a filas de 32
+C 0x6f5d (ix+0x14) caracteres...
+C 0x6f63 ...el primero 0xB5
+C 0x6931 salta una lista (hasta su 0)...
+C 0x6936 ...hasta la de la sala B
+C 0x731b una fila de 4...
+C 0x7323 ...y la siguiente (28 mas alla)
+C 0x77e4 una fila de 14...
+C 0x77e7 ...y la siguiente de 32
+C 0x7a69 una fila...
+C 0x7a6c ...y la siguiente: 32 - ancho
+C 0x7ad0 si esta...
+C 0x7ad5 ...y es de caracteres...
+C 0x7ada ...sus dos caracteres en su casilla
+C 0x7c1e una fila de 4...
+C 0x7c26 ...y la siguiente
+C 0x69f3 [sala][b][c]: 0 acaba
+C 0x69f7 la de esta sala?
+C 0x69fa no: la siguiente
+C 0x6dbd una fila: desde lo que no cabe...
+C 0x6dc4 ...del mosaico
+C 0x737f un hueco de 0xEC30...
+C 0x7383 ...y el siguiente (8 bytes)
+C 0x795d 4 caracteres...
+C 0x7965 ...y la fila siguiente
+C 0x7c6f 4 caracteres...
+C 0x7c74 ...y la fila siguiente
+C 0x6831 el arma de HL...
+C 0x6837 ...si no se tiene, la siguiente
+C 0x7aa1 un caracter...
+C 0x7aa4 ...y el de debajo
+C 0x63fb la sala de la tabla?
+C 0x63fe no: la entrada siguiente (3 bytes)
+C 0x65fd la primera arma que se tenga...
+C 0x6605 ...o ninguna
+C 0x6819 la anterior...
+C 0x681f ...si no se tiene, otra
+C 0x6fac cada caracter menos 0x22
+C 0x6fb2 B de ellos
+C 0x734d 0x9A 0x9B...
+C 0x7350 ...fila a fila
+C 0x736e 4 x 0xF0...
+C 0x7373 ...y la fila siguiente
+C 0x739f los dos de arriba...
+C 0x73a3 ...y los dos de abajo
+C 0x7857 un caracter...
+C 0x785a ...y el de debajo
+C 0x7985 dos caracteres...
+C 0x7989 ...y la fila siguiente
+C 0x79a5 4 caracteres...
+C 0x79aa ...y la fila siguiente
+C 0x6301 hasta el 0 de la lista...
+C 0x6306 ...una por sala anterior
+C 0x6a18 [lo de la sala][y][x]
+C 0x6d37 B filas de C desde la casilla de la figura
+C 0x6d40 con el bit 4 de la ficha, (ix+0x1A) filas
+C 0x7749 una columna
+C 0x774b la fila de abajo
+C 0x7aad una fila de (ix+0x1F) en su casilla
+C 0x7c32 con la escalera de 0xEC08...
+C 0x7c37 ...su casilla y su alto
+C 0x6fe8 x 4...
+C 0x6fed ...en 0x7039
+C 0x6ff4 la y - 1
+C 0x6ffc DE = la tabla, HL = los sprites
+C 0x7000 (BC solo de paso)
+C 0x7005 el segundo: [y]...
+C 0x700b ...[x + 16]...
+C 0x7019 el tercero: y + 16...
+C 0x701a ...[y]...
+C 0x701e ...su dibujo...
+C 0x7024 ...[color]
+C 0x7027 el cuarto: [y + 16]...
+C 0x702c ...[x + 16]
+C 0x7133 el color de abajo, 8
+C 0x713f - 1
+C 0x7140 [y]...
+C 0x7142 ...[x]...
+C 0x7148 ...[color 4]
+C 0x7150 [y]...
+C 0x7152 ...[x + 16]...
+C 0x7157 ...[0xC4]...
+C 0x715b ...[4]
+C 0x7161 [x]...
+C 0x7163 ...[0xC8]...
+C 0x7167 ...[8]
+C 0x716d [x + 16]...
+C 0x7176 ...[8]
+C 0x7194 la x tambien a (ix+0x13)
+C 0x71a5 el ultimo: se acabo
+C 0x71ae el dibujo - 0xA0...
+C 0x71b1 ...entre 4: una de 8 formas
+C 0x71b8 lo que sobra por la derecha
+C 0x71ba el dibujo siguiente
+C 0x71c8 lo que sobra por la izquierda
+C 0x71cd x + derecha - izquierda
+C 0x71d0 HL vuelve a los sprites
+C 0x71d5 y el siguiente
+C 0x7084 B: lo que se mueve
+C 0x708b x 2...
+C 0x708f ...en 0x70BE
+C 0x7096 - 1
+C 0x7097 la x
+C 0x709d [x]
+C 0x70ab [y + 3]
+C 0x70b0 x + lo de 0xF005
+C 0x70ba [color 11]
+C 0x664e el ancho...
+C 0x6654 ...los caracteres de la fila...
+C 0x6659 ...y sigue la tabla
+C 0x665f la fila siguiente de la pantalla
+C 0x6666 cuantas filas
+C 0x6676 la sala...
+C 0x667c ...su byte en la tabla
+C 0x6686 el sitio, en 0xF020
+C 0x6689 en el castillo nada mas
+C 0x669d el sitio de la marca 2
+C 0x66a3 color 5
+C 0x76a1 HL al byte 5 de la ficha
+C 0x76a6 C = la y
+C 0x76a8 HL al byte 7
+C 0x76ae B = x + 16
+C 0x76bb [x + 16]
+C 0x76bd [0xE4]
+C 0x76c0 [15]
+C 0x787c HL = la ficha + 2...
+C 0x7883 ...la y...
+C 0x7886 ...la x
+C 0x788e la casilla en los bytes 6-7
+C 0x7899 el dibujo (byte 4)
+C 0x78a0 ancho y alto a (ix+8) y (ix+9)
 
 # --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
 D 0x6000 0x6002 partida_5FFF_cola  la instruccion de p00:5FFF (32 | 07 E5) empieza al final del banco 0 y acaba al principio del 1, que el cartucho pone siempre a continuacion: aqui el resto; lo leen p00:5FFF (2 bytes)
@@ -75,237 +893,535 @@ F 0x7FFE 4
 # --- fin de los bloques de bloques.py ---
 
 # --- ANOTACIONES AUTOMATICAS (seccion que reescribe tools/anota.py; no editar a mano) ---
+L 0x6003 sitio_de_partida la y y la x de partida del mapa (tabla 0x6017)
+L 0x6015 sitio_guardado la y y la x de 0xE0D0
+L 0x602F borra_al_entrar 0xE690, 0xE603, 0xE536, 0xE539, 0xE520 y 0xE620-0xE63F a cero
+L 0x604D cabecera los rotulos, flechas, monedas, llaves, arma y las cuatro barras
+L 0x606B pinta_arma el arma elegida (0xE510) en la fila 1, columna 28
+L 0x6085 repinta_barras las barras de los bits de 0xE062
+L 0x60A3 barra_vida_popolon la barra de vida de Popolon
+L 0x60AD barra_vida_afrodita la barra de vida de Afrodita
+L 0x60B7 barra_exp_popolon la barra de experiencia de Popolon
+L 0x60C1 barra_exp_afrodita la barra de experiencia de Afrodita
+L 0x60C9 barra la barra de DE (valor y tope) en la VRAM de HL
+L 0x6126 cambia_vida_de como cambia_vida, para el personaje de 0xF000
 L 0x612C cambia_vida suma A (con signo) al cambio de vida pendiente del que juega
 L 0x6158 suma_experiencia suma A x 256 a la experiencia del que juega
+L 0x6171 vida_y_experiencia cada 4 cuadros, lo pendiente de vida y experiencia de los dos
+L 0x618D pendiente_afrodita la experiencia y la vida pendientes de Afrodita
+L 0x61B2 pendiente_popolon la experiencia y la vida pendientes de Popolon
+L 0x61D8 paso_de_experiencia un paso de la experiencia; llena, rellena la vida
+L 0x61F3 paso_de_vida un paso de la vida hasta su tope
+L 0x6203 paso_pendiente uno arriba o abajo de (HL) segun el pendiente (DE)
+L 0x6215 empieza_titulo el titulo: sprites, rotulo y espera
+L 0x6248 titulo_a_vram la mitad de arriba y los sprites a la VRAM
+L 0x6251 cuadro_del_titulo un cuadro de la animacion del titulo
+L 0x62EF cosas_del_castillo 0xE6A0 a 0 y lo de la sala del castillo (tabla 0xB8A2)
+L 0x632C hueco_ec30 pone en el primer hueco libre de 0xEC30 lo de la y, x de 0xF002
+L 0x635D marca_de_la_lista NZ si la entrada siguiente de la lista ya esta en las marcas de la sala
+L 0x6371 cuenta_huecos_ec30 los tres huecos de 0xEC30: cuentan y se vacian
+L 0x6385 cuenta_hueco_ec30 el hueco IX cuenta su byte 6; a 0 se vacia
+L 0x6398 objeto_21 con el objeto 0x21 y el boton A, p15:B85C con cada hueco de 0xEC30
+L 0x63C2 figuras_de_sala_en_sala las seis figuras de 0xE4A0 (tablas 0xBB24, 0xBB54)
+L 0x63EA figura_ec20 en el castillo, la figura de la tabla 0xBA53 en 0xEC20
+L 0x640B pon_figura_movil rellena la ficha de IX
+L 0x643C mueve_de_sala_en_sala mueve las seis de 0xE4A0 y copia en 0xEC10 la de esta sala
+L 0x647A mueve_una mueve una de 0xE4A0 y la cambia de sala por arriba o por abajo
+L 0x64EE mueve_y la y mas la velocidad y la vuelta en sus topes
+L 0x651F da_la_vuelta la velocidad negada y el bit 1 cambiado
+L 0x6531 mueve_ec20 la figura de 0xEC20 sube y baja entre sus topes
+L 0x656E huecos_de_la_sala 0xE614 y cuantos huecos de figura (tablas 0xBA2E, 0xBA28)
+L 0x65A8 pantalla_de_objetos monta la pantalla de objetos (estado 0x0B)
+L 0x65C6 vidas_mas_una sin pendiente negativo, una vida mas, 0xE04C-0xE04E y el arma
+L 0x660D borra_pantalla_de_sala la pantalla de la sala en la copia a cero
+L 0x661B mapa_del_mundo con el objeto 0x0A, el mapa del mundo (0xAF2A) y sus marcas
+L 0x66A5 marca_del_mapa el sprite de marca en el sitio de 0xF020
+L 0x66C2 personajes_de_objetos los dibujos de Afrodita y Popolon (con o sin vidas)
+L 0x66D5 personaje_de_objetos un dibujo de 2 x 2 de la tabla 0x66F7
+L 0x6715 objetos_que_se_tienen los objetos 0x0D-0x2A y 0x07-0x0A que se tienen
+L 0x673D fila_de_objetos las filas de objetos de 2 x 2
+L 0x675A objeto_si_se_tiene C y sus 2 x 2 caracteres si se tiene el objeto
+L 0x677A armas_que_se_tienen las armas 0x01-0x06 que se tienen y su marco
+L 0x67B9 arma_si_se_tiene C y sus dos caracteres si se tiene el arma
+L 0x67D6 fila_de_marco D, 15 x 0x40 y E
+L 0x67E2 cuadro_de_objetos un cuadro de la pantalla de objetos
+L 0x67F4 elige_en_objetos fila, arma o personaje con el mando
+L 0x686F cambia_de_fila de la fila del personaje a la de armas y vuelta
+L 0x6885 sprites_de_objetos las marcas y las manos de la pantalla de objetos
+L 0x688E mano_del_personaje la mano que señala al personaje
+L 0x68B6 mano_del_arma la mano que señala el arma
+L 0x68EA marcas_del_mapa las marcas del mapa, parpadeando
+L 0x6903 sale_de_objetos juega el elegido, con una vida menos y su arma
+L 0x691A borra_marcas_de_la_sala los sitios de la lista 0xB25D de la sala a 0 en el tramo del mapa
+L 0x6957 logotipo_de_konami el logotipo: sus dibujos y 6 x 21 caracteres en la fila 8
+L 0x6985 columna_del_logotipo una columna mas del logotipo; Z al acabar
+L 0x69B9 pantalla_del_estado_0c el dibujo de 0xBBCF y la lista de 0xBB58 segun 0xE678
+L 0x69E3 cosa_e678 en los mundos, 0xE678-0xE67A de la lista 0x9C83 de la sala
+L 0x6A1E fuente_de_los_textos la fuente de dos medias filas de los textos que suben
+L 0x6AB5 fuente_a_e800 0x2A0 bytes de dibujos de HL a 0xE800
+L 0x6ABE dibujos_a_cero 0x6D8 bytes de dibujos a 0 en los tres tercios
+L 0x6AC1 filvrm_bc BC bytes a 0 en los tres tercios
+L 0x6AC5 texto_story el texto STORY (0xAE28)
+L 0x6ACA texto_epilogue el texto EPILOGUE (0xA84A)
+L 0x6ADC sube_el_texto un paso del texto que sube
+L 0x6B26 sube_medias_filas 11 filas de la copia de nombres, de dos en dos
+L 0x6B40 linea_del_texto la linea siguiente del texto (0xFB, 0xFD, 0xFE, 0xFF)
+L 0x6B8A letras_un_pixel los dibujos de las letras suben un pixel
+L 0x6BA5 e800_a_vram BC bytes de 0xE800 a los tres tercios
+L 0x6BB0 jefe_en_la_copia el mosaico del jefe en la copia de nombres
+L 0x6BEA mosaico_del_jefe HL = el mosaico 0xE70A, DE = su sitio 0xE712
+L 0x6BED mosaico_a HL = el mosaico A (0x9E0A), DE = el sitio del jefe (0xE712)
+L 0x6BF9 jefe_en_trozos el jefe de tres mosaicos (0xE70A, 0xE719, 0xE718)
+L 0x6C34 trozo_de_mosaico B filas del mosaico de HL en DE
+L 0x6C56 cosa_en_la_copia los caracteres de la cosa de la sala en su casilla
+L 0x6C95 puerta_del_mundo_elegido la puerta de 3 x 4 del mundo elegido (0x6CC7)
+L 0x6CEB guarda_debajo guarda lo que tapa la figura de mosaico
+L 0x6D14 guarda_debajo_yx guarda lo que tapa la figura, con su casilla desde la y y la x
+L 0x6D34 repone_debajo vuelve a poner lo que tapaba la figura
+L 0x6D49 copia_filas B filas de C bytes de HL a DE, en filas de 32
+L 0x6D59 repone_debajo_ancho vuelve a poner lo que tapaba, con el ancho entero
+L 0x6D5E pinta_mosaico el mosaico de la figura en la copia, sin los 0
+L 0x6DA0 pinta_mosaico_cortado el mosaico cortado por la izquierda
+L 0x6DDC casilla_y_ancho la casilla de la figura y las columnas que caben
+L 0x6DF7 pinta_figuras las figuras de los huecos: A = 0 las de detras, 1 las de delante
+L 0x6E1D esconde_b_sprites B sprites desde DE con y = 0xE0
+L 0x6E23 sprite_escondido el sprite de DE con y = 0xE0
+L 0x6E2B pinta_figura una figura: sprites, 2 x 2 o mosaico
+L 0x6EA7 tamano_de_mosaico C = ancho, B = alto del mosaico A (0x9D90)
+L 0x6EB3 sprites_de_figura los sprites de la figura segun su ficha
+L 0x6EFF dos_sprites dos sprites: el desplazado (ix+0x12, 0x13) y el de (ix+0x0A, 0x0B)
+L 0x6F16 un_sprite un sprite: [y - 1][x][dibujo (ix+0x0A)][color (ix+0x0B)]
+L 0x6F2C figura_especial las figuras de bit 6: por (ix+0x0B)
+L 0x6F54 columna_b4 una columna de 0xB5, 0xB4... y 0x99
+L 0x6F73 dos_por_dos 2 x 2 caracteres desde (ix+0x0A)
+L 0x6F8A fila_de_a77e una fila de la tabla 0xA77E
+L 0x6FB5 cuatro_y_uno cuatro sprites de color 15 y uno mas
+L 0x6FE4 cuatro_sprites cuatro sprites de 16 x 16 en cuadro (tabla 0x7039) del color de A
+L 0x7079 dos_sprites_derecha dos sprites de color 6, el segundo a la derecha
+L 0x707F dos_sprites_izquierda dos sprites de color 6, el segundo a la izquierda
+L 0x7083 dos_sprites_tabla dos sprites de la tabla 0x70BE
+L 0x70C6 cadena una cadena de sprites (bits 0-2 de la ficha)
+L 0x7111 cabeza_de_cadena la cabeza de la cadena
+L 0x7131 cuatro_c4_c8 cuatro sprites 0xC4, 0xC8, 0xCC
+L 0x717B fila_de_sprites una fila de (ix+0x16) sprites
+L 0x71E3 figuras_del_castillo las figuras del castillo de cada cuadro
+L 0x7214 columna_eaa0 la columna de 0xEAA0
+L 0x7219 puertas_del_castillo las dos puertas de 0xEA00 (figura 1)
+L 0x722E columna_de_figura la columna de la figura IX
+L 0x724C figuras_2 las dos de 0xEA30 (figura 2, dibujos 0xA6FB)
+L 0x7261 figura_2 una de 0xEA30
+L 0x7290 figuras_4 las cuatro de 0xEA60 (figura 4, dibujos 0xA74C)
+L 0x72A5 figura_4 una de 0xEA60
+L 0x72B6 figura_3 la de 0xEA50 (figura 3, dibujos 0xA726)
+L 0x72EC figuras_eab0 las dos de 0xEAB8: 0xC2 0xC3
+L 0x730B figura_7 los 3 x 4 de 0xA772 (figura 7)
+L 0x732F escalera_ec08 la escalera de 0xEC08
+L 0x733C escalera_ec00 la escalera de 0xEC00
+L 0x7355 bloque_eac9 con 0xEAC9, 3 x 4 de 0xF0
+L 0x735F bloque_eac0 con 0xEAC0, 3 x 4 de 0xF0
+L 0x7378 huecos_ec30_en_la_copia los tres huecos de 0xEC30 en la copia de nombres
+L 0x738B hueco_ec30_a_la_copia los 2 x 2 de un hueco de 0xEC30 (0x73AF entero, 0x73B3 si no)
+L 0x73B7 puerta_de_vuelta la puerta de vuelta (0xE680) en 0xE684
+L 0x73D6 sprites_del_personaje 15 sprites escondidos y la pose del personaje
+L 0x73E4 pose_del_personaje la pose 0xE502 (0xE53D en la pausa) de la tabla 0x7529
+L 0x746D sprites_de_armas los huecos de 0xE540 y 0xE5A0 a sus sprites
+L 0x74A1 tres_sprites tres sprites de la tabla 0x74D8/0x74E1
+L 0x74EA hueco_e540 un hueco de 0xE540
+L 0x750C hueco_e540_sprite los tipos 1-4 de 0xE540 como un sprite
+L 0x7514 sprite_de_figura [y][x][dibujo (ix+0x0A)][color (ix+0x0B)] en DE
+L 0x766C sprites_de_sala_en_sala los sprites de las figuras de sala en sala de esta sala
+L 0x769C dos_sprites_e4 dos sprites 0xE4 de color 15, uno al lado del otro
+L 0x76C6 guarda_lo_de_debajo lo que hay debajo de cada figura, a 0xEB00
+L 0x76D8 debajo_de_los_huecos lo de debajo de los 16 huecos de figura
+L 0x76ED debajo_de_figura lo de debajo de una figura de caracteres
+L 0x7761 debajo_de_e540 lo de debajo de los huecos de 0xE540
+L 0x7776 debajo_de_un_e540 lo de debajo de un hueco de 0xE540
+L 0x7794 debajo_de_la_cosa lo de debajo de la cosa de la sala
+L 0x77A9 debajo_del_jefe lo de debajo del jefe
+L 0x77EE debajo_del_castillo lo de debajo de las figuras del castillo
+L 0x781D debajo_eaa0 lo de debajo de la columna de 0xEAA0
+L 0x7822 debajo_de_las_puertas lo de debajo de las puertas de 0xEA00
+L 0x7837 debajo_de_columna lo de debajo de la columna de IX
+L 0x7862 debajo_figuras_2 lo de debajo de las de 0xEA30
+L 0x7877 debajo_figura_2 lo de debajo de una de 0xEA30
+L 0x78C4 debajo_figuras_4 lo de debajo de las de 0xEA60
+L 0x78D9 debajo_figura_3 lo de debajo de la de 0xEA50
+L 0x78DD debajo_figura_3_4 lo de debajo de una de 0xEA50/0xEA60
+L 0x791E debajo_eab0 lo de debajo de las de 0xEAB7
+L 0x794D debajo_figura_7 lo de debajo de la de 0xEA20
+L 0x796D debajo_escalera_ec08 lo de debajo de la escalera de 0xEC08
+L 0x797A debajo_escalera_ec00 lo de debajo de la escalera de 0xEC00
+L 0x7991 debajo_bloque_eac9 lo de debajo del bloque de 0xEAC9
+L 0x799B debajo_bloque_eac0 lo de debajo del bloque de 0xEAC0
+L 0x79B2 debajo_ec30 lo de debajo de los huecos de 0xEC30
+L 0x79C5 debajo_un_ec30 lo de debajo de un hueco de 0xEC30
+L 0x79DD repone_lo_de_debajo vuelve a poner lo de 0xEB00 donde estaban las figuras
+L 0x79F4 repone_debajo_del_jefe vuelve a poner lo de debajo del jefe
+L 0x7A36 repone_huecos lo de debajo de los 16 huecos
+L 0x7A4B repone_hueco lo de debajo de un hueco
+L 0x7ABB repone_e540 lo de debajo de los huecos de 0xE540
+L 0x7AD0 repone_un_e540 lo de debajo de un hueco de 0xE540
+L 0x7AE5 repone_la_cosa lo de debajo de la cosa de la sala
+L 0x7AFE repone_el_castillo lo de 0xEB00 de vuelta en las figuras del castillo
+L 0x7B2D repone_eaa0 vuelve la columna de 0xEAA0
+L 0x7B32 repone_puertas vuelve lo de las puertas de 0xEA00
+L 0x7B47 repone_columna vuelve lo de la columna de IX
+L 0x7B69 repone_figuras_2 vuelve lo de las de 0xEA30
+L 0x7B7E repone_figura_2 vuelve lo de una de 0xEA30
+L 0x7BA3 repone_figuras_4 vuelve lo de las de 0xEA60
+L 0x7BB8 repone_figura_3 vuelve lo de la de 0xEA50
+L 0x7BBC repone_figura_3_4 vuelve lo de una de 0xEA50/0xEA60
+L 0x7BEB repone_eab0 vuelve lo de las de 0xEAB8
+L 0x7C11 repone_figura_7 vuelve lo de la de 0xEA20
+L 0x7C32 repone_escalera_ec08 vuelve lo de la escalera de 0xEC08
+L 0x7C40 repone_escalera_ec00 vuelve lo de la escalera de 0xEC00
+L 0x7C5A repone_bloque_eac9 vuelve lo del bloque de 0xEAC9
+L 0x7C64 repone_bloque_eac0 vuelve lo del bloque de 0xEAC0
+L 0x7C7E repone_ec30 vuelve lo de los huecos de 0xEC30
+L 0x7C93 repone_un_ec30 vuelve lo de un hueco de 0xEC30
+L 0x7D82 empieza_demostracion la demostracion 0xE023 (tabla 0x7DD9; se usan la 0 y la 1)
+L 0x7DE8 cuadro_de_demostracion un cuadro de la demostracion
+L 0x7E22 teclas_de_demostracion las teclas grabadas de la demostracion (0xBAFD, banco 15)
 L 0x7E57 mira_zeus en la pausa de F2 y en la sala 1 del castillo, cuenta las letras de ZEUS
+L 0x7E8C sigue_con_f5 con ZEUS y F5, la partida sigue (una vez)
+L 0x7EDD f5_una_vez C la primera vez que se aprieta F5
 L 0x7EF1 tecla_f5 C si F5 esta apretada (fila 7 de la matriz)
+L 0x7EFC jefe_cada_cuadro el jefe: humo, salida y lo de su tipo
+L 0x7F38 lo_del_jefe la rutina del tipo de jefe (tabla 0x7F40)
+L 0x7F56 sale_el_jefe el jefe sale: tipo, vida (0x7F97, a la mitad con el objeto 0x07)
+L 0x7FD0 empieza_el_humo 0xE0D2 = 2, 0x41 cuadros de humo y la musica 0x90
+L 0x7FDB humo una nube cada 8 cuadros en los sitios de 0x8003
 C 0x6006 lee el mapa (1 el castillo, 2-11 los mundos)
 C 0x6009 palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x600D guarda la y del personaje
 C 0x6011 guarda la x del personaje
 C 0x6030 guarda la sala especial (pista o tienda)
 C 0x6050 lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
-C 0x6053 pinta_flechas: las flechas en la fila 0, columna 24
 C 0x6056 pinta_monedas: las monedas en la fila 1, columna 24
 C 0x6059 pinta_llaves: las llaves en la fila 2, columna 24
+C 0x605F barra_vida_popolon: la barra de vida de Popolon
+C 0x6062 barra_vida_afrodita: la barra de vida de Afrodita
+C 0x6065 barra_exp_popolon: la barra de experiencia de Popolon
+C 0x6068 barra_exp_afrodita: la barra de experiencia de Afrodita
 C 0x606E vram_para_escribir: SETWRT de HL y C' = el puerto de datos del VDP
-C 0x60A3 apunta a la vida de Popolon
-C 0x60AD apunta a la vida de Afrodita
+C 0x6072 lee el arma elegida
+C 0x608C barra_vida_popolon: la barra de vida de Popolon
+C 0x6092 barra_exp_popolon: la barra de experiencia de Popolon
+C 0x6098 barra_vida_afrodita: la barra de vida de Afrodita
+C 0x609E barra_exp_afrodita: la barra de experiencia de Afrodita
 C 0x610F figuras_quietas: 0xE602 = 1: no se tocan los sprites
 C 0x6115 vram_para_escribir: SETWRT de HL y C' = el puerto de datos del VDP
 C 0x6123 figuras_sueltas: 0xE602 = 0
 C 0x612D lee quien juega (0 Afrodita)
-C 0x6130 apunta a el cambio de vida pendiente de Afrodita (con signo)
 C 0x6155 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0x615B lee quien juega (0 Afrodita)
-C 0x6161 lee la experiencia de Afrodita
 C 0x6165 guarda la experiencia de Afrodita
-C 0x6169 lee la experiencia de Popolon
 C 0x616D guarda la experiencia de Popolon
+C 0x6172 guarda las barras que repintar (bits 0-3)
 C 0x6175 lee el estado del personaje (5 = hundirse)
 C 0x617B lee el contador de cuadros de partida
-C 0x619A apunta a la vida de Afrodita
+C 0x6185 pendiente_popolon: la experiencia y la vida pendientes de Popolon
+C 0x6189 guarda las barras que repintar (bits 0-3)
+C 0x6191 apunta a la experiencia de Afrodita (barra)
+C 0x6194 apunta a la experiencia pendiente de Afrodita
+C 0x6197 paso_de_experiencia: un paso de la experiencia; llena, rellena la vida
 C 0x619D apunta a el cambio de vida pendiente de Afrodita (con signo)
-C 0x61A3 lee la vida de Afrodita
+C 0x61A0 paso_de_vida: un paso de la vida hasta su tope
 C 0x61A9 lee quien juega (0 Afrodita)
 C 0x61AD muere: la vida y la experiencia del que juega a cero
-C 0x61C0 apunta a la vida de Popolon
+C 0x61B7 apunta a la experiencia de Popolon (barra)
+C 0x61BA apunta a la experiencia pendiente de Popolon
+C 0x61BD paso_de_experiencia: un paso de la experiencia; llena, rellena la vida
 C 0x61C3 apunta a el cambio de vida pendiente de Popolon (con signo)
-C 0x61C9 lee la vida de Popolon
+C 0x61C6 paso_de_vida: un paso de la vida hasta su tope
 C 0x61CF lee quien juega (0 Afrodita)
 C 0x61D3 muere: la vida y la experiencia del que juega a cero
-C 0x6215 esconde_sprites: la copia de la tabla de sprites (0xEC80) con y = 0xE0
+C 0x61EE cambia_vida_de: como cambia_vida, para el personaje de 0xF000
 C 0x621B apunta a la copia de la tabla de sprites (128 bytes)
+C 0x622C copia_filas: B filas de C bytes de HL a DE, en filas de 32
 C 0x6232 lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
-C 0x6239 guarda el umbral de pared (0xBA, 0xF0 con jefe)
+C 0x6236 guarda el paso del titulo
 C 0x6240 guarda en juego (a 0 se acaba la vida: estado 6)
 C 0x624B nombres_a_vram_bc: BC bytes de 0xED00 a 0x3800
 C 0x624E sprites_a_vram: la copia de la tabla de sprites (0xEC80) a 0x3B00
 C 0x625E despacha: salta a la entrada A de la tabla de palabras que va detras del call
+C 0x6281 apunta a el paso del titulo
 C 0x6294 guarda en juego (a 0 se acaba la vida: estado 6)
-C 0x6298 lee el contador de cuadros
-C 0x629E apunta a el umbral de pared (0xBA, 0xF0 con jefe)
 C 0x62A4 despacha: salta a la entrada A de la tabla de palabras que va detras del call
+C 0x62D0 titulo_a_vram: la mitad de arriba y los sprites a la VRAM
+C 0x62F0 guarda el numero en la lista de la sala
 C 0x62F3 lee el mapa (0xE041) y la sala (0xE042) de un tiron
-C 0x634B casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x6358 lee el numero en la lista de la sala
+C 0x635E apunta a el numero en la lista de la sala
 C 0x636B lee la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)
-C 0x6398 lee tiene el objeto 0x21
-C 0x639D lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
-C 0x63EA lee el mapa (0xE041) y la sala (0xE042) de un tiron
-C 0x6450 lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x637C cuenta_hueco_ec30: el hueco IX cuenta su byte 6; a 0 se vacia
+C 0x63DB pon_figura_movil: rellena la ficha de IX
+C 0x63F1 apunta a la figura que sube y baja del castillo
+C 0x6447 mueve_una: mueve una de 0xE4A0 y la cambia de sala por arriba o por abajo
 C 0x645D lee la sala
+C 0x6467 guarda la figura de sala en sala que esta en esta sala
+C 0x6471 apunta a la figura de sala en sala que esta en esta sala
 C 0x64B4 palabra_de_tabla: DE = la palabra A de la tabla de HL
-C 0x651F de_negado: DE = -DE
+C 0x64E0 guarda la figura que lleva al personaje
+C 0x656B da_la_vuelta: la velocidad negada y el bit 1 cambiado
+C 0x656F guarda el tipo de sala del castillo (tabla 0xBA2E)
 C 0x6575 guarda cuantos huecos de figura hay y el byte siguiente (16 bits)
 C 0x6578 lee el mapa (0xE041) y la sala (0xE042) de un tiron
 C 0x65A0 palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x65A3 guarda cuantos huecos de figura hay y el byte siguiente (16 bits)
-C 0x65A8 a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
+C 0x65AB borra_pantalla_de_sala: la pantalla de la sala en la copia a cero
 C 0x65AE esconde_sprites: la copia de la tabla de sprites (0xEC80) con y = 0xE0
+C 0x65B1 vidas_mas_una: sin pendiente negativo, una vida mas, 0xE04C-0xE04E y el arma
+C 0x65B4 personajes_de_objetos: los dibujos de Afrodita y Popolon (con o sin vidas)
+C 0x65B7 objetos_que_se_tienen: los objetos 0x0D-0x2A y 0x07-0x0A que se tienen
+C 0x65BA armas_que_se_tienen: las armas 0x01-0x06 que se tienen y su marco
+C 0x65BD mapa_del_mundo: mapa = 0xE688 + 1, sala 1
 C 0x65C0 sala_a_vram: la pantalla de la sala (0xED80) a las filas 4-23
 C 0x65C3 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
-C 0x65C6 lee quien juega (0 Afrodita)
 C 0x65CA apunta a el cambio de vida pendiente de Afrodita (con signo)
-C 0x65D8 lee quien juega (0 Afrodita)
 C 0x65DB apunta a las vidas de Afrodita (BCD)
 C 0x65EA lee quien juega (0 Afrodita)
+C 0x65EF lee el arma elegida
 C 0x65FA apunta a tiene el objeto 0x01
-C 0x660D apunta a la pantalla de la sala en la copia (filas 4-23)
-C 0x661B lee tiene el objeto 0x0A
+C 0x6609 guarda el arma elegida
 C 0x662E lee el mapa (1 el castillo, 2-11 los mundos)
 C 0x6633 palabra_de_tabla: DE = la palabra A de la tabla de HL
-C 0x666C lee el mapa (1 el castillo, 2-11 los mundos)
 C 0x6672 palabra_de_tabla: DE = la palabra A de la tabla de HL
-C 0x6676 lee la sala
 C 0x667E lee el mapa (1 el castillo, 2-11 los mundos)
-C 0x6686 guarda el umbral de pared (0xBA, 0xF0 con jefe)
-C 0x668F lee tiene el objeto 0x1A
+C 0x6682 apunta a los sprites de las marcas del mapa
+C 0x668C marca_del_mapa: el sprite de marca en el sitio de 0xF020
 C 0x6694 lee el mapa (1 el castillo, 2-11 los mundos)
 C 0x669A byte_de_tabla: A = el byte HL + A
-C 0x669D guarda el umbral de pared (0xBA, 0xF0 con jefe)
-C 0x66AE lee el umbral de pared (0xBA, 0xF0 con jefe)
-C 0x66C2 apunta a las vidas de Afrodita (BCD)
-C 0x66CA apunta a las vidas de Popolon (BCD)
+C 0x66C7 personaje_de_objetos: un dibujo de 2 x 2 de la tabla 0x66F7
+C 0x66CF personaje_de_objetos: un dibujo de 2 x 2 de la tabla 0x66F7
+C 0x66D2 mano_del_personaje: la mano que señala al personaje
 C 0x6724 apunta a tiene el objeto 0x0D
+C 0x672D fila_de_objetos: las filas de objetos de 2 x 2
 C 0x6734 apunta a tiene el objeto 0x07
 C 0x677E apunta a tiene el objeto 0x01
-C 0x67E2 a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
+C 0x6785 arma_si_se_tiene: C y sus dos caracteres si se tiene el arma
+C 0x67A2 fila_de_marco: D, 15 x 0x40 y E
+C 0x67AB fila_de_marco: D, 15 x 0x40 y E
+C 0x67B6 mano_del_arma: la mano que señala el arma
 C 0x67E5 sala_a_vram: la pantalla de la sala (0xED80) a las filas 4-23
 C 0x67E8 lee_el_mando: el mando en 0xE009 (apretado) y 0xE008 (recien apretado)
+C 0x67EB elige_en_objetos: fila, arma o personaje con el mando
+C 0x67EE sprites_de_objetos: las marcas y las manos de la pantalla de objetos
 C 0x67F1 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
-C 0x67F4 lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
+C 0x67F9 cambia_de_fila: de la fila del personaje a la de armas y vuelta
+C 0x6802 lee el arma elegida en la pantalla de objetos
 C 0x680A lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
-C 0x683D lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x6824 guarda el arma elegida
 C 0x6844 lee tiene el objeto 0x23
 C 0x684F lee tiene el objeto 0x0D
-C 0x6854 lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 C 0x6861 apunta a las vidas de Afrodita (BCD)
 C 0x686C pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x6888 pinta_arma: el arma elegida (0xE510) en la fila 1, columna 28
+C 0x688B mano_del_arma: la mano que señala el arma
 C 0x6899 apunta a la copia de la tabla de sprites (128 bytes)
 C 0x68A2 lee el contador de cuadros
-C 0x68C6 lee el contador de cuadros
+C 0x68A7 sprite_escondido: el sprite de DE con y = 0xE0
+C 0x68B9 lee el arma elegida en la pantalla de objetos
+C 0x68BD sprite_escondido: el sprite de DE con y = 0xE0
+C 0x68C0 lee la fila elegida en la pantalla de objetos (0 personaje, 1 arma)
+C 0x68CB sprite_escondido: el sprite de DE con y = 0xE0
+C 0x68D2 lee el arma elegida en la pantalla de objetos
 C 0x68D8 de_mas_a: DE += A
 C 0x68ED lee el contador de cuadros
+C 0x68F4 apunta a los sprites de las marcas del mapa
+C 0x68FD sprite_escondido: el sprite de DE con y = 0xE0
+C 0x6900 sprite_escondido: el sprite de DE con y = 0xE0
 C 0x6907 guarda quien juega (0 Afrodita)
-C 0x690A apunta a las vidas de Afrodita (BCD)
-C 0x691A lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x6916 guarda el arma elegida
 C 0x6925 palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x6943 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x695A guarda la columna del logotipo y el byte siguiente (16 bits)
 C 0x6960 rle_con_destino: el rle de la direccion que hay en DE
 C 0x699A hl_mas_a: HL += A
 C 0x69BD apunta a la pantalla de la sala en la copia (filas 4-23)
+C 0x69CF copia_filas: B filas de C bytes de HL a DE, en filas de 32
 C 0x69D2 sala_a_vram: la pantalla de la sala (0xED80) a las filas 4-23
 C 0x69DD palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x69E0 lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
-C 0x69E3 lee el mapa (1 el castillo, 2-11 los mundos)
 C 0x69EC palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x69EF lee la sala
-C 0x6A1E pantalla_a_cero: la copia de la tabla de nombres a cero y a la VRAM
+C 0x6A10 apunta a lo de la sala del estado 0x0C (0xE678-0xE67A)
 C 0x6A21 caracteres_2160: el rle de 0x9AA2 en 0x2160
 C 0x6A24 caracteres_2168: el rle de 0x9ABD en 0x2168 en color 0xF0
+C 0x6A2A fuente_a_e800: 0x2A0 bytes de dibujos de HL a 0xE800
 C 0x6A46 apunta a los huecos de figura (32 bytes cada uno)
+C 0x6A54 e800_a_vram: BC bytes de 0xE800 a los tres tercios
+C 0x6A5A dibujos_a_cero: 0x6D8 bytes de dibujos a 0 en los tres tercios
 C 0x6A70 hl_mas_a: HL += A
 C 0x6A89 ldirvm_tres_tercios: LDIRVM en los tres tercios
+C 0x6A9B filvrm_bc: BC bytes a 0 en los tres tercios
 C 0x6AAF filvrm_tres_tercios: FILVRM en los tres tercios
 C 0x6AB5 apunta a los huecos de figura (32 bytes cada uno)
 C 0x6AC2 filvrm_tres_tercios: FILVRM en los tres tercios
-C 0x6ACD guarda el umbral de pared (0xBA, 0xF0 con jefe) y el byte siguiente (16 bits)
-C 0x6ADC lee el contador de cuadros
-C 0x6B10 nombres_a_vram: la copia de la tabla de nombres (0xED00) a 0x3800
+C 0x6AD1 guarda el paso del titulo
+C 0x6AF3 lee el paso del titulo
+C 0x6AFF sube_medias_filas: 11 filas de la copia de nombres, de dos en dos
+C 0x6B08 lee el paso del titulo
+C 0x6B0D guarda el paso del titulo
 C 0x6B1B apunta a la copia de la tabla de nombres (0x300 bytes)
+C 0x6B1E sube_medias_filas: 11 filas de la copia de nombres, de dos en dos
 C 0x6B35 hl_mas_a: HL += A
 C 0x6B39 de_mas_a: DE += A
-C 0x6B49 lee el umbral de pared (0xBA, 0xF0 con jefe) y el byte siguiente (16 bits)
 C 0x6B54 pide_sonido_ya: como pide_sonido, sin mirar la pausa
-C 0x6B65 de_mas_a: DE += A
-C 0x6B6E guarda el umbral de pared (0xBA, 0xF0 con jefe) y el byte siguiente (16 bits)
-C 0x6B77 guarda el umbral de pared (0xBA, 0xF0 con jefe) y el byte siguiente (16 bits)
 C 0x6B8F apunta a los huecos de figura (32 bytes cada uno)
 C 0x6BA5 apunta a los huecos de figura (32 bytes cada uno)
 C 0x6BA8 ldirvm_tres_tercios: LDIRVM en los tres tercios
 C 0x6BAC guarda los textos estan subiendo
-C 0x6BB0 lee el estado del jefe
 C 0x6BB5 apunta a el tipo del jefe (el hueco 0xE700 es el jefe)
 C 0x6BB9 lee el tipo del jefe (el hueco 0xE700 es el jefe)
+C 0x6BCF pinta_mosaico: el mosaico de la figura en la copia, sin los 0
+C 0x6BD2 pinta_mosaico_cortado: el mosaico cortado por la izquierda
 C 0x6BE3 de_mas_a: DE += A
-C 0x6BEA lee el mosaico del jefe
 C 0x6BF0 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x6BF4 lee el sitio del jefe en la copia de nombres y el byte siguiente (16 bits)
 C 0x6C01 de_mas_a: DE += A
+C 0x6C06 trozo_de_mosaico: B filas del mosaico de HL en DE
+C 0x6C0C mosaico_a: HL = el mosaico A (0x9E0A), DE = el sitio del jefe (0xE712)
 C 0x6C14 de_mas_a: DE += A
+C 0x6C19 trozo_de_mosaico: B filas del mosaico de HL en DE
+C 0x6C1F mosaico_a: HL = el mosaico A (0x9E0A), DE = el sitio del jefe (0xE712)
 C 0x6C2F de_mas_a: DE += A
-C 0x6C56 lee el hueco de la cosa de la sala: tipo, y, x
-C 0x6C65 lee la casilla de la cosa de la sala y el byte siguiente (16 bits)
 C 0x6C7F palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x6C82 lee la casilla de la cosa de la sala y el byte siguiente (16 bits)
-C 0x6C95 apunta a el mundo elegido (mapa - 1)
 C 0x6CA1 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x6CA8 lee el dibujo de la puerta del mundo elegido
 C 0x6CBF de_mas_a: DE += A
+C 0x6CEE tamano_de_mosaico: C = ancho, B = alto del mosaico A (0x9D90)
+C 0x6D17 tamano_de_mosaico: C = ancho, B = alto del mosaico A (0x9D90)
 C 0x6D26 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 C 0x6D64 palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x6DA6 palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x6DE2 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 C 0x6DFD apunta a los huecos de figura (32 bytes cada uno)
-C 0x6E02 lee cuantos huecos de figura hay y el byte siguiente (16 bits)
+C 0x6E0B pinta_figura: una figura: sprites, 2 x 2 o mosaico
+C 0x6E18 lee la pasada de figuras (0 detras, 1 delante)
+C 0x6E7E tamano_de_mosaico: C = ancho, B = alto del mosaico A (0x9D90)
 C 0x6E85 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x6EA2 figura_especial: las figuras de bit 6: por (ix+0x0B)
 C 0x6F2F despacha: salta a la entrada A de la tabla de palabras que va detras del call
 C 0x6F90 palabra_de_tabla: DE = la palabra A de la tabla de HL
-C 0x6F99 lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x6FB7 cuatro_sprites: cuatro sprites de 16 x 16 en cuadro (tabla 0x7039) del color de A
 C 0x71B5 hl_mas_a: HL += A
 C 0x71C5 hl_mas_a: HL += A
+C 0x71E6 escalera_ec00: la escalera de 0xEC00
+C 0x71E9 bloque_eac0: con 0xEAC0, 3 x 4 de 0xF0
+C 0x71EC puertas_del_castillo: las dos puertas de 0xEA00 (figura 1)
+C 0x71EF figuras_2: las dos de 0xEA30 (figura 2, dibujos 0xA6FB)
+C 0x71F2 figura_3: la de 0xEA50 (figura 3, dibujos 0xA726)
+C 0x71F5 figuras_4: las cuatro de 0xEA60 (figura 4, dibujos 0xA74C)
+C 0x71F8 figuras_eab0: las dos de 0xEAB8: 0xC2 0xC3
+C 0x71FB figura_7: los 3 x 4 de 0xA772 (figura 7)
+C 0x71FE columna_eaa0: la columna de 0xEAA0
+C 0x7201 bloque_eac9: con 0xEAC9, 3 x 4 de 0xF0
+C 0x7224 columna_de_figura: la columna de la figura IX
+C 0x7257 figura_2: una de 0xEA30
 C 0x7272 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x729B figura_4: una de 0xEA60
 C 0x72B1 palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x72C6 palabra_de_tabla: DE = la palabra A de la tabla de HL
-C 0x73D6 apunta a la copia de la tabla de sprites (128 bytes)
+C 0x73DB esconde_b_sprites: B sprites desde DE con y = 0xE0
 C 0x73DE apunta a la copia de la tabla de sprites (128 bytes)
 C 0x73E7 lee el ESTADO del juego
+C 0x73F1 lee la pose del personaje
 C 0x73F7 palabra_de_tabla: DE = la palabra A de la tabla de HL
-C 0x7400 lee la y del personaje
-C 0x7408 lee la x del personaje
 C 0x7425 lee el ESTADO del juego
-C 0x742C lee el estado del personaje (5 = hundirse)
 C 0x7443 lee el ESTADO del juego
 C 0x744C apunta a quien juega (0 Afrodita)
-C 0x745C lee el contador de cuadros de partida
-C 0x74AF lee el contador de cuadros de partida
-C 0x76D8 apunta a los huecos de figura (32 bytes cada uno)
+C 0x7477 hueco_e540: un hueco de 0xE540
+C 0x7490 tres_sprites: tres sprites de la tabla 0x74D8/0x74E1
+C 0x767F dos_sprites_e4: dos sprites 0xE4 de color 15, uno al lado del otro
+C 0x768B dos_sprites_e4: dos sprites 0xE4 de color 15, uno al lado del otro
+C 0x7699 esconde_b_sprites: B sprites desde DE con y = 0xE0
+C 0x76C9 debajo_de_los_huecos: lo de debajo de los 16 huecos de figura
+C 0x76CC debajo_del_castillo: lo de debajo de las figuras del castillo
+C 0x76CF debajo_de_e540: lo de debajo de los huecos de 0xE540
+C 0x76D2 debajo_de_la_cosa: lo de debajo de la cosa de la sala
+C 0x76D5 debajo_del_jefe: lo de debajo del jefe
+C 0x76E3 debajo_de_figura: lo de debajo de una figura de caracteres
+C 0x76FD tamano_de_mosaico: C = ancho, B = alto del mosaico A (0x9D90)
 C 0x7706 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x776C debajo_de_un_e540: lo de debajo de un hueco de 0xE540
 C 0x7786 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
-C 0x7794 lee el hueco de la cosa de la sala: tipo, y, x
 C 0x7799 lee la casilla de la cosa de la sala y el byte siguiente (16 bits)
-C 0x77A9 lee el estado del jefe
 C 0x77AE apunta a el tipo del jefe (el hueco 0xE700 es el jefe)
 C 0x77B2 lee el tipo de la figura
+C 0x77B7 mira el bit 7 de las banderas de la figura (bit 7: en pantalla)
+C 0x77BC lee la ficha del tipo (bit 7 sprites, bit 6, bit 4 filas de 0x1A)
+C 0x77C4 guarda_debajo: guarda lo que tapa la figura de mosaico
+C 0x77C7 guarda_debajo_yx: guarda lo que tapa la figura, con su casilla desde la y y la x
+C 0x77CE casilla_y_ancho: la casilla de la figura y las columnas que caben
+C 0x77F1 debajo_escalera_ec00: lo de debajo de la escalera de 0xEC00
+C 0x77F4 debajo_bloque_eac0: lo de debajo del bloque de 0xEAC0
+C 0x77F7 debajo_de_las_puertas: lo de debajo de las puertas de 0xEA00
+C 0x77FA debajo_figuras_2: lo de debajo de las de 0xEA30
+C 0x77FD debajo_figura_3: lo de debajo de la de 0xEA50
+C 0x7800 debajo_figuras_4: lo de debajo de las de 0xEA60
+C 0x7803 debajo_eab0: lo de debajo de las de 0xEAB7
+C 0x7806 debajo_figura_7: lo de debajo de la de 0xEA20
+C 0x7809 debajo_eaa0: lo de debajo de la columna de 0xEAA0
+C 0x780C debajo_bloque_eac9: lo de debajo del bloque de 0xEAC9
+C 0x782D debajo_de_columna: lo de debajo de la columna de IX
 C 0x7846 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x786D debajo_figura_2: lo de debajo de una de 0xEA30
 C 0x7888 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 C 0x789B palabra_de_tabla: DE = la palabra A de la tabla de HL
-C 0x78F8 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x78CF debajo_figura_3_4: lo de debajo de una de 0xEA50/0xEA60
 C 0x7936 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 C 0x7955 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
-C 0x79EC lee el estado del jefe
+C 0x79B9 debajo_un_ec30: lo de debajo de un hueco de 0xEC30
+C 0x79E0 repone_huecos: lo de debajo de los 16 huecos
+C 0x79E3 repone_el_castillo: lo de 0xEB00 de vuelta en las figuras del castillo
+C 0x79E6 repone_e540: lo de debajo de los huecos de 0xE540
+C 0x79E9 repone_la_cosa: lo de debajo de la cosa de la sala
 C 0x79F7 apunta a el tipo del jefe (el hueco 0xE700 es el jefe)
 C 0x79FB lee el tipo del jefe (el hueco 0xE700 es el jefe)
-C 0x7A36 apunta a los huecos de figura (32 bytes cada uno)
+C 0x7A00 mira el bit 7 de las banderas de la figura (bit 7: en pantalla)
+C 0x7A0D repone_debajo: vuelve a poner lo que tapaba la figura
+C 0x7A10 repone_debajo_ancho: vuelve a poner lo que tapaba, con el ancho entero
+C 0x7A41 repone_hueco: lo de debajo de un hueco
+C 0x7A62 tamano_de_mosaico: C = ancho, B = alto del mosaico A (0x9D90)
 C 0x7A8F de_mas_a: DE += A
-C 0x7AE5 lee el hueco de la cosa de la sala: tipo, y, x
+C 0x7AC6 repone_un_e540: lo de debajo de un hueco de 0xE540
 C 0x7AEA lee la casilla de la cosa de la sala y el byte siguiente (16 bits)
+C 0x7B01 repone_escalera_ec00: vuelve lo de la escalera de 0xEC00
+C 0x7B04 repone_bloque_eac0: vuelve lo del bloque de 0xEAC0
+C 0x7B07 repone_puertas: vuelve lo de las puertas de 0xEA00
+C 0x7B0A repone_figuras_2: vuelve lo de las de 0xEA30
+C 0x7B0D repone_figura_3: vuelve lo de la de 0xEA50
+C 0x7B10 repone_figuras_4: vuelve lo de las de 0xEA60
+C 0x7B13 repone_eab0: vuelve lo de las de 0xEAB8
+C 0x7B16 repone_figura_7: vuelve lo de la de 0xEA20
+C 0x7B19 repone_eaa0: vuelve la columna de 0xEAA0
+C 0x7B1C repone_bloque_eac9: vuelve lo del bloque de 0xEAC9
+C 0x7B32 apunta a las puertas del castillo (figura 1, dos de 16 bytes)
+C 0x7B3D repone_columna: vuelve lo de la columna de IX
+C 0x7B74 repone_figura_2: vuelve lo de una de 0xEA30
+C 0x7BAE repone_figura_3_4: vuelve lo de una de 0xEA50/0xEA60
+C 0x7C89 repone_un_ec30: vuelve lo de un hueco de 0xEC30
 C 0x7D86 partida_nueva: RAM a cero, sala 1 del castillo, Popolon y las vidas de 0x4CE6
+C 0x7D8A guarda la tecla de la demostracion (0xFF acaba) y el byte siguiente (16 bits)
 C 0x7D93 palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x7D96 guarda el mapa (0xE041) y la sala (0xE042) de un tiron
 C 0x7D9B guarda el contador de cuadros de partida
-C 0x7D9E monta_la_sala: la sala entera con todo lo que lleva
 C 0x7DA3 guarda tiene el objeto 0x01
+C 0x7DA6 guarda el arma elegida
 C 0x7DAC guarda las flechas (BCD, 16 bits)
+C 0x7DAF cabecera: los rotulos, flechas, monedas, llaves, arma y las cuatro barras
 C 0x7DB8 byte_de_tabla: A = el byte HL + A
+C 0x7DBB guarda lo que queda de demostracion (de 32 en 32 cuadros)
 C 0x7DC4 musica_del_mapa: A = 0x88 en el castillo, 0x8A en los mundos
 C 0x7DC7 musica: la musica A (0xE021 = 1 salvo 0x87-0x8B)
 C 0x7DCB guarda el lado por el que se sale de la sala: 1 arriba, 2 abajo, 3 izquierda, 4 derecha
 C 0x7DD2 guarda en juego (a 0 se acaba la vida: estado 6)
-C 0x7DE8 sprites_turnados: la tabla de sprites a la VRAM empezando cada cuadro por otro
+C 0x7DD5 guarda los cuadros que quedan a la tecla de la demostracion
 C 0x7DEB cuadro_de_partida: un cuadro de la partida: todas las rutinas de cada banco
-C 0x7DEE lee el contador de cuadros de partida
+C 0x7DF5 apunta a lo que queda de demostracion (de 32 en 32 cuadros)
 C 0x7E01 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
-C 0x7E04 lee el lado por el que se sale de la sala: 1 arriba, 2 abajo, 3 izquierda, 4 derecha
-C 0x7E09 sin_sprites: 0xD0 en la tabla de sprites: no se ve ninguno
 C 0x7E0C borra_la_sala: sin sprites y las filas 4-23 de la pantalla a 0
 C 0x7E11 guarda la espera del paso, en cuadros
 C 0x7E14 vecina_del_lado: A = la vecina 0xE647 + 0xE01A
@@ -314,44 +1430,41 @@ C 0x7E1A monta_otra_sala: la sala al pasar a otra
 C 0x7E1E guarda el lado por el que se sale de la sala: 1 arriba, 2 abajo, 3 izquierda, 4 derecha
 C 0x7E31 guarda en juego (a 0 se acaba la vida: estado 6)
 C 0x7E38 a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
+C 0x7E3E lee la demostracion que toca (0 o 1)
 C 0x7E41 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x7E4A guarda los cuadros que quedan a la tecla de la demostracion
+C 0x7E4F guarda la tecla de la demostracion (0xFF acaba)
 C 0x7E52 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
-C 0x7E57 lee el mapa (0xE041) y la sala (0xE042) de un tiron
-C 0x7E5F tecla_ascii: A = el ASCII de la primera tecla apretada (0 si ninguna)
 C 0x7E6E apunta a las letras de ZEUS acertadas
 C 0x7E72 de_mas_a: DE += A
 C 0x7E84 guarda ZEUS tecleado
-C 0x7E8C lee ya se ha seguido con F5
-C 0x7E91 lee ZEUS tecleado
-C 0x7E96 tecla_f5: C si F5 esta apretada (fila 7 de la matriz)
 C 0x7E9D borra_lista_vram: como lista_a_vram pero escribiendo ceros
+C 0x7EA3 guarda la experiencia de Afrodita (barra)
 C 0x7EA6 guarda el cambio de vida pendiente de Afrodita (con signo)
+C 0x7EA9 guarda la experiencia de Popolon (barra)
 C 0x7EAC guarda el cambio de vida pendiente de Popolon (con signo)
 C 0x7EAF guarda la experiencia de Afrodita
 C 0x7EB2 guarda la experiencia de Popolon
-C 0x7EB5 guarda las vidas de Popolon (BCD)
 C 0x7EB9 guarda las vidas de Afrodita (BCD)
-C 0x7EBC guarda quien juega (0 Afrodita)
 C 0x7EBF guarda ya se ha seguido con F5
 C 0x7EC2 lee el tope de la vida de Afrodita
 C 0x7EC5 guarda la vida de Afrodita
 C 0x7EC8 lee el tope de la vida de Popolon
 C 0x7ECB guarda la vida de Popolon
-C 0x7EDD tecla_f5: C si F5 esta apretada (fila 7 de la matriz)
-C 0x7EFC apunta a el estado del jefe
-C 0x7F0D apunta a el tipo del jefe (el hueco 0xE700 es el jefe)
+C 0x7EE3 guarda F5 ya apretada
+C 0x7EE7 apunta a F5 ya apretada
+C 0x7F03 empieza_el_humo: 0xE0D2 = 2, 0x41 cuadros de humo y la musica 0x90
+C 0x7F08 humo: una nube cada 8 cuadros en los sitios de 0x8003
 C 0x7F11 a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
 C 0x7F1A a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x7F25 lee el tipo del jefe (el hueco 0xE700 es el jefe)
 C 0x7F2F a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
 C 0x7F35 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
-C 0x7F38 lee el tipo del jefe (el hueco 0xE700 es el jefe)
 C 0x7F3D despacha: salta a la entrada A de la tabla de palabras que va detras del call
 C 0x7F59 guarda el tipo del jefe (el hueco 0xE700 es el jefe)
 C 0x7F5F byte_de_tabla: A = el byte HL + A
-C 0x7F63 lee tiene el objeto 0x07
 C 0x7F6F apunta a el tipo del jefe (el hueco 0xE700 es el jefe)
-C 0x7F7B lee el tipo del jefe (el hueco 0xE700 es el jefe)
+C 0x7F77 las banderas de la figura (bit 7: en pantalla) = 0xF0
 C 0x7F7F despacha: salta a la entrada A de la tabla de palabras que va detras del call
 C 0x7FA3 a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
 C 0x7FA9 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
@@ -363,6 +1476,7 @@ C 0x7FBE a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
 C 0x7FC4 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x7FC7 a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
 C 0x7FCD a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x7FD3 guarda los cuadros de humo del jefe
 C 0x7FD8 musica_ya: sin musica esperando, la musica A
 C 0x7FF1 palabra_de_tabla: DE = la palabra A de la tabla de HL
 # --- fin de las anotaciones de anota.py ---

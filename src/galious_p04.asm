@@ -973,12 +973,12 @@ L_6622:
 L_6626:
 	push hl			;6626
 	pop ix		;6627
-	ld (0f020h),hl		;6629   ; guarda el umbral de pared (0xBA, 0xF0 con jefe) y el byte siguiente (16 bits)
+	ld (0f020h),hl		;6629
 	ld hl,0e620h		;662c
 	inc (hl)			;662f
 	call L_6562		;6630
 	call L_659B		;6633
-	ld hl,(0f020h)		;6636   ; lee el umbral de pared (0xBA, 0xF0 con jefe) y el byte siguiente (16 bits)
+	ld hl,(0f020h)		;6636
 	ld a,(0f019h)		;6639
 	ld (hl),a			;663c
 	inc l			;663d

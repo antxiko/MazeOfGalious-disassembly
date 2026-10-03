@@ -16,6 +16,7 @@ F 0x9FFF 4
 # --- fin de los bloques de bloques.py ---
 
 # --- ANOTACIONES AUTOMATICAS (seccion que reescribe tools/anota.py; no editar a mano) ---
+C 0x9D06 apunta a las puertas del castillo (figura 1, dos de 16 bytes)
 C 0x9D0C lee el mapa (1 el castillo, 2-11 los mundos)
 C 0x9D12 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 C 0x9D16 lee la sala
@@ -30,6 +31,7 @@ C 0x9E61 lee la direccion de las marcas de la sala (0xE60C + 0x150) y el byte si
 C 0x9E67 lee el mapa (0xE041) y la sala (0xE042) de un tiron
 C 0x9F1A lee el mapa (0xE041) y la sala (0xE042) de un tiron
 C 0x9F87 lee tiene el objeto 0x12
+C 0x9F8E guarda lo que abre el objeto 0x12
 C 0x9F97 lee las cinco subidas hechas
 C 0x9FA7 apunta a la pantalla de la sala en la copia (filas 4-23)
 # --- fin de las anotaciones de anota.py ---

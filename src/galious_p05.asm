@@ -1103,13 +1103,13 @@ L_883E:
 	add a,(ix+015h)		;884e
 	ld c,a			;8851
 	ld b,(ix+014h)		;8852
-	jp 06d49h		;8855
+	jp 06d49h		;8855   ; copia_filas: B filas de C bytes de HL a DE, en filas de 32
 L_8858:
 	call L_888C		;8858
 	add a,(ix+014h)		;885b
 	ld b,a			;885e
 	ld c,(ix+015h)		;885f
-	jp 06d49h		;8862
+	jp 06d49h		;8862   ; copia_filas: B filas de C bytes de HL a DE, en filas de 32
 L_8865:
 	call 06d43h		;8865
 	ret c			;8868
@@ -1121,13 +1121,13 @@ L_8865:
 	add a,(ix+016h)		;8875
 	ld b,a			;8878
 	ld c,(ix+017h)		;8879
-	jp 06d49h		;887c
+	jp 06d49h		;887c   ; copia_filas: B filas de C bytes de HL a DE, en filas de 32
 L_887F:
 	call L_888C		;887f
 	add a,(ix+017h)		;8882
 	ld c,a			;8885
 	ld b,(ix+016h)		;8886
-	jp 06d49h		;8889
+	jp 06d49h		;8889   ; copia_filas: B filas de C bytes de HL a DE, en filas de 32
 L_888C:
 	bit 0,(ix+001h)		;888c
 	ret z			;8890
@@ -1185,7 +1185,7 @@ L_88F5:
 	jr z,L_88FA		;88f5
 	ld a,(ix+008h)		;88f7
 L_88FA:
-	jp 07083h		;88fa
+	jp 07083h		;88fa   ; dos_sprites_tabla: dos sprites de la tabla 0x70BE
 
 ; ----------------------------------------------------------------------
 ; DATOS sin_nombrar_88fd: los mismos 56 bytes que p04:6DC6 (16 parejas de
@@ -2669,7 +2669,7 @@ L_94AC:
 L_94C6:
 	call 07973h		;94c6
 	ld (ix+001h),002h		;94c9
-	jp 07083h		;94cd
+	jp 07083h		;94cd   ; dos_sprites_tabla: dos sprites de la tabla 0x70BE
 L_94D0:
 	call L_9B1D		;94d0
 	call L_99C9		;94d3
@@ -2740,7 +2740,7 @@ L_9529:
 L_9536:
 	ld (ix+014h),b		;9536
 	ld (ix+011h),013h		;9539
-	jp 07083h		;953d
+	jp 07083h		;953d   ; dos_sprites_tabla: dos sprites de la tabla 0x70BE
 L_9540:
 	ld a,(ix+001h)		;9540
 	dec a			;9543
@@ -3224,7 +3224,7 @@ L_98F9:
 	ld (ix+009h),c		;98fc
 	ld (ix+011h),d		;98ff
 	ld (ix+013h),e		;9902
-	jp 07083h		;9905
+	jp 07083h		;9905   ; dos_sprites_tabla: dos sprites de la tabla 0x70BE
 L_9908:
 	ld a,(ix+001h)		;9908
 	cp 006h		;990b
@@ -3397,7 +3397,7 @@ L_9A50:
 	jp z,L_98E0		;9a55
 	add a,004h		;9a58
 	res 5,(ix+009h)		;9a5a
-	jp 07083h		;9a5e
+	jp 07083h		;9a5e   ; dos_sprites_tabla: dos sprites de la tabla 0x70BE
 
 ; ----------------------------------------------------------------------
 ; DATOS tres_palabras_9a61: 3 palabras que p05:99F7 elige con (ix+0x19) y pasa
@@ -3565,7 +3565,7 @@ L_9B47:
 	jr z,L_9B51		;9b4d
 	ld a,0ach		;9b4f
 L_9B51:
-	jp 07083h		;9b51
+	jp 07083h		;9b51   ; dos_sprites_tabla: dos sprites de la tabla 0x70BE
 L_9B54:
 	ld a,(ix+001h)		;9b54
 	dec a			;9b57
@@ -3960,7 +3960,7 @@ L_9DD8:
 	jr z,L_9DF1		;9de9
 L_9DEB:
 	call 04083h		;9deb   ; byte_de_tabla (por 0x4083): A = el byte HL + A
-	jp 07083h		;9dee
+	jp 07083h		;9dee   ; dos_sprites_tabla: dos sprites de la tabla 0x70BE
 L_9DF1:
 	call L_9EC6		;9df1
 	call L_9ED0		;9df4
@@ -4039,7 +4039,7 @@ L_9E91:
 L_9EA6:
 	ld (ix+019h),b		;9ea6
 L_9EA9:
-	jp 07083h		;9ea9
+	jp 07083h		;9ea9   ; dos_sprites_tabla: dos sprites de la tabla 0x70BE
 L_9EAC:
 	bit 7,(ix+00fh)		;9eac
 	ld a,0bch		;9eb0

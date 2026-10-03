@@ -205,11 +205,13 @@ C 0x9024 resta_bcd: (HL) -= BC en BCD
 C 0x9027 pinta_llaves: las llaves en la fila 2, columna 24
 C 0x902A pinta_flechas: las flechas en la fila 0, columna 24
 C 0x902D lee quien juega (0 Afrodita)
+C 0x9031 apunta a la experiencia de Afrodita (barra)
 C 0x904E lee quien juega (0 Afrodita)
 C 0x905E mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
 C 0x9075 lee el contador de cuadros
 C 0x9089 lee quien juega (0 Afrodita)
 C 0x9090 apunta a el tope de la vida de Afrodita
+C 0x90A8 cabecera: los rotulos, flechas, monedas, llaves, arma y las cuatro barras
 C 0x90AD pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0x90C0 lee el paso de la sala especial
 C 0x90C3 despacha: salta a la entrada A de la tabla de palabras que va detras del call
@@ -271,6 +273,7 @@ C 0x935D lee el articulo elegido en la tienda
 C 0x9363 de_mas_a: DE += A
 C 0x936B articulo_de_tienda: C = precio y D = objeto del articulo 0xE692 de la tienda 0xE690
 C 0x938E apunta a la copia de la tabla de sprites (128 bytes)
+C 0x9394 pose_del_personaje: la pose 0xE502 (0xE53D en la pausa) de la tabla 0x7529
 C 0x939D sala_a_vram: la pantalla de la sala (0xED80) a las filas 4-23
 C 0x93A5 guarda la y del personaje
 C 0x93AA guarda la x del personaje
@@ -291,22 +294,31 @@ C 0x953A lee la sala especial (pista o tienda)
 C 0x9540 hl_mas_a: HL += A
 C 0x9569 lee el articulo elegido en la tienda
 C 0x9598 de_mas_a: DE += A
+C 0x95A6 apunta a lo que hay debajo de las figuras
 C 0x95A9 apunta a las flechas (BCD)
+C 0x95B3 apunta a el tope de la experiencia de Afrodita
 C 0x95BD apunta a las marcas del mapa 2 (bits 7-4: objetos 09 08 07 0A; bit 2: jefe vencido)
 C 0x95C7 apunta a tiene el objeto 0x01
+C 0x95E9 apunta a lo que hay debajo de las figuras
 C 0x9653 lee el nivel de los objetos 0x28/0x2B/0x2C
 C 0x965A apunta a tiene el objeto 0x2B
 C 0x966C de_mas_a: DE += A
 C 0x96A3 lee las vidas de Afrodita (BCD) y el byte siguiente (16 bits)
 C 0x96BA lee quien juega (0 Afrodita)
+C 0x9708 apunta a lo que hay debajo de las figuras
 C 0x9722 tecla_ascii: A = el ASCII de la primera tecla apretada (0 si ninguna)
+C 0x9734 apunta a lo que hay debajo de las figuras
 C 0x9737 de_mas_a: DE += A
 C 0x9753 guarda hecho (estado 0x12)
 C 0x9757 lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 C 0x97A0 apunta a la copia de la tabla de sprites (128 bytes)
 C 0x97AC sprites_a_vram: la copia de la tabla de sprites (0xEC80) a 0x3B00
+C 0x97B2 apunta a lo que hay debajo de las figuras
 C 0x97E6 guarda hecho (estado 0x12)
+C 0x97EA apunta a lo que hay debajo de las figuras
+C 0x980E apunta a lo que hay debajo de las figuras
 C 0x982E apunta a las flechas (BCD)
+C 0x983B apunta a el tope de la experiencia de Afrodita
 C 0x9848 apunta a las marcas del mapa 2 (bits 7-4: objetos 09 08 07 0A; bit 2: jefe vencido)
 C 0x9855 apunta a tiene el objeto 0x01
 C 0x9878 lee el nivel de los objetos 0x28/0x2B/0x2C
@@ -325,8 +337,12 @@ C 0x995A lee la sala
 C 0x9965 palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x996E palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x9971 apunta a el mundo elegido (mapa - 1)
+C 0x997D apunta a las barras que repintar (bits 0-3)
+C 0x998C guarda el dibujo de la puerta del mundo elegido
 C 0x99BD byte_de_tabla: A = el byte HL + A
 C 0x99C8 lee el mundo elegido (mapa - 1) y el byte siguiente (16 bits)
+C 0x99E5 guarda el dibujo de la puerta del mundo elegido
+C 0x99F2 apunta a las barras que repintar (bits 0-3)
 C 0x99FB guarda tiene el objeto 0x0C
 C 0x99FF personaje_4_a_7: C si el estado del personaje es 4-7
 C 0x9A03 apunta a el mundo elegido (mapa - 1)
@@ -340,6 +356,7 @@ C 0x9A52 guarda 1 = estado 8, 2 = estado 0x0D
 C 0x9A65 lee la y del personaje
 C 0x9A6D lee la x del personaje
 C 0x9A76 personaje_4_a_7: C si el estado del personaje es 4-7
+C 0x9A7A apunta a hay puerta de vuelta en la sala
 C 0x9A84 lee tiene el objeto 0x2A
 C 0x9A89 lee lo apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 C 0x9A95 guarda estado 0x10 pedido
@@ -367,8 +384,10 @@ C 0x9BFC apunta a las letras tecleadas
 C 0x9C08 umbrella: acaba con todas las figuras de tipo 0x0E (p03:B604)
 C 0x9C2F hl_mas_a: HL += A
 C 0x9DAF lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x9DC6 apunta a hay puerta de vuelta en la sala
 C 0x9DD3 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 C 0x9E51 guarda la x del personaje
+C 0x9E59 guarda la pose del personaje
 C 0x9E5E pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0x9E67 rle_a_vram: descomprime el rle de DE en la VRAM de HL
 C 0x9E8B guarda un paso de varios cuadros en marcha
@@ -377,6 +396,7 @@ C 0x9EB4 guarda la y del personaje
 C 0x9EB8 guarda el estado del personaje (5 = hundirse)
 C 0x9ED5 apunta a la copia de la tabla de sprites (128 bytes)
 C 0x9EDF palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x9EFC pose_del_personaje: la pose 0xE502 (0xE53D en la pausa) de la tabla 0x7529
 C 0x9F0F lee la y del personaje
 C 0x9F1D guarda la x del personaje
 C 0x9F4F guarda la x del personaje

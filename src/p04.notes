@@ -134,8 +134,6 @@ C 0x6416 de_mas_a (por 0x4065): DE += A
 C 0x659F lee el nivel de los objetos 0x28/0x2B/0x2C
 C 0x65A7 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 C 0x65EE lee cuantos huecos de figura hay
-C 0x6629 guarda el umbral de pared (0xBA, 0xF0 con jefe) y el byte siguiente (16 bits)
-C 0x6636 lee el umbral de pared (0xBA, 0xF0 con jefe) y el byte siguiente (16 bits)
 C 0x66B1 despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
 C 0x6794 apunta a los huecos de figura (32 bytes cada uno)
 C 0x6797 lee cuantos huecos de figura hay

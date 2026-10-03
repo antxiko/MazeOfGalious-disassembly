@@ -60,9 +60,14 @@ C 0xA12E lee el estado del personaje (5 = hundirse)
 C 0xA131 despacha: salta a la entrada A de la tabla de palabras que va detras del call
 C 0xA190 lee quien juega (0 Afrodita)
 C 0xA1A3 guarda el estado del personaje (5 = hundirse)
+C 0xA1AC lee la pose del personaje
+C 0xA1B3 guarda la pose del personaje
 C 0xA1BD lee el estado del personaje (5 = hundirse)
+C 0xA1F9 lee la pose del personaje
+C 0xA1FE guarda la pose del personaje
 C 0xA208 lee el estado del personaje (5 = hundirse)
 C 0xA256 lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
+C 0xA272 lee la pose del personaje
 C 0xA285 guarda el estado del personaje (5 = hundirse)
 C 0xA28B lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 C 0xA291 lee el estado del personaje (5 = hundirse)
@@ -74,6 +79,8 @@ C 0xA2BB guarda la y del personaje
 C 0xA2C9 lee el contador de cuadros de partida
 C 0xA2E1 despacha: salta a la entrada A de la tabla de palabras que va detras del call
 C 0xA2EE lee lo apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
+C 0xA310 lee la figura de sala en sala que esta en esta sala
+C 0xA313 guarda la figura que lleva al personaje
 C 0xA329 lee quien juega (0 Afrodita)
 C 0xA33A lee lo apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 C 0xA37F lee quien juega (0 Afrodita)
@@ -84,11 +91,14 @@ C 0xA3CE pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y
 C 0xA3D2 guarda el estado del personaje (5 = hundirse)
 C 0xA3F0 lee quien juega (0 Afrodita)
 C 0xA41E byte_de_tabla: A = el byte HL + A
+C 0xA458 lee la pose del personaje
 C 0xA4B2 lee el contador de cuadros de partida
 C 0xA530 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0xA554 guarda el estado del personaje (5 = hundirse)
 C 0xA57E sin_musica_esperando: 0xE01D-0xE01E a cero
 C 0xA583 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0xA595 guarda la pose del personaje
+C 0xA5A6 apunta a la pose del personaje
 C 0xA5B5 guarda en juego (a 0 se acaba la vida: estado 6)
 C 0xA5E0 de_negado: DE = -DE
 C 0xA5EA lee el contador de cuadros de partida
@@ -108,6 +118,8 @@ C 0xA6F9 lee la x del personaje
 C 0xA703 guarda la x del personaje
 C 0xA70C guarda el estado del personaje (5 = hundirse)
 C 0xA71E lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
+C 0xA72B lee el arma elegida
+C 0xA740 lee el arma elegida
 C 0xA74D lee el estado del personaje (5 = hundirse)
 C 0xA76C pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0xA77C lee el estado del personaje (5 = hundirse)
@@ -136,11 +148,20 @@ C 0xA8B4 lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/
 C 0xA8BA guarda lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 C 0xA8DC lee lo apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 C 0xA8E4 lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
+C 0xA904 lee la pose del personaje
+C 0xA912 guarda la pose del personaje
+C 0xA916 apunta a la figura de sala en sala que esta en esta sala
+C 0xA96D apunta a tres huecos de 32 bytes de tres sprites
+C 0xA976 apunta a tres huecos de 32 bytes (armas)
 C 0xA995 lee las flechas (BCD, 16 bits)
 C 0xA99E apunta a tiene el objeto 0x1D
+C 0xA9A4 lee el arma elegida
 C 0xA9AE lee las flechas (BCD, 16 bits)
 C 0xA9B7 apunta a tiene el objeto 0x1E
 C 0xA9C1 lee quien juega (0 Afrodita)
+C 0xA9D2 apunta a tres huecos de 32 bytes (armas)
+C 0xA9E6 apunta a tres huecos de 32 bytes (armas)
+C 0xA9F0 apunta a tres huecos de 32 bytes de tres sprites
 C 0xAA15 despacha: salta a la entrada A de la tabla de palabras que va detras del call
 C 0xAA29 lee el estado del personaje (5 = hundirse)
 C 0xAA5D lee la y del personaje
@@ -161,7 +182,9 @@ C 0xACC0 casilla_b9: C si el caracter de la casilla de HL pasa de 0xB9
 C 0xACD8 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0xACE1 lee la y del personaje
 C 0xACED lee la x del personaje
+C 0xAD3A lee el arma elegida
 C 0xAD40 lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
+C 0xAD4C apunta a tres huecos de 32 bytes (armas)
 C 0xADC2 pared_en_fila: C si una de las casillas (y+B, x+D) o (y+B, x+E) llega al umbral de 0xF020
 C 0xADDA casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 C 0xADEF pared_en_columna: C si una de las casillas (x+B) o (y+D) llega al umbral de 0xF020
@@ -175,6 +198,7 @@ C 0xAE8A pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y
 C 0xAE92 lee el estado del personaje (5 = hundirse)
 C 0xAE9A lee quien juega (0 Afrodita)
 C 0xAE9E apunta a el tope de la vida de Afrodita
+C 0xAEAC cabecera: los rotulos, flechas, monedas, llaves, arma y las cuatro barras
 C 0xAEE1 lee la x del personaje
 C 0xAEE7 lee la y del personaje
 C 0xAEF2 lee la x del personaje
@@ -209,6 +233,8 @@ C 0xB068 personaje_4_a_7: C si el estado del personaje es 4-7
 C 0xB06D lee quien juega (0 Afrodita)
 C 0xB08B cambia_vida: suma A (con signo) al cambio de vida pendiente del que juega
 C 0xB090 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0xB095 apunta a la figura de sala en sala que esta en esta sala
+C 0xB0A9 lee la figura de sala en sala que esta en esta sala
 C 0xB0E7 lee la y del personaje
 C 0xB0F2 lee la x del personaje
 C 0xB105 lee la x del personaje
@@ -216,11 +242,14 @@ C 0xB111 lee la y del personaje
 C 0xB161 guarda la x del personaje
 C 0xB16B guarda la x del personaje
 C 0xB173 lee el estado del personaje (5 = hundirse)
+C 0xB19C apunta a lo de la sala del estado 0x0C (0xE678-0xE67A)
 C 0xB1A2 lee la y del personaje
 C 0xB1AE lee la x del personaje
+C 0xB1BA lee lo de la sala del estado 0x0C (0xE678-0xE67A)
 C 0xB1BD guarda estado 0x0C pedido
 C 0xB1CB apunta a los huecos de figura (32 bytes cada uno)
 C 0xB1CF lee cuantos huecos de figura hay
+C 0xB1D5 mira el bit 6 de las banderas de la figura (bit 7: en pantalla)
 C 0xB201 lee tiene el objeto 0x24
 C 0xB20B lee tiene el objeto 0x0E
 C 0xB215 lee tiene el objeto 0x0F
@@ -239,9 +268,11 @@ C 0xB30D cambia_vida: suma A (con signo) al cambio de vida pendiente del que jue
 C 0xB321 lee la x del personaje
 C 0xB32C lee la x del personaje
 C 0xB337 lee quien juega (0 Afrodita)
+C 0xB344 guarda la experiencia de Afrodita (barra)
 C 0xB347 guarda la vida de Afrodita
 C 0xB34A guarda la experiencia de Afrodita
 C 0xB34D guarda el cambio de vida pendiente de Afrodita (con signo)
+C 0xB352 guarda la experiencia de Popolon (barra)
 C 0xB355 guarda la vida de Popolon
 C 0xB358 guarda la experiencia de Popolon
 C 0xB35B guarda el cambio de vida pendiente de Popolon (con signo)
@@ -259,7 +290,9 @@ C 0xB3F2 lee la x del personaje
 C 0xB407 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0xB411 lee la y del personaje
 C 0xB417 lee la x del personaje
+C 0xB41D apunta a tres huecos de 32 bytes de tres sprites
 C 0xB485 cambia_vida: suma A (con signo) al cambio de vida pendiente del que juega
+C 0xB492 apunta a tres huecos de 32 bytes (armas)
 C 0xB4B5 apunta a los huecos de figura (32 bytes cada uno)
 C 0xB4B9 lee cuantos huecos de figura hay
 C 0xB57D pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
@@ -297,18 +330,19 @@ C 0xB7BA guarda la cosa del jefe vencido puesta
 C 0xB7C7 suma_monedas: suma A (BCD) a las monedas de 0xE048, hasta 999
 C 0xB7CD suma_llaves: suma A (BCD) a las llaves de 0xE04A, hasta 999
 C 0xB7D2 suma_flechas: suma A (BCD) a las flechas de 0xE046, hasta 999
+C 0xB7D8 apunta a tres huecos de 32 bytes (armas)
+C 0xB7FA apunta a tres huecos de 8 bytes de la lista de la sala (0xB8A2)
 C 0xB83E pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0xB841 apunta a tiene el objeto 0x1F
 C 0xB844 tiene_o_popolon: NZ si la marca de HL esta puesta o se lleva a Popolon (0xE501)
 C 0xB859 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0xB871 lee la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)
+C 0xB87F apunta a tres huecos de 8 bytes de la lista de la sala (0xB8A2)
 C 0xB8A0 lee la y del personaje
 C 0xB8A6 lee la x del personaje
 C 0xB8D2 palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0xB905 lee la x del personaje
 C 0xB90A lee la y del personaje
-C 0xB93B guarda el umbral de pared (0xBA, 0xF0 con jefe)
-C 0xB94C lee el umbral de pared (0xBA, 0xF0 con jefe)
 C 0xB954 p8000_banco_14: pone el banco 14 en 0x8000
 C 0xB96A p8000_banco_2: pone el banco 2 en 0x8000
 C 0xB9B2 lee el tipo del jefe (el hueco 0xE700 es el jefe)
@@ -331,6 +365,7 @@ C 0xBB0A lee el tipo del jefe (el hueco 0xE700 es el jefe)
 C 0xBB0E hl_mas_a: HL += A
 C 0xBB17 lee el mosaico del jefe
 C 0xBB21 p8000_banco_2: pone el banco 2 en 0x8000
+C 0xBB24 apunta a tres huecos de 32 bytes (armas)
 C 0xBB37 lee el estado del personaje (5 = hundirse)
 C 0xBB3D lee el jefe vencido (estado 0x13)
 C 0xBB52 apunta a el tipo del jefe (el hueco 0xE700 es el jefe)
@@ -346,6 +381,7 @@ C 0xBC2C lee el tipo del jefe (el hueco 0xE700 es el jefe)
 C 0xBC30 despacha: salta a la entrada A de la tabla de palabras que va detras del call
 C 0xBC6C p8000_banco_14: pone el banco 14 en 0x8000
 C 0xBC96 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0xBC9F lee la vida del jefe
 C 0xBCA5 lee el tipo del jefe (el hueco 0xE700 es el jefe)
 C 0xBCAB byte_de_tabla: A = el byte HL + A
 C 0xBCE1 lee el tipo del jefe (el hueco 0xE700 es el jefe)
@@ -363,10 +399,17 @@ C 0xBD76 lee el tipo del jefe (el hueco 0xE700 es el jefe)
 C 0xBD7A hl_mas_a: HL += A
 C 0xBD83 lee el mosaico del jefe
 C 0xBD95 p8000_banco_2: pone el banco 2 en 0x8000
+C 0xBE28 guarda la pose del personaje en la pausa
+C 0xBE4C guarda la pose del personaje en la pausa
+C 0xBE58 lee la pose del personaje en la pausa
 C 0xBE5F lee la y del personaje
+C 0xBE67 guarda la pose del personaje
+C 0xBE81 sprites_del_personaje: 15 sprites escondidos y la pose del personaje
 C 0xBE84 vram_del_estado: lo de la VRAM en la interrupcion segun el estado (tabla 0x543B)
+C 0xBECD apunta a lo que hay debajo de las figuras
 C 0xBEE2 lee el mapa (1 el castillo, 2-11 los mundos)
 C 0xBEE8 sala_a_vram: la pantalla de la sala (0xED80) a las filas 4-23
+C 0xBEEB apunta a lo que hay debajo de las figuras
 C 0xBF02 lee la y del personaje
 C 0xBF07 guarda la y del personaje
 # --- fin de las anotaciones de anota.py ---

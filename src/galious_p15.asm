@@ -969,7 +969,7 @@ L_B7C0:
 	call L_B83B		;b7ce
 	xor a			;b7d1
 	ld (0f02fh),a		;b7d2
-	ld (0f01fh),a		;b7d5
+	ld (0f01fh),a		;b7d5   ; guarda el paso del titulo
 	ld (0f022h),a		;b7d8
 	ld (0f031h),a		;b7db
 	inc a			;b7de
@@ -1151,7 +1151,7 @@ L_B905:
 	ld a,(0e003h)		;b905   ; lee el contador de cuadros
 	and 00fh		;b908
 	ret nz			;b90a
-	ld hl,0f01fh		;b90b
+	ld hl,0f01fh		;b90b   ; apunta a el paso del titulo
 	inc (hl)			;b90e
 	bit 0,(hl)		;b90f
 	jr nz,L_B920		;b911

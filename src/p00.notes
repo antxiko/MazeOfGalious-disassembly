@@ -748,7 +748,7 @@ C 0x5d6e su tipo (0xB6FC)...
 C 0x5d73 ...y su sitio: [b7 b6 tipo][y:5 x:3]
 C 0x5d88 sin sitio, nada
 C 0x5d8b los objetos (< 0x2D) que ya se tienen no salen
-C 0x5d99 la 0x0C no sale con los bits 0-1 de las marcas del mapa
+C 0x5d99 la 0x0C no sale con los bits 0-1 de 0xE062 + mapa
 C 0x5dab el hueco 0xE740, si esta libre: el tipo...
 C 0x5db4 ...la y (8 mas abajo los tipos 1-6)...
 C 0x5dbd ...la x...
@@ -1064,6 +1064,7 @@ C 0x4083 byte_de_tabla: A = el byte HL + A
 C 0x4086 musica_espera: deja esperando la musica A
 C 0x4089 tiene_o_popolon: NZ si la marca de HL esta puesta o se lleva a Popolon (0xE501)
 C 0x408C pinta_llaves: las llaves en la fila 2, columna 24
+C 0x408F copia_filas: B filas de C bytes de HL a DE, en filas de 32
 C 0x40AE apunta a el ESTADO del juego
 C 0x40B1 apunta a el paso del estado
 C 0x40BD guarda el semaforo del juego (1 mientras va el juego del cuadro)
@@ -1150,8 +1151,10 @@ C 0x42F4 sin_sprites: 0xD0 en la tabla de sprites: no se ve ninguno
 C 0x42F7 fuente_del_titulo: la fuente del titulo y los colores de los primeros caracteres
 C 0x42FD a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
 C 0x4300 graficos_del_titulo: los graficos del titulo
+C 0x4303 empieza_titulo: el titulo: sprites, rotulo y espera
 C 0x4309 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x4316 a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
+C 0x4319 cuadro_del_titulo: un cuadro de la animacion del titulo
 C 0x431C p8000_banco_2: pone el banco 2 en 0x8000
 C 0x431F a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x4327 sin_sprites: 0xD0 en la tabla de sprites: no se ve ninguno
@@ -1160,13 +1163,18 @@ C 0x4332 al_estado: al estado A con el paso 0 y 0x20 cuadros de espera
 C 0x4338 guarda el humo del jefe en marcha y el byte siguiente (16 bits)
 C 0x433D despacha: salta a la entrada A de la tabla de palabras que va detras del call
 C 0x434C esconde_sprites: la copia de la tabla de sprites (0xEC80) con y = 0xE0
+C 0x4369 texto_story: el texto STORY (0xAE28)
 C 0x4373 pide_sonido_ya: como pide_sonido, sin mirar la pausa
+C 0x437E cuadro_de_demostracion: un cuadro de la demostracion
+C 0x4381 f5_una_vez: C la primera vez que se aprieta F5
 C 0x438D guarda tiene el objeto 0x01
 C 0x4396 guarda las flechas (BCD, 16 bits)
 C 0x4399 vuelta_de_e023: 0xE023 de 0 a 1 y vuelta
 C 0x43AE guarda la espera del paso, en cuadros
+C 0x43B7 sube_el_texto: un paso del texto que sube
 C 0x43BA a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x43C2 paso_siguiente: sube el paso 0xE001
+C 0x43D4 guarda la demostracion que toca (0 o 1)
 C 0x43E9 musica: la musica A (0xE021 = 1 salvo 0x87-0x8B)
 C 0x43ED pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0x43F2 apunta a la espera del paso, en cuadros
@@ -1197,6 +1205,7 @@ C 0x4533 guarda quien juega (0 Afrodita)
 C 0x4544 lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
 C 0x4549 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0x454C estado_siguiente: al estado siguiente con el paso 0 y 0x20 cuadros de espera
+C 0x4551 sigue_con_f5: con ZEUS y F5, la partida sigue (una vez)
 C 0x456C guarda el ESTADO del juego y el byte siguiente (16 bits)
 C 0x4573 musica_del_mapa: A = 0x88 en el castillo, 0x8A en los mundos
 C 0x4576 musica_ya: sin musica esperando, la musica A
@@ -1240,6 +1249,7 @@ C 0x468A a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x46AF suena: NZ mientras suena algo
 C 0x46C3 apunta a las cuatro vecinas de la sala (0xE648-0xE64B)
 C 0x46D5 guarda el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x46DB puerta_del_mundo_elegido: la puerta de 3 x 4 del mundo elegido (0x6CC7)
 C 0x46E2 guarda el lado por el que se sale de la sala: 1 arriba, 2 abajo, 3 izquierda, 4 derecha
 C 0x46E6 guarda un paso de varios cuadros en marcha
 C 0x46E9 paso_siguiente: sube el paso 0xE001
@@ -1261,6 +1271,7 @@ C 0x4733 guarda tiene el objeto 0x07 y el byte siguiente (16 bits)
 C 0x4736 guarda tiene el objeto 0x09 y el byte siguiente (16 bits)
 C 0x473E al_estado: al estado A con el paso 0 y 0x20 cuadros de espera
 C 0x4744 sprites_a_vram: la copia de la tabla de sprites (0xEC80) a 0x3B00
+C 0x4752 sprites_del_personaje: 15 sprites escondidos y la pose del personaje
 C 0x4758 sprites_a_vram: la copia de la tabla de sprites (0xEC80) a 0x3B00
 C 0x475B fin_del_cuadro: p15:BD06 y p15:BDA1 con las figuras quietas
 C 0x4760 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
@@ -1289,6 +1300,7 @@ C 0x480D sin_sprites: 0xD0 en la tabla de sprites: no se ve ninguno
 C 0x4810 borra_la_sala: sin sprites y las filas 4-23 de la pantalla a 0
 C 0x4813 esconde_sprites: la copia de la tabla de sprites (0xEC80) con y = 0xE0
 C 0x4819 monta_la_sala_otra_vez: la sala y lo de encima
+C 0x4821 cuadro_de_objetos: un cuadro de la pantalla de objetos
 C 0x4824 esconde_sprites: la copia de la tabla de sprites (0xEC80) con y = 0xE0
 C 0x4827 borra_la_sala: sin sprites y las filas 4-23 de la pantalla a 0
 C 0x482D monta_la_sala_sola: la sala, sin sprites
@@ -1296,6 +1308,7 @@ C 0x4832 al_estado: al estado A con el paso 0 y 0x20 cuadros de espera
 C 0x4837 apunta a la espera del paso, en cuadros
 C 0x483E musica: la musica A (0xE021 = 1 salvo 0x87-0x8B)
 C 0x4846 graficos_del_estado_0b: los graficos del estado 0x0B (el objeto de 0xE097 en el caracter 0xF1)
+C 0x4849 pantalla_de_objetos: monta la pantalla de objetos (estado 0x0B)
 C 0x484C paso_siguiente: sube el paso 0xE001
 C 0x4851 lee_el_mando: el mando en 0xE009 (apretado) y 0xE008 (recien apretado)
 C 0x485A borra_la_sala: sin sprites y las filas 4-23 de la pantalla a 0
@@ -1308,6 +1321,7 @@ C 0x4874 esconde_sprites: la copia de la tabla de sprites (0xEC80) con y = 0xE0
 C 0x4879 musica_ya: sin musica esperando, la musica A
 C 0x487C sonido_fc: con 0xE0D5, una vez, el sonido 0xFC
 C 0x487F graficos_del_estado_0c: los graficos del estado 0x0C
+C 0x4885 pantalla_del_estado_0c: el dibujo de 0xBBCF y la lista de 0xBB58 segun 0xE678
 C 0x4888 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x488B paso_siguiente: sube el paso 0xE001
 C 0x4890 lee_el_mando: el mando en 0xE009 (apretado) y 0xE008 (recien apretado)
@@ -1332,6 +1346,7 @@ C 0x4906 musica: la musica A (0xE021 = 1 salvo 0x87-0x8B)
 C 0x4925 borra_la_sala: sin sprites y las filas 4-23 de la pantalla a 0
 C 0x4929 guarda la sala especial (pista o tienda)
 C 0x492C monta_la_sala_sola: la sala, sin sprites
+C 0x4932 puerta_de_vuelta: la puerta de vuelta (0xE680) en 0xE684
 C 0x4937 guarda un paso de varios cuadros en marcha
 C 0x493A paso_siguiente: sube el paso 0xE001
 C 0x4943 lee un paso de varios cuadros en marcha
@@ -1372,9 +1387,12 @@ C 0x4A2A a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x4A2D lee un paso de varios cuadros en marcha
 C 0x4A38 esconde_sprites: la copia de la tabla de sprites (0xEC80) con y = 0xE0
 C 0x4A3B graficos_de_la_sala: la carga grafica de la sala (tools/vram.py carga_sala)
+C 0x4A3E fuente_de_los_textos: la fuente de dos medias filas de los textos que suben
+C 0x4A41 texto_epilogue: el texto EPILOGUE (0xA84A)
 C 0x4A46 guarda los textos estan subiendo
 C 0x4A4B pide_sonido_ya: como pide_sonido, sin mirar la pausa
 C 0x4A4E paso_siguiente: sube el paso 0xE001
+C 0x4A54 sube_el_texto: un paso del texto que sube
 C 0x4A57 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x4A5F paso_siguiente: sube el paso 0xE001
 C 0x4A6A lee_el_mando: el mando en 0xE009 (apretado) y 0xE008 (recien apretado)
@@ -1430,6 +1448,7 @@ C 0x4C37 sin_musica_esperando: 0xE01D-0xE01E a cero
 C 0x4C3A prepara_el_titulo: pantalla, sprites y graficos del titulo (p01:6215)
 C 0x4CCD guarda el mapa (0xE041) y la sala (0xE042) de un tiron
 C 0x4CD2 guarda quien juega (0 Afrodita)
+C 0x4CD8 apunta a el tope de la experiencia de Afrodita
 C 0x4CE0 regalo_de_cartucho: lo que dan Q*bert (bit 1) y Knightmare (bit 0) de 0xF0F8 al empezar
 C 0x4D02 guarda las flechas (BCD, 16 bits)
 C 0x4D05 guarda las llaves (BCD, 16 bits)
@@ -1471,6 +1490,7 @@ C 0x4F64 fin_de_la_pausa_del_sonido: 0xFE: la musica y el PSG como estaban
 C 0x510E borra_e540: 0xE51C, 0xE51D y 0xE540-0xE5FF a cero
 C 0x5111 graficos_de_la_sala: la carga grafica de la sala (tools/vram.py carga_sala)
 C 0x5114 entra_el_personaje: el personaje al entrar: estado a cero y el sitio de la tabla 0xB106
+C 0x511A figuras_de_sala_en_sala: las seis figuras de 0xE4A0 (tablas 0xBB24, 0xBB54)
 C 0x511D a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x5123 jefe_otra_vez: si hay jefe, 0xE0D2 = 1
 C 0x5126 cosa_del_jefe_otra_vez: si estaba puesta, la cosa del jefe vencido
@@ -1480,9 +1500,14 @@ C 0x513E a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x5144 sonido_fc: con 0xE0D5, una vez, el sonido 0xFC
 C 0x514A monta_la_planta: la planta y lo que la cambia (objeto 0x18, mapa 4); no en salas especiales
 C 0x5156 cosa_de_la_sala: pone la cosa de la sala en el hueco 0xE740 si no se ha cogido
+C 0x5159 borra_marcas_de_la_sala: los sitios de la lista 0xB25D de la sala a 0 en el tramo del mapa
+C 0x515C huecos_de_la_sala: 0xE614 y cuantos huecos de figura (tablas 0xBA2E, 0xBA28)
 C 0x515F a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x5172 bancos_1_2_3: pone los bancos 1, 2 y 3 (y sus copias en 0xF0F1-0xF0F3)
+C 0x517F cosa_e678: en los mundos, 0xE678-0xE67A de la lista 0x9C83 de la sala
 C 0x5191 bancos_1_2_3: pone los bancos 1, 2 y 3 (y sus copias en 0xF0F1-0xF0F3)
+C 0x5197 cosas_del_castillo: 0xE6A0 a 0 y lo de la sala del castillo (tabla 0xB8A2)
+C 0x519A figura_ec20: en el castillo, la figura de la tabla 0xBA53 en 0xEC20
 C 0x519D a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x51A3 pista_del_objeto_14: con el objeto 0x14, el sonido 0x28 en las salas de la lista del castillo
 C 0x51B2 lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
@@ -1509,7 +1534,9 @@ C 0x5241 lee el mapa (0xE041) y la sala (0xE042) de un tiron
 C 0x5249 palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x5258 guarda la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)
 C 0x525B a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x5272 apunta a tres huecos de 32 bytes (armas)
 C 0x5292 guarda el estado del personaje (5 = hundirse)
+C 0x5298 guarda la pose del personaje
 C 0x52C3 guarda la x del personaje
 C 0x52C8 guarda la y del personaje
 C 0x52D3 palabra_de_tabla: DE = la palabra A de la tabla de HL
@@ -1519,22 +1546,51 @@ C 0x52E5 guarda la y del personaje
 C 0x52EF guarda la x del personaje
 C 0x52F2 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x52FC a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
+C 0x52FF guarda_lo_de_debajo: lo que hay debajo de cada figura, a 0xEB00
+C 0x5302 debajo_ec30: lo de debajo de los huecos de 0xEC30
+C 0x5305 cosa_en_la_copia: los caracteres de la cosa de la sala en su casilla
+C 0x5308 puerta_del_mundo_elegido: la puerta de 3 x 4 del mundo elegido (0x6CC7)
+C 0x530B puerta_de_vuelta: la puerta de vuelta (0xE680) en 0xE684
+C 0x530E figuras_del_castillo: las figuras del castillo de cada cuadro
+C 0x5314 sprites_del_personaje: 15 sprites escondidos y la pose del personaje
+C 0x5318 pinta_figuras: las figuras de los huecos: A = 0 las de detras, 1 las de delante
+C 0x531B sprites_de_sala_en_sala: los sprites de las figuras de sala en sala de esta sala
 C 0x531E figuras_sueltas: 0xE602 = 0
+C 0x5321 huecos_ec30_en_la_copia: los tres huecos de 0xEC30 en la copia de nombres
 C 0x5327 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x532D p8000_banco_14: pone el banco 14 en 0x8000
 C 0x5330 a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
+C 0x5335 pinta_figuras: las figuras de los huecos: A = 0 las de detras, 1 las de delante
+C 0x5338 jefe_en_la_copia: el mosaico del jefe en la copia de nombres
 C 0x533B figuras_quietas: 0xE602 = 1: no se tocan los sprites
+C 0x533E sprites_de_armas: los huecos de 0xE540 y 0xE5A0 a sus sprites
 C 0x5341 figuras_sueltas: 0xE602 = 0
+C 0x5347 repone_lo_de_debajo: vuelve a poner lo de 0xEB00 donde estaban las figuras
+C 0x534A repone_ec30: vuelve lo de los huecos de 0xEC30
 C 0x534D p8000_banco_2: pone el banco 2 en 0x8000
 C 0x5350 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x535A lee_el_mando: el mando en 0xE009 (apretado) y 0xE008 (recien apretado)
+C 0x5387 cuenta_huecos_ec30: los tres huecos de 0xEC30: cuentan y se vacian
+C 0x538A objeto_21: con el objeto 0x21 y el boton A, p15:B85C con cada hueco de 0xEC30
+C 0x5390 mueve_de_sala_en_sala: mueve las seis de 0xE4A0 y copia en 0xEC10 la de esta sala
+C 0x5393 mueve_ec20: la figura de 0xEC20 sube y baja entre sus topes
 C 0x5396 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x539C p8000_banco_14: pone el banco 14 en 0x8000
 C 0x539F a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
+C 0x53A5 debajo_del_castillo: lo de debajo de las figuras del castillo
+C 0x53A8 debajo_ec30: lo de debajo de los huecos de 0xEC30
+C 0x53AB figuras_del_castillo: las figuras del castillo de cada cuadro
+C 0x53AE huecos_ec30_en_la_copia: los tres huecos de 0xEC30 en la copia de nombres
 C 0x53B4 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x53D8 p8000_banco_14: pone el banco 14 en 0x8000
 C 0x53DB a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
+C 0x53DE apunta a lo que hay debajo de las figuras
+C 0x53E1 repone_el_castillo: lo de 0xEB00 de vuelta en las figuras del castillo
+C 0x53E4 repone_ec30: vuelve lo de los huecos de 0xEC30
 C 0x53EA a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x53ED jefe_cada_cuadro: el jefe: humo, salida y lo de su tipo
+C 0x541D vida_y_experiencia: cada 4 cuadros, lo pendiente de vida y experiencia de los dos
+C 0x5420 repinta_barras: las barras de los bits de 0xE062
 C 0x542F a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x5432 figuras_sueltas: 0xE602 = 0
 C 0x5438 despacha: salta a la entrada A de la tabla de palabras que va detras del call
@@ -1552,7 +1608,6 @@ C 0x5516 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y
 C 0x5526 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 C 0x5534 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 C 0x5544 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
-C 0x554E apunta a el umbral de pared (0xBA, 0xF0 con jefe)
 C 0x5566 bancos_7_8_9: pone los bancos 7, 8 y 9 (y sus copias en 0xF0F1-0xF0F3)
 C 0x556C fila_f0_del_mapa_9: con el objeto 0x18 y 0xE619, en el mapa 9 las filas 16-23 a 0xF0
 C 0x556F sala_del_jefe_del_mapa_4: en el mapa 4 con jefe, las paredes de los lados vacias
@@ -1710,6 +1765,7 @@ C 0x5D34 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x5D55 palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x5D65 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0x5D9E lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x5DA1 apunta a las barras que repintar (bits 0-3)
 C 0x5DA4 hl_mas_a: HL += A
 C 0x5DC2 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 C 0x5DC5 guarda la casilla de la cosa de la sala y el byte siguiente (16 bits)

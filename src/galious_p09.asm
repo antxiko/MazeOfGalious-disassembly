@@ -56,7 +56,7 @@ L_A013:
 	ld (0f00ch),hl		;a032
 	ret			;a035
 L_A036:
-	ld ix,0ea00h		;a036
+	ld ix,0ea00h		;a036   ; apunta a las puertas del castillo (figura 1, dos de 16 bytes)
 	exx			;a03a
 	ld b,002h		;a03b
 	ld de,00010h		;a03d
@@ -756,14 +756,14 @@ L_A4F6:
 	ld a,(hl)			;a4fa
 	add a,008h		;a4fb
 	ld b,a			;a4fd
-	ld a,(ix+005h)		;a4fe
+	ld a,(ix+005h)		;a4fe   ; lee la y de la figura
 	cp b			;a501
 	jr nz,L_A527		;a502
 	inc hl			;a504
 	ld a,(hl)			;a505
 	add a,004h		;a506
 	ld b,a			;a508
-	ld a,(ix+007h)		;a509
+	ld a,(ix+007h)		;a509   ; lee la x de la figura
 	sub b			;a50c
 	jr nc,L_A51D		;a50d
 	neg		;a50f
@@ -771,14 +771,14 @@ L_A4F6:
 	jr nc,L_A527		;a513
 	ld a,(hl)			;a515
 	sub 010h		;a516
-	ld (ix+007h),a		;a518
+	ld (ix+007h),a		;a518   ; guarda la x de la figura
 	jr L_A527		;a51b
 L_A51D:
 	cp 004h		;a51d
 	jr nc,L_A527		;a51f
 	ld a,(hl)			;a521
 	add a,008h		;a522
-	ld (ix+007h),a		;a524
+	ld (ix+007h),a		;a524   ; guarda la x de la figura
 L_A527:
 	exx			;a527
 	add ix,de		;a528
