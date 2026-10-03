@@ -1285,6 +1285,7 @@ C 0x6C0C mosaico_a: HL = el mosaico A (0x9E0A), DE = el sitio del jefe (0xE712)
 C 0x6C14 de_mas_a: DE += A
 C 0x6C19 trozo_de_mosaico: B filas del mosaico de HL en DE
 C 0x6C1F mosaico_a: HL = el mosaico A (0x9E0A), DE = el sitio del jefe (0xE712)
+C 0x6C25 lee la fila de la cola del jefe 10
 C 0x6C2F de_mas_a: DE += A
 C 0x6C7F palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x6C82 lee la casilla de la cosa de la sala y el byte siguiente (16 bits)

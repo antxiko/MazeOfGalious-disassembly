@@ -3815,7 +3815,7 @@ L_BA1E:
 	call L_BA28		;ba22
 	jp L_BAE1		;ba25
 L_BA28:
-	ld a,(0e719h)		;ba28
+	ld a,(0e719h)		;ba28   ; lee las veces que el jefe ha cambiado de sitio
 	ld b,01eh		;ba2b
 	ld hl,0ba32h		;ba2d
 	jr $-36		;ba30
@@ -3879,7 +3879,7 @@ L_BA82:
 	ld b,000h		;ba86
 	ld hl,0ba9ah		;ba88
 	add hl,bc			;ba8b
-	ld a,(0e707h)		;ba8c
+	ld a,(0e707h)		;ba8c   ; lee la x del jefe
 	add a,(hl)			;ba8f
 	sub d			;ba90
 	ld a,000h		;ba91
@@ -3935,7 +3935,7 @@ L_BAE1:
 	call L_BAEA		;bae4
 	jp 041ffh		;bae7   ; p8000_banco_2: pone el banco 2 en 0x8000
 L_BAEA:
-	ld a,(0e705h)		;baea
+	ld a,(0e705h)		;baea   ; lee la y del jefe
 	add a,(hl)			;baed
 	inc hl			;baee
 	sub e			;baef
@@ -3946,7 +3946,7 @@ L_BAEA:
 	dec hl			;baf6
 	ret nc			;baf7
 L_BAF8:
-	ld a,(0e707h)		;baf8
+	ld a,(0e707h)		;baf8   ; lee la x del jefe
 	add a,(hl)			;bafb
 	inc hl			;bafc
 	sub d			;bafd
@@ -4109,7 +4109,7 @@ DATA_tres_fichas_de_13:
 L_BC02:
 	ld a,(0e70ah)		;bc02   ; lee el mosaico del jefe
 	push af			;bc05
-	ld a,(0e719h)		;bc06
+	ld a,(0e719h)		;bc06   ; lee las veces que el jefe ha cambiado de sitio
 	ld (0e70ah),a		;bc09   ; guarda el mosaico del jefe
 	call L_BD70		;bc0c
 	pop af			;bc0f
@@ -4265,7 +4265,7 @@ L_BCFB:
 	ccf			;bd01
 	ret nz			;bd02
 	ld a,001h		;bd03
-	ld (0e71ch),a		;bd05
+	ld (0e71ch),a		;bd05   ; guarda la fila de la cola del jefe 10
 	or a			;bd08
 	ret			;bd09
 
@@ -4363,7 +4363,7 @@ L_BDA0:
 	ld a,l			;bda0
 	add a,018h		;bda1
 	ld l,a			;bda3
-	ld a,(0e705h)		;bda4
+	ld a,(0e705h)		;bda4   ; lee la y del jefe
 	add a,000h		;bda7
 	ld b,a			;bda9
 	ld a,e			;bdaa
@@ -4382,7 +4382,7 @@ L_BDBC:
 	add a,a			;bdbf
 	add a,h			;bdc0
 	ld c,a			;bdc1
-	ld a,(0e707h)		;bdc2
+	ld a,(0e707h)		;bdc2   ; lee la x del jefe
 	and 0f8h		;bdc5
 	ld b,a			;bdc7
 	ld a,d			;bdc8
@@ -4402,7 +4402,7 @@ L_BDD7:
 	ld a,l			;bdd7
 	add a,018h		;bdd8
 	ld l,a			;bdda
-	ld a,(0e705h)		;bddb
+	ld a,(0e705h)		;bddb   ; lee la y del jefe
 	add a,000h		;bdde
 	ld b,a			;bde0
 	ld a,e			;bde1
@@ -4431,7 +4431,7 @@ L_BE04:
 	ld e,a			;be04
 	jr L_BE1D		;be05
 L_BE07:
-	ld a,(0e707h)		;be07
+	ld a,(0e707h)		;be07   ; lee la x del jefe
 	and 0f8h		;be0a
 	ld e,a			;be0c
 	ld a,(0e709h)		;be0d
@@ -4540,7 +4540,7 @@ L_BEC7:
 	ld hl,0e50fh		;bec7
 	dec (hl)			;beca
 	jr z,L_BEF7		;becb
-	ld de,0eb00h		;becd   ; apunta a lo que hay debajo de las figuras
+	ld de,0eb00h		;becd   ; apunta a el tampon de 0xEB00 (lo de debajo de las figuras; la contraseña)
 	ld bc,0001dh		;bed0
 	ld hl,0ee41h		;bed3
 	ldir		;bed6
@@ -4551,7 +4551,7 @@ L_BEC7:
 	ld a,(0e041h)		;bee2   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	ld (0ee55h),a		;bee5
 	call 054bfh		;bee8   ; sala_a_vram: la pantalla de la sala (0xED80) a las filas 4-23
-	ld hl,0eb00h		;beeb   ; apunta a lo que hay debajo de las figuras
+	ld hl,0eb00h		;beeb   ; apunta a el tampon de 0xEB00 (lo de debajo de las figuras; la contraseña)
 	ld de,0ee41h		;beee
 	ld bc,0001dh		;bef1
 	ldir		;bef4

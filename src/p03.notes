@@ -352,14 +352,18 @@ C 0xB9EF lee la y del personaje
 C 0xB9F3 lee la x del personaje
 C 0xBA04 lee el mosaico del jefe
 C 0xBA0F hl_mas_a: HL += A
+C 0xBA28 lee las veces que el jefe ha cambiado de sitio
 C 0xBA4C lee el mosaico del jefe
 C 0xBA7E guarda el estado del personaje (5 = hundirse)
 C 0xBA82 lee el mosaico del jefe
+C 0xBA8C lee la x del jefe
 C 0xBABD lee el tipo del jefe (el hueco 0xE700 es el jefe)
 C 0xBAC4 lee tiene el objeto 0x08
 C 0xBAD0 cambia_vida: suma A (con signo) al cambio de vida pendiente del que juega
 C 0xBAE1 p8000_banco_14: pone el banco 14 en 0x8000
 C 0xBAE7 p8000_banco_2: pone el banco 2 en 0x8000
+C 0xBAEA lee la y del jefe
+C 0xBAF8 lee la x del jefe
 C 0xBB04 p8000_banco_14: pone el banco 14 en 0x8000
 C 0xBB0A lee el tipo del jefe (el hueco 0xE700 es el jefe)
 C 0xBB0E hl_mas_a: HL += A
@@ -375,6 +379,7 @@ C 0xBB96 lee el mosaico del jefe
 C 0xBB9F lee el mosaico del jefe
 C 0xBBA8 lee tiene el objeto 0x0B
 C 0xBC02 lee el mosaico del jefe
+C 0xBC06 lee las veces que el jefe ha cambiado de sitio
 C 0xBC09 guarda el mosaico del jefe
 C 0xBC10 guarda el mosaico del jefe
 C 0xBC2C lee el tipo del jefe (el hueco 0xE700 es el jefe)
@@ -388,6 +393,7 @@ C 0xBCE1 lee el tipo del jefe (el hueco 0xE700 es el jefe)
 C 0xBCE8 hl_mas_a: HL += A
 C 0xBCF6 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0xBCFB lee el tipo del jefe (el hueco 0xE700 es el jefe)
+C 0xBD05 guarda la fila de la cola del jefe 10
 C 0xBD37 guarda el jefe vencido (estado 0x13)
 C 0xBD3C pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0xBD3F lee el mapa (1 el castillo, 2-11 los mundos)
@@ -399,6 +405,10 @@ C 0xBD76 lee el tipo del jefe (el hueco 0xE700 es el jefe)
 C 0xBD7A hl_mas_a: HL += A
 C 0xBD83 lee el mosaico del jefe
 C 0xBD95 p8000_banco_2: pone el banco 2 en 0x8000
+C 0xBDA4 lee la y del jefe
+C 0xBDC2 lee la x del jefe
+C 0xBDDB lee la y del jefe
+C 0xBE07 lee la x del jefe
 C 0xBE28 guarda la pose del personaje en la pausa
 C 0xBE4C guarda la pose del personaje en la pausa
 C 0xBE58 lee la pose del personaje en la pausa
@@ -406,10 +416,10 @@ C 0xBE5F lee la y del personaje
 C 0xBE67 guarda la pose del personaje
 C 0xBE81 sprites_del_personaje: 15 sprites escondidos y la pose del personaje
 C 0xBE84 vram_del_estado: lo de la VRAM en la interrupcion segun el estado (tabla 0x543B)
-C 0xBECD apunta a lo que hay debajo de las figuras
+C 0xBECD apunta a el tampon de 0xEB00 (lo de debajo de las figuras; la contraseña)
 C 0xBEE2 lee el mapa (1 el castillo, 2-11 los mundos)
 C 0xBEE8 sala_a_vram: la pantalla de la sala (0xED80) a las filas 4-23
-C 0xBEEB apunta a lo que hay debajo de las figuras
+C 0xBEEB apunta a el tampon de 0xEB00 (lo de debajo de las figuras; la contraseña)
 C 0xBF02 lee la y del personaje
 C 0xBF07 guarda la y del personaje
 # --- fin de las anotaciones de anota.py ---

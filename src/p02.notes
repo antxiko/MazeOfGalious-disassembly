@@ -47,6 +47,639 @@ D 0x9DDA 0x9E07 fichas_del_castillo_9dda  11 fichas de 4 bytes [sala]... del cas
 F 0x9DDA 4
 D 0x9EFF 0x9F0F ocho_direcciones  8 parejas [dX][dY] (0xE8, 0, 0x10, 0xF8...), una por cada uno de los 8 sprites, que p02:9EDC lee en 0x9EFD + 2 x B (B = 8..1)
 F 0x9EFF 2
+C 0x8002 el jefe 5 no hace nada: ningun mapa lo usa (0x5E05) y su vida es 0 (p01:7F97)
+C 0x8013 el jefe 1 sale: y = 0x68 (tambien su suelo, (ix+0x1E)), x = 0x98
+C 0x801f esperas al azar
+C 0x8025 velocidad 0x80 hacia el personaje
+C 0x802e el jefe 1 (mundo 1): por el paso (ix+1)
+C 0x8037 paso 0: andando hasta que vence (ix+0x1D)...
+C 0x803c ...la cabeza sube y baja...
+C 0x803f ...cada (ix+0x1F) cuadros escupe (p02:80DC)...
+C 0x8045 ...y en el borde da la vuelta
+C 0x804c al paso 1: el salto
+C 0x804f mosaico 13
+C 0x8056 la altura del salto al azar: 0x35, 0x45, 0x55 o 0x65
+C 0x8066 velocidad vertical -7
+C 0x806c paso 1, saltando: los mosaicos y el sonido...
+C 0x8072 ...se mueve...
+C 0x8075 ...subiendo (bit 7 de la velocidad)...
+C 0x807e ...bajando, hasta su suelo
+C 0x8084 subiendo, hasta la altura del salto...
+C 0x8088 ...y empieza a bajar
+C 0x8095 en el suelo: espera al azar, mosaico 12, 0x3C cuadros quieto, paso 2
+C 0x80a4 p02:8775 y p02:871A
+C 0x80aa el sonido 0x21 al caer
+C 0x80af paso 2: espera...
+C 0x80b3 ...p02:86F8 y el bit 4...
+C 0x80bd ...una de cada cuatro veces hacia donde caiga...
+C 0x80c9 ...las demas hacia el personaje
+C 0x80cf velocidad 0x80, hacia la izquierda si el personaje esta a la izquierda
+C 0x80d5 mosaico 12, a andar
+C 0x80dc escupe: la espera siguiente al azar...
+C 0x80df ...y tres figuras 0x54 desde la boca
+C 0x80f1 con el sonido 0x11
+C 0x80f6 la espera hasta escupir: 0x10-0x2F cuadros
+C 0x8100 A al azar entre 0x50 y 0xCF
+C 0x8107 la espera hasta saltar
+C 0x810e la cabeza: abajo (mosaico 12)...
+C 0x8116 ...hacia la izquierda...
+C 0x811c ...cada 16 cuadros arriba (mosaico 14, y = 0x60)
+C 0x812b hacia la derecha, cada 16 cuadros el 13
+C 0x8136 C al llegar a su borde: x < 0x92 yendo a la izquierda...
+C 0x8142 ...x >= 0xA0 yendo a la derecha
+C 0x8146 cada 4 cuadros el mosaico cambia de pareja (bit 1)
+C 0x8156 cada 16 cuadros el sonido 0x0A
+C 0x8161 cada 8 cuadros el mosaico cambia (bit 0)
+C 0x8170 el jefe 2 (mundo 3): por el paso
+C 0x8182 paso 0: el personaje a menos de 0x19 de alto...
+C 0x818c ...y cerca de la cabeza (bit 5: hacia donde mira)...
+C 0x81a9 ...a menos de 0x68...
+C 0x81ad ...con el cuerpo crecido 0x0C o mas...
+C 0x81bd ...elige al azar una de cuatro (tabla que sigue)
+C 0x81cc crece: cada 4 cuadros una columna mas...
+C 0x81e6 ...hasta 16
+C 0x81e9 entero: al paso siguiente, 0x1E cuadros
+C 0x81f3 mosaico 10 u 11 segun hacia donde mira
+C 0x8201 paso: espera y escupe una figura 0x57 desde la boca
+C 0x8208 0x60 cuadros
+C 0x822f paso: espera; mosaico 8 o 6
+C 0x8244 al paso 3
+C 0x824b encoge: cada 4 cuadros una columna menos...
+C 0x825d ...hasta p02:8351
+C 0x826b 0x1E cuadros, banderas a 0 y p02:84DA
+C 0x8276 al paso 5: el sitio siguiente...
+C 0x827d ...segun los bits 2-3 de 0xE719 (tabla que sigue)
+C 0x828f cerca del personaje...
+C 0x829b ...al azar alrededor...
+C 0x82c6 ...en el cuarto de la pantalla del personaje...
+C 0x82db ...o del todo al azar (0-15)
+C 0x82df el sitio en 0xE71D
+C 0x82e6 hacia un lado o al otro segun el bit 0 de (ix+0x1D)
+C 0x8305 mirando a la izquierda
+C 0x8309 el mosaico C y la x B
+C 0x8312 la y del sitio de la tabla 0x8341
+C 0x831f los graficos del jefe 2 vuelven a cargarse (vuelto del otro lado)
+C 0x8325 paso 5: los graficos, paso a paso...
+C 0x8331 ...y al acabar, banderas 0xF0 o 0xE0 segun hacia donde mira
+C 0x8351 C al estar encogido: x >= 0xF8 o ancho < 2
+C 0x8364 C = la franja de la y del personaje: 0-4 (corte en 0x40, 0x60, 0x80, 0xA0)
+C 0x837a la x de la cabeza: x + 8 x ancho
+C 0x8384 el jefe 3 sale: y 0x90, x 0x60, mosaico 58
+C 0x8393 espera al azar...
+C 0x839c ...y velocidad 0x100 a un lado o al otro
+C 0x83a7 el jefe 3 (mundo 6): por el paso
+C 0x83ad paso 0: anda de lado entre sus bordes...
+C 0x83b0 ...hasta que vence la espera de soplar...
+C 0x83b5 ...con las patas moviendose...
+C 0x83b8 ...el personaje encima: cambia de lado al azar...
+C 0x83c6 ...si no, cada 32 cuadros va hacia el
+C 0x83e2 sopla: la espera al azar...
+C 0x83f8 ...mosaico 60 y al paso 1
+C 0x83fc paso 1: soplando...
+C 0x8401 ...cada 16 cuadros...
+C 0x8407 ...seis burbujas (figura 0x58) desde la boca
+C 0x841f con el sonido 0x12
+C 0x8424 se acabo: al paso 0
+C 0x842b la espera de soplar: 0x1F-0x9E
+C 0x8436 los bordes: x 0x29 por la izquierda...
+C 0x8448 ...0x8C por la derecha...
+C 0x844f ...y da la vuelta
+C 0x8455 cada 8 cuadros las patas: mosaicos 58 59 60 59
+C 0x846e el jefe 4 sale: y 0x48, x 0x68
+C 0x847b el jefe 4 (mundo 2): por el paso
+C 0x8484 paso 0: cerrado (mosaico 16), a ratos 17
+C 0x8494 abre: mosaico 18
+C 0x84a0 paso 1: abierto...
+C 0x84a5 ...cada 4 cuadros 18 o 19...
+C 0x84b3 ...con el 19...
+C 0x84b6 ...suelta una semilla (figura 0x59) al azar...
+C 0x84cd ...con el sonido 0x12
+C 0x84d2 se cierra: mosaico 17 y 0x14 cuadros
+C 0x84da al paso siguiente
+C 0x84de paso 2: espera...
+C 0x84e5 ...y vuelve a empezar, mosaico 16
+C 0x84f0 el jefe 10 sale: de mosaico (bit 6), y 0x60, x 0x70, mosaico 28
+C 0x8508 su cola: 0x23 y 0x1E en 0xE718 y 0xE719
+C 0x8524 la y en 0xE71F
+C 0x852a velocidad 4 abajo y -4 de lado
+C 0x8535 el jefe 10 (mundo 5): las alas...
+C 0x8538 ...por el paso
+C 0x8543 paso 0: volando un rato...
+C 0x8549 ...rebotando arriba y abajo...
+C 0x854c ...y a los lados
+C 0x854f cada 8 cuadros la cola...
+C 0x8557 ...hacia la altura del personaje...
+C 0x8571 ...entre 0x1D y 0x21 (0xE719)...
+C 0x8576 ...y su fila en 0xE71C
+C 0x8586 rebota entre la y 0x40 y la 0x78
+C 0x85a4 rebota entre la x 0x40 y la 0x88
+C 0x85bb las alas: cada 4 cuadros subiendo, cada 10 bajando
+C 0x85d1 al paso 1: quieto, cola 0x22, 0x10 cuadros
+C 0x85e1 paso 1: espera...
+C 0x85e5 ...y escupe fuego: la boca segun la cola (tabla 0x8608)
+C 0x8601 dos llamaradas (figura 0x57)
+C 0x860c paso 2: espera...
+C 0x8610 ...y vuelve a volar 0x08-0x27 cuadros
+C 0x8627 el jefe 7 sale: y 0x40, x 0x68, mosaico 24
+C 0x8637 su ancho, 0x30
+C 0x8645 0x10 cuadros hasta sacar la lengua; 0xB0 hasta morder
+C 0x864e el jefe 7 (mundo 7): con la boca abierta (bit 0 de (ix+0x20))...
+C 0x8654 ...cuenta (ix+0x21)...
+C 0x8659 ...con 0xE722, mosaico 27 o 26 un rato mas...
+C 0x867d ...luego cierra: mosaico 24
+C 0x868d hundiendose el personaje, muerde (p02:8765)
+C 0x8696 por el paso
+C 0x86a4 paso 0: a veces se mueve de lado (p02:877A)...
+C 0x86bc ...si no, al paso 2
+C 0x86c1 paso 1: de lado hasta el borde...
+C 0x86ca ...o hasta la x 0x68 (el centro)
+C 0x86da quieto en x
+C 0x86e0 paso 2: a veces arriba o abajo (p02:8795)...
+C 0x86f8 ...si no, al paso 0
+C 0x86fd paso 3: arriba o abajo hasta la y 0x40 o 0x70
+C 0x871a quieto en y
+C 0x8720 sin 0xE722, cada 0x10 cuadros abre la boca...
+C 0x872a ...mosaico 25...
+C 0x873a ...y saca una lengua (figura 0x65)...
+C 0x874d ...con el sonido 0x11
+C 0x8752 y al azar cada 0xB0 veces...
+C 0x8765 ...muerde: mosaico 26 tres veces
+C 0x8775 quita el bit 4
+C 0x877a de lado: 8 pasos de velocidad 0x100 segun (ix+0x1C)
+C 0x8795 arriba o abajo: 8 pasos de 0x100 segun (ix+0x1D)
+C 0x87b0 C al llegar arriba (0x40) o abajo (0x70)
+C 0x87c6 C al llegar a la izquierda (0x18) o a la derecha (x + ancho >= 0xE0)
+C 0x87d9 velocidad 0x100 hacia arriba o hacia abajo
+C 0x87e6 el jefe 11 sale: x 0x80, y 0x70 (tambien su suelo, 0xE71B), mosaico 43
+C 0x87fe 8 y su ancho 0x40
+C 0x8806 velocidad 0x80 a un lado al azar
+C 0x8815 el jefe 11 (mundo 4): por el paso
+C 0x8825 paso 0: se arrastra (mosaicos)...
+C 0x8828 ...y en el borde da la vuelta
+C 0x8830 si el personaje queda delante, cerca...
+C 0x884a ...tres de cada cuatro veces se encoge (mosaico 45 o 46)...
+C 0x885b ...y al paso 1
+C 0x885f paso 1: espera; luego mosaico 47 o 48 y al paso 2
+C 0x8883 paso 2: espera; salta...
+C 0x8892 ...de lado 0x180...
+C 0x88a1 ...con gravedad 0x40...
+C 0x88a7 ...hacia arriba -0x480 (o -0x600 una de cada cuatro)
+C 0x88ba paso 3: en el aire...
+C 0x88c5 ...cae...
+C 0x88cb ...los primeros 0x20 cuadros, mosaico 43...
+C 0x88db ...luego el contrario...
+C 0x88e3 ...hasta el suelo
+C 0x88ea en el suelo: 0x20 cuadros quieto
+C 0x88fd quieto del todo
+C 0x8909 con el sonido 0x1A al caer
+C 0x890e paso 4: espera...
+C 0x8912 ...cada cuatro saltos, hacia un lado al azar...
+C 0x8928 ...si no, hacia el personaje
+C 0x8936 y al paso 0, arrastrandose a 0x80
+C 0x8945 cada 8 cuadros, mosaico 43 o 44
+C 0x895c el jefe 6 sale: y 0x70, x 0x58, mosaico 52
+C 0x8970 sin velocidad
+C 0x8984 2 y 0x30 para el fuego
+C 0x898c cuatro figuras 0x69 en la fila 0x28, de 0x40 en 0x40 (las paredes)
+C 0x89a0 el jefe 6 (mundo 9): las cabezas y el fuego cada cuadro
+C 0x89a6 paso 0...
+C 0x89ac ...con 0xE71C, para y al paso 1...
+C 0x89b2 ...si no, cada 8 pixeles...
+C 0x89b8 ...dentro de la pantalla...
+C 0x89c0 ...cambia de sentido (0xE70F)
+C 0x89cf 0x20 cuadros
+C 0x89d7 paso 1: espera mirando...
+C 0x89e3 ...hacia el centro (x 0x78)
+C 0x89eb y al paso 0, hacia la izquierda
+C 0x89f5 cada (ix+0x16) cuadros otras cabezas: la espera siguiente al azar...
+C 0x8a03 ...el mosaico de la tabla 0x8A1E (52, 53 o 54)...
+C 0x8a18 ...y cual en 0xE717
+C 0x8a22 cada 0x30 cuadros escupe o no (0xE71B)
+C 0x8a3c escupiendo, cada 0x10 cuadros...
+C 0x8a4c ...desde la boca de la cabeza de la tabla 0x8A6E...
+C 0x8a67 ...dos llamaradas (figura 0x57)
+C 0x8a7a el jefe 8 sale: y 0x20, x 0x68, mosaico 40
+C 0x8a9e quieto
+C 0x8aa4 el jefe 8 (mundo 8): la cara (p02:8C8C) y por el paso
+C 0x8ac0 paso 0: espera moviendo la boca...
+C 0x8acd ...el mosaico cambia (bit 0)
+C 0x8ad6 al acabar: mosaico 37...
+C 0x8add ...apunta al personaje (su x y su fila)...
+C 0x8aed ...y se va a la izquierda o a la derecha segun donde este cada uno
+C 0x8b14 paso 1: de lado hasta la x 0x38 o la 0x98...
+C 0x8b24 ...si no esta abajo del todo, baja (mosaico 42)
+C 0x8b3a paso 2: bajando hasta la y 0x98...
+C 0x8b46 ...luego hacia el lado del personaje
+C 0x8b6c al paso 4: 8 cuadros, mosaico 36, quieto
+C 0x8b8b si ya esta a la altura del personaje, al paso 6
+C 0x8b96 paso 3: de lado hasta el borde
+C 0x8bac paso 4: espera; luego mosaico 42 y sube
+C 0x8bbe paso 5: hasta la fila del personaje
+C 0x8bc8 al paso 6: mosaico 37, 0x50 cuadros, hacia el personaje
+C 0x8be6 paso 6: de lado hasta que vence; luego mosaico 40, quieto y al paso 0
+C 0x8c00 paso 7, herido: cuenta (ix+0x1D)...
+C 0x8c05 ...a 0x20, mosaico 39...
+C 0x8c10 ...por debajo de 0x10, mosaico 36...
+C 0x8c18 ...y en el 9 el sonido 0x1B
+C 0x8c20 entre 0x11 y 0x15 escupe una figura 0x68 desde la boca...
+C 0x8c35 ...alternando el lado (0xE71E)
+C 0x8c42 al acabar, vuelve al paso y al mosaico de antes
+C 0x8c57 de lado: velocidad 0x80 a la derecha...
+C 0x8c60 ...o a la izquierda
+C 0x8c69 bajando: 4
+C 0x8c72 subiendo: -2
+C 0x8c7b cada 4 cuadros los mosaicos se alternan (bits 0-1)
+C 0x8c8c la vida baja (0xE70D)...
+C 0x8c97 ...si ha cambiado...
+C 0x8c9b ...queda herido: guarda paso y mosaico y al paso 7
+C 0x8cbb y + 8, x - 8 (el mosaico estrecho)
+C 0x8ccc y - 8, x + 8 (el mosaico ancho)
+C 0x8cdd el jefe 9 sale: 0x30 cuadros, mosaico 55, x 0x60, y 0x40
+C 0x8cf9 su sitio de disparo, (0x74, 0x58)
+C 0x8d01 ocho figuras 0x67 en (0x40, 0x60)...
+C 0x8d05 ...cada una con su byte de la tabla 0x8ED7
+C 0x8d24 banderas 0xE0
+C 0x8d2d el jefe 9 (mundo 10, GALIOUS): por el paso
+C 0x8d3d paso 0: con figuras en marcha (p02:8E6D)...
+C 0x8d46 ...mira al personaje...
+C 0x8d49 ...y mientras no dispare...
+C 0x8d4e ...cuenta (ix+0x17); a 0, al paso 4
+C 0x8d58 lanza (p02:8E3E)
+C 0x8d5c espera; luego al paso 1
+C 0x8d65 paso 1: igual, y al acabar...
+C 0x8d76 ...0x3F cuadros y al paso 2
+C 0x8d82 banderas a 0 (no se ve)
+C 0x8d8b paso 2: espera; luego aparece en otro sitio al azar (tabla 0x8EDF)...
+C 0x8da0 ...con su sitio de disparo al lado...
+C 0x8db0 ...0x18 cuadros y al paso 3
+C 0x8dc1 paso 3: parpadea cada 3 cuadros...
+C 0x8de4 ...y al acabar, 0xFA cuadros y al paso 0
+C 0x8df7 paso 4: el ataque: 0x30 cuadros...
+C 0x8dfb ...hacia un lado al azar...
+C 0x8e13 ...un tiempo al azar...
+C 0x8e22 ...mosaico 56...
+C 0x8e2e ...y 12 bytes de la ficha a cero (0x26-0x31)
+C 0x8e3e las cuatro figuras desde (ix+0x25)...
+C 0x8e4b ...las vacias quitan su marca...
+C 0x8e54 ...con la marca (byte 0x1F) se para
+C 0x8e5f ninguna: 0x23 a 0
+C 0x8e6d Z si no queda ninguna de las 8 primeras figuras...
+C 0x8e7d ...y entonces mosaico 55
+C 0x8e82 cuenta (ix+0x34); a 0, mosaico 55...
+C 0x8e8d ...NZ con 0x23 o con la marca 0x1F
+C 0x8e97 (ix+0x33) da vueltas de 2 a 15
+C 0x8ead el personaje a menos de 0x1E de su sitio de disparo, de lado...
+C 0x8eba ...y de alto...
+C 0x8ec9 ...0x90 y dispara
+C 0x8ed2 si no, 0x70
+C 0x8eef la sala especial: en los mundos...
+C 0x8ef8 ...la sala de 0x8F0A del mapa
+C 0x8f01 su tipo de 0x8F14 a 0xE690
+C 0x8f1e al entrar en la sala especial: todo a cero...
+C 0x8f30 ...p03:A8FC...
+C 0x8f34 ...el articulo del medio...
+C 0x8f37 ...el personaje, la pantalla, el titulo y los articulos
+C 0x8f43 cada cuadro, por el tipo (tabla 0x8F4A)
+C 0x8f72 tipo 3, revivir al otro personaje: por el paso
+C 0x8f84 paso 0: el nombre...
+C 0x8f87 ...las vidas del otro (B) y 0xE05A + el otro (C)...
+C 0x8f99 ...sin vidas ni C: el mensaje 0 (30: vuelve con 100, 100 y 20)
+C 0x8fa5 ...con vidas: el mensaje 0 y al paso 2
+C 0x8fb1 ...sin vidas: si no llega (p02:8FCE), el mensaje 0...
+C 0x8fc0 ...si llega, el 2 (34: dame 100, 100 y 20) y SI/NO (13)
+C 0x8fbc el paso
+C 0x8fce acarreo si no hay 20 llaves, 100 monedas y 100 flechas
+C 0x8fea paso 3: el cursor...
+C 0x8fed ...hasta el boton A
+C 0x8ff3 SI (0) o NO (2)
+C 0x8ffe NO: el mensaje 4 (36: entonces lucha solo) y 0xB4 cuadros
+C 0x900f SI: paga 100 monedas...
+C 0x9015 ...20 llaves...
+C 0x901e ...y 100 flechas
+C 0x902d la experiencia del que juega a 0
+C 0x9038 0xE693 = 1, 0x50 cuadros
+C 0x9043 los dos sprites de 0x9066...
+C 0x904e ...el de Popolon con color 9
+C 0x9059 el mensaje 3 (35: ha revivido) y al paso 4
+C 0x906e paso 5: espera y fuera
+C 0x9075 paso 4: cada dos cuadros los sprites bajan...
+C 0x9084 ...y al acabar...
+C 0x9089 ...el otro: 0xE05A/0xE05B menos uno...
+C 0x909e ...una vida mas...
+C 0x90a5 ...y la vida llena
+C 0x90a8 la cabecera y el sonido 0x30
+C 0x90b0 0xB4 cuadros y al paso 5
+C 0x90ba 0xE693 = 2: se puede salir
+C 0x90c0 tipo 1, la contraseña: por el paso
+C 0x90ce paso 0: los mensajes 12 (44: quieres el codigo?) y 13 (SI/NO), y el nombre
+C 0x90de paso 1: el cursor hasta el boton A...
+C 0x90f2 ...SI: el mensaje 15 y la contraseña (p02:95A0)
+C 0x9100 ...NO: el mensaje 14 y al paso 3
+C 0x910d paso 2: con el boton A...
+C 0x9113 ...0x80 cuadros y el mensaje 16
+C 0x9126 la tienda: por el paso (tabla que sigue)
+C 0x9134 paso 0: los precios, el mensaje 5 (37: puedes comprar mi tesoro) y el cursor
+C 0x9142 los tres precios BCD de la ficha de la tienda...
+C 0x914b ...en las filas de 0xEEA9, 0xEEAF y 0xEEB5
+C 0x915a dos cifras (cifra + 1) si el precio no es 0
+C 0x916f el cursor en el primer articulo que queda
+C 0x917c paso 1: el cursor con izquierda y derecha...
+C 0x9184 ...hasta el boton A
+C 0x918c paso 2: si el articulo ya se compro, fuera
+C 0x9198 el precio (C) y el objeto (D)
+C 0x91a0 los niveles 0x2B y 0x2C piden el anterior
+C 0x91a8 sin monedas bastantes, fuera (mensaje 18)
+C 0x91b1 paga
+C 0x91b5 lo comprado: el objeto 0xE06F + D...
+C 0x91b9 ...los niveles 0x28/0x2B/0x2C en 0xE097...
+C 0x91c1 ...0x2D: 100 flechas...
+C 0x91c5 ...0x2F: una llave...
+C 0x91c9 ...los demas: su marca a 1
+C 0x91cf el sonido 0x2D...
+C 0x91d4 ...el articulo se borra...
+C 0x91d7 ...y el cursor al siguiente
+C 0x91e5 al paso siguiente
+C 0x91ea el nivel: 0x28 -> 1, 0x2B -> 2, 0x2C -> 3
+C 0x91f4 pide el nivel anterior (0xE097 + 0x2A)
+C 0x9203 0x2D: dos veces 50 flechas
+C 0x920f 0x2F: una llave
+C 0x9216 sin monedas: el mensaje 18 (50: no hay monedas bastantes)
+C 0x9220 el sonido 0x2F
+C 0x9225 vuelve al paso de antes
+C 0x922b las monedas - BC y repintadas
+C 0x923e la ficha de la tienda (0x9255)...
+C 0x9248 ...el articulo 0xE692: [precio][objeto]
+C 0x92bd el articulo comprado: su marca en 0xE6CC...
+C 0x92c9 ...y su dibujo de 2 x 2 se borra (0xEE69, 0xEE6F o 0xEE75)
+C 0x92e8 las salas de pista: una vez...
+C 0x92ed ...la 8 dice el mensaje 1...
+C 0x92f6 ...las 14-20 el de la tabla 0x9308
+C 0x930f el cursor: izquierda (bit 2)...
+C 0x9316 ...o derecha (bit 3)
+C 0x931b a la izquierda: el anterior que quede (de 0 vuelve al 2)
+C 0x932a si ya se compro, otro
+C 0x9332 si tiene objeto, se queda
+C 0x9341 si se ha movido, el sonido 0x2C
+C 0x9351 a la derecha: el siguiente que quede (de 2 vuelve al 0)
+C 0x937a borra los mensajes: 5 filas de 20 desde 0xEE26
+C 0x938e los sprites de la sala especial: el personaje...
+C 0x9397 ...el cursor y el que atiende
+C 0x939d y la pantalla a la VRAM
+C 0x93a3 el personaje en y 0xAF, x 0x80
+C 0x93ae la pantalla de la sala especial: a cero...
+C 0x93bb ...las paredes de los lados (0xF0 con 0x13 de alto)...
+C 0x93dc ...el techo...
+C 0x93e8 ...el suelo de 0xF0...
+C 0x93f5 ...la puerta (0x9B9A) abajo...
+C 0x93fb ...las lineas de los recuadros (0x6C)...
+C 0x9413 ...sus lados (0x6D, 0x0A de alto)...
+C 0x941f ...y sus esquinas (0x72-0x75, 0x6A-0x6B)
+C 0x9446 22 caracteres 0x6C
+C 0x9451 una columna de 0x0A caracteres 0x6D
+C 0x9454 B veces C, de fila en fila
+C 0x945c en las tiendas (tipo < 14), los tres articulos...
+C 0x9462 ...en 0xEE69...
+C 0x946c ...0xEE6F...
+C 0x9476 ...y 0xEE75
+C 0x947d el objeto del articulo C...
+C 0x9491 ...0 o 0xFF: nada
+C 0x9496 ...0x2D-0x2F: 2 x 2 de la tabla 0x94BD (7-9)...
+C 0x949a ...7-0x2C: los caracteres 0x8E-0x91 (su dibujo, p00:5814)...
+C 0x949f ...1-6: 2 x 2 de la tabla 0x94BD
+C 0x94a0 4 bytes por dibujo: 2 arriba y 2 abajo
+C 0x94e1 2 x 2 caracteres seguidos desde A
+C 0x94ef el mensaje A, en japones; con 0x002B (el idioma del MSX) distinto de 0, el A + 0x20 en ingles
+C 0x94fb con el banco 15
+C 0x9505 la tabla 0xB09E: [destino] y los caracteres...
+C 0x9512 ...0xFF acaba...
+C 0x9515 ...0xFE salta de fila
+C 0x952b el nombre de quien atiende: mensaje 0x18 + el de la tabla 0x954C...
+C 0x953a ...y su dibujo de 2 x 2 desde 0x76 + 4 x ese numero en 0xEDCF
+C 0x9561 el cursor (0x6E) en su sitio
+C 0x9569 la casilla del articulo: 0xEF09, 0xEF0F o 0xEF15
+C 0x9578 lo de debajo del cursor a 0xE6C8
+C 0x958b y de vuelta
+C 0x95a0 la contraseña, en el tampon 0xEB00
+C 0x95a3 el objeto del nivel de 0xE097
+C 0x95a6 6 valores de 0xE046: flechas, monedas y llaves (BCD)...
+C 0x95b3 ...4 de 0xE051 de dos en dos (los topes)...
+C 0x95bd ...las marcas de los 10 mundos (0xE063)...
+C 0x95c7 ...y los 44 objetos 0x01-0x2C, un bit cada uno, 5 por letra
+C 0x95e0 la ultima letra, ajustada
+C 0x95e4 vidas y quien juega
+C 0x95e9 cada valor de 5 bits a su letra (tabla 0x9671 corrida segun la posicion)...
+C 0x95fa ...43 letras...
+C 0x95fd ...y la suma, en dos letras mas
+C 0x9610 en grupos de 4 a 0xEB80...
+C 0x9613 ...y a la pantalla desde 0xEE27
+C 0x9619 0xFF acaba, 0xFE salta de fila
+C 0x962c 11 grupos de 4...
+C 0x963f ...con un 0 entre grupos y un salto de fila cada 4 grupos...
+C 0x964d ...la ultima letra y 0xFF
+C 0x9653 con el nivel 2, el objeto 0x2B; con el 3, el 0x2C
+C 0x9664 la letra: valor + posicion mod 4...
+C 0x9669 ...en la tabla 0x9671
+C 0x9695 la suma de las 43 letras
+C 0x96a3 las vidas: bits 0-1...
+C 0x96ae ...0xE05A al bit 2...
+C 0x96b4 ...0xE05B al 3...
+C 0x96ba ...y Popolon jugando al 4
+C 0x96c4 A valores de DE (de dos en dos con C = 1)...
+C 0x96d1 ...de 5 bits por letra...
+C 0x96d3 ...bit a bit, del alto al bajo
+C 0x96f6 la ultima letra se ajusta a la izquierda
+C 0x9704 la posicion a 0 y el tampon vacio
+C 0x9716 la pantalla de la contraseña: el cursor, su sprite, la tecla y la pantalla
+C 0x9722 la tecla recien apretada...
+C 0x9730 ...en la posicion del cursor...
+C 0x973a ...RETURN (0x0D) acaba...
+C 0x9741 ...'0'-'9' son 1-10...
+C 0x9748 ...y 'A'-'Z' 11-36...
+C 0x974b ...y el cursor avanza (hasta 0x2C)
+C 0x9757 izquierda o derecha mueven el cursor (0-0x2C)
+C 0x976f el sprite del cursor: columna (con un hueco cada 4)...
+C 0x978d ...y fila (0x3E, 0x4E o 0x5E de 16 en 16)
+C 0x97a0 [y][x][dibujo 0][color 8]
+C 0x97af las tres filas de 16 en 0x3908, 0x3948 y 0x3988
+C 0x97c7 16 letras, con un hueco cada 4
+C 0x97dd la contraseña tecleada: a valores...
+C 0x97e0 ...y comprobada...
+C 0x97e4 ...buena: hecho
+C 0x97ea cada letra a su valor: su posicion en la tabla 0x9671
+C 0x9800 menos la posicion mod 4
+C 0x980e la suma de las 43 letras...
+C 0x981c ...contra las dos ultimas (nibble alto y bajo)
+C 0x982b la contraseña a la partida: flechas, monedas y llaves...
+C 0x9838 ...los topes...
+C 0x9845 ...las marcas de los mundos...
+C 0x9852 ...y los 44 objetos
+C 0x985e 5 bits por letra
+C 0x9878 el nivel de 0xE097 segun los objetos 0x2C o 0x2B
+C 0x9891 las vidas y 0xE05A/0xE05B: un bit cada uno...
+C 0x98a3 ...y quien juega
+C 0x98ad A valores (de dos en dos con C = 1) de 5 bits por letra
+C 0x98e5 la L (fila 4, bit 1): sin apretar, acarreo
+C 0x98ed el rotulo de la contraseña, en japones o en ingles segun 0x002B
+C 0x9908 contraseña mala: el rotulo...
+C 0x990f ...o borrarlo
+C 0x9926 el rotulo de contraseña buena
+C 0x993d en el castillo...
+C 0x9943 ...la sala tiene puerta de mundo (0x9990, 9 salas)?
+C 0x9950 si no, la del mapa 11: solo con los bits 0-1 de sus marcas...
+C 0x9956 ...en su sala (0xE06D)...
+C 0x995f ...en su sitio (0x99AB)
+C 0x996a el sitio de la puerta C (0x9997)
+C 0x9971 el mundo, y su sitio en 0xE68A-0xE68B
+C 0x997d los bits 0-1 de sus marcas: abierta y se puede abrir
+C 0x9987 abierta: el dibujo 2
+C 0x99b3 la puerta del mapa 11 en uno de 4 sitios al azar
+C 0x99c8 con puerta de mundo cerrada...
+C 0x99d1 ...abriendose (0xE68D)...
+C 0x99d7 ...cada 6 cuadros el dibujo siguiente...
+C 0x99e9 ...abierta: el bit 0 en 0xE689 y en las marcas del mundo...
+C 0x99fa ...y se gasta el objeto 0x0C
+C 0x99ff no en los estados 4-7 del personaje
+C 0x9a09 abierta: a entrar...
+C 0x9a0e ...cerrada pero se puede abrir (bit 1)...
+C 0x9a16 ...delante de ella, empieza a abrirse con el sonido 0x22
+C 0x9a25 el mundo 5: Afrodita necesita el objeto 0x23
+C 0x9a3a el mundo 7: Popolon necesita el 0x0D
+C 0x9a46 con abajo apretado...
+C 0x9a4c ...delante de la puerta...
+C 0x9a50 ...al estado 8 (entrar en el mundo)
+C 0x9a56 la puerta del mundo: 0x18 de alto, 0x0E de lado
+C 0x9a5f la de vuelta: 0x10 y 6
+C 0x9a65 C si la y del personaje esta a 0-1 de la de HL + D...
+C 0x9a6d ...y la x a 0-4 de la de HL + E
+C 0x9a76 la puerta de vuelta de la sala...
+C 0x9a80 ...la de tipo 3 pide el objeto 0x2A...
+C 0x9a89 ...con abajo apretado delante: al estado 0x10
+C 0x9a99 con el objeto 0x27, en el castillo...
+C 0x9aa3 ...una cifra 1-9...
+C 0x9aae ...si la puerta de ese mundo esta abierta...
+C 0x9ab8 ...a su sala (0x9990)
+C 0x9ac9 con el objeto 0x15, sin jefe...
+C 0x9ad8 ...C con RETURN
+C 0x9ae5 en la sala del jefe del mapa, sin jefe ni vencido...
+C 0x9af2 ...el recuadro (0xE615) y las 16 letras de 0xE6B0 a cero
+C 0x9b02 con el recuadro del jefe...
+C 0x9b07 ...una letra nueva...
+C 0x9b0b ...y el nombre acertado...
+C 0x9b0f ...sale el jefe (0xE020 = 1)
+C 0x9b18 el nombre del mapa en 0x9B4F: [texto][largo] (3 bytes por mapa)...
+C 0x9b29 ...contra las ultimas (largo) de las 16 letras
+C 0x9b33 letra a letra
+C 0x9b3c la tecla...
+C 0x9b41 ...si es otra que la de antes...
+C 0x9b47 ...las 16 letras se corren y entra al final
+C 0x9bb6 con el objeto 0x20...
+C 0x9bbb ...no hundiendose, sin recuadro del jefe, sin 0xE1CB...
+C 0x9bcb ...ni ya parado...
+C 0x9bd0 ...hasta 16 veces...
+C 0x9bd6 ...CTRL (fila 6, bit 1)...
+C 0x9bdf ...todo parado 0x96...
+C 0x9be5 ...una vez mas...
+C 0x9be9 ...y el sonido 0xFB
+C 0x9bee con el objeto 0x26 y 0xE63E...
+C 0x9bf8 ...una letra nueva...
+C 0x9bfc ...y las 8 ultimas son UMBRELLA (0x9C0B)...
+C 0x9c08 ...acaba con las figuras de tipo 0x0E
+C 0x9c13 las filas 0-7 del teclado...
+C 0x9c1b ...la primera con una tecla...
+C 0x9c22 ...ninguna: 0
+C 0x9c27 el ASCII de la tabla 0x9C3B: 8 por fila...
+C 0x9c33 ...el primer bit apretado
+C 0x9daf en el castillo, la puerta de vuelta de la sala: tabla 0x9DDA [sala][tipo][y][x]
+C 0x9dc5 a 0xE680 (tipo) y 0xE682-0xE683 (y, x)...
+C 0x9dd0 ...y su casilla en 0xE684
+C 0x9e07 solo con el bit 6 de 0xE002
+C 0x9e0d F2 (fila 6, bit 6)...
+C 0x9e15 ...recien apretada: C
+C 0x9e21 solo con el bit 6 de 0xE002
+C 0x9e27 F1 (fila 6, bit 5)
+C 0x9e30 ...recien apretada: C
+C 0x9e3b al entrar en el mundo: 0x80 cuadros...
+C 0x9e44 ...desde la puerta (su y + 8, guardada en 0xE0D0)...
+C 0x9e4d ...y su x + 0x10 (0xE0D1)
+C 0x9e57 la pose 0x0E (de espaldas)...
+C 0x9e59 ...la musica 0x82...
+C 0x9e61 ...y los sprites de la puerta (0x9E6A a 0x1F80)
+C 0x9e6f cada cuadro sube 0x40...
+C 0x9e7f ...con la pose 0x0E (p03:A5F4)...
+C 0x9e84 ...hasta que acaba la cuenta
+C 0x9e8a se acabo el paso de varios cuadros
+C 0x9e8f al salir de la sala especial: pose 0x10...
+C 0x9e97 ...baja 0x40 cada cuadro...
+C 0x9eaa ...hasta pisar suelo (p03:AFB5)...
+C 0x9eaf ...y queda en pie
+C 0x9ec0 los sprites de la puerta del mundo...
+C 0x9ec7 ...o de la de vuelta
+C 0x9ed5 8 sprites de la tabla 0x9EFD alrededor de la puerta, dibujo 0xF0 color 0...
+C 0x9ef9 ...y el personaje detras
+C 0x9f0f al salir por la puerta de vuelta: su sitio guardado...
+C 0x9f23 ...la pose 0x0E y 0x40 cuadros
+C 0x9f2e cada cuadro baja 0x40 (entrando en la puerta)
+C 0x9f42 al volver: delante de la puerta guardada (0xE0D0, 0xE0D1), pose 0x10
+C 0x9f56 cada cuadro sube 0x40 (saliendo de la puerta)
+C 0x9f61 0x3C cuadros de destellos (0xE64C)
+C 0x9f68 el color de fondo parpadea: negro o gris...
+C 0x9f79 ...y al acabar, negro
+C 0x9f82 los objetos escondidos del castillo: uno a la vez (0xE539)...
+C 0x9f8c ...en la sala 0x30 el 0x13, en la 0x4B el 0x16, en la 0x28 el 0x1B, en la 0x18 el 0x25 y en la 0x2B el 0x26
+C 0x9fa7 el 0x13 sale en (0x28, 0x50) con 0xE61C
+C 0x9fb4 el 0x16 sale en (0xA8, 0x20) con 0xE61C
+C 0x9fc1 el 0x1B: con el jefe del mapa 5 vencido...
+C 0x9fcc ...y nueve pasos de 0xE536 sale en (0x88, 0x80)
+C 0x9815 la suma...
+C 0x981f ...la primera letra de la suma - 1, arriba...
+C 0x9826 ...la segunda - 1, abajo...
+C 0x9829 ...Z si coinciden
+C 0x829e una franja menos...
+C 0x829f ...y un salto al azar de la tabla 0x8349...
+C 0x82ac ...entre 1 y 4
+C 0x915e la cifra alta + 1...
+C 0x9167 ...y la baja + 1
+C 0x98bf un bit mas...
+C 0x98c8 ...y a la letra siguiente
+C 0x9773 la columna, 4 por grupo...
+C 0x9779 ...mas un hueco por grupo
+C 0x9786 x = 8 x columna + 0x3F
+C 0x9796 tercera fila
+C 0x94e2 A + 1 a la derecha
+C 0x94e5 la fila de abajo
+C 0x9636 4 letras...
+C 0x9643 ...y un salto de fila cada 4 grupos, si no un 0
+C 0x96d4 el bit mas alto de C a (HL)
+C 0x96dd la letra siguiente de DE (con C, de dos en dos)
+C 0x9801 el valor: posicion en la tabla - (posicion mod 4) - 1
+C 0x980b las 43
+C 0x8990 en la fila 0x28...
+C 0x8993 ...la figura 0x69...
+C 0x8999 ...cada 0x20 de x
+C 0x98b8 los 5 bits de la letra arriba
+C 0x9234 el byte bajo...
+C 0x9239 ...y el alto con acarreo
+C 0x951f la fila siguiente desde el principio de la linea
+C 0x986c el bit (0 o 1) al objeto...
+C 0x986f ...hasta los 44
+C 0x9382 20 a cero...
+C 0x9386 ...y la fila siguiente
+C 0x96e5 la letra siguiente, 8 bits...
+C 0x96ed ...hasta los A valores
+C 0x92de 2 casillas...
+C 0x92e1 ...y la fila de abajo
+C 0x95d5 el bit al byte...
+C 0x95d8 ...hasta los 44 objetos...
+C 0x95dd ...5 por letra
+C 0x9dbb [sala] 0 acaba...
+C 0x9dc1 ...4 bytes por entrada
+C 0x969c la suma de las letras
+C 0x97f8 busca la letra en la tabla
+C 0x98d4 el byte siguiente (dos con C)
+C 0x98dc A valores
+C 0x9914 el rotulo en la fila 18, columna 7
+C 0x9ff4 con 0xE538, a cero...
+C 0x9ffb ...sin 0xE537, nada
 
 # --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
 D 0x8000 0x8001 partida_7FFE_cola  la instruccion de p01:7FFE (21 D2 | E0) empieza al final del banco 1 y acaba al principio del 2, que el cartucho pone siempre a continuacion: aqui el resto; lo leen p01:7FFE (1 bytes)
@@ -78,92 +711,354 @@ F 0x9E6A 16
 # --- fin de los bloques de bloques.py ---
 
 # --- ANOTACIONES AUTOMATICAS (seccion que reescribe tools/anota.py; no editar a mano) ---
+L 0x8002 jefe_5 el jefe 5: nada (ningun mapa lo usa)
+L 0x8013 sale_jefe_1 el jefe 1 sale (y 0x68, x 0x98)
+L 0x802E jefe_1 el jefe 1 (mundo 1): anda, salta y escupe
+L 0x80DC escupe_jefe_1 tres figuras 0x54 desde la boca y el sonido 0x11
+L 0x80F6 espera_de_escupir 0xE71F = 0x10-0x2F al azar
+L 0x8100 azar_50_cf A al azar entre 0x50 y 0xCF
+L 0x8107 espera_de_saltar 0xE71D al azar
+L 0x810E cabeza_jefe_1 la cabeza del jefe 1 sube y baja (mosaicos 12-14)
+L 0x8136 borde_jefe_1 C al llegar a su borde
+L 0x8146 mosaico_cada_4 cada 4 cuadros el bit 1 del mosaico
+L 0x8153 mosaico_y_sonido el mosaico cada 8 y el sonido 0x0A cada 16
+L 0x8156 sonido_cada_16 cada 16 cuadros el sonido 0x0A
+L 0x8161 mosaico_cada_8 cada 8 cuadros el bit 0 del mosaico
+L 0x8170 jefe_2 el jefe 2 (mundo 3): crece, escupe, encoge y cambia de sitio
+L 0x8325 jefe_2_vuelta el jefe 2 se vuelve a dibujar paso a paso
+L 0x8351 jefe_2_encogido C si el jefe 2 esta encogido
+L 0x8364 franja_del_personaje C = la franja de la y del personaje (0-4)
+L 0x837A cabeza_jefe_2 A = la x de la cabeza del jefe 2
+L 0x8384 sale_jefe_3 el jefe 3 sale (y 0x90, x 0x60)
+L 0x8393 jefe_3_a_un_lado espera y velocidad al azar a un lado
+L 0x83A7 jefe_3 el jefe 3 (mundo 6): anda de lado y sopla burbujas
+L 0x842B espera_de_soplar 0xE71F = 0x1F-0x9E al azar
+L 0x8436 bordes_jefe_3 da la vuelta en la x 0x29 y 0x8C
+L 0x8455 patas_jefe_3 cada 8 cuadros los mosaicos 58-60
+L 0x846E sale_jefe_4 el jefe 4 sale (y 0x48, x 0x68)
+L 0x847B jefe_4 el jefe 4 (mundo 2): se abre y suelta semillas
+L 0x84DA paso_del_jefe sube el paso del jefe (ix+1)
+L 0x84F0 sale_jefe_10 el jefe 10 sale (y 0x60, x 0x70, mosaico 28)
+L 0x8535 jefe_10 el jefe 10 (mundo 5): vuela, mueve la cola y escupe fuego
+L 0x8586 rebote_y_jefe_10 rebota entre la y 0x40 y 0x78
+L 0x85A4 rebote_x_jefe_10 rebota entre la x 0x40 y 0x88
+L 0x85BB alas_jefe_10 las alas cada 4 o 10 cuadros (p02:8ACD)
+L 0x8627 sale_jefe_7 el jefe 7 sale (y 0x40, x 0x68, mosaico 24)
+L 0x864E jefe_7 el jefe 7 (mundo 7): se mueve, saca la lengua y muerde
+L 0x86DA quieto_en_x velocidad de lado 0
+L 0x86F8 paso_0_del_jefe el paso del jefe a 0
+L 0x871A quieto_en_y velocidad vertical 0
+L 0x8720 lengua_jefe_7 cada 0x10 cuadros saca la lengua (figura 0x65)
+L 0x8765 muerde_jefe_7 el jefe 7 muerde
+L 0x8775 quita_bit_4 quita el bit 4 de las banderas
+L 0x877A jefe_de_lado 8 pasos de lado
+L 0x8795 jefe_arriba_abajo 8 pasos arriba o abajo
+L 0x87B0 tope_y_jefe_7 C al llegar arriba o abajo
+L 0x87C3 tope_x_paso un paso mas y C al llegar a un lado
+L 0x87C6 tope_x_jefe C al llegar a la izquierda o a la derecha
+L 0x87D9 jefe_vertical velocidad 0x100 arriba o abajo
+L 0x87E6 sale_jefe_11 el jefe 11 sale (x 0x80, y 0x70, mosaico 43)
+L 0x8815 jefe_11 el jefe 11 (mundo 4): se arrastra, se encoge y salta
+L 0x8945 mosaico_jefe_11 cada 8 cuadros, mosaico 43 o 44
+L 0x895C sale_jefe_6 el jefe 6 sale (y 0x70, x 0x58) y las cuatro figuras 0x69
+L 0x89A0 jefe_6 el jefe 6 (mundo 9): cambia de cabezas y escupe fuego
+L 0x89F5 cabezas_jefe_6 otras cabezas al azar (tabla 0x8A1E)
+L 0x8A22 fuego_jefe_6 cada 0x10 cuadros dos llamaradas desde una boca (tabla 0x8A6E)
+L 0x8A7A sale_jefe_8 el jefe 8 sale (y 0x20, x 0x68, mosaico 40)
+L 0x8AA4 jefe_8 el jefe 8 (mundo 8): va de lado y de arriba abajo hacia el personaje
+L 0x8ACD mosaico_bit_0 el mosaico del jefe cambia el bit 0
+L 0x8C00 jefe_8_herido el jefe 8 herido escupe figuras 0x68
+L 0x8C57 jefe_a_la_derecha velocidad de lado 0x80 a la derecha
+L 0x8C60 jefe_a_la_izquierda velocidad de lado 0x80 a la izquierda
+L 0x8C69 jefe_baja velocidad vertical 4
+L 0x8C72 jefe_sube velocidad vertical -2
+L 0x8C7B mosaicos_cada_4 cada 4 cuadros los mosaicos se alternan
+L 0x8C8C jefe_8_vida si baja la vida, el jefe 8 queda herido
+L 0x8CBB jefe_8_estrecho y + 8, x - 8
+L 0x8CCC jefe_8_ancho y - 8, x + 8
+L 0x8CDD sale_jefe_9 GALIOUS sale (y 0x40, x 0x60) con ocho figuras 0x67
+L 0x8D24 banderas_e0 banderas 0xE0
+L 0x8D2D jefe_9 el jefe 9 (mundo 10, GALIOUS): lanza, desaparece y reaparece
+L 0x8D82 banderas_a_cero las banderas altas a 0: no se ve
+L 0x8E3E lanza_jefe_9 las cuatro figuras desde (ix+0x25)
+L 0x8E63 quita_marca el byte 0x1F de la figura a 0
+L 0x8E6D quedan_figuras Z si no queda ninguna de las 8 primeras figuras
+L 0x8E82 cuenta_jefe_9 cuenta (ix+0x34); NZ si dispara
+L 0x8E97 mira_jefe_9 si el personaje esta cerca de su sitio de disparo
+L 0x8EEF sala_especial la sala especial del mapa (0x8F0A): pista o tienda
+L 0x8F1E entra_en_sala_especial todo a cero y la pantalla de la sala especial
+L 0x8F43 cuadro_de_sala_especial cada cuadro, por el tipo de sala especial (tabla 0x8F4A)
+L 0x8F72 revivir tipo 3: revivir al otro por 100 monedas, 100 flechas y 20 llaves
+L 0x8FCE llega_para_revivir acarreo si no hay 20 llaves, 100 monedas y 100 flechas
+L 0x90C0 contrasena tipo 1: la contraseña
+L 0x9126 tienda las tiendas: por el paso 0xE691
+L 0x9142 precios los tres precios de la tienda en pantalla
+L 0x915A precio un precio BCD en dos cifras
+L 0x916F cursor_al_primero el cursor en el primer articulo que queda
+L 0x91E5 paso_de_sala_especial sube el paso 0xE691
 L 0x922B paga resta BC (BCD) de las monedas de 0xE048 y las repinta
 L 0x9234 resta_bcd (HL) -= BC en BCD
 L 0x923E articulo_de_tienda C = precio y D = objeto del articulo 0xE692 de la tienda 0xE690
+L 0x92BD articulo_comprado marca el articulo y borra su dibujo
+L 0x92E8 pista las salas de pista: su mensaje (tabla 0x9308)
+L 0x930F cursor_de_tienda el cursor con izquierda y derecha
+L 0x931B cursor_izquierda el articulo anterior que quede
+L 0x933E cursor_al_2 el articulo 2
+L 0x9351 cursor_derecha el articulo siguiente que quede
+L 0x9377 cursor_al_0 el articulo 0
+L 0x937A borra_mensajes 5 filas de 20 desde 0xEE26 a cero
+L 0x937C borra_filas C filas de 20 desde 0xEE26 a cero
+L 0x938E sprites_de_sala_especial el personaje, el cursor y el que atiende
+L 0x93A3 personaje_en_la_puerta el personaje en y 0xAF, x 0x80
+L 0x93AE pantalla_de_sala_especial paredes, techo, suelo, puerta y recuadros
+L 0x9446 linea_6c 22 caracteres 0x6C
+L 0x9451 columna_6d una columna de 10 caracteres 0x6D
+L 0x9454 columna_de_c B veces C en columna
+L 0x945C articulos los dibujos de los tres articulos de la tienda
+L 0x947D articulo el dibujo de un articulo
+L 0x94E1 dos_por_dos_a 2 x 2 caracteres seguidos desde A en HL
 L 0x94EF mensaje pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
+L 0x94FA mensaje_a pinta el mensaje A ya con su idioma
+L 0x9505 mensaje_sin_idioma pinta el mensaje A de la tabla 0xB09E
+L 0x952B el_que_atiende el nombre y el dibujo de quien atiende la sala especial (tabla 0x954C)
+L 0x9561 cursor_de_articulo el cursor 0x6E sobre el articulo elegido
+L 0x9569 sitio_del_cursor HL = la casilla del cursor del articulo 0xE692
+L 0x9578 guarda_bajo_cursor guarda en 0xE6C8 lo de debajo del cursor
+L 0x958B repone_bajo_cursor vuelve a poner lo de debajo del cursor
+L 0x95A0 hace_la_contrasena la contraseña: 43 caracteres del estado de la partida y 2 de suma, en 11 grupos de 4 y 1
+L 0x962C contrasena_en_grupos la contraseña en grupos de 4 con saltos de linea
+L 0x9653 objetos_del_nivel con el nivel 2 o 3 de 0xE097, el objeto 0x2B o 0x2C
+L 0x9664 letra_de_contrasena A = la letra de la tabla 0x9671 para el valor A en la posicion B
+L 0x9695 suma_de_contrasena L = la suma de los 43 caracteres
+L 0x96A3 vidas_en_bits A = las vidas, 0xE05A/0xE05B y quien juega en bits
+L 0x96C4 empaqueta_bits A valores de DE en grupos de 5 bits a HL
+L 0x9704 contrasena_a_cero 0xE02B a 0 y el tampon a cero
+L 0x9708 tampon_a_cero 0xEB00-0xEBFF a cero
+L 0x9716 teclea_contrasena un cuadro de la pantalla de teclear la contraseña (estado 0x12)
+L 0x9722 tecla_de_contrasena la tecla recien apretada a la contraseña; RETURN acaba
+L 0x9757 cursor_de_contrasena el cursor con izquierda y derecha (0-0x2C)
+L 0x976F sprite_del_cursor el sprite del cursor en su sitio
+L 0x97AF pinta_contrasena la contraseña tecleada en tres filas
+L 0x97C7 fila_de_contrasena 16 letras en grupos de 4
+L 0x97DD mira_contrasena descifra y comprueba la contraseña; buena, 0xE02D = 1
+L 0x97EA letras_a_valores cada letra de la contraseña a su valor
+L 0x980E suma_buena Z si la suma de las 43 letras es la de las dos ultimas
+L 0x982B contrasena_a_la_partida los valores de la contraseña a la RAM de la partida
+L 0x98AD desempaqueta_bits A valores de 5 bits por letra de DE a HL
+L 0x98E5 tecla_l C si la L (fila 4, bit 1) no esta apretada
+L 0x98ED texto_de_contrasena el rotulo de la pantalla de la contraseña (banco 9)
+L 0x9908 texto_mala el rotulo de contraseña mala
+L 0x990F borra_texto_mala borra el rotulo de contraseña mala
+L 0x9926 texto_buena el rotulo de contraseña buena
+L 0x993D puerta_de_mundo en el castillo, la puerta de mundo de la sala (0x9990) en 0xE688-0xE68B
+L 0x99B3 puerta_del_mapa_11 el sitio al azar de la puerta del mapa 11 (0xE06D, 0xE06E)
+L 0x99C8 abre_la_puerta la puerta del mundo se abre poco a poco; abierta, se gasta el objeto 0x0C
+L 0x99FF entra_en_el_mundo con abajo delante de la puerta abierta: al estado 8
+L 0x9A56 delante_de_la_puerta C si el personaje esta delante de la puerta de mundo
+L 0x9A5F delante_de_la_vuelta C si el personaje esta delante de la puerta de vuelta
+L 0x9A65 delante_de C si el personaje esta a D, E de la y, x de HL
+L 0x9A76 sale_del_mundo con abajo delante de la puerta de vuelta: estado 0x10
+L 0x9A99 cifra_del_castillo con el objeto 0x27, la cifra 1-9 lleva a la puerta de ese mundo
+L 0x9AC9 return_al_castillo con el objeto 0x15 y sin jefe, C con RETURN
+L 0x9AE5 recuadro_del_jefe en la sala del jefe sin jefe, 0xE615 = 1 y las letras a cero
+L 0x9B02 nombre_del_jefe las teclas contra el nombre del jefe del mapa (0x9B4F); acertado, 0xE020
+L 0x9B18 compara_nombre Z si las ultimas letras tecleadas son el nombre del jefe del mapa
+L 0x9B33 compara_b Z si los B bytes de DE y HL son iguales
+L 0x9B3C letra_tecleada la tecla nueva entra al final de las 16 letras de 0xE6B0
+L 0x9BB6 objeto_20 con el objeto 0x20 y CTRL, todo se para un rato (hasta 16 veces)
+L 0x9BEE mira_umbrella con el objeto 0x26, las 8 ultimas letras contra UMBRELLA
 L 0x9C13 tecla_ascii A = el ASCII de la primera tecla apretada (0 si ninguna)
+L 0x9DAF puerta_de_vuelta_de_la_sala en el castillo, la puerta de vuelta de la sala (0x9DDA) en 0xE680-0xE685
+L 0x9E07 tecla_f2 C al apretar F2 (fila 6, bit 6) si 0xE002 tiene el bit 6
+L 0x9E21 tecla_f1 C al apretar F1 (fila 6, bit 5) si 0xE002 tiene el bit 6
+L 0x9E3B entra_por_la_puerta al entrar en el mundo: la pose de espaldas, la musica 0x82 y los sprites de la puerta
+L 0x9E6F sube_por_la_puerta cada cuadro el personaje entra en la puerta del mundo
+L 0x9E8A fin_del_paso 0xE608 a 0
+L 0x9E8F sale_de_sala_especial al salir de la sala especial, pose 0x10
+L 0x9E97 baja_hasta_el_suelo cada cuadro baja hasta pisar suelo
+L 0x9EC7 sprites_puerta_de_vuelta los 8 sprites de la puerta de vuelta
+L 0x9F0F entra_en_la_vuelta al entrar en la puerta de vuelta
+L 0x9F2E baja_por_la_vuelta cada cuadro entra en la puerta de vuelta
+L 0x9F42 sale_de_la_vuelta al volver al castillo, delante de la puerta guardada
+L 0x9F56 sube_de_la_vuelta cada cuadro sale de la puerta
+L 0x9F61 empiezan_destellos 0x3C cuadros de destellos del fondo
+L 0x9F68 destellos el color de fondo parpadea
+L 0x9F82 objetos_escondidos los objetos escondidos del castillo (salas 0x30, 0x4B, 0x28, 0x18 y 0x2B)
+C 0x8022 espera_de_escupir: 0xE71F = 0x10-0x2F al azar
+C 0x8042 escupe_jefe_1: tres figuras 0x54 desde la boca y el sonido 0x11
+C 0x8053 quieto_en_x: velocidad de lado 0
+C 0x806F sonido_cada_16: cada 16 cuadros el sonido 0x0A
 C 0x808C de_negado: DE = -DE
+C 0x80A7 quieto_en_y: velocidad vertical 0
 C 0x80AC pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
-C 0x80C9 lee la x del personaje
 C 0x80D2 de_negado: DE = -DE
 C 0x80F3 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
-C 0x811C lee el contador de cuadros de partida
-C 0x812B lee el contador de cuadros de partida
-C 0x8146 lee el contador de cuadros de partida
+C 0x80FC guarda la espera hasta que el jefe escupe
+C 0x810A guarda la espera o el sitio siguiente del jefe
+C 0x813A lee la x del jefe
 C 0x814C lee el mosaico del jefe
-C 0x8156 lee el contador de cuadros de partida
+C 0x8153 mosaico_cada_8: cada 8 cuadros el bit 0 del mosaico
 C 0x815E pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
-C 0x8161 lee el contador de cuadros de partida
 C 0x8167 lee el mosaico del jefe
 C 0x816C guarda el mosaico del jefe
 C 0x8173 despacha: salta a la entrada A de la tabla de palabras que va detras del call
-C 0x8182 lee la y del personaje
+C 0x8192 cabeza_jefe_2: A = la x de la cabeza del jefe 2
 C 0x8196 lee la x del personaje
 C 0x819D lee la x del personaje
+C 0x81A3 lee la x del jefe
 C 0x81C1 despacha: salta a la entrada A de la tabla de palabras que va detras del call
 C 0x81D5 lee el contador de cuadros de partida
+C 0x81F0 quita_bit_4: quita el bit 4 de las banderas
+C 0x8214 cabeza_jefe_2: A = la x de la cabeza del jefe 2
+C 0x821C lee la x del jefe
+C 0x8224 lee la y del jefe
 C 0x8254 lee el contador de cuadros de partida
+C 0x8273 paso_del_jefe: sube el paso del jefe (ix+1)
 C 0x8284 despacha: salta a la entrada A de la tabla de palabras que va detras del call
 C 0x82BB lee la x del personaje
-C 0x82C6 lee la y del personaje
 C 0x82D1 lee la x del personaje
+C 0x8300 quita_bit_4: quita el bit 4 de las banderas
 C 0x8319 byte_de_tabla: A = el byte HL + A
+C 0x831C guarda la y del jefe
 C 0x8321 guarda el paso de los graficos del jefe 2
 C 0x8327 un_paso_del_jefe_2: un paso de los graficos del jefe 2
 C 0x832C lee el paso de los graficos del jefe 2
+C 0x833E paso_0_del_jefe: el paso del jefe a 0
+C 0x8357 lee la x del jefe
 C 0x8366 lee la y del personaje
+C 0x8397 guarda la espera del jefe
 C 0x83A1 de_negado: DE = -DE
-C 0x83B8 lee la y del personaje
-C 0x83C6 lee el contador de cuadros de partida
+C 0x83CC lee la x del jefe
 C 0x83D4 lee la x del personaje
+C 0x83EF guarda la espera hasta que el jefe escupe
+C 0x83F2 quita_bit_4: quita el bit 4 de las banderas
+C 0x83F5 paso_del_jefe: sube el paso del jefe (ix+1)
+C 0x840A lee la x del jefe
+C 0x8410 lee la y del jefe
 C 0x8421 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
-C 0x8455 lee el contador de cuadros de partida
+C 0x8432 guarda la espera hasta que el jefe escupe
+C 0x843A lee la x del jefe
+C 0x845E lee las veces que el jefe ha cambiado de sitio
+C 0x8489 lee la espera del jefe
+C 0x8497 guarda la espera del jefe
 C 0x84AB lee el mosaico del jefe
 C 0x84B0 guarda el mosaico del jefe
 C 0x84CF pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
-C 0x8557 lee la y del personaje
+C 0x84E2 paso_0_del_jefe: el paso del jefe a 0
+C 0x84E8 guarda la espera del jefe
+C 0x8527 guarda la espera hasta que el jefe escupe
+C 0x855B lee la fila de la cola del jefe 10
+C 0x856D lee las veces que el jefe ha cambiado de sitio
+C 0x857B guarda la fila de la cola del jefe 10
+C 0x85C7 mosaico_bit_0: el mosaico del jefe cambia el bit 0
+C 0x85CE mosaico_bit_0: el mosaico del jefe cambia el bit 0
+C 0x85EC lee la fila de la cola del jefe 10
 C 0x85F3 byte_de_tabla: A = el byte HL + A
+C 0x85FB lee la x del jefe
 C 0x8614 azar: A = R con el contador de cuadros
-C 0x868D apunta a el estado del personaje (5 = hundirse)
+C 0x8664 lee el jefe 7 ha mordido
+C 0x8693 muerde_jefe_7: el jefe 7 muerde
 C 0x8699 despacha: salta a la entrada A de la tabla de palabras que va detras del call
 C 0x86AA azar: A = R con el contador de cuadros
 C 0x86B1 azar: A = R con el contador de cuadros
+C 0x86B6 guarda la fila de la cola del jefe 10
+C 0x86B9 jefe_de_lado: 8 pasos de lado
+C 0x86C4 tope_x_paso: un paso mas y C al llegar a un lado
+C 0x86CF lengua_jefe_7: cada 0x10 cuadros saca la lengua (figura 0x65)
 C 0x86E6 azar: A = R con el contador de cuadros
+C 0x86ED lee la espera o el sitio siguiente del jefe
+C 0x86F2 guarda la espera o el sitio siguiente del jefe
+C 0x86F5 jefe_arriba_abajo: 8 pasos arriba o abajo
+C 0x8700 tope_y_jefe_7: C al llegar arriba o abajo
+C 0x8703 jefe_vertical: velocidad 0x100 arriba o abajo
+C 0x8706 lee la y del jefe
+C 0x870F lengua_jefe_7: cada 0x10 cuadros saca la lengua (figura 0x65)
+C 0x8740 lee la y del jefe
 C 0x874F pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0x8757 azar: A = R con el contador de cuadros
+C 0x87B3 lee la y del jefe
 C 0x87E0 de_negado: DE = -DE
+C 0x87F4 guarda la y del jefe
+C 0x87F7 guarda el suelo del jefe 11
 C 0x8818 despacha: salta a la entrada A de la tabla de palabras que va detras del call
-C 0x8830 apunta a la x del personaje
-C 0x884A azar: A = R con el contador de cuadros
+C 0x8837 lee la x del jefe
 C 0x8851 guarda el mosaico del jefe
+C 0x8854 guarda la espera o el sitio siguiente del jefe
 C 0x8871 guarda el mosaico del jefe
-C 0x88A7 azar: A = R con el contador de cuadros
+C 0x8874 guarda la fila de la cola del jefe 10
 C 0x88E0 guarda el mosaico del jefe
+C 0x88F2 lee la espera o el sitio siguiente del jefe
 C 0x88F7 guarda el mosaico del jefe
 C 0x890B pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
-C 0x8928 lee la x del personaje
 C 0x894D lee el mosaico del jefe
 C 0x8958 guarda el mosaico del jefe
+C 0x8977 guarda el suelo del jefe 11
+C 0x89A3 fuego_jefe_6: cada 0x10 cuadros dos llamaradas desde una boca (tabla 0x8A6E)
+C 0x89C9 guarda la fila de la cola del jefe 10
+C 0x89CC quieto_en_x: velocidad de lado 0
+C 0x89E0 lee la x del jefe
 C 0x89F9 azar: A = R con el contador de cuadros
 C 0x8A15 guarda el mosaico del jefe
+C 0x8A2B lee el suelo del jefe 11
+C 0x8A30 guarda el suelo del jefe 11
+C 0x8A37 lee el suelo del jefe 11
 C 0x8A58 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x8AA1 quieto_en_y: velocidad vertical 0
+C 0x8AA7 lee el paso del jefe
 C 0x8AAD despacha: salta a la entrada A de la tabla de palabras que va detras del call
-C 0x8ACD lee el mosaico del jefe
 C 0x8AD2 guarda el mosaico del jefe
-C 0x8ADD lee la x del personaje
 C 0x8AE3 lee la y del personaje
+C 0x8AF6 jefe_a_la_izquierda: velocidad de lado 0x80 a la izquierda
+C 0x8AFE jefe_a_la_izquierda: velocidad de lado 0x80 a la izquierda
+C 0x8B01 jefe_a_la_derecha: velocidad de lado 0x80 a la derecha
+C 0x8B06 jefe_a_la_derecha: velocidad de lado 0x80 a la derecha
+C 0x8B0E jefe_a_la_izquierda: velocidad de lado 0x80 a la izquierda
+C 0x8B11 jefe_a_la_derecha: velocidad de lado 0x80 a la derecha
+C 0x8B17 lee la x del jefe
+C 0x8B2B jefe_8_ancho: y - 8, x + 8
+C 0x8B2E quieto_en_x: velocidad de lado 0
+C 0x8B35 jefe_baja: velocidad vertical 4
+C 0x8B40 jefe_8_estrecho: y + 8, x - 8
+C 0x8B43 quieto_en_y: velocidad vertical 0
+C 0x8B5B jefe_a_la_derecha: velocidad de lado 0x80 a la derecha
+C 0x8B69 jefe_a_la_izquierda: velocidad de lado 0x80 a la izquierda
+C 0x8B81 quieto_en_x: velocidad de lado 0
+C 0x8B88 jefe_sube: velocidad vertical -2
+C 0x8B9E lee la x del jefe
+C 0x8BBB jefe_8_ancho: y - 8, x + 8
+C 0x8BC5 jefe_8_estrecho: y + 8, x - 8
+C 0x8BD0 quieto_en_y: velocidad vertical 0
+C 0x8BDB lee la x del jefe
+C 0x8BE1 jefe_a_la_izquierda: velocidad de lado 0x80 a la izquierda
 C 0x8C1C pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x8C26 lee la y del jefe
+C 0x8C2C lee la x del jefe
+C 0x8C4A lee el suelo del jefe 11
+C 0x8C4D guarda el paso del jefe
+C 0x8C50 lee la espera hasta que el jefe escupe
 C 0x8C53 guarda el mosaico del jefe
 C 0x8C83 lee el mosaico del jefe
 C 0x8C88 guarda el mosaico del jefe
+C 0x8CA6 lee el paso del jefe
+C 0x8CA9 guarda el suelo del jefe 11
 C 0x8CB0 lee el mosaico del jefe
+C 0x8CB3 guarda la espera hasta que el jefe escupe
+C 0x8CC0 guarda la y del jefe
+C 0x8CC3 lee la x del jefe
+C 0x8CC8 guarda la x del jefe
+C 0x8CD1 guarda la y del jefe
+C 0x8CD4 lee la x del jefe
+C 0x8CD9 guarda la x del jefe
 C 0x8D0B byte_de_tabla (por 0x4083): A = el byte HL + A
 C 0x8D30 despacha: salta a la entrada A de la tabla de palabras que va detras del call
+C 0x8D41 quedan_figuras: Z si no queda ninguna de las 8 primeras figuras
+C 0x8D6A mira_jefe_9: si el personaje esta cerca de su sitio de disparo
+C 0x8D6D cuenta_jefe_9: cuenta (ix+0x34); NZ si dispara
+C 0x8D72 lanza_jefe_9: las cuatro figuras desde (ix+0x25)
 C 0x8D8F azar: A = R con el contador de cuadros
 C 0x8D97 palabra_de_tabla: DE = la palabra A de la tabla de HL
-C 0x8DFB azar: A = R con el contador de cuadros
-C 0x8E13 azar: A = R con el contador de cuadros
+C 0x8DD9 banderas_a_cero: las banderas altas a 0: no se ve
+C 0x8DF4 banderas_e0: banderas 0xE0
 C 0x8E33 hl_mas_a: HL += A
 C 0x8E41 apunta a los huecos de figura (32 bytes cada uno)
 C 0x8E44 hl_mas_a: HL += A
@@ -172,239 +1067,221 @@ C 0x8E5A hl_mas_a: HL += A
 C 0x8E66 hl_mas_a: HL += A
 C 0x8E70 apunta a los huecos de figura (32 bytes cada uno)
 C 0x8E73 hl_mas_a: HL += A
-C 0x8EAD lee la x del personaje
-C 0x8EBA lee la y del personaje
-C 0x8EEF lee el mapa (1 el castillo, 2-11 los mundos)
 C 0x8EFC lee la sala
 C 0x8F06 guarda la sala especial (pista o tienda)
 C 0x8F21 guarda el paso de la sala especial
-C 0x8F34 guarda el articulo elegido en la tienda
-C 0x8F43 lee la sala especial (pista o tienda)
+C 0x8F24 guarda se puede salir de la sala especial (2)
+C 0x8F3A pantalla_de_sala_especial: paredes, techo, suelo, puerta y recuadros
+C 0x8F3D el_que_atiende: el nombre y el dibujo de quien atiende la sala especial (tabla 0x954C)
+C 0x8F40 articulos: los dibujos de los tres articulos de la tienda
 C 0x8F47 despacha: salta a la entrada A de la tabla de palabras que va detras del call
-C 0x8F72 lee el paso de la sala especial
 C 0x8F75 despacha: salta a la entrada A de la tabla de palabras que va detras del call
-C 0x8F87 apunta a las vidas de Afrodita (BCD)
 C 0x8F8A lee quien juega (0 Afrodita)
 C 0x8F9E mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
 C 0x8FAA mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
 C 0x8FB7 mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
-C 0x8FBC guarda el paso de la sala especial
 C 0x8FC2 mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
 C 0x8FC7 mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
-C 0x8FCE lee las llaves (BCD, 16 bits)
 C 0x8FD8 lee las monedas (BCD, 16 bits)
 C 0x8FE1 lee las flechas (BCD, 16 bits)
-C 0x8FED lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
-C 0x8FF3 lee el articulo elegido en la tienda
 C 0x9003 mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
+C 0x9008 guarda la espera de la sala especial
 C 0x9012 paga: resta BC (BCD) de las monedas de 0xE048 y las repinta
-C 0x9015 apunta a las llaves (BCD)
 C 0x901B resta_bcd: (HL) -= BC en BCD
-C 0x901E apunta a las flechas (BCD)
 C 0x9024 resta_bcd: (HL) -= BC en BCD
 C 0x9027 pinta_llaves: las llaves en la fila 2, columna 24
 C 0x902A pinta_flechas: las flechas en la fila 0, columna 24
-C 0x902D lee quien juega (0 Afrodita)
 C 0x9031 apunta a la experiencia de Afrodita (barra)
-C 0x904E lee quien juega (0 Afrodita)
+C 0x903B guarda se puede salir de la sala especial (2)
+C 0x9040 guarda la espera de la sala especial
 C 0x905E mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
-C 0x9075 lee el contador de cuadros
-C 0x9089 lee quien juega (0 Afrodita)
+C 0x908D apunta a de Afrodita: baja uno al revivirla (Knightmare lo pone a 99)
 C 0x9090 apunta a el tope de la vida de Afrodita
-C 0x90A8 cabecera: los rotulos, flechas, monedas, llaves, arma y las cuatro barras
 C 0x90AD pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
-C 0x90C0 lee el paso de la sala especial
+C 0x90B2 guarda la espera de la sala especial
+C 0x90BC guarda se puede salir de la sala especial (2)
 C 0x90C3 despacha: salta a la entrada A de la tabla de palabras que va detras del call
 C 0x90D0 mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
 C 0x90D5 mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
+C 0x90D8 cursor_al_primero: el cursor en el primer articulo que queda
+C 0x90DB paso_de_sala_especial: sube el paso 0xE691
 C 0x90E1 lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 C 0x90E7 lee el articulo elegido en la tienda
 C 0x90F7 mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
+C 0x90FA hace_la_contrasena: la contraseña: 43 caracteres del estado de la partida y 2 de suma, en 11 grupos de 4 y 1
+C 0x90FD paso_de_sala_especial: sube el paso 0xE691
 C 0x9105 mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
-C 0x910D lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
+C 0x9118 guarda la espera de la sala especial
+C 0x911B borra_mensajes: 5 filas de 20 desde 0xEE26 a cero
 C 0x9120 mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
-C 0x9126 lee el paso de la sala especial
+C 0x9123 paso_de_sala_especial: sube el paso 0xE691
 C 0x9129 despacha: salta a la entrada A de la tabla de palabras que va detras del call
 C 0x9139 mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
-C 0x9142 lee la sala especial (pista o tienda)
+C 0x913C cursor_al_primero: el cursor en el primer articulo que queda
+C 0x913F paso_de_sala_especial: sube el paso 0xE691
 C 0x9148 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x914E precio: un precio BCD en dos cifras
+C 0x9154 precio: un precio BCD en dos cifras
+C 0x9174 cursor_izquierda: el articulo anterior que quede
 C 0x9181 mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
-C 0x9184 lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
-C 0x918C lee el articulo elegido en la tienda
 C 0x9192 byte_de_tabla: A = el byte HL + A
-C 0x9198 articulo_de_tienda: C = precio y D = objeto del articulo 0xE692 de la tienda 0xE690
-C 0x91A8 lee las monedas (BCD, 16 bits)
-C 0x91B1 paga: resta BC (BCD) de las monedas de 0xE048 y las repinta
-C 0x91C9 hl_mas_a: HL += A
 C 0x91D1 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
-C 0x91E5 apunta a el paso de la sala especial
+C 0x91DC cursor_izquierda: el articulo anterior que quede
 C 0x91EC hl_mas_a: HL += A
 C 0x91F5 apunta a el nivel de los objetos 0x28/0x2B/0x2C
 C 0x91FE articulo_de_tienda: C = precio y D = objeto del articulo 0xE692 de la tienda 0xE690
 C 0x9205 suma_flechas: suma A (BCD) a las flechas de 0xE046, hasta 999
 C 0x920A suma_flechas: suma A (BCD) a las flechas de 0xE046, hasta 999
 C 0x9211 suma_llaves: suma A (BCD) a las llaves de 0xE04A, hasta 999
+C 0x9218 borra_filas: C filas de 20 desde 0xEE26 a cero
 C 0x921D mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
 C 0x9222 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
-C 0x9225 apunta a el paso de la sala especial
-C 0x922B apunta a las monedas (BCD)
 C 0x922E resta_bcd: (HL) -= BC en BCD
 C 0x9231 pinta_monedas: las monedas en la fila 1, columna 24
-C 0x923E lee la sala especial (pista o tienda)
 C 0x9244 palabra_de_tabla: DE = la palabra A de la tabla de HL
-C 0x9248 lee el articulo elegido en la tienda
 C 0x924C hl_mas_a: HL += A
 C 0x92C0 lee el articulo elegido en la tienda
 C 0x92C3 hl_mas_a: HL += A
-C 0x92C9 lee el articulo elegido en la tienda
-C 0x92E8 lee el paso de la sala especial
-C 0x92ED lee la sala especial (pista o tienda)
-C 0x92F6 lee la sala especial (pista o tienda)
 C 0x92FE hl_mas_a: HL += A
 C 0x9302 mensaje: pinta el mensaje A del banco 15 (+0x20 en ingles, segun 0x002B)
-C 0x930F lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
+C 0x9305 paso_de_sala_especial: sube el paso 0xE691
 C 0x931D apunta a el articulo elegido en la tienda
+C 0x9321 cursor_al_2: el articulo 2
 C 0x9324 lee el articulo elegido en la tienda
-C 0x932A de_mas_a: DE += A
-C 0x9332 articulo_de_tienda: C = precio y D = objeto del articulo 0xE692 de la tienda 0xE690
 C 0x934C pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0x9353 apunta a el articulo elegido en la tienda
+C 0x935A cursor_al_0: el articulo 0
 C 0x935D lee el articulo elegido en la tienda
 C 0x9363 de_mas_a: DE += A
 C 0x936B articulo_de_tienda: C = precio y D = objeto del articulo 0xE692 de la tienda 0xE690
-C 0x938E apunta a la copia de la tabla de sprites (128 bytes)
 C 0x9394 pose_del_personaje: la pose 0xE502 (0xE53D en la pausa) de la tabla 0x7529
-C 0x939D sala_a_vram: la pantalla de la sala (0xED80) a las filas 4-23
+C 0x939A cursor_de_articulo: el cursor 0x6E sobre el articulo elegido
+C 0x93A0 repone_bajo_cursor: vuelve a poner lo de debajo del cursor
 C 0x93A5 guarda la y del personaje
 C 0x93AA guarda la x del personaje
-C 0x93AE apunta a la pantalla de la sala en la copia (filas 4-23)
-C 0x93BB apunta a la pantalla de la sala en la copia (filas 4-23)
-C 0x93DC apunta a la pantalla de la sala en la copia (filas 4-23)
-C 0x945C lee la sala especial (pista o tienda)
+C 0x93C1 columna_de_c: B veces C en columna
+C 0x93C9 columna_de_c: B veces C en columna
+C 0x93D1 columna_de_c: B veces C en columna
+C 0x93D9 columna_de_c: B veces C en columna
+C 0x93FE linea_6c: 22 caracteres 0x6C
+C 0x9404 linea_6c: 22 caracteres 0x6C
+C 0x940A linea_6c: 22 caracteres 0x6C
+C 0x9410 linea_6c: 22 caracteres 0x6C
+C 0x9416 columna_6d: una columna de 10 caracteres 0x6D
+C 0x941C columna_6d: una columna de 10 caracteres 0x6D
+C 0x9469 articulo: el dibujo de un articulo
+C 0x9473 articulo: el dibujo de un articulo
 C 0x947F lee la sala especial (pista o tienda)
 C 0x9486 palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x948A de_mas_a: DE += A
 C 0x94A6 de_mas_a: DE += A
-C 0x94FB a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
+C 0x94FF mensaje_sin_idioma: pinta el mensaje A de la tabla 0xB09E
 C 0x9502 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x9508 palabra_de_tabla: DE = la palabra A de la tabla de HL
-C 0x952B lee la sala especial (pista o tienda)
 C 0x9531 hl_mas_a: HL += A
-C 0x953A lee la sala especial (pista o tienda)
+C 0x9537 mensaje_a: pinta el mensaje A ya con su idioma
 C 0x9540 hl_mas_a: HL += A
-C 0x9569 lee el articulo elegido en la tienda
+C 0x9566 dos_por_dos_a: 2 x 2 caracteres seguidos desde A en HL
 C 0x9598 de_mas_a: DE += A
-C 0x95A6 apunta a lo que hay debajo de las figuras
 C 0x95A9 apunta a las flechas (BCD)
-C 0x95B3 apunta a el tope de la experiencia de Afrodita
-C 0x95BD apunta a las marcas del mapa 2 (bits 7-4: objetos 09 08 07 0A; bit 2: jefe vencido)
-C 0x95C7 apunta a tiene el objeto 0x01
-C 0x95E9 apunta a lo que hay debajo de las figuras
-C 0x9653 lee el nivel de los objetos 0x28/0x2B/0x2C
+C 0x95B0 empaqueta_bits: A valores de DE en grupos de 5 bits a HL
+C 0x95BA empaqueta_bits: A valores de DE en grupos de 5 bits a HL
+C 0x95C4 empaqueta_bits: A valores de DE en grupos de 5 bits a HL
+C 0x95F3 letra_de_contrasena: A = la letra de la tabla 0x9671 para el valor A en la posicion B
 C 0x965A apunta a tiene el objeto 0x2B
 C 0x966C de_mas_a: DE += A
-C 0x96A3 lee las vidas de Afrodita (BCD) y el byte siguiente (16 bits)
-C 0x96BA lee quien juega (0 Afrodita)
-C 0x9708 apunta a lo que hay debajo de las figuras
-C 0x9722 tecla_ascii: A = el ASCII de la primera tecla apretada (0 si ninguna)
-C 0x9734 apunta a lo que hay debajo de las figuras
+C 0x96A6 lee de Afrodita: baja uno al revivirla (Knightmare lo pone a 99) y el byte siguiente (16 bits)
+C 0x9705 guarda la posicion del cursor en la contraseña
+C 0x9708 apunta a el tampon de 0xEB00 (lo de debajo de las figuras; la contraseña)
+C 0x9719 sprite_del_cursor: el sprite del cursor en su sitio
+C 0x971C tecla_de_contrasena: la tecla recien apretada a la contraseña; RETURN acaba
+C 0x971F pinta_contrasena: la contraseña tecleada en tres filas
+C 0x9725 apunta a la tecla de la contraseña
+C 0x9734 apunta a el tampon de 0xEB00 (lo de debajo de las figuras; la contraseña)
 C 0x9737 de_mas_a: DE += A
 C 0x9753 guarda hecho (estado 0x12)
-C 0x9757 lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
-C 0x97A0 apunta a la copia de la tabla de sprites (128 bytes)
+C 0x975F apunta a la posicion del cursor en la contraseña
 C 0x97AC sprites_a_vram: la copia de la tabla de sprites (0xEC80) a 0x3B00
-C 0x97B2 apunta a lo que hay debajo de las figuras
+C 0x97B2 apunta a el tampon de 0xEB00 (lo de debajo de las figuras; la contraseña)
+C 0x97B5 fila_de_contrasena: 16 letras en grupos de 4
+C 0x97BE fila_de_contrasena: 16 letras en grupos de 4
 C 0x97E6 guarda hecho (estado 0x12)
-C 0x97EA apunta a lo que hay debajo de las figuras
-C 0x980E apunta a lo que hay debajo de las figuras
 C 0x982E apunta a las flechas (BCD)
+C 0x9835 desempaqueta_bits: A valores de 5 bits por letra de DE a HL
 C 0x983B apunta a el tope de la experiencia de Afrodita
+C 0x9842 desempaqueta_bits: A valores de 5 bits por letra de DE a HL
 C 0x9848 apunta a las marcas del mapa 2 (bits 7-4: objetos 09 08 07 0A; bit 2: jefe vencido)
+C 0x984F desempaqueta_bits: A valores de 5 bits por letra de DE a HL
 C 0x9855 apunta a tiene el objeto 0x01
-C 0x9878 lee el nivel de los objetos 0x28/0x2B/0x2C
 C 0x987E apunta a tiene el objeto 0x2C
 C 0x988E guarda el nivel de los objetos 0x28/0x2B/0x2C
 C 0x9894 apunta a las vidas de Afrodita (BCD)
 C 0x98A9 guarda quien juega (0 Afrodita)
-C 0x98ED a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
 C 0x9905 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
-C 0x9908 a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
-C 0x990F a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
-C 0x9926 a000_banco_9: pone el banco 9 en 0xA000 (y su copia en 0xF0F3)
-C 0x993D lee el mapa (0xE041) y la sala (0xE042) de un tiron
-C 0x9950 lee las marcas del mapa 11 (bits 7-4: objetos 09 08 07 0A; bit 2: jefe vencido)
 C 0x995A lee la sala
 C 0x9965 palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x996E palabra_de_tabla: DE = la palabra A de la tabla de HL
-C 0x9971 apunta a el mundo elegido (mapa - 1)
-C 0x997D apunta a las barras que repintar (bits 0-3)
+C 0x9984 guarda la puerta del mundo: bit 0 abierta, bit 1 se puede abrir
 C 0x998C guarda el dibujo de la puerta del mundo elegido
+C 0x99B7 guarda el sitio de la puerta del mapa 11 (0-3)
 C 0x99BD byte_de_tabla: A = el byte HL + A
-C 0x99C8 lee el mundo elegido (mapa - 1) y el byte siguiente (16 bits)
+C 0x99C0 guarda la sala de la puerta del mapa 11
 C 0x99E5 guarda el dibujo de la puerta del mundo elegido
 C 0x99F2 apunta a las barras que repintar (bits 0-3)
 C 0x99FB guarda tiene el objeto 0x0C
-C 0x99FF personaje_4_a_7: C si el estado del personaje es 4-7
 C 0x9A03 apunta a el mundo elegido (mapa - 1)
+C 0x9A11 lee abriendo la puerta del mundo
+C 0x9A1D guarda abriendo la puerta del mundo y el byte siguiente (16 bits)
 C 0x9A22 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
-C 0x9A25 lee quien juega (0 Afrodita)
 C 0x9A29 lee el mundo elegido (mapa - 1)
 C 0x9A33 lee tiene el objeto 0x23
 C 0x9A41 lee tiene el objeto 0x0D
-C 0x9A46 lee lo apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 C 0x9A52 guarda 1 = estado 8, 2 = estado 0x0D
-C 0x9A65 lee la y del personaje
-C 0x9A6D lee la x del personaje
-C 0x9A76 personaje_4_a_7: C si el estado del personaje es 4-7
+C 0x9A5C delante_de: C si el personaje esta a D, E de la y, x de HL
 C 0x9A7A apunta a hay puerta de vuelta en la sala
 C 0x9A84 lee tiene el objeto 0x2A
-C 0x9A89 lee lo apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
+C 0x9A8F delante_de_la_vuelta: C si el personaje esta delante de la puerta de vuelta
 C 0x9A95 guarda estado 0x10 pedido
-C 0x9A99 lee tiene el objeto 0x27
 C 0x9A9E lee el mapa (1 el castillo, 2-11 los mundos)
-C 0x9AA3 tecla_ascii: A = el ASCII de la primera tecla apretada (0 si ninguna)
-C 0x9AAE apunta a las marcas del mapa 2 (bits 7-4: objetos 09 08 07 0A; bit 2: jefe vencido)
 C 0x9AB1 hl_mas_a: HL += A
 C 0x9ABC hl_mas_a: HL += A
 C 0x9AC0 guarda la sala
-C 0x9AC9 lee tiene el objeto 0x15
 C 0x9ACE lee el estado del jefe
 C 0x9AD3 lee la cosa del jefe vencido puesta
-C 0x9AD8 tecla_ascii: A = el ASCII de la primera tecla apretada (0 si ninguna)
+C 0x9AE6 guarda en la sala del jefe sin jefe (el recuadro)
 C 0x9AE9 sala_del_jefe: Z en la sala del jefe del mapa sin vencer
 C 0x9AED lee el estado del jefe
+C 0x9AF4 guarda en la sala del jefe sin jefe (el recuadro)
+C 0x9AF7 apunta a las 16 ultimas letras tecleadas
+C 0x9B10 guarda en la sala del jefe sin jefe (el recuadro)
 C 0x9B14 guarda el nombre del jefe acertado
 C 0x9B1B lee el mapa (1 el castillo, 2-11 los mundos)
-C 0x9B3C tecla_ascii: A = el ASCII de la primera tecla apretada (0 si ninguna)
-C 0x9BB6 lee tiene el objeto 0x20
-C 0x9BBB lee el estado del personaje (5 = hundirse)
+C 0x9B2E apunta a las 16 ultimas letras tecleadas
+C 0x9B4A apunta a las 16 ultimas letras tecleadas
+C 0x9BC1 lee en la sala del jefe sin jefe (el recuadro)
+C 0x9BE2 guarda todo parado (objeto 0x20) y el byte siguiente (16 bits)
 C 0x9BEB pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
-C 0x9BEE lee tiene el objeto 0x26
-C 0x9BFC apunta a las letras tecleadas
-C 0x9C08 umbrella: acaba con todas las figuras de tipo 0x0E (p03:B604)
+C 0x9C04 compara_b: Z si los B bytes de DE y HL son iguales
+C 0x9C23 guarda la ultima tecla
 C 0x9C2F hl_mas_a: HL += A
-C 0x9DAF lee el mapa (0xE041) y la sala (0xE042) de un tiron
 C 0x9DC6 apunta a hay puerta de vuelta en la sala
 C 0x9DD3 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x9E2F apunta a F1 apretada
 C 0x9E51 guarda la x del personaje
-C 0x9E59 guarda la pose del personaje
 C 0x9E5E pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0x9E67 rle_a_vram: descomprime el rle de DE en la VRAM de HL
 C 0x9E8B guarda un paso de varios cuadros en marcha
-C 0x9EAF lee la y del personaje
 C 0x9EB4 guarda la y del personaje
 C 0x9EB8 guarda el estado del personaje (5 = hundirse)
-C 0x9ED5 apunta a la copia de la tabla de sprites (128 bytes)
+C 0x9EC1 lee la y, x de la puerta del mundo y el byte siguiente (16 bits)
 C 0x9EDF palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x9EFC pose_del_personaje: la pose 0xE502 (0xE53D en la pausa) de la tabla 0x7529
-C 0x9F0F lee la y del personaje
 C 0x9F1D guarda la x del personaje
+C 0x9F3C sprites_puerta_de_vuelta: los 8 sprites de la puerta de vuelta
+C 0x9F3F fin_del_paso: 0xE608 a 0
 C 0x9F4F guarda la x del personaje
 C 0x9F76 color_de_fondo: el registro 7 del VDP = B
 C 0x9F7F color_de_fondo: el registro 7 del VDP = B
 C 0x9F87 lee el mapa (0xE041) y la sala (0xE042) de un tiron
-C 0x9FA7 lee tiene el objeto 0x13
-C 0x9FB4 lee tiene el objeto 0x16
-C 0x9FC1 lee tiene el objeto 0x1B
 C 0x9FC6 lee las marcas del mapa 5 (bits 7-4: objetos 09 08 07 0A; bit 2: jefe vencido)
 # --- fin de las anotaciones de anota.py ---

@@ -470,7 +470,7 @@ prepara_el_titulo:		; pantalla, sprites y graficos del titulo (p01:6215)
 	jp a000_banco_3		;4309   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 L_430C:
 	push bc			;430c   ; estado 1: p02:98E5...
-	call 098e5h		;430d
+	call 098e5h		;430d   ; tecla_l: C si la L (fila 4, bit 1) no esta apretada
 	pop bc			;4310
 	jr nc,L_4330		;4311   ; sin acarreo, al estado 0x12
 	call p8000_banco_14		;4313   ; con acarreo, p01:6251 con los bancos 14 y 15
@@ -823,7 +823,7 @@ L_4582:
 	jp paso_siguiente		;4596   ; paso_siguiente: sube el paso 0xE001
 L_4599:
 	djnz L_45E8		;4599   ; estado 8, paso 0: p02:9E6F
-	call 09e6fh		;459b
+	call 09e6fh		;459b   ; sube_por_la_puerta: cada cuadro el personaje entra en la puerta del mundo
 	ld a,(0e608h)		;459e   ; mientras 0xE608 este puesto, nada
 	or a			;45a1
 	ret nz			;45a2
@@ -982,7 +982,7 @@ L_46AD:
 	ld a,(0e041h)		;46b3   ; desde el mapa 11, a la sala de 0xE06D
 	cp 00bh		;46b6
 	jr nz,L_46C0		;46b8
-	ld a,(0e06dh)		;46ba
+	ld a,(0e06dh)		;46ba   ; lee la sala de la puerta del mapa 11
 	ld h,a			;46bd
 	jr L_46D3		;46be
 L_46C0:
@@ -1002,7 +1002,7 @@ L_46D3:
 	ld (0e041h),hl		;46d5   ; guarda el mapa (0xE041) y la sala (0xE042) de un tiron
 	call monta_otra_sala		;46d8   ; p00:51CD, p01:6C95 y p02:9E8F
 	call 06c95h		;46db   ; puerta_del_mundo_elegido: la puerta de 3 x 4 del mundo elegido (0x6CC7)
-	call 09e8fh		;46de
+	call 09e8fh		;46de   ; sale_de_sala_especial: al salir de la sala especial, pose 0x10
 	xor a			;46e1   ; 0xE01A a 0 y 0xE608 a 1
 	ld (0e01ah),a		;46e2   ; guarda el lado por el que se sale de la sala: 1 arriba, 2 abajo, 3 izquierda, 4 derecha
 	inc a			;46e5
@@ -1011,7 +1011,7 @@ L_46D3:
 L_46EC:
 	djnz L_470D		;46ec   ; paso 1: hasta que 0xE608 vuelve a 0 (p02:9E97)
 	call sala_a_vram		;46ee   ; sala_a_vram: la pantalla de la sala (0xED80) a las filas 4-23
-	call 09e97h		;46f1
+	call 09e97h		;46f1   ; baja_hasta_el_suelo: cada cuadro baja hasta pisar suelo
 	ld a,(0e608h)		;46f4   ; lee un paso de varios cuadros en marcha
 	or a			;46f7
 	ret nz			;46f8
@@ -1121,7 +1121,7 @@ L_47CF:
 	djnz L_4835		;47cf   ; estado 0x0B, paso 0: las cifras del castillo (p02:9A99)
 	xor a			;47d1
 	ld (0f000h),a		;47d2
-	call 09a99h		;47d5
+	call 09a99h		;47d5   ; cifra_del_castillo: con el objeto 0x27, la cifra 1-9 lleva a la puerta de ese mundo
 	ld a,(0f000h)		;47d8   ; si han puesto 0xF000, a su puerta
 	and a			;47db
 	jr nz,L_480D		;47dc
@@ -1203,7 +1203,7 @@ L_486E:
 L_488E:
 	djnz L_48B7		;488e   ; estado 0x0E, la sala especial, paso 0: lo de la sala (p02:8F43)
 	call lee_el_mando		;4890   ; lee_el_mando: el mando en 0xE009 (apretado) y 0xE008 (recien apretado)
-	call 08f43h		;4893
+	call 08f43h		;4893   ; cuadro_de_sala_especial: cada cuadro, por el tipo de sala especial (tabla 0x8F4A)
 	call 0938eh		;4896   ; y p02:938E
 	ld a,(0e008h)		;4899   ; hasta el bit 1 del mando
 	and 002h		;489c
@@ -1222,7 +1222,7 @@ L_48B7:
 	ld a,08dh		;48b7   ; paso 1: la musica 0x8D, p00:57E1 y p02:8F1E
 	call musica_despues		;48b9   ; musica_despues: apaga lo que suena y deja esperando la musica A
 	call graficos_de_sala_especial		;48bc   ; graficos_de_sala_especial: los graficos de la sala especial y lo que vende
-	call 08f1eh		;48bf
+	call 08f1eh		;48bf   ; entra_en_sala_especial: todo a cero y la pantalla de la sala especial
 	jp paso_siguiente		;48c2   ; paso_siguiente: sube el paso 0xE001
 L_48C5:
 	ld a,b			;48c5   ; estado 0x10: por el paso
@@ -1247,7 +1247,7 @@ DATA_tabla_48C9:
 L_48D3:
 	call esconde_sprites		;48d3   ; paso 0: p02:9F0F y 0xE608 = 1
 	call sonido_fc		;48d6   ; sonido_fc: con 0xE0D5, una vez, el sonido 0xFC
-	call 09f0fh		;48d9
+	call 09f0fh		;48d9   ; entra_en_la_vuelta: al entrar en la puerta de vuelta
 	ld a,001h		;48dc
 	ld (0e608h),a		;48de   ; guarda un paso de varios cuadros en marcha
 	jp paso_siguiente		;48e1   ; paso_siguiente: sube el paso 0xE001
@@ -1261,7 +1261,7 @@ L_48E4:
 	ld a,(0e680h)		;48f2   ; la sala especial de 0xE680
 	ld (0e690h),a		;48f5   ; guarda la sala especial (pista o tienda)
 	call graficos_de_la_sala_especial		;48f8   ; graficos_de_la_sala_especial: sus graficos y la musica 0x8D
-	call 08f1eh		;48fb
+	call 08f1eh		;48fb   ; entra_en_sala_especial: todo a cero y la pantalla de la sala especial
 	jp paso_siguiente		;48fe   ; paso_siguiente: sube el paso 0xE001
 graficos_de_la_sala_especial:		; sus graficos y la musica 0x8D
 	call graficos_de_sala_especial		;4901   ; p00:57E1 y la musica 0x8D
@@ -1269,8 +1269,8 @@ graficos_de_la_sala_especial:		; sus graficos y la musica 0x8D
 	jp musica		;4906   ; musica: la musica A (0xE021 = 1 salvo 0x87-0x8B)
 L_4909:
 	call lee_el_mando		;4909   ; paso 2: lo de la sala especial (p02:8F43, p02:938E)
-	call 08f43h		;490c
-	call 0938eh		;490f
+	call 08f43h		;490c   ; cuadro_de_sala_especial: cada cuadro, por el tipo de sala especial (tabla 0x8F4A)
+	call 0938eh		;490f   ; sprites_de_sala_especial: el personaje, el cursor y el que atiende
 	ld a,(0e693h)		;4912   ; 0xE693 = 1: nada; 2: sigue sin esperar...
 	dec a			;4915
 	ret z			;4916
@@ -1295,7 +1295,7 @@ L_493A:
 	jp paso_siguiente		;493a   ; paso_siguiente: sube el paso 0xE001
 L_493D:
 	call sala_a_vram		;493d   ; paso 4: hasta que 0xE608 vuelve a 0 (p02:9F56)
-	call 09f56h		;4940
+	call 09f56h		;4940   ; sube_de_la_vuelta: cada cuadro sale de la puerta
 	ld a,(0e608h)		;4943   ; lee un paso de varios cuadros en marcha
 	or a			;4946
 	ret nz			;4947
@@ -1308,7 +1308,7 @@ L_493D:
 	jp al_estado		;4956   ; al_estado: al estado A con el paso 0 y 0x20 cuadros de espera
 L_4959:
 	djnz L_4969		;4959   ; estado 0x0F, el jefe: paso 0, p02:9F68 hasta que 0xE64C vuelve a 0
-	call 09f68h		;495b
+	call 09f68h		;495b   ; destellos: el color de fondo parpadea
 	ld a,(0e64ch)		;495e
 	or a			;4961
 	ret nz			;4962
@@ -1338,12 +1338,12 @@ L_4991:
 	jp al_estado		;4998   ; al_estado: al estado A con el paso 0 y 0x20 cuadros de espera
 L_499B:
 	xor a			;499b   ; paso 3: 0xE615 y el nombre acertado a 0
-	ld (0e615h),a		;499c
+	ld (0e615h),a		;499c   ; guarda en la sala del jefe sin jefe (el recuadro)
 	ld (0e020h),a		;499f   ; guarda el nombre del jefe acertado
 	call sala_sin_salidas		;49a2   ; la sala sin salidas
 	ld a,081h		;49a5   ; la musica 0x81
 	call pide_sonido		;49a7   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
-	call 09f61h		;49aa
+	call 09f61h		;49aa   ; empiezan_destellos: 0x3C cuadros de destellos del fondo
 	jp paso_siguiente		;49ad   ; paso_siguiente: sube el paso 0xE001
 sala_sin_salidas:		; las cuatro vecinas 0xE648-0xE64B a 0xFF
 	ld hl,0ffffh		;49b0   ; las cuatro vecinas a 0xFF: la sala del jefe no tiene salida
@@ -1450,7 +1450,7 @@ L_4A69:
 	call lee_el_mando		;4a6a   ; lee_el_mando: el mando en 0xE009 (apretado) y 0xE008 (recien apretado)
 	pop bc			;4a6d
 	djnz L_4A7F		;4a6e   ; paso 0: p02:9716 hasta 0xE02D
-	call 09716h		;4a70
+	call 09716h		;4a70   ; teclea_contrasena: un cuadro de la pantalla de teclear la contraseña (estado 0x12)
 	ld a,(0e02dh)		;4a73   ; lee hecho (estado 0x12)
 	and a			;4a76
 	ret z			;4a77
@@ -1460,7 +1460,7 @@ L_4A78:
 	jp paso_siguiente		;4a7c   ; paso_siguiente: sube el paso 0xE001
 L_4A7F:
 	djnz L_4AA5		;4a7f   ; paso 1: p02:97DD
-	call 097ddh		;4a81
+	call 097ddh		;4a81   ; mira_contrasena: descifra y comprueba la contraseña; buena, 0xE02D = 1
 	ld a,(0e02dh)		;4a84   ; lee hecho (estado 0x12)
 	and a			;4a87
 	jr nz,L_4AA0		;4a88   ; con 0xE02D, p02:9908 y paso siguiente
@@ -1473,7 +1473,7 @@ L_4A7F:
 	call esconde_sprites		;4a9a   ; esconde_sprites: la copia de la tabla de sprites (0xEC80) con y = 0xE0
 	jp esconde_sprites		;4a9d   ; esconde_sprites: la copia de la tabla de sprites (0xEC80) con y = 0xE0
 L_4AA0:
-	call 09908h		;4aa0
+	call 09908h		;4aa0   ; texto_mala: el rotulo de contraseña mala
 	jr L_4A78		;4aa3
 L_4AA5:
 	djnz L_4AB8		;4aa5   ; paso 2: una tecla del mando...
@@ -1485,7 +1485,7 @@ L_4AA5:
 	dec (hl)			;4ab0
 	xor a			;4ab1
 	ld (0e02dh),a		;4ab2   ; guarda hecho (estado 0x12)
-	jp 0990fh		;4ab5
+	jp 0990fh		;4ab5   ; borra_texto_mala: borra el rotulo de contraseña mala
 L_4AB8:
 	djnz L_4B27		;4ab8   ; paso 3: espera 0xE004 cuadros
 	ld hl,0e004h		;4aba   ; apunta a la espera del paso, en cuadros
@@ -1509,7 +1509,7 @@ L_4AB8:
 	ld (hl),000h		;4ae6
 	ldir		;4ae8
 	call 0982bh		;4aea   ; p02:982B y p02:99B3
-	call 099b3h		;4aed
+	call 099b3h		;4aed   ; puerta_del_mapa_11: el sitio al azar de la puerta del mapa 11 (0xE06D, 0xE06E)
 	ld hl,00101h		;4af0   ; en la sala 1 del castillo
 	ld (0e041h),hl		;4af3   ; guarda el mapa (0xE041) y la sala (0xE042) de un tiron
 	ld a,(0e501h)		;4af6   ; la vida del que juega llena (su tope)
@@ -1552,7 +1552,7 @@ L_4B27:
 	call rle_a_vram		;4b3f   ; rle_a_vram: descomprime el rle de DE en la VRAM de HL
 	call figuras_sueltas		;4b42   ; figuras_sueltas: 0xE602 = 0
 	call 09704h		;4b45   ; p02:9704 y p02:98ED
-	call 098edh		;4b48
+	call 098edh		;4b48   ; texto_de_contrasena: el rotulo de la pantalla de la contraseña (banco 9)
 	jp L_4A78		;4b4b
 
 ; ----------------------------------------------------------------------
@@ -1839,8 +1839,8 @@ L_4CFF:
 	ret			;4d14
 L_4D15:
 	ld a,099h		;4d15   ; Knightmare: 99 en 0xE05A y 0xE05B
-	ld (0e05ah),a		;4d17
-	ld (0e05bh),a		;4d1a
+	ld (0e05ah),a		;4d17   ; guarda de Afrodita: baja uno al revivirla (Knightmare lo pone a 99)
+	ld (0e05bh),a		;4d1a   ; guarda de Popolon: baja uno al revivirlo (Knightmare lo pone a 99)
 	ret			;4d1d
 cortinilla:		; baja la espera y borra una columna; P mientras quede
 	ld hl,0e004h		;4d1e   ; cuenta la espera hacia atras; acabada, sale con el signo puesto
@@ -2386,7 +2386,7 @@ monta_lo_de_la_sala:		; lo que va encima de la sala: figuras, cosas, puertas, es
 	call a000_banco_3		;513e   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 	call 09ae5h		;5141   ; p02:9AE5 y p02:8EEF (la sala especial)
 	call sonido_fc		;5144   ; sonido_fc: con 0xE0D5, una vez, el sonido 0xFC
-	call 08eefh		;5147
+	call 08eefh		;5147   ; sala_especial: la sala especial del mapa (0x8F0A): pista o tienda
 	call monta_la_planta		;514a   ; monta_la_planta: la planta y lo que la cambia (objeto 0x18, mapa 4); no en salas especiales
 	ld a,(0e690h)		;514d   ; en una sala especial no se monta lo demas
 	or a			;5150
@@ -2406,7 +2406,7 @@ monta_lo_de_la_sala:		; lo que va encima de la sala: figuras, cosas, puertas, es
 	xor a			;5175   ; 0xE6A1 a 0
 	ld (0e6a1h),a		;5176
 	call 0993dh		;5179   ; p02:993D (las puertas de vuelta), p02:9DAF (las de los mundos), p01:69E3
-	call 09dafh		;517c
+	call 09dafh		;517c   ; puerta_de_vuelta_de_la_sala: en el castillo, la puerta de vuelta de la sala (0x9DDA) en 0xE680-0xE685
 	call 069e3h		;517f   ; cosa_e678: en los mundos, 0xE678-0xE67A de la lista 0x9C83 de la sala
 	call bancos_7_8_9		;5182   ; con los bancos 7, 8 y 9: p08:9CFA, p08:9F1A, p08:9E61 y las escaleras (p09:A746)
 	call 09cfah		;5185
@@ -2622,7 +2622,7 @@ cuadro_de_partida:		; un cuadro de la partida: todas las rutinas de cada banco
 	call m,lee_el_mando		;535a   ; lee_el_mando: el mando en 0xE009 (apretado) y 0xE008 (recien apretado)
 	call 0a8a0h		;535d   ; ...y otra vez cambiadas
 	call 09b02h		;5360   ; lo tecleado (p02:9B02) y el objeto 0x20 (p02:9BB6)
-	call 09bb6h		;5363
+	call 09bb6h		;5363   ; objeto_20: con el objeto 0x20 y CTRL, todo se para un rato (hasta 16 veces)
 	call bancos_7_8_9		;5366   ; con los bancos 7, 8 y 9: las figuras del castillo (p09)
 	call 0a036h		;5369
 	call 0a12eh		;536c
@@ -2663,14 +2663,14 @@ cuadro_de_partida:		; un cuadro de la partida: todas las rutinas de cada banco
 	call bancos_1_2_3		;53d5   ; con 14 y 15: las figuras de 0xEB00 otra vez
 	call p8000_banco_14		;53d8   ; p8000_banco_14: pone el banco 14 en 0x8000
 	call a000_banco_15		;53db   ; a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
-	ld hl,0eb00h		;53de   ; apunta a lo que hay debajo de las figuras
+	ld hl,0eb00h		;53de   ; apunta a el tampon de 0xEB00 (lo de debajo de las figuras; la contraseña)
 	call 07afeh		;53e1   ; repone_el_castillo: lo de 0xEB00 de vuelta en las figuras del castillo
 	call 07c7eh		;53e4   ; repone_ec30: vuelve lo de los huecos de 0xEC30
 	call p8000_banco_2		;53e7   ; con 2 y 3: el jefe (p01:7EFC) y lo demas de la partida
 	call a000_banco_3		;53ea   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 	call 07efch		;53ed   ; jefe_cada_cuadro: el jefe: humo, salida y lo de su tipo
-	call 09f82h		;53f0
-	call 09beeh		;53f3
+	call 09f82h		;53f0   ; objetos_escondidos: los objetos escondidos del castillo (salas 0x30, 0x4B, 0x28, 0x18 y 0x2B)
+	call 09beeh		;53f3   ; mira_umbrella: con el objeto 0x26, las 8 ultimas letras contra UMBRELLA
 	call 0b701h		;53f6
 	call 0b492h		;53f9
 	call 0b6c1h		;53fc
@@ -2681,9 +2681,9 @@ cuadro_de_partida:		; un cuadro de la partida: todas las rutinas de cada banco
 	call 0b40ch		;540b
 	call 0b194h		;540e
 	call 0b7d5h		;5411
-	call 099ffh		;5414
-	call 099c8h		;5417
-	call 09a76h		;541a
+	call 099ffh		;5414   ; entra_en_el_mundo: con abajo delante de la puerta abierta: al estado 8
+	call 099c8h		;5417   ; abre_la_puerta: la puerta del mundo se abre poco a poco; abierta, se gasta el objeto 0x0C
+	call 09a76h		;541a   ; sale_del_mundo: con abajo delante de la puerta de vuelta: estado 0x10
 	call 06171h		;541d   ; vida_y_experiencia: cada 4 cuadros, lo pendiente de vida y experiencia de los dos
 	call 06085h		;5420   ; repinta_barras: las barras de los bits de 0xE062
 fin_del_cuadro:		; p15:BD06 y p15:BDA1 con las figuras quietas
@@ -4021,7 +4021,7 @@ salas_del_objeto_14:		; la lista de salas del ultimo mundo con el bit 1
 	ld hl,0e06ch		;5d37   ; con el bit 1 de las marcas del mapa 11, la lista de 0xBE63 + 0xE06E
 	bit 1,(hl)		;5d3a
 	jr z,L_5D46		;5d3c
-	ld a,(0e06eh)		;5d3e
+	ld a,(0e06eh)		;5d3e   ; lee el sitio de la puerta del mapa 11 (0-3)
 	ld hl,0be63h		;5d41
 	jr L_5D55		;5d44
 L_5D46:

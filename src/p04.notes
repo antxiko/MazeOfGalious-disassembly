@@ -128,6 +128,7 @@ C 0x6249 lee el mapa (0xE041) y la sala (0xE042) de un tiron
 C 0x6291 lee el mapa (0xE041) y la sala (0xE042) de un tiron
 C 0x62A4 lee el mapa (0xE041) y la sala (0xE042) de un tiron
 C 0x62B9 lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x62DB lee todo parado (objeto 0x20)
 C 0x6326 de_mas_a (por 0x4065): DE += A
 C 0x635A lee el mapa (1 el castillo, 2-11 los mundos)
 C 0x6416 de_mas_a (por 0x4065): DE += A
@@ -218,6 +219,7 @@ C 0x7A5F apunta a la y del personaje
 C 0x7A76 lee la y del personaje
 C 0x7A81 lee la x del personaje
 C 0x7B2D de_negado (por 0x4068): DE = -DE
+C 0x7B64 articulo: el dibujo de un articulo
 C 0x7C42 casilla_de_yx (por 0x4056): HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 C 0x7C84 lee la y del personaje
 C 0x7CA0 de_negado (por 0x4068): DE = -DE

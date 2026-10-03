@@ -529,7 +529,7 @@ L_62D5:
 	ld (0e665h),a		;62d7
 	ret			;62da
 L_62DB:
-	ld a,(0e0d5h)		;62db
+	ld a,(0e0d5h)		;62db   ; lee todo parado (objeto 0x20)
 	or a			;62de
 	ret nz			;62df
 	xor a			;62e0
@@ -3690,7 +3690,7 @@ L_7B4F:
 	jr z,L_7B9B		;7b5e
 	ld a,(ix+018h)		;7b60
 	and a			;7b63
-	jp z,0947dh		;7b64
+	jp z,0947dh		;7b64   ; articulo: el dibujo de un articulo
 	ret			;7b67
 L_7B68:
 	call L_7CFD		;7b68

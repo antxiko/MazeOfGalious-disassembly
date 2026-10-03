@@ -747,13 +747,13 @@ DATA_cuatro_palabras_a558:
 
 L_A560:
 	ld hl,0e507h		;a560   ; apunta a la x del personaje
-	ld a,(0e707h)		;a563
+	ld a,(0e707h)		;a563   ; lee la x del jefe
 	cp (hl)			;a566
 	jr c,L_A56C		;a567
 	xor a			;a569
 	jr L_A578		;a56a
 L_A56C:
-	ld a,(0e707h)		;a56c
+	ld a,(0e707h)		;a56c   ; lee la x del jefe
 	add a,040h		;a56f
 	cp (hl)			;a571
 	ld a,003h		;a572
@@ -762,7 +762,7 @@ L_A56C:
 L_A578:
 	ld (ix+014h),a		;a578
 	ld hl,0e505h		;a57b   ; apunta a la y del personaje
-	ld a,(0e705h)		;a57e
+	ld a,(0e705h)		;a57e   ; lee la y del jefe
 	cp (hl)			;a581
 	jr nc,L_A58F		;a582
 	add a,040h		;a584
@@ -835,7 +835,7 @@ L_A5E0:
 	jr $+86		;a5f1
 L_A5F3:
 	bit 0,(ix+01fh)		;a5f3
-	ld a,(0e71bh)		;a5f7
+	ld a,(0e71bh)		;a5f7   ; lee el suelo del jefe 11
 	jr z,L_A5FE		;a5fa
 	ld a,003h		;a5fc
 L_A5FE:
@@ -859,7 +859,7 @@ DATA_tabla_A601:
 
 L_A60B:
 	call L_A791		;a60b
-	ld a,(0e71ch)		;a60e
+	ld a,(0e71ch)		;a60e   ; lee la fila de la cola del jefe 10
 	ld c,a			;a611
 	rlc a		;a612
 	sbc a,a			;a614
@@ -888,7 +888,7 @@ L_A647:
 	ld a,(ix+01ah)		;a647
 	ld (ix+019h),a		;a64a
 L_A64D:
-	ld a,(0e71dh)		;a64d
+	ld a,(0e71dh)		;a64d   ; lee la espera o el sitio siguiente del jefe
 	ld (ix+014h),a		;a650
 	ld a,(0e71eh)		;a653
 	ld (ix+015h),a		;a656
@@ -953,7 +953,7 @@ L_A6C7:
 	jp L_A626		;a6ce
 L_A6D1:
 	call L_A791		;a6d1
-	ld a,(0e722h)		;a6d4
+	ld a,(0e722h)		;a6d4   ; lee el jefe 7 ha mordido
 	or a			;a6d7
 	ret z			;a6d8
 	push ix		;a6d9
@@ -995,7 +995,7 @@ L_A714:
 	pop af			;a725
 	ld (hl),a			;a726
 L_A727:
-	ld hl,0e722h		;a727
+	ld hl,0e722h		;a727   ; apunta a el jefe 7 ha mordido
 	dec (hl)			;a72a
 	ld hl,0e724h		;a72b
 	ld a,(hl)			;a72e
@@ -1016,7 +1016,7 @@ L_A749:
 	cp 032h		;a749
 	ret c			;a74b
 	ld (ix+017h),032h		;a74c
-	ld hl,0e71fh		;a750
+	ld hl,0e71fh		;a750   ; apunta a la espera hasta que el jefe escupe
 	ld (hl),000h		;a753
 	ret			;a755
 L_A756:
@@ -2568,7 +2568,7 @@ DATA_seno_64:
 
 
 L_B3B4:
-	ld hl,0e0d5h		;b3b4
+	ld hl,0e0d5h		;b3b4   ; apunta a todo parado (objeto 0x20)
 	ld a,(hl)			;b3b7
 	or a			;b3b8
 	ret z			;b3b9
@@ -2611,7 +2611,7 @@ L_B3F7:
 	res 4,(ix+003h)		;b402
 	ret			;b406
 L_B407:
-	ld a,(0e0d5h)		;b407
+	ld a,(0e0d5h)		;b407   ; lee todo parado (objeto 0x20)
 	or a			;b40a
 	ret nz			;b40b
 	ld a,(ix+000h)		;b40c
@@ -2672,7 +2672,7 @@ L_B45E:
 	cp 05bh		;b463
 	jr z,L_B46E		;b465
 	ld b,a			;b467
-	ld a,(0e0d5h)		;b468
+	ld a,(0e0d5h)		;b468   ; lee todo parado (objeto 0x20)
 	or a			;b46b
 	ret nz			;b46c
 	ld a,b			;b46d

@@ -101,15 +101,24 @@ C 0xA40F despacha (por 0x4050): salta a la entrada A de la tabla de palabras que
 C 0xA471 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 C 0xA555 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0xA560 apunta a la x del personaje
+C 0xA563 lee la x del jefe
+C 0xA56C lee la x del jefe
 C 0xA57B apunta a la y del personaje
+C 0xA57E lee la y del jefe
 C 0xA595 byte_de_tabla (por 0x4083): A = el byte HL + A
 C 0xA5A1 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 C 0xA5AD palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
+C 0xA5F7 lee el suelo del jefe 11
 C 0xA5FE despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0xA60E lee la fila de la cola del jefe 10
+C 0xA64D lee la espera o el sitio siguiente del jefe
 C 0xA663 hl_mas_a (por 0x4062): HL += A
 C 0xA695 hl_mas_a (por 0x4062): HL += A
+C 0xA6D4 lee el jefe 7 ha mordido
 C 0xA718 byte_de_tabla (por 0x4083): A = el byte HL + A
 C 0xA722 hl_mas_a (por 0x4062): HL += A
+C 0xA727 apunta a el jefe 7 ha mordido
+C 0xA750 apunta a la espera hasta que el jefe escupe
 C 0xA7BD de_negado (por 0x4068): DE = -DE
 C 0xA82B pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0xA886 casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
@@ -156,12 +165,15 @@ C 0xB223 lee la y del personaje
 C 0xB22B lee la x del personaje
 C 0xB25A hl_mas_a (por 0x4062): HL += A
 C 0xB266 multiplica (por 0x406B): HL = H x E
+C 0xB3B4 apunta a todo parado (objeto 0x20)
 C 0xB3C2 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0xB3C5 apunta a los huecos de figura (32 bytes cada uno)
 C 0xB3C9 lee cuantos huecos de figura hay
 C 0xB3EC lee el contador de cuadros de partida
 C 0xB3FC lee el contador de cuadros de partida
+C 0xB407 lee todo parado (objeto 0x20)
 C 0xB44C lee la direccion del byte de la sala en el tramo del mapa y el byte siguiente (16 bits)
+C 0xB468 lee todo parado (objeto 0x20)
 C 0xB46F despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
 C 0xB54E byte_de_tabla (por 0x4083): A = el byte HL + A
 C 0xB560 byte_de_tabla (por 0x4083): A = el byte HL + A

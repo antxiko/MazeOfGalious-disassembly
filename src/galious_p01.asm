@@ -1913,7 +1913,7 @@ jefe_en_trozos:		; el jefe de tres mosaicos (0xE70A, 0xE719, 0xE718)
 	ld a,(0e718h)		;6c1c   ; ...y el de 0xE718 (1 de 2, en la fila de 0xE71C)
 	call mosaico_a		;6c1f   ; mosaico_a: HL = el mosaico A (0x9E0A), DE = el sitio del jefe (0xE712)
 	ld bc,00102h		;6c22
-	ld a,(0e71ch)		;6c25
+	ld a,(0e71ch)		;6c25   ; lee la fila de la cola del jefe 10
 	add a,a			;6c28
 	rla			;6c29
 	rla			;6c2a
