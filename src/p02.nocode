@@ -1,0 +1,19 @@
+# Zonas que el trazador NO puede entrar a desensamblar como codigo.
+#
+# La tabla de destinos del despachador de Konami (0x4140) va pegada JUSTO
+# DETRAS de su `call`: sin declararla, el trazador sigue de largo y se la come
+# como instrucciones, y ademas sigue desde ahi. Es la contaminacion mas facil
+# de este cartucho.
+#
+# Este fichero lo regenera `make semillas` (tools/bancos.py escribe).
+0x8176 0x8182   tabla de 6 palabras del despachador (call 0x4140 en 0x8173)
+0x81C4 0x81CC   tabla de 4 palabras del despachador (call 0x4140 en 0x81C1)
+0x8287 0x828F   tabla de 4 palabras del despachador (call 0x4140 en 0x8284)
+0x869C 0x86A4   tabla de 4 palabras del despachador (call 0x4140 en 0x8699)
+0x881B 0x8825   tabla de 5 palabras del despachador (call 0x4140 en 0x8818)
+0x8AB0 0x8AC0   tabla de 8 palabras del despachador (call 0x4140 en 0x8AAD)
+0x8D33 0x8D3D   tabla de 5 palabras del despachador (call 0x4140 en 0x8D30)
+0x8F4A 0x8F72   tabla de 20 palabras del despachador (call 0x4140 en 0x8F47)
+0x8F78 0x8F84   tabla de 6 palabras del despachador (call 0x4140 en 0x8F75)
+0x90C6 0x90CE   tabla de 4 palabras del despachador (call 0x4140 en 0x90C3)
+0x912C 0x9134   tabla de 4 palabras del despachador (call 0x4140 en 0x9129)

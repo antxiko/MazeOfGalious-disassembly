@@ -1,0 +1,76 @@
+# notas del banco 06
+
+# --- A MANO: comentarios, nombres y bloques ---
+D 0xA0D1 0xA0E3 tabla_a0d1  9 palabras que p06:A0BA elige con 0x4053 y pasa a p04:736F
+F 0xA0D1 2
+D 0xA3BA 0xA3CA dieciseis_bytes_a3ba  16 bytes que p06:A308 y p06:A333 ponen en (ix+0x1A) segun (ix+0x19)
+D 0xA3CA 0xA3CE cuatro_bytes_a3ca  4 bytes para (ix+0x16) cuando el bit 0 de (ix+0x15) esta puesto (p06:A2D2)
+D 0xA3CE 0xA3D2 cuatro_bytes_a3ce  4 bytes para (ix+0x16) cuando no lo esta (p06:A2CD)
+D 0xA3D2 0xA3DA ocho_bytes_a3d2  8 bytes que p06:A2B9 pone en (ix+0x17) segun (ix+0x18) mod 8
+D 0xA3DA 0xA3E2 ocho_bytes_a3da  8 bytes que p06:A2C3 elige igual
+D 0xA427 0xA42A tres_bytes_a427  3 bytes que p06:A418 y p06:A421 pasan en HL a p05:9DD8 y p05:9E2D
+D 0xA558 0xA560 cuatro_palabras_a558  4 palabras que p06:A46E elige al azar (R) para (ix+0x0F) y (ix+0x0D)
+F 0xA558 2
+D 0xA5B3 0xA5C5 nueve_palabras_a5b3  9 palabras que p06:A59E elige con (ix+0x14) y pasa a p06:B13E
+F 0xA5B3 2
+D 0xA5C5 0xA5D7 nueve_palabras_a5c5  9 palabras que p06:A5AA elige igual
+F 0xA5C5 2
+D 0xA5D7 0xA5E0 nueve_bytes_a5d7  9 bytes que p06:A592 pone en (ix+0x0A) segun (ix+0x14)
+D 0xA798 0xA7A8 dieciseis_bytes_a798  16 bytes que p06:A715 lee con 0x4083
+D 0xAD41 0xAD51 ocho_palabras_ad41  8 palabras que p06:AD3B pasa a p04:6CBE (0x4053 con C, mas 4 si el tipo es 0x55)
+F 0xAD41 2
+D 0xADFB 0xAE03 ocho_bytes_adfb  8 bytes que solo lee el codigo huerfano de p06:ADE5 (uno al azar)
+D 0xAE2C 0xAE3C ocho_palabras_ae2c  8 palabras que p06:AE0C elige con (0xE624) / 2 y pasa a p06:B137
+F 0xAE2C 2
+D 0xAE3C 0xAE4C ocho_palabras_ae3c  8 palabras que p06:AE16 elige igual y pasa a p06:B13E
+F 0xAE3C 2
+D 0xAF78 0xAF99 pasos_af78  33 bytes que p06:AF5A recorre hacia atras (dec l) cuando el valor es 5 o mas
+D 0xAF99 0xAFBA pasos_af99  33 bytes que p06:AF60 recorre igual cuando es menor
+D 0xAFBA 0xAFD1 pasos_afba  23 bytes que p06:AF0F recorre hacia delante (inc l) cuando el valor es 0x10 o mas
+D 0xAFD1 0xAFE8 pasos_afd1  23 bytes que p06:AF14 recorre igual cuando es menor
+D 0xB09F 0xB0D6 choque_por_pose  listas de un byte por pose que p06:B08F/B092 pone en (ix+0x11), el indice de las fichas de choque del banco 14: ((ix+0x0A) - 0xA0) / 4 (o - 0xC4 desde p06:B088). Empiezan en 0xB09F (p06:B080), 0xB0A7 (B067), 0xB0B0 (B06C), 0xB0B6 (B071), 0xB0C1 (B076), 0xB0C8 (B07B) y 0xB0D0 (B085)
+D 0xB274 0xB374 direcciones_16x16  16 x 16 angulos (0-0x3F, 0x20 en la diagonal) que p06:B257 lee en 0xB274 + 16 x (|dY| / 16) + |dX| / 16: la direccion de una figura al jugador
+F 0xB274 16
+D 0xB374 0xB3B4 seno_64  64 pasos de un cuarto de seno, de 0 a 0xFF (p06:B1AD, p06:A960)
+F 0xB374 16
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0xA1BE 0xA1C4 tabla_A1BE  3 destinos del despachador de 0x4140 (call en p06:A1BB): 0xA1C4, 0xA1FD, 0xA226; lo leen p06:A1BB (6 bytes)
+F 0xA1BE 2
+D 0xA2AD 0xA2B3 tabla_A2AD  3 destinos del despachador de 0x4140 (call en p06:A2AA): 0xA2B3, 0xA2E7, 0xA305; lo leen p06:A2AA (6 bytes)
+F 0xA2AD 2
+D 0xA412 0xA418 tabla_A412  3 destinos del despachador de 0x4140 (call en p06:A40F): 0xA418, 0xA41E, 0xA421; lo leen p06:A40F (6 bytes)
+F 0xA412 2
+D 0xA601 0xA60B tabla_A601  5 destinos del despachador de 0x4140 (call en p06:A5FE): 0xA60B, 0xA644, 0xA647, 0xA65A, 0xA6D1; lo leen p06:A5FE (10 bytes)
+F 0xA601 2
+D 0xAE5F 0xAE65 tabla_AE5F  3 destinos del despachador de 0x4140 (call en p06:AE5C): 0xAE65, 0xAE74, 0xAE8C; lo leen p06:AE5C (6 bytes)
+F 0xAE5F 2
+D 0xB472 0xB548 tabla_B472  107 destinos del despachador de 0x4140 (call en p06:B46F): 0x7978, 0x6CF4, 0xAC28, 0x6F80, 0x6B06, 0x76CD, 0xA848, 0x6E32 ...; lo leen p06:B46F (214 bytes)
+F 0xB472 2
+D 0xB5CD 0xB5E3 tabla_objetos  11 punteros, uno por mapa (0xE041) desde el 1, a los objetos de cada sala, [tipo][sitio] y un byte con los 7 bits bajos a 0 al final (p04:6014); la tabla se lee desde 0xB5CB, pero el mapa 0 no existe; lo leen p04:6014 (22 bytes)
+F 0xB5CD 2
+D 0xB5E3 0xBB42 objetos_mapa_1  los objetos de cada sala, [tipo][sitio] y un byte con los 7 bits bajos a 0 al final (p04:6014) del mapa 1: una lista por sala (147); lo leen p04:6014 (1375 bytes)
+F 0xB5E3 8
+D 0xBB42 0xBBC3 objetos_mapa_2  los objetos de cada sala, [tipo][sitio] y un byte con los 7 bits bajos a 0 al final (p04:6014) del mapa 2: una lista por sala (15); lo leen p04:6014 (129 bytes)
+F 0xBB42 8
+D 0xBBC3 0xBC28 objetos_mapa_3  los objetos de cada sala, [tipo][sitio] y un byte con los 7 bits bajos a 0 al final (p04:6014) del mapa 3: una lista por sala (15); lo leen p04:6014 (101 bytes)
+F 0xBBC3 8
+D 0xBC28 0xBC98 objetos_mapa_4  los objetos de cada sala, [tipo][sitio] y un byte con los 7 bits bajos a 0 al final (p04:6014) del mapa 4: una lista por sala (16); lo leen p04:6014 (112 bytes)
+F 0xBC28 8
+D 0xBC98 0xBD17 objetos_mapa_5  los objetos de cada sala, [tipo][sitio] y un byte con los 7 bits bajos a 0 al final (p04:6014) del mapa 5: una lista por sala (17); lo leen p04:6014 (127 bytes)
+F 0xBC98 8
+D 0xBD17 0xBD81 objetos_mapa_6  los objetos de cada sala, [tipo][sitio] y un byte con los 7 bits bajos a 0 al final (p04:6014) del mapa 6: una lista por sala (18); lo leen p04:6014 (106 bytes)
+F 0xBD17 8
+D 0xBD81 0xBDE8 objetos_mapa_7  los objetos de cada sala, [tipo][sitio] y un byte con los 7 bits bajos a 0 al final (p04:6014) del mapa 7: una lista por sala (19); lo leen p04:6014 (103 bytes)
+F 0xBD81 8
+D 0xBDE8 0xBE7E objetos_mapa_8  los objetos de cada sala, [tipo][sitio] y un byte con los 7 bits bajos a 0 al final (p04:6014) del mapa 8: una lista por sala (20); lo leen p04:6014 (150 bytes)
+F 0xBDE8 8
+D 0xBE7E 0xBEE7 objetos_mapa_9  los objetos de cada sala, [tipo][sitio] y un byte con los 7 bits bajos a 0 al final (p04:6014) del mapa 9: una lista por sala (21); lo leen p04:6014 (105 bytes)
+F 0xBE7E 8
+D 0xBEE7 0xBFAE objetos_mapa_10  los objetos de cada sala, [tipo][sitio] y un byte con los 7 bits bajos a 0 al final (p04:6014) del mapa 10: una lista por sala (27); lo leen p04:6014 (199 bytes)
+F 0xBEE7 8
+D 0xBFAE 0xBFD8 objetos_mapa_11  los objetos de cada sala, [tipo][sitio] y un byte con los 7 bits bajos a 0 al final (p04:6014) del mapa 11: una lista por sala (6); lo leen p04:6014 (42 bytes)
+F 0xBFAE 8
+D 0xBFD8 0xC000 relleno_p06  relleno: 40 bytes 0xFF hasta el final del banco, sin nada que los lea ni los ejecute (40 bytes)
+F 0xBFD8 16
+# --- fin de los bloques de bloques.py ---

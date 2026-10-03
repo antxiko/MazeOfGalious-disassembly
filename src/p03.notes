@@ -1,0 +1,40 @@
+# notas del banco 03
+
+# --- A MANO: comentarios, nombres y bloques ---
+D 0xA056 0xA05A cuatro_bytes_a056  4 bytes que p03:A025 lee con 0x4155 y compara con 0xE536
+D 0xA951 0xA96D curva_del_salto  los pasos en Y del salto (de 0xFA a 6: sube, para y baja), uno por cuadro con 0xE50A: Afrodita los lee desde 0xA951 (26 pasos, p03:A3FD) y Popolon desde 0xA953 (24, p03:A3F6)
+D 0xAD2E 0xAD34 seis_colores_ad2e  6 colores que p03:AD21 pone en (iy+0x0B) por turnos ((iy+0x1A) = 0-5)
+D 0xB3AE 0xB3B2 cuatro_bytes_b3ae  4 bytes que p03:B3A5 lee con (ix+0x1B) para el tipo 0x19
+D 0xB620 0xB624 cuatro_bytes_b620  4 bytes que p03:B618 lee con (ix+0x1B) para el tipo 0x19
+D 0xBA12 0xBA1E tres_fichas_ba12  3 fichas de 4 bytes que p03:BA09 elige con (0xE70A) - 0x34 y pasa a p03:BAE1
+F 0xBA12 4
+D 0xBA32 0xBA42 cuatro_fichas_ba32  4 fichas de 4 bytes que p03:BA2D elige con (0xE719) - 0x1E
+F 0xBA32 4
+D 0xBA56 0xBA6E seis_fichas_ba56  6 fichas de 4 bytes que p03:BA51 elige con (0xE70A) - 0x2B
+F 0xBA56 4
+D 0xBA9A 0xBABA altura_por_dibujo  32 bytes que p03:BA88 suma a 0xE707 segun (0xE70A)
+D 0xBAD3 0xBADE once_bytes_bad3  11 bytes que p03:BABA lee en 0xBAD2 + (0xE700) (1-11)
+D 0xBBDB 0xBC02 tres_fichas_de_13  3 fichas de 13 bytes que p03:BBBF, p03:BBC9 y la siguiente pasan en HL a p03:BD81
+F 0xBBDB 13
+D 0xBD0A 0xBD15 mascaras_bd0a  11 bytes que p03:BCE5 lee con (0xE700) - 1 y prueba con el bit 3 o el 1
+D 0xBF0B 0xBF28 mundo_recuperado  I HAVE TAKEN WORLD   BACK con la fuente de los mensajes (29 bytes): p03:BEDB lo copia a 0xEE41 y p03:BEE5 pone el numero de mapa en el hueco (0xEE55)
+D 0xBF28 0xBF93 byte_por_tipo_bf27  un byte por tipo de figura 0-0x6B que p03:B624 lee en 0xBF27 + (ix+0) (el del tipo 0 es el ultimo byte del texto de delante)
+D 0xBF93 0xBFF0 relleno_b3  relleno: 93 bytes 0xFF entre los datos y la marca del final del banco
+D 0xBFF0 0xC000 marca_de_konami  la marca de Konami del final del banco 3 (la destapo Manuel Pazos): leyendo hacia atras, 0xAA, 0x49 (el RC-749 en BCD), 0x0D (13 caracteres) y el titulo al reves con la fuente del juego (katakana desde 0xBA): ガリウス ノ メイキュウ. Sus 6 ultimos bytes son los que otros cartuchos de Konami buscan en 0xBFFA
+D 0xB8F1 0xB8FB tamanos_b8f1  5 parejas que p03:B8CF lee en 0xB8EF + 2 x (iy+0) (0x414C, tipo 1-5): dos medidas (3 y 0x0C, 3 y 0x0C, 8 y 8, 4 y 8, 4 y 0x0C) que p03:B8E5 usa con la posicion de la figura
+F 0xB8F1 2
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0xA134 0xA144 tabla_A134  8 destinos del despachador de 0x4140 (call en p03:A131): 0xA144, 0xA2D2, 0xA3AC, 0xA608, 0xA460, 0xA566, 0xA6EA, 0xA5BA; lo leen p03:A131 (16 bytes)
+F 0xA134 2
+D 0xA2E4 0xA2EC tabla_A2E4  4 destinos del despachador de 0x4140 (call en p03:A2E1): 0xA2EC, 0xA329, 0xA437, 0xA43D; lo leen p03:A2E1 (8 bytes)
+F 0xA2E4 2
+D 0xAA18 0xAA22 tabla_AA18  5 destinos del despachador de 0x4140 (call en p03:AA15): 0xAA22, 0xAAC8, 0xAAF2, 0xABFB, 0xAC92; lo leen p03:AA15 (10 bytes)
+F 0xAA18 2
+D 0xB9D9 0xB9EF tabla_B9D9  11 destinos del despachador de 0x4140 (call en p03:B9D6): 0xBADE, 0xB9EF, 0xBADE, 0xBADE, 0x0000, 0xB9FA, 0xBADE, 0xBADE ...; lo leen p03:B9D6 (22 bytes)
+F 0xB9D9 2
+D 0xBB7A 0xBB90 tabla_BB7A  11 destinos del despachador de 0x4140 (call en p03:BB77): 0xBBAD, 0xBB90, 0xBBAD, 0xBB96, 0x0000, 0xBBBF, 0xBB9F, 0xBBAD ...; lo leen p03:BB77 (22 bytes)
+F 0xBB7A 2
+D 0xBC33 0xBC4B tabla_BC33  12 destinos del despachador de 0x4140 (call en p03:BC30): 0xBC69, 0xBC4B, 0xBC69, 0xBC69, 0x0000, 0x0000, 0xBC4E, 0xBC69 ...; lo leen p03:BC30 (24 bytes)
+F 0xBC33 2
+# --- fin de los bloques de bloques.py ---

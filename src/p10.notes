@@ -1,0 +1,366 @@
+# notas del banco 10
+
+# --- A MANO: comentarios, nombres y bloques ---
+D 0x617C 0x61AC fichas_sin_uso  SIN USO: seis listas de fichas de caracteres (0x5AB3) de un solo tercio cada una (4, 2 y 1 dos veces: [tercios][dibujos][primer caracter][colores] y un 0), entre la lista de la entrada 1 de 0x6157 (que acaba en 0x617C) y la de la entrada 2 (0x61AC). Ninguna palabra de los 128 KB apunta a ellas: apuntan a los rle sin uso de 0xA148-0xA4BC del banco 12 (64 caracteres desde el 0x5A y 6 desde el 0xBA)
+F 0x617C 7
+D 0x621A 0x62D3 copias_de_cosas  37 fichas de copia de caracteres (0x5A8D), una por cosa 8-0x2C, de 5 bytes ([desde][hasta][tercios][cuantos] y el 0 que acaba): p00:58B3 apunta IX a 0x621A + 5 x (0xE61B - 8)
+F 0x621A 5
+D 0x7907 0x790B copia_7907  una terna [desde][hasta][cuantos] y el 0xFF que acaba, que p00:593A pasa en IX a p00:59BF
+D 0x7B30 0x7B34 copia_7b30  otra terna con su 0xFF, que p00:583E pasa en IX a p00:59BF despues de escribir el rle de 0x7B34
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0x6000 0x6037 caracteres_6000  9 fichas de caracteres (0x5AB3): [tercios][dibujos][primer caracter][colores], 6 bytes cada una, y un 0 al final; lo leen p00:59ED (55 bytes)
+F 0x6000 6
+D 0x6037 0x6044 copias_6037  3 fichas de copia de caracteres (0x5A8D): [desde][hasta][tercios][cuantos], 4 bytes cada una, y un 0 al final; los copia dados la vuelta (0x5B08); lo leen p00:59F4 (13 bytes)
+F 0x6037 4
+D 0x6044 0x6069 caracteres_6044  6 fichas de caracteres (0x5AB3): [tercios][dibujos][primer caracter][colores], 6 bytes cada una, y un 0 al final; lo leen p00:5A02 (37 bytes)
+F 0x6044 6
+D 0x6069 0x6076 caracteres_6069  2 fichas de caracteres (0x5AB3): [tercios][dibujos][primer caracter][colores], 6 bytes cada una, y un 0 al final; lo leen p00:5A30 (13 bytes)
+F 0x6069 6
+D 0x6076 0x6083 caracteres_6076  2 fichas de caracteres (0x5AB3): [tercios][dibujos][primer caracter][colores], 6 bytes cada una, y un 0 al final; lo leen p00:5A37 (13 bytes)
+F 0x6076 6
+D 0x6083 0x60A8 caracteres_6083  6 fichas de caracteres (0x5AB3): [tercios][dibujos][primer caracter][colores], 6 bytes cada una, y un 0 al final; se solapan 2 bloques (0x6083-0x60A8, 0x60A1-0x60A8); lo leen p00:5A4C, p00:5A68 (37 bytes)
+F 0x6083 6
+D 0x60A8 0x60B1 copias_60A8  2 fichas de copia de caracteres (0x5A8D): [desde][hasta][tercios][cuantos], 4 bytes cada una, y un 0 al final; los copia dados la vuelta (0x5B08); se solapan 2 bloques (0x60A8-0x60B1, 0x60AC-0x60B1); lo leen p00:5A5A, p00:5A7D (9 bytes)
+F 0x60A8 4
+D 0x60B1 0x60D0 caracteres_60B1  5 fichas de caracteres (0x5AB3): [tercios][dibujos][primer caracter][colores], 6 bytes cada una, y un 0 al final; se solapan 2 bloques (0x60B1-0x60D0, 0x60C9-0x60D0); lo leen p00:5A53, p00:5A76 (31 bytes)
+F 0x60B1 6
+D 0x60D0 0x60D7 caracteres_60D0  1 fichas de caracteres (0x5AB3): [tercios][dibujos][primer caracter][colores], 6 bytes cada una, y un 0 al final; lo leen p00:5A84 (7 bytes)
+F 0x60D0 6
+D 0x60D7 0x6121 zonas_del_castillo  un nibble por sala del castillo (sala / 2 el byte; el bajo las impares) que elige cual de los 7 juegos de caracteres pone p00:5A1B (74 bytes para las salas 0-147); lo leen p00:5A0E (74 bytes)
+F 0x60D7 16
+D 0x6121 0x6128 caracteres_6121  1 fichas de caracteres (0x5AB3): [tercios][dibujos][primer caracter][colores], 6 bytes cada una, y un 0 al final; lo leen p00:5707 (7 bytes)
+F 0x6121 6
+D 0x6128 0x6139 copias_6128  4 fichas de copia de caracteres (0x5A8D): [desde][hasta][tercios][cuantos], 4 bytes cada una, y un 0 al final; los copia dados la vuelta (0x5B08); lo leen p00:570E (17 bytes)
+F 0x6128 4
+D 0x6139 0x6140 caracteres_6139  1 fichas de caracteres (0x5AB3): [tercios][dibujos][primer caracter][colores], 6 bytes cada una, y un 0 al final; lo leen p00:5765 (7 bytes)
+F 0x6139 6
+D 0x6140 0x6159 copias_6140  6 fichas de copia de caracteres (0x5A8D): [desde][hasta][tercios][cuantos], 4 bytes cada una, y un 0 al final; los copia dados la vuelta (0x5B08); lo leen p00:576C (25 bytes)
+F 0x6140 4
+D 0x6159 0x616F tabla_6157  11 punteros (0xE0D3 = 1-11; la palabra 0 no es un puntero) a fichas de caracteres (0x5AB3); lo leen p00:5860 (22 bytes)
+F 0x6159 2
+D 0x616F 0x617C caracteres_616F  2 fichas de caracteres (0x5AB3): [tercios][dibujos][primer caracter][colores], 6 bytes cada una, y un 0 al final; lo leen p00:5860 (13 bytes)
+F 0x616F 6
+D 0x61AC 0x61AD caracteres_61AC  0 fichas de caracteres (0x5AB3): [tercios][dibujos][primer caracter][colores], 6 bytes cada una, y un 0 al final; lo leen p00:5860 (1 bytes)
+F 0x61AC 6
+D 0x61AD 0x61B4 caracteres_61AD  1 fichas de caracteres (0x5AB3): [tercios][dibujos][primer caracter][colores], 6 bytes cada una, y un 0 al final; lo leen p00:5860 (7 bytes)
+F 0x61AD 6
+D 0x61B4 0x61BB caracteres_61B4  1 fichas de caracteres (0x5AB3): [tercios][dibujos][primer caracter][colores], 6 bytes cada una, y un 0 al final; lo leen p00:5860 (7 bytes)
+F 0x61B4 6
+D 0x61BB 0x61BC caracteres_61BB  0 fichas de caracteres (0x5AB3): [tercios][dibujos][primer caracter][colores], 6 bytes cada una, y un 0 al final; lo leen p00:5860 (1 bytes)
+F 0x61BB 6
+D 0x61BC 0x61CF caracteres_61BC  3 fichas de caracteres (0x5AB3): [tercios][dibujos][primer caracter][colores], 6 bytes cada una, y un 0 al final; lo leen p00:5860 (19 bytes)
+F 0x61BC 6
+D 0x61CF 0x61DC caracteres_61CF  2 fichas de caracteres (0x5AB3): [tercios][dibujos][primer caracter][colores], 6 bytes cada una, y un 0 al final; lo leen p00:5860 (13 bytes)
+F 0x61CF 6
+D 0x61DC 0x61E3 caracteres_61DC  1 fichas de caracteres (0x5AB3): [tercios][dibujos][primer caracter][colores], 6 bytes cada una, y un 0 al final; lo leen p00:5860 (7 bytes)
+F 0x61DC 6
+D 0x61E3 0x61EA caracteres_61E3  1 fichas de caracteres (0x5AB3): [tercios][dibujos][primer caracter][colores], 6 bytes cada una, y un 0 al final; lo leen p00:5860 (7 bytes)
+F 0x61E3 6
+D 0x61EA 0x61FD caracteres_61EA  3 fichas de caracteres (0x5AB3): [tercios][dibujos][primer caracter][colores], 6 bytes cada una, y un 0 al final; lo leen p00:5860 (19 bytes)
+F 0x61EA 6
+D 0x61FD 0x6204 caracteres_61FD  1 fichas de caracteres (0x5AB3): [tercios][dibujos][primer caracter][colores], 6 bytes cada una, y un 0 al final; lo leen p00:5860 (7 bytes)
+F 0x61FD 6
+D 0x6204 0x621A tabla_6202  11 punteros (0xE0D3 = 1-11; la palabra 0 no es un puntero) a fichas de copia (0x5A8D); lo leen p00:5869 (22 bytes)
+F 0x6204 2
+D 0x62D3 0x62D4 copias_62D3  0 fichas de copia de caracteres (0x5A8D): [desde][hasta][tercios][cuantos], 4 bytes cada una, y un 0 al final; los copia dados la vuelta (0x5B08); lo leen p00:5869 (1 bytes)
+F 0x62D3 4
+D 0x62D4 0x62ED copias_62D4  6 fichas de copia de caracteres (0x5A8D): [desde][hasta][tercios][cuantos], 4 bytes cada una, y un 0 al final; los copia dados la vuelta (0x5B08); lo leen p00:5869 (25 bytes)
+F 0x62D4 4
+D 0x62ED 0x630A copias_62ED  7 fichas de copia de caracteres (0x5A8D): [desde][hasta][tercios][cuantos], 4 bytes cada una, y un 0 al final; los copia dados la vuelta (0x5B08); lo leen p00:5869 (29 bytes)
+F 0x62ED 4
+D 0x630A 0x6313 copias_630A  2 fichas de copia de caracteres (0x5A8D): [desde][hasta][tercios][cuantos], 4 bytes cada una, y un 0 al final; los copia dados la vuelta (0x5B08); lo leen p00:5869 (9 bytes)
+F 0x630A 4
+D 0x6313 0x6324 copias_6313  4 fichas de copia de caracteres (0x5A8D): [desde][hasta][tercios][cuantos], 4 bytes cada una, y un 0 al final; los copia dados la vuelta (0x5B08); lo leen p00:5869 (17 bytes)
+F 0x6313 4
+D 0x6324 0x6345 copias_6324  8 fichas de copia de caracteres (0x5A8D): [desde][hasta][tercios][cuantos], 4 bytes cada una, y un 0 al final; los copia dados la vuelta (0x5B08); lo leen p00:5869 (33 bytes)
+F 0x6324 4
+D 0x6345 0x635E copias_6345  6 fichas de copia de caracteres (0x5A8D): [desde][hasta][tercios][cuantos], 4 bytes cada una, y un 0 al final; los copia dados la vuelta (0x5B08); se solapan 2 bloques (0x6345-0x635E, 0x635D-0x635E); lo leen p00:5869 (25 bytes)
+F 0x6345 4
+D 0x635E 0x6365 caracteres_635E  1 fichas de caracteres (0x5AB3): [tercios][dibujos][primer caracter][colores], 6 bytes cada una, y un 0 al final; lo leen p00:57F5 (7 bytes)
+F 0x635E 6
+D 0x6365 0x636C caracteres_6365  1 fichas de caracteres (0x5AB3): [tercios][dibujos][primer caracter][colores], 6 bytes cada una, y un 0 al final; lo leen p00:59A3 (7 bytes)
+F 0x6365 6
+D 0x636C 0x637F caracteres_636C  3 fichas de caracteres (0x5AB3): [tercios][dibujos][primer caracter][colores], 6 bytes cada una, y un 0 al final; lo leen p00:57AE (19 bytes)
+F 0x636C 6
+D 0x637F 0x6390 copias_637F  4 fichas de copia de caracteres (0x5A8D): [desde][hasta][tercios][cuantos], 4 bytes cada una, y un 0 al final; los copia dados la vuelta (0x5B08); lo leen p00:57B5 (17 bytes)
+F 0x637F 4
+D 0x6390 0x6399 copias_6390  2 fichas de copia de caracteres (0x5A8D): [desde][hasta][tercios][cuantos], 4 bytes cada una, y un 0 al final; los copia dados la vuelta (0x5B08); lo leen p00:57EE (9 bytes)
+F 0x6390 4
+D 0x6399 0x6563 dibujos_6399  los dibujos de unos caracteres desde el 0x25, en rle (0x5C46), que pide la ficha 0x6000; lo leen p00:59ED (458 bytes)
+F 0x6399 16
+D 0x6563 0x660E colores_6563  los colores de unos caracteres desde el 0x25, en rle (0x5C46), que pide la ficha 0x6000; lo leen p00:59ED (171 bytes)
+F 0x6563 16
+D 0x660E 0x6630 dibujos_660E  los dibujos de unos caracteres desde el 0xBA, en rle (0x5C46), que pide la ficha 0x6012; lo leen p00:59ED (34 bytes)
+F 0x660E 16
+D 0x6630 0x663F colores_6630  los colores de unos caracteres desde el 0xBA, en rle (0x5C46), que pide la ficha 0x6012; lo leen p00:59ED (15 bytes)
+F 0x6630 16
+D 0x663F 0x6651 dibujos_663F  los dibujos de unos caracteres desde el 0x9A, en rle (0x5C46), que pide la ficha 0x6018; lo leen p00:59ED (18 bytes)
+F 0x663F 16
+D 0x6651 0x6668 dibujos_6651  los dibujos de unos caracteres desde el 0xB6, en rle (0x5C46), que pide la ficha 0x6024; lo leen p00:59ED (23 bytes)
+F 0x6651 16
+D 0x6668 0x666D dibujos_6668  los dibujos de unos caracteres desde el 0xF0, en rle (0x5C46), que pide la ficha 0x602A; lo leen p00:57AE, p00:59ED (5 bytes)
+F 0x6668 16
+D 0x666D 0x6677 colores_666D  los colores de unos caracteres desde el 0xF0, en rle (0x5C46), que pide la ficha 0x602A; lo leen p00:57AE, p00:59ED (10 bytes)
+F 0x666D 16
+D 0x6677 0x6680 dibujos_6677  los dibujos de unos caracteres desde el 0xF0, en rle (0x5C46), que pide la ficha 0x6062; lo leen p00:5A02 (9 bytes)
+F 0x6677 16
+D 0x6680 0x6689 colores_6680  los colores de unos caracteres desde el 0xF0, en rle (0x5C46), que pide la ficha 0x6062; lo leen p00:5A02 (9 bytes)
+F 0x6680 16
+D 0x6689 0x66A8 dibujos_6689  los dibujos de unos caracteres desde el 0x9C, en rle (0x5C46), que pide la ficha 0x6069; lo leen p00:5A30 (31 bytes)
+F 0x6689 16
+D 0x66A8 0x6746 dibujos_66A8  los dibujos de unos caracteres desde el 0xA2, en rle (0x5C46), que pide la ficha 0x606F; lo leen p00:5A30 (158 bytes)
+F 0x66A8 16
+D 0x6746 0x6765 dibujos_6746  los dibujos de unos caracteres desde el 0x9C, en rle (0x5C46), que pide la ficha 0x6076; lo leen p00:5A37 (31 bytes)
+F 0x6746 16
+D 0x6765 0x6808 dibujos_6765  los dibujos de unos caracteres desde el 0xA2, en rle (0x5C46), que pide la ficha 0x607C; lo leen p00:57AE, p00:5A37 (163 bytes)
+F 0x6765 16
+D 0x6808 0x6829 dibujos_6808  los dibujos de unos caracteres desde el 0x9C, en rle (0x5C46), que pide la ficha 0x60B1; lo leen p00:5A4C, p00:5A76 (33 bytes)
+F 0x6808 16
+D 0x6829 0x6833 dibujos_6829  los dibujos de unos caracteres desde el 0x99, en rle (0x5C46), que pide la ficha 0x6095; lo leen p00:5A4C (10 bytes)
+F 0x6829 16
+D 0x6833 0x683C dibujos_6833  los dibujos de unos caracteres desde el 0xB4, en rle (0x5C46), que pide la ficha 0x609B; lo leen p00:5A4C (9 bytes)
+F 0x6833 16
+D 0x683C 0x686B dibujos_683C  los dibujos de unos caracteres desde el 0xA0, en rle (0x5C46), que pide la ficha 0x6089; lo leen p00:5A4C (47 bytes)
+F 0x683C 16
+D 0x686B 0x68A2 dibujos_686B  los dibujos de unos caracteres desde el 0xA6, en rle (0x5C46), que pide la ficha 0x608F; lo leen p00:5A4C (55 bytes)
+F 0x686B 16
+D 0x68A2 0x68C1 dibujos_68A2  los dibujos de unos caracteres desde el 0xA0, en rle (0x5C46), que pide la ficha 0x60B7; lo leen p00:5A76 (31 bytes)
+F 0x68A2 16
+D 0x68C1 0x68DB dibujos_68C1  los dibujos de unos caracteres desde el 0xA6, en rle (0x5C46), que pide la ficha 0x60BD; lo leen p00:5A76 (26 bytes)
+F 0x68C1 16
+D 0x68DB 0x68F5 dibujos_68DB  los dibujos de unos caracteres desde el 0xA9, en rle (0x5C46), que pide la ficha 0x60C3; lo leen p00:5A76 (26 bytes)
+F 0x68DB 16
+D 0x68F5 0x6927 dibujos_68F5  los dibujos de unos caracteres desde el 0xF1, en rle (0x5C46), que pide la ficha 0x60A1; lo leen p00:5A4C, p00:5A68 (50 bytes)
+F 0x68F5 16
+D 0x6927 0x6959 dibujos_6927  los dibujos de unos caracteres desde el 0xF1, en rle (0x5C46), que pide la ficha 0x60C9; lo leen p00:5A53, p00:5A76 (50 bytes)
+F 0x6927 16
+D 0x6959 0x696B colores_6959  los colores de unos caracteres desde el 0x9A, en rle (0x5C46), que pide la ficha 0x6018; lo leen p00:59ED (18 bytes)
+F 0x6959 16
+D 0x696B 0x697A colores_696B  los colores de unos caracteres desde el 0xB6, en rle (0x5C46), que pide la ficha 0x6024; lo leen p00:59ED (15 bytes)
+F 0x696B 16
+D 0x697A 0x697D colores_697A  los colores de unos caracteres desde el 0x9C, en rle (0x5C46), que pide la ficha 0x6069; lo leen p00:5A30 (3 bytes)
+F 0x697A 16
+D 0x697D 0x69A6 colores_697D  los colores de unos caracteres desde el 0xA2, en rle (0x5C46), que pide la ficha 0x606F; lo leen p00:5A30 (41 bytes)
+F 0x697D 16
+D 0x69A6 0x69A9 colores_69A6  los colores de unos caracteres desde el 0x9C, en rle (0x5C46), que pide la ficha 0x6076; lo leen p00:5A37 (3 bytes)
+F 0x69A6 16
+D 0x69A9 0x69AE colores_69A9  los colores de unos caracteres desde el 0xA2, en rle (0x5C46), que pide la ficha 0x607C; lo leen p00:57AE, p00:5A37 (5 bytes)
+F 0x69A9 16
+D 0x69AE 0x69B8 colores_69AE  los colores de unos caracteres desde el 0x9C, en rle (0x5C46), que pide la ficha 0x60B1; lo leen p00:5A4C, p00:5A76 (10 bytes)
+F 0x69AE 16
+D 0x69B8 0x69C1 colores_69B8  los colores de unos caracteres desde el 0x99, en rle (0x5C46), que pide la ficha 0x6095; lo leen p00:5A4C (9 bytes)
+F 0x69B8 16
+D 0x69C1 0x69CA colores_69C1  los colores de unos caracteres desde el 0xB4, en rle (0x5C46), que pide la ficha 0x609B; lo leen p00:5A4C (9 bytes)
+F 0x69C1 16
+D 0x69CA 0x69ED colores_69CA  los colores de unos caracteres desde el 0xA0, en rle (0x5C46), que pide la ficha 0x6089; lo leen p00:5A4C (35 bytes)
+F 0x69CA 16
+D 0x69ED 0x6A07 colores_69ED  los colores de unos caracteres desde el 0xA6, en rle (0x5C46), que pide la ficha 0x608F; lo leen p00:5A4C (26 bytes)
+F 0x69ED 16
+D 0x6A07 0x6A0A colores_6A07  los colores de unos caracteres desde el 0xA0, en rle (0x5C46), que pide la ficha 0x60B7; lo leen p00:5A76 (3 bytes)
+F 0x6A07 16
+D 0x6A0A 0x6A18 colores_6A0A  los colores de unos caracteres desde el 0xA6, en rle (0x5C46), que pide la ficha 0x60BD; lo leen p00:5A76 (14 bytes)
+F 0x6A0A 16
+D 0x6A18 0x6A2C colores_6A18  los colores de unos caracteres desde el 0xA9, en rle (0x5C46), que pide la ficha 0x60C3; lo leen p00:5A76 (20 bytes)
+F 0x6A18 16
+D 0x6A2C 0x6A56 colores_6A2C  los colores de unos caracteres desde el 0xF1, en rle (0x5C46), que pide la ficha 0x60A1; lo leen p00:5A4C, p00:5A68 (42 bytes)
+F 0x6A2C 16
+D 0x6A56 0x6A77 colores_6A56  los colores de unos caracteres desde el 0xF1, en rle (0x5C46), que pide la ficha 0x60C9; lo leen p00:5A53, p00:5A76 (33 bytes)
+F 0x6A56 16
+D 0x6A77 0x6B39 dibujos_6A77  los dibujos de unos caracteres desde el 0x9C, en rle (0x5C46), que pide la ficha 0x60D0; lo leen p00:5A84 (194 bytes)
+F 0x6A77 16
+D 0x6B39 0x6BBE colores_6B39  los colores de unos caracteres desde el 0x9C, en rle (0x5C46), que pide la ficha 0x60D0; lo leen p00:5A84 (133 bytes)
+F 0x6B39 16
+D 0x6BBE 0x6BDD dibujos_6BBE  los dibujos de unos caracteres desde el 0x9C, en rle (0x5C46), que pide la ficha 0x6044; lo leen p00:5A02 (31 bytes)
+F 0x6BBE 16
+D 0x6BDD 0x6C0F dibujos_6BDD  los dibujos de unos caracteres desde el 0xA0, en rle (0x5C46), que pide la ficha 0x604A; lo leen p00:5A02 (50 bytes)
+F 0x6BDD 16
+D 0x6C0F 0x6C31 dibujos_6C0F  los dibujos de unos caracteres desde el 0xA6, en rle (0x5C46), que pide la ficha 0x6056; lo leen p00:5A02 (34 bytes)
+F 0x6C0F 16
+D 0x6C31 0x6C34 colores_6C31  los colores de unos caracteres desde el 0x9C, en rle (0x5C46), que pide la ficha 0x6044; lo leen p00:5A02 (3 bytes)
+F 0x6C31 16
+D 0x6C34 0x6C3E colores_6C34  los colores de unos caracteres desde el 0xA0, en rle (0x5C46), que pide la ficha 0x604A; lo leen p00:5A02 (10 bytes)
+F 0x6C34 16
+D 0x6C3E 0x6C4F colores_6C3E  los colores de unos caracteres desde el 0xA6, en rle (0x5C46), que pide la ficha 0x6056; lo leen p00:5A02 (17 bytes)
+F 0x6C3E 16
+D 0x6C4F 0x6CDB dibujos_6C4F  los dibujos de unos caracteres desde el 0x7A, en rle (0x5C46), que pide la ficha 0x6006; lo leen p00:59ED (140 bytes)
+F 0x6C4F 16
+D 0x6CDB 0x6D60 colores_6CDB  los colores de unos caracteres desde el 0x7A, en rle (0x5C46), que pide la ficha 0x6006; lo leen p00:59ED (133 bytes)
+F 0x6CDB 16
+D 0x6D60 0x6DD0 dibujos_6D60  los dibujos de unos caracteres desde el 0xC2, en rle (0x5C46), que pide la ficha 0x600C; lo leen p00:59ED (112 bytes)
+F 0x6D60 16
+D 0x6DD0 0x6E42 colores_6DD0  los colores de unos caracteres desde el 0xC2, en rle (0x5C46), que pide la ficha 0x600C; lo leen p00:59ED (114 bytes)
+F 0x6DD0 16
+D 0x6E42 0x6E8E tabla_dibujos_de_cosas  38 punteros a los dibujos de las cosas 7-0x2C, en rle a los tres tercios (0x5BFC); p00:58E4 descarta las de fuera; lo leen p00:58F3 (76 bytes)
+F 0x6E42 2
+D 0x6E8E 0x6EDA tabla_colores_de_cosas  38 punteros a los colores de las cosas 7-0x2C, en rle a los tres tercios (0x5BFC); p00:58E4 descarta las de fuera; lo leen p00:5901 (76 bytes)
+F 0x6E8E 2
+D 0x6EDA 0x6F91 dibujos_cosa_07  los dibujos de la cosa 0x07, rle a los tres tercios (0x5BFC); se solapan 7 bloques (0x6EDA-0x6EFC, 0x6EDA-0x6F91, 0x6EFC-0x6F1E, 0x6F1E-0x6F33, 0x6F33-0x6F55, 0x6F55-0x6F71); lo leen p00:5722, p00:58F3 (183 bytes)
+F 0x6EDA 16
+D 0x6F91 0x7342 dibujos_cosa_0D  los dibujos de la cosa 0x0D, rle a los tres tercios (0x5BFC); se solapan 31 bloques (0x6F91-0x6FB1, 0x6F91-0x7342, 0x6FB1-0x6FD3, 0x6FD3-0x6FF5, 0x6FF5-0x700D, 0x700D-0x702F); lo leen p00:5734, p00:58F3 (945 bytes)
+F 0x6F91 16
+D 0x7342 0x7363 dibujos_cosa_2B  los dibujos de la cosa 0x2B, rle a los tres tercios (0x5BFC); lo leen p00:58F3 (33 bytes)
+F 0x7342 16
+D 0x7363 0x7385 dibujos_cosa_2C  los dibujos de la cosa 0x2C, rle a los tres tercios (0x5BFC); lo leen p00:58F3 (34 bytes)
+F 0x7363 16
+D 0x7385 0x73E5 colores_cosa_07  los colores de la cosa 0x07, rle a los tres tercios (0x5BFC); se solapan 7 bloques (0x7385-0x73A6, 0x7385-0x73E5, 0x73A6-0x73BC, 0x73BC-0x73C1, 0x73C1-0x73CC, 0x73CC-0x73DB); lo leen p00:572B, p00:5901 (96 bytes)
+F 0x7385 16
+D 0x73E5 0x75B7 colores_cosa_0D  los colores de la cosa 0x0D, rle a los tres tercios (0x5BFC); se solapan 31 bloques (0x73E5-0x73F9, 0x73E5-0x75B7, 0x73F9-0x7408, 0x7408-0x741C, 0x741C-0x741F, 0x741F-0x7435); lo leen p00:573D, p00:5901 (466 bytes)
+F 0x73E5 16
+D 0x75B7 0x75C5 colores_cosa_2B  los colores de la cosa 0x2B, rle a los tres tercios (0x5BFC); lo leen p00:5901 (14 bytes)
+F 0x75B7 16
+D 0x75C5 0x75D2 colores_cosa_2C  los colores de la cosa 0x2C, rle a los tres tercios (0x5BFC); lo leen p00:5901 (13 bytes)
+F 0x75C5 16
+D 0x75D2 0x7643 dibujos_75D2  los dibujos de unos caracteres desde el 0x76, en rle (0x5C46), que pide la ficha 0x6365; lo leen p00:59A3 (113 bytes)
+F 0x75D2 16
+D 0x7643 0x768A colores_7643  los colores de unos caracteres desde el 0x76, en rle (0x5C46), que pide la ficha 0x6365; lo leen p00:59A3 (71 bytes)
+F 0x7643 16
+D 0x768A 0x779C dibujos_768A  los dibujos de unos caracteres desde el 0x6A, en rle (0x5C46), que pide la ficha 0x635E; lo leen p00:57F5 (274 bytes)
+F 0x768A 16
+D 0x779C 0x7831 colores_779C  los colores de unos caracteres desde el 0x6A, en rle (0x5C46), que pide la ficha 0x635E; lo leen p00:57F5 (149 bytes)
+F 0x779C 16
+D 0x7831 0x7849 rle_7831  rle a la VRAM (0x5C46); lo leen p00:575B (24 bytes)
+F 0x7831 16
+D 0x7849 0x7907 rle_7849  rle a la VRAM (0x5C46); lo leen p00:594A (190 bytes)
+F 0x7849 16
+D 0x790B 0x7B30 rle_790B  rle a la VRAM con el destino delante (0x5C40); lo leen p00:593E (549 bytes)
+F 0x790B 16
+D 0x7B34 0x7BB2 rle_7B34  rle a la VRAM (0x5C46); lo leen p00:583B (126 bytes)
+F 0x7B34 16
+D 0x7BB2 0x7D48 rle_7BB2  rle a la VRAM (0x5C46); se solapan 2 bloques (0x7BB2-0x7C74, 0x7C72-0x7D48); lo leen p00:5953, p00:598D (406 bytes)
+F 0x7BB2 16
+D 0x7D48 0x7D50 pieza_01  la pieza de decoracion 0x01: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7D48 16
+D 0x7D50 0x7D55 pieza_02  la pieza de decoracion 0x02: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+F 0x7D50 16
+D 0x7D55 0x7D5D pieza_03  la pieza de decoracion 0x03: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7D55 16
+D 0x7D5D 0x7D65 pieza_05  la pieza de decoracion 0x05: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7D5D 16
+D 0x7D65 0x7D6A pieza_06  la pieza de decoracion 0x06: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+F 0x7D65 16
+D 0x7D6A 0x7D6F pieza_07  la pieza de decoracion 0x07: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+F 0x7D6A 16
+D 0x7D6F 0x7D77 pieza_08  la pieza de decoracion 0x08: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7D6F 16
+D 0x7D77 0x7D7C pieza_09  la pieza de decoracion 0x09: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+F 0x7D77 16
+D 0x7D7C 0x7D84 pieza_0A  la pieza de decoracion 0x0A: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7D7C 16
+D 0x7D84 0x7D8C pieza_0B  la pieza de decoracion 0x0B: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7D84 16
+D 0x7D8C 0x7D94 pieza_0C  la pieza de decoracion 0x0C: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7D8C 16
+D 0x7D94 0x7D9C pieza_0D  la pieza de decoracion 0x0D: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7D94 16
+D 0x7D9C 0x7DA4 pieza_0E  la pieza de decoracion 0x0E: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7D9C 16
+D 0x7DA4 0x7DAC pieza_0F  la pieza de decoracion 0x0F: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7DA4 16
+D 0x7DAC 0x7DB1 pieza_10  la pieza de decoracion 0x10: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+F 0x7DAC 16
+D 0x7DB1 0x7DB9 pieza_11  la pieza de decoracion 0x11: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7DB1 16
+D 0x7DB9 0x7DC1 pieza_12  la pieza de decoracion 0x12: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7DB9 16
+D 0x7DC1 0x7DC9 pieza_13  la pieza de decoracion 0x13: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7DC1 16
+D 0x7DC9 0x7DD1 pieza_14  la pieza de decoracion 0x14: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7DC9 16
+D 0x7DD1 0x7DD9 pieza_15  la pieza de decoracion 0x15: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7DD1 16
+D 0x7DD9 0x7DE1 pieza_16  la pieza de decoracion 0x16: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7DD9 16
+D 0x7DE1 0x7DE9 pieza_17  la pieza de decoracion 0x17: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7DE1 16
+D 0x7DE9 0x7DF1 pieza_18  la pieza de decoracion 0x18: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7DE9 16
+D 0x7DF1 0x7DF6 pieza_19  la pieza de decoracion 0x19: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+F 0x7DF1 16
+D 0x7DF6 0x7DFE pieza_1F  la pieza de decoracion 0x1F: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7DF6 16
+D 0x7DFE 0x7E03 pieza_20  la pieza de decoracion 0x20: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+F 0x7DFE 16
+D 0x7E03 0x7E0B pieza_21  la pieza de decoracion 0x21: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7E03 16
+D 0x7E0B 0x7E10 pieza_22  la pieza de decoracion 0x22: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+F 0x7E0B 16
+D 0x7E10 0x7E15 pieza_23  la pieza de decoracion 0x23: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+F 0x7E10 16
+D 0x7E15 0x7E1D pieza_24  la pieza de decoracion 0x24: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7E15 16
+D 0x7E1D 0x7E25 pieza_25  la pieza de decoracion 0x25: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7E1D 16
+D 0x7E25 0x7E2A pieza_26  la pieza de decoracion 0x26: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+F 0x7E25 16
+D 0x7E2A 0x7E2F pieza_27  la pieza de decoracion 0x27: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+F 0x7E2A 16
+D 0x7E2F 0x7E37 pieza_28  la pieza de decoracion 0x28: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7E2F 16
+D 0x7E37 0x7E3C pieza_29  la pieza de decoracion 0x29: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+F 0x7E37 16
+D 0x7E3C 0x7E41 pieza_2A  la pieza de decoracion 0x2A: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+F 0x7E3C 16
+D 0x7E41 0x7E49 pieza_2B  la pieza de decoracion 0x2B: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7E41 16
+D 0x7E49 0x7E51 pieza_2C  la pieza de decoracion 0x2C: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7E49 16
+D 0x7E51 0x7E59 pieza_2D  la pieza de decoracion 0x2D: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7E51 16
+D 0x7E59 0x7E5E pieza_2E  la pieza de decoracion 0x2E: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+F 0x7E59 16
+D 0x7E5E 0x7E63 pieza_2F  la pieza de decoracion 0x2F: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+F 0x7E5E 16
+D 0x7E63 0x7E6E pieza_30  la pieza de decoracion 0x30: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (11 bytes)
+F 0x7E63 16
+D 0x7E6E 0x7E73 pieza_31  la pieza de decoracion 0x31: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+F 0x7E6E 16
+D 0x7E73 0x7E7B pieza_32  la pieza de decoracion 0x32: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7E73 16
+D 0x7E7B 0x7E80 pieza_36  la pieza de decoracion 0x36: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+F 0x7E7B 16
+D 0x7E80 0x7E85 pieza_38  la pieza de decoracion 0x38: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+F 0x7E80 16
+D 0x7E85 0x7E8A pieza_39  la pieza de decoracion 0x39: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+F 0x7E85 16
+D 0x7E8A 0x7E8F pieza_3A  la pieza de decoracion 0x3A: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+F 0x7E8A 16
+D 0x7E8F 0x7E97 pieza_3C  la pieza de decoracion 0x3C: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7E8F 16
+D 0x7E97 0x7E9F pieza_3E  la pieza de decoracion 0x3E: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7E97 16
+D 0x7E9F 0x7EA7 pieza_40  la pieza de decoracion 0x40: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7E9F 16
+D 0x7EA7 0x7EB2 pieza_42  la pieza de decoracion 0x42: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (11 bytes)
+F 0x7EA7 16
+D 0x7EB2 0x7EBA pieza_43  la pieza de decoracion 0x43: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7EB2 16
+D 0x7EBA 0x7EBF pieza_4C  la pieza de decoracion 0x4C: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+F 0x7EBA 16
+D 0x7EBF 0x7EC7 pieza_4F  la pieza de decoracion 0x4F: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); NINGUNA SALA LA PIDE; lo leen p00:59A6 (8 bytes)
+F 0x7EBF 16
+D 0x7EC7 0x7ECC pieza_34  la pieza de decoracion 0x34: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+F 0x7EC7 16
+D 0x7ECC 0x7ED4 pieza_4E  la pieza de decoracion 0x4E: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7ECC 16
+D 0x7ED4 0x7EDC pieza_54  la pieza de decoracion 0x54: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7ED4 16
+D 0x7EDC 0x7EE1 pieza_58  la pieza de decoracion 0x58: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+F 0x7EDC 16
+D 0x7EE1 0x7EE6 pieza_67  la pieza de decoracion 0x67: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+F 0x7EE1 16
+D 0x7EE6 0x7EEB pieza_5A  la pieza de decoracion 0x5A: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+F 0x7EE6 16
+D 0x7EEB 0x7EF0 pieza_68  la pieza de decoracion 0x68: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+F 0x7EEB 16
+D 0x7EF0 0x7EF8 pieza_65  la pieza de decoracion 0x65: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+F 0x7EF0 16
+D 0x7EF8 0x7EFD pieza_59  la pieza de decoracion 0x59: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); se solapan 2 bloques (0x7EF8-0x7EFD, 0x7EFB-0x7EFD); lo leen p00:59A6 (5 bytes)
+F 0x7EF8 16
+D 0x7EFD 0x7F98 rle_7EFD  rle a la VRAM (0x5C46) de la pieza de decoracion 0x0F; lo leen p00:59B9 (155 bytes)
+F 0x7EFD 16
+D 0x7F98 0x7FE3 rle_7F98  rle a la VRAM (0x5C46) de la pieza de decoracion 0x18; lo leen p00:59B9 (75 bytes)
+F 0x7F98 16
+D 0x7FE3 0x8000 rle_7FE3  rle a la VRAM (0x5C46) de la pieza de decoracion 0x38; lo leen p00:59B9 (29 bytes)
+F 0x7FE3 16
+# --- fin de los bloques de bloques.py ---

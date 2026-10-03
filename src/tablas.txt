@@ -1,0 +1,5 @@
+# Tamanos de tabla puestos a mano: pNN 0xCALL n  # por que
+p01 0x7F7F 11  # a mano: los 11 destinos van al banco 2 (0x8013..0x87E6); detras, p01:7F98-7FA2 son 11 bytes de datos y p01:7FA3 es codigo (call 0x4220)
+p03 0xB9D6 11  # a mano: 11 destinos (0xE500 = 0-10); el 4 es 0x0000, que el trazador tomaba por el final, y detras siguen 0xB9FA, 0xBADE, 0xBA1E y 0xBA42
+p03 0xBB77 11  # a mano: 11 destinos; el 4 es 0x0000 y detras siguen 0xBBBF, 0xBB9F, 0xBBAD, 0xBBA8, 0xBC02 y 0xBBAD
+p03 0xBC30 12  # a mano: 12 destinos; el 4 y el 5 son 0x0000 y detras siguen 0xBC4E, 0xBC69, 0xBC57 y 0xBC60

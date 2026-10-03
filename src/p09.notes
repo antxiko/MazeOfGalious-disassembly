@@ -1,0 +1,97 @@
+# notas del banco 09
+
+# --- A MANO: comentarios, nombres y bloques ---
+D 0xA6EB 0xA705 salas_con_figura  13 parejas [mapa][sala], todas del castillo (salas 13, 19, 21, 60, 70, 73, 86, 102, 106, 116, 124, 133 y 136), que p09:A6D7 y p09:A764 comparan con 0xE041/0xE042 para cada uno de los 15 huecos de 0xE0B0 (el hueco n mira la entrada n; los dos ultimos leerian ya las fichas de 0xA705, que no coinciden con ninguna sala)
+F 0xA6EB 2
+D 0xA705 0xA746 fichas_de_la_figura  13 fichas de 5 bytes, una por sala de 0xA6EB, que p09:A783 lee en 0xA700 + 5 x n: las 4 primeras van a 0xEC01-0xEC04 (de 0xEC01/0xEC02 sale la posicion en la tabla de nombres, p09:A79C) y la quinta a 0xEC0F
+D 0xAF21 0xAF2C bytes_de_estado_por_mapa  cuantos bytes de estado tiene cada mapa 1-11 (147, 15, 15, 16, 17, 18, 20, 20, 21, 27 y 3), que p00:4666 lee en 0xAF20 + mapa para borrarlos (el byte del mapa 0 es el ultimo de la tabla 0xAF09); el mapa 7 tiene 20 aunque tenga 19 salas
+D 0xAF2C 0xAF40 tabla_de_planos  punteros al plano de cada mundo (mapas 2-10) que p01:662B lee en 0xAF2A + 2 x mapa (el mapa 1 sale antes, p01:6632); la entrada de los mapas 0 y 1 son los bytes de 0xAF2A-0xAF2D (las cuentas de los mapas 10 y 11 y esta tabla)
+F 0xAF2C 2
+D 0xAF40 0xAF53 plano_sin_puntero  un plano mas con el mismo formato ([destino 0xEF46][3 de ancho][5 de alto] y 15 casillas) que no apunta ninguna tabla: su sitio es justo la entrada del mapa 11 en 0xAF2A, que leida como puntero da 0xEF46. No esta medido si el juego lo ensena
+D 0xAF53 0xB03C planos  los planos de los mundos 1-9 (mapas 2-10): [destino en 0xEF00][ancho][alto] y ancho x alto casillas, que p01:664A copia por filas de 32 (p01:6637-6666)
+D 0xB03C 0xB04F tabla_de_salas_en_el_plano  10 punteros, mapas 2-11, a un byte por sala con su sitio en el plano (p01:666F); la palabra del mapa 0 y la del 1 (0x8383, leida y descartada en p01:6689) son los ultimos bytes del plano del mundo 9; el ultimo byte es el primero de la lista del mapa 2
+F 0xB03C 2
+D 0xB04F 0xB0FC salas_en_el_plano  por mapa 2-11, un byte por sala (y uno delante para la sala 0, que es el ultimo del mapa anterior): nibble alto y bajo, la casilla del plano donde p01:66A5 pone la marca de la sala
+D 0xB0FC 0xB108 sitio_especial_del_plano  un byte por mapa (p01:6697 lee 0xB0FC + mapa) con la casilla de una segunda marca del plano (0xE674) cuando 0xE089 no es 0; el byte del mapa 0 es el ultimo de la lista anterior
+D 0xBA2A 0xBA2E pareja_e635  las palabras 1 y 2 de la tabla que p01:659D lee en 0xBA28 (0x0F0E y 0x0D0C), que van a 0xE635 segun el valor 1 o 2 de la sala en 0xBA2E (la palabra 0 no se lee: ese valor sale antes)
+F 0xBA2A 2
+D 0xBA2E 0xBA53 dos_bits_por_sala_del_castillo  dos bits por sala del castillo, cuatro salas por byte (37 bytes para las salas 0-147): p01:6585 coge el byte sala / 4 y lo desplaza 2 x (sala mod 4); 0 y 3 no hacen nada, 1 y 2 van a 0xE614 y eligen la pareja de 0xBA28
+D 0xBA53 0xBA80 salas_con_ficha_de_8  15 ternas [sala del castillo][puntero a una ficha de 8 bytes] que p01:63FB recorre buscando la sala 0xE042; la ficha va a 0xEC20 (p01:640B)
+F 0xBA53 3
+D 0xBA80 0xBA8C tabla_de_recorridos  6 punteros, uno por figura de 0xE4A0 ((ix+0) - 1, p01:64B1), a las listas de 0xBA8C
+F 0xBA80 2
+D 0xBA8C 0xBAAC recorridos  las 6 listas de 0xBA80 (5, 3, 5, 5, 7 y 7 bytes): p01:64BE coge el byte (ix+3) y lo pone en (ix+1)
+D 0xBAAC 0xBB24 fichas_de_8  las 15 fichas de 8 bytes de las salas de 0xBA53 (p01:640B: dos bytes a (ix+5) y (ix+7) y seis a (ix+8)-(ix+0x0F))
+F 0xBAAC 8
+D 0xBB24 0xBB54 seis_fichas_de_8  6 fichas de 8 bytes con el mismo formato, una por figura de 0xE4A0, que p01:63C2 copia de punta a punta (p01:63DB)
+F 0xBB24 8
+D 0xBB54 0xBB5A seis_bytes  un byte por cada una de las 6 figuras de p01:63C2, que va a (ix+1) (p01:63CF); los dos ultimos son a la vez la palabra 0 de la tabla 0xBB58
+D 0xBB5A 0xBB6E tabla_de_hechizos  10 punteros, uno por hechizo (0xE678 = 1-10), a su nombre en la lista de la VRAM que pinta p00:5C25 (p01:69DA)
+F 0xBB5A 2
+D 0xBB6E 0xBBCF nombres_de_los_hechizos  los diez hechizos como listas de 0x5C25 ([destino 0x398C/0x398D] y letras, A = 0x0B; 0xFF acaba): YOMAR, ELOHIM, HAHAKLA, BARECHET, HEOTYMEO, LEPHA, NAWABRA, ASCHER, XYWOLEH y HAMALECH
+D 0xBBCF 0xBCEF recuadro_de_24x12  un recuadro de 24 x 12 caracteres que p01:69C9 copia por filas a 0xEE04 con p01:6D49 (el de los hechizos)
+F 0xBBCF 24
+D 0xA630 0xA634 cuatro_bytes_a630  4 bytes que p09:A581 y p09:A5DE ponen en 0xEAB8 segun 0xEAB5 / 0xEAB6
+D 0xA65D 0xA661 cuatro_bytes_a65d  4 bytes que p09:A655 elige con un nibble y guarda en (DE)
+D 0xBE51 0xBE6B tablas_de_salas_con_aviso  13 palabras: las 9 de la tabla que p00:5D51 lee en 0xBE4F con B = 1-9 (el primer bit 1 de 0xE064-0xE06C) y las 4 de la que p00:5D41 lee en 0xBE63 con (0xE06E) cuando lo tiene 0xE06C (la palabra 0 de esta es la 9 de la otra)
+F 0xBE51 2
+D 0xBE6B 0xBEBD salas_con_aviso  las listas de salas de 0xBE4F y 0xBE63, acabadas en 0: si la sala 0xE042 esta, p00:5D63 toca el sonido 0x28
+D 0xBEBD 0xBEE3 texto_contrasena_jp  el texto de pedir la contrasena en japones (katakana desde 0xBA y RETURN KEY), una lista sin destino de p00:5C2D que p02:98FA elige si la BIOS es japonesa (nibble alto de 0x002B)
+D 0xBEE3 0xBEF6 texto_contrasena_mala_jp  el de la contrasena equivocada en japones (p02:991C)
+D 0xBEF6 0xBF3C texto_memoria_jp  el de la contrasena buena en japones, que nombra a GALIOUS y a PAMPERSE (p02:9933)
+D 0xBF3C 0xBF6C texto_contrasena_en  ENTER THE SECRET / CODE AND PRESS / RETURN KEY. (p02:98FF; 0xFE con dos bytes cambia de linea)
+D 0xBF6C 0xBF86 texto_contrasena_mala_en  THAT IS THE WRONG / CODE. (p02:9921)
+D 0xBF86 0xBFE9 texto_memoria_en  MY MEMORY HAS BEEN / BROUGHT BACK! / DEFEAT GALIOUS AND / SAVE PAMPERSE AS / SOON AS POSSIBLE! GO! (p02:9938); su 0xFF es el de 0xBFE8
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0xA000 0xA002 partida_9FFF_cola  la instruccion de p08:9FFF (3A | AB E0) empieza al final del banco 8 y acaba al principio del 9, que el cartucho pone siempre a continuacion: aqui el resto; lo leen p08:9FFF (2 bytes)
+F 0xA000 4
+D 0xA056 0xA05E tabla_A056  4 destinos del despachador de 0x4140 (call en p09:A053): 0xA05E, 0xA0BB, 0xA0CE, 0xA0EA; lo leen p09:A053 (8 bytes)
+F 0xA056 2
+D 0xA7BE 0xA7D4 tabla_figuras_9d1d  11 punteros, uno por mapa (0xE041) desde el 1, a las figuras que p08:9D2A pone en cada sala: [tipo][y:3 bits, x:5 bits] y un 0 al final (p08:9D1D); la tabla se lee desde 0xA7BC, pero el mapa 0 no existe; lo leen p08:9D1D (22 bytes)
+F 0xA7BE 2
+D 0xA7D4 0xA8A7 figuras_9d1d_mapa_1  las figuras que p08:9D2A pone en cada sala: [tipo][y:3 bits, x:5 bits] y un 0 al final (p08:9D1D) del mapa 1: una lista por sala (147); lo leen p08:9D1D (211 bytes)
+F 0xA7D4 8
+D 0xA8A7 0xA8C0 figuras_9d1d_mapa_2  las figuras que p08:9D2A pone en cada sala: [tipo][y:3 bits, x:5 bits] y un 0 al final (p08:9D1D) del mapa 2: una lista por sala (15); lo leen p08:9D1D (25 bytes)
+F 0xA8A7 8
+D 0xA8C0 0xA8E3 figuras_9d1d_mapa_3  las figuras que p08:9D2A pone en cada sala: [tipo][y:3 bits, x:5 bits] y un 0 al final (p08:9D1D) del mapa 3: una lista por sala (15); lo leen p08:9D1D (35 bytes)
+F 0xA8C0 8
+D 0xA8E3 0xA905 figuras_9d1d_mapa_4  las figuras que p08:9D2A pone en cada sala: [tipo][y:3 bits, x:5 bits] y un 0 al final (p08:9D1D) del mapa 4: una lista por sala (16); lo leen p08:9D1D (34 bytes)
+F 0xA8E3 8
+D 0xA905 0xA920 figuras_9d1d_mapa_5  las figuras que p08:9D2A pone en cada sala: [tipo][y:3 bits, x:5 bits] y un 0 al final (p08:9D1D) del mapa 5: una lista por sala (17); lo leen p08:9D1D (27 bytes)
+F 0xA905 8
+D 0xA920 0xA93E figuras_9d1d_mapa_6  las figuras que p08:9D2A pone en cada sala: [tipo][y:3 bits, x:5 bits] y un 0 al final (p08:9D1D) del mapa 6: una lista por sala (18); lo leen p08:9D1D (30 bytes)
+F 0xA920 8
+D 0xA93E 0xA967 figuras_9d1d_mapa_7  las figuras que p08:9D2A pone en cada sala: [tipo][y:3 bits, x:5 bits] y un 0 al final (p08:9D1D) del mapa 7: una lista por sala (19); lo leen p08:9D1D (41 bytes)
+F 0xA93E 8
+D 0xA967 0xA997 figuras_9d1d_mapa_8  las figuras que p08:9D2A pone en cada sala: [tipo][y:3 bits, x:5 bits] y un 0 al final (p08:9D1D) del mapa 8: una lista por sala (20); lo leen p08:9D1D (48 bytes)
+F 0xA967 8
+D 0xA997 0xA9B4 figuras_9d1d_mapa_9  las figuras que p08:9D2A pone en cada sala: [tipo][y:3 bits, x:5 bits] y un 0 al final (p08:9D1D) del mapa 9: una lista por sala (21); lo leen p08:9D1D (29 bytes)
+F 0xA997 8
+D 0xA9B4 0xA9EB figuras_9d1d_mapa_10  las figuras que p08:9D2A pone en cada sala: [tipo][y:3 bits, x:5 bits] y un 0 al final (p08:9D1D) del mapa 10: una lista por sala (27); lo leen p08:9D1D (55 bytes)
+F 0xA9B4 8
+D 0xA9EB 0xAA07 figuras_9d1d_mapa_11  las figuras que p08:9D2A pone en cada sala: [tipo][y:3 bits, x:5 bits] y un 0 al final (p08:9D1D) del mapa 11: una lista por sala (6); se solapan 2 bloques (0xA9EB-0xA9F1, 0xA9EF-0xAA07); lo leen p00:5227, p08:9D1D (28 bytes)
+F 0xA9EB 8
+D 0xAA07 0xAF0B vecinas  las vecinas de cada sala, [arriba][abajo][izquierda][derecha], 0xFF sin salida; las de la sala n del mapa m en la palabra m de 0xA9EF + 4 x n, y la entrada 0 de cada mapa es la ultima sala del anterior (p00:5232 las copia a 0xE648); lo leen p00:5239 (1284 bytes)
+F 0xAA07 4
+D 0xAF0B 0xAF21 estado_de_las_salas  11 punteros a la RAM, uno por mapa (p00:5246, p01:6940): el byte de estado de cada sala (el castillo en 0xE200, sus 147 salas, el mapa 2 en 0xE293...); la palabra 0 de la tabla son los 0xFF de la ultima vecina; lo leen p00:5249 (22 bytes)
+F 0xAF0B 2
+D 0xB108 0xB11E tabla_de_entradas  11 punteros, uno por mapa, a un byte por sala (p00:52D0); el puntero va un byte antes de la sala 1, porque p00:4155 suma la sala tal cual; lo leen p00:52D3 (22 bytes)
+F 0xB108 2
+D 0xB11E 0xB25F entradas  un byte por sala, los 11 mapas seguidos (p00:52DA): 0 no cambia nada; si no, el nibble alto + 8 es la Y (0xE505) y el bajo x 16 la X (0xE507) del jugador al entrar; lo leen p00:52DA (321 bytes)
+F 0xB11E 16
+D 0xB25F 0xB273 tabla_de_reinicios  10 punteros, uno por mapa del 1 al 10, a las listas de 0xB25D (p01:6922); la del 11 seria la palabra 0x6A55 que hacen los dos primeros bytes de la lista del castillo (p01:691F solo descarta el 12); lo leen p01:6925 (20 bytes)
+F 0xB25F 2
+D 0xB273 0xB6FE reinicios  por sala, la lista de salas cuyo byte de estado (0xAF09) se pone a 0 al entrar, acabada en 0; los mapas 1-10 seguidos (p01:6931, p01:694A); lo leen p01:694A (1163 bytes)
+F 0xB273 16
+D 0xB6FE 0xB714 tabla_de_cosas  11 punteros, uno por mapa, a las cosas que hay en las salas (p00:5DCE); la palabra 0 son los dos ultimos bytes de las listas de 0xB25D; lo leen p00:5DD1 (22 bytes)
+F 0xB6FE 2
+D 0xB714 0xB8A2 cosas  por mapa, las cosas de las salas: [sala][cosa (6 bits) y dos marcas][sitio], 3 bytes cada una, y un 0 al final (p00:5DD5 busca la de la sala 0xE042); la 0x0C esta en la sala del jefe de cada mundo (0x5DFC); lo leen p00:5DD5 (398 bytes)
+F 0xB714 3
+D 0xB8A2 0xBA2A castillo_b8a2  solo el castillo: por sala, una lista de bytes [y:3 bits][x:5 bits] acabada en 0 que p01:6309 convierte en una posicion (0xF002) para p01:632C; lo leen p01:6301 (392 bytes)
+F 0xB8A2 16
+D 0xBCEF 0xBE51 rle_BCEF  rle a la VRAM con el destino delante (0x5C40); lo leen p01:6960 (354 bytes)
+F 0xBCEF 16
+D 0xBFE9 0xC000 relleno_p09  relleno: 23 bytes 0xFF hasta el final del banco, sin nada que los lea ni los ejecute (23 bytes)
+F 0xBFE9 16
+# --- fin de los bloques de bloques.py ---

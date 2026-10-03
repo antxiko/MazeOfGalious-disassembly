@@ -1,0 +1,16 @@
+# notas del banco 08
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0x8000 0x9BE6 salas_cola  las salas de los 11 mapas, 8 x 5 bloques (40 bytes) cada una, seguidas: el castillo (147, de 0x6AD6 a 0x81CE, pasando del banco 7 al 8) y los diez mundos desde 0x81CE (p00:5626) (sigue del banco anterior, 0x6AD6); lo leen p00:564A (7142 bytes)
+F 0x8000 8
+D 0x9BE6 0x9BFA tabla_de_recuadros_9be2  10 punteros, mapas 2-11, a un recuadro de 8 x 8 caracteres que p00:55CE copia a 0xEE0C (0xEE4C en el mapa 7) cuando 0xE615 no es 0; solo hay 4 recuadros distintos; lo leen p00:55D4 (20 bytes)
+F 0x9BE6 2
+D 0x9BFA 0x9CFA recuadros_8x8  los 4 recuadros de 8 x 8 caracteres de 0x9BE2 (0x9BFA, 0x9C3A, 0x9C7A y 0x9CBA); lo leen p00:55E8 (256 bytes)
+F 0x9BFA 8
+D 0x9D51 0x9D5F tabla_9D51  7 destinos del despachador de 0x4140 (call en p08:9D4E): 0xA013, 0xA10E, 0xA20A, 0xA29F, 0xA415, 0xA52E, 0xA634; lo leen p08:9D4E (14 bytes)
+F 0x9D51 2
+D 0x9D6A 0x9D7E tabla_9D6A  10 destinos del despachador de 0x4140 (call en p08:9D67): 0x9D7E, 0x9DA2, 0x9DB5, 0x9DBF, 0x9DD1, 0x9DE3, 0x9DF8, 0x9E16 ...; lo leen p08:9D67 (20 bytes)
+F 0x9D6A 2
+D 0x9FFF 0xA000 partida_9FFF  la instruccion de p08:9FFF (3A | AB E0) empieza al final del banco 8 y acaba al principio del 9, que el cartucho pone siempre a continuacion: aqui el primer byte; lo leen p08:9FFF (1 bytes)
+F 0x9FFF 4
+# --- fin de los bloques de bloques.py ---

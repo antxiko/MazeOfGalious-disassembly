@@ -1,0 +1,83 @@
+# notas del banco 12
+
+# --- A MANO: comentarios, nombres y bloques ---
+D 0xA148 0xA336 dibujos_sin_uso_a148  SIN USO: rle (0x5C46) de 512 bytes, los dibujos de 64 caracteres desde el 0x5A segun las fichas sin uso de p10:617C; nadie mas lo apunta
+D 0xA336 0xA368 dibujos_sin_uso_a336  SIN USO: rle de 48 bytes, los dibujos de 6 caracteres desde el 0xBA (fichas de p10:6191)
+D 0xA368 0xA49D colores_sin_uso_a368  SIN USO: rle de 512 bytes, los colores de los 64 caracteres de 0xA148 (fichas de p10:617C)
+D 0xA49D 0xA4BC colores_sin_uso_a49d  SIN USO: rle de 48 bytes, los colores de los 6 caracteres de 0xA336 (fichas de p10:6191)
+D 0xB850 0xB940 rle_sin_uso_b850  SIN USO: un rle (0x5C46) que se descomprime en 240 bytes, como los dibujos (0xB760) y los colores (0xB940) de la ficha p10:6121, y que esta justo entre los dos; ninguna palabra de los 128 KB lo apunta
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0xA000 0xA01A dibujos_9FAA_cola  los dibujos de unos caracteres desde el 0xBA, en rle (0x5C46), que pide la ficha 0x61F0 (sigue del banco anterior, 0x9FAA); lo leen p00:5860 (26 bytes)
+F 0xA000 16
+D 0xA01A 0xA0ED colores_A01A  los colores de unos caracteres desde el 0x5A, en rle (0x5C46), que pide la ficha 0x61EA; lo leen p00:5860 (211 bytes)
+F 0xA01A 16
+D 0xA0ED 0xA148 colores_A0ED  los colores de unos caracteres desde el 0xBA, en rle (0x5C46), que pide la ficha 0x61F0; lo leen p00:5860 (91 bytes)
+F 0xA0ED 16
+D 0xA4BC 0xA5E2 dibujos_A4BC  los dibujos de unos caracteres desde el 0x5A, en rle (0x5C46), que pide la ficha 0x61B4; lo leen p00:5860 (294 bytes)
+F 0xA4BC 16
+D 0xA5E2 0xA6A9 colores_A5E2  los colores de unos caracteres desde el 0x5A, en rle (0x5C46), que pide la ficha 0x61B4; lo leen p00:5860 (199 bytes)
+F 0xA5E2 16
+D 0xA6A9 0xA839 dibujos_A6A9  los dibujos de unos caracteres desde el 0x5A, en rle (0x5C46), que pide la ficha 0x61CF; lo leen p00:5860 (400 bytes)
+F 0xA6A9 16
+D 0xA839 0xA8D8 colores_A839  los colores de unos caracteres desde el 0x5A, en rle (0x5C46), que pide la ficha 0x61CF; lo leen p00:5860 (159 bytes)
+F 0xA839 16
+D 0xA8D8 0xA8DB dibujos_A8D8  los dibujos de unos caracteres desde el 0xDC, en rle (0x5C46), que pide la ficha 0x61D5; lo leen p00:5860 (3 bytes)
+F 0xA8D8 16
+D 0xA8DB 0xA8DE colores_A8DB  los colores de unos caracteres desde el 0xDC, en rle (0x5C46), que pide la ficha 0x61D5; lo leen p00:5860 (3 bytes)
+F 0xA8DB 16
+D 0xA8DE 0xAA41 dibujos_A8DE  los dibujos de unos caracteres desde el 0x5A, en rle (0x5C46), que pide la ficha 0x61AD; lo leen p00:5860 (355 bytes)
+F 0xA8DE 16
+D 0xAA41 0xAAF8 colores_AA41  los colores de unos caracteres desde el 0x5A, en rle (0x5C46), que pide la ficha 0x61AD; lo leen p00:5860 (183 bytes)
+F 0xAA41 16
+D 0xAAF8 0xAC36 dibujos_AAF8  los dibujos de unos caracteres desde el 0x5A, en rle (0x5C46), que pide la ficha 0x61E3; lo leen p00:5860 (318 bytes)
+F 0xAAF8 16
+D 0xAC36 0xACE0 colores_AC36  los colores de unos caracteres desde el 0x5A, en rle (0x5C46), que pide la ficha 0x61E3; lo leen p00:5860 (170 bytes)
+F 0xAC36 16
+D 0xACE0 0xADC3 dibujos_ACE0  los dibujos de unos caracteres desde el 0x5A, en rle (0x5C46), que pide la ficha 0x61DC; lo leen p00:5860 (227 bytes)
+F 0xACE0 16
+D 0xADC3 0xAE40 colores_ADC3  los colores de unos caracteres desde el 0x5A, en rle (0x5C46), que pide la ficha 0x61DC; lo leen p00:5860 (125 bytes)
+F 0xADC3 16
+D 0xAE40 0xB036 dibujos_AE40  los dibujos de unos caracteres desde el 0x5A, en rle (0x5C46), que pide la ficha 0x61BC; lo leen p00:5860 (502 bytes)
+F 0xAE40 16
+D 0xB036 0xB1CD dibujos_B036  los dibujos de unos caracteres desde el 0xBA, en rle (0x5C46), que pide la ficha 0x61C2; lo leen p00:5860 (407 bytes)
+F 0xB036 16
+D 0xB1CD 0xB2A3 colores_B1CD  los colores de unos caracteres desde el 0x5A, en rle (0x5C46), que pide la ficha 0x61BC; lo leen p00:5860 (214 bytes)
+F 0xB1CD 16
+D 0xB2A3 0xB37A colores_B2A3  los colores de unos caracteres desde el 0xBA, en rle (0x5C46), que pide la ficha 0x61C2; lo leen p00:5860 (215 bytes)
+F 0xB2A3 16
+D 0xB37A 0xB520 dibujos_B37A  los dibujos de unos caracteres desde el 0x5A, en rle (0x5C46), que pide la ficha 0x61FD; lo leen p00:5860 (422 bytes)
+F 0xB37A 16
+D 0xB520 0xB5CD colores_B520  los colores de unos caracteres desde el 0x5A, en rle (0x5C46), que pide la ficha 0x61FD; lo leen p00:5860 (173 bytes)
+F 0xB520 16
+D 0xB5CD 0xB635 rle_B5CD  rle a la VRAM (0x5C46) de la pieza de decoracion 0x54; lo leen p00:59B9 (104 bytes)
+F 0xB5CD 16
+D 0xB635 0xB66E rle_B635  rle a la VRAM (0x5C46) de la pieza de decoracion 0x58; lo leen p00:59B9 (57 bytes)
+F 0xB635 16
+D 0xB66E 0xB690 rle_B66E  rle a la VRAM (0x5C46) de la pieza de decoracion 0x67; lo leen p00:59B9 (34 bytes)
+F 0xB66E 16
+D 0xB690 0xB6AD rle_B690  rle a la VRAM (0x5C46) de la pieza de decoracion 0x5A; lo leen p00:59B9 (29 bytes)
+F 0xB690 16
+D 0xB6AD 0xB6CA rle_B6AD  rle a la VRAM (0x5C46) de la pieza de decoracion 0x68; lo leen p00:59B9 (29 bytes)
+F 0xB6AD 16
+D 0xB6CA 0xB6E1 rle_B6CA  rle a la VRAM (0x5C46) de la pieza de decoracion 0x59; lo leen p00:59B9 (23 bytes)
+F 0xB6CA 16
+D 0xB6E1 0xB760 rle_B6E1  rle a la VRAM (0x5C46) de la pieza de decoracion 0x65; lo leen p00:59B9 (127 bytes)
+F 0xB6E1 16
+D 0xB760 0xB850 dibujos_B760  los dibujos de unos caracteres desde el 0x5A, en rle (0x5C46), que pide la ficha 0x6121; lo leen p00:5707 (240 bytes)
+F 0xB760 16
+D 0xB940 0xB945 colores_B940  los colores de unos caracteres desde el 0x5A, en rle (0x5C46), que pide la ficha 0x6121; lo leen p00:5707 (5 bytes)
+F 0xB940 16
+D 0xB945 0xBAA7 dibujos_B945  los dibujos de unos caracteres desde el 0x5A, en rle (0x5C46), que pide la ficha 0x6139; lo leen p00:5765 (354 bytes)
+F 0xB945 16
+D 0xBAA7 0xBAE6 colores_BAA7  los colores de unos caracteres desde el 0x5A, en rle (0x5C46), que pide la ficha 0x6139; lo leen p00:5765 (63 bytes)
+F 0xBAA7 16
+D 0xBAE6 0xBD46 dibujos_BAE6  los dibujos de unos caracteres desde el 0x5A, en rle (0x5C46), que pide la ficha 0x636C; lo leen p00:57AE (608 bytes)
+F 0xBAE6 16
+D 0xBD46 0xBEAF colores_BD46  los colores de unos caracteres desde el 0x5A, en rle (0x5C46), que pide la ficha 0x636C; lo leen p00:57AE (361 bytes)
+F 0xBD46 16
+D 0xBEAF 0xBF76 rle_BEAF  rle a la VRAM (0x5C46); lo leen p00:57BE (199 bytes)
+F 0xBEAF 16
+D 0xBF76 0xC000 relleno_p12  relleno: 138 bytes 0xFF hasta el final del banco, sin nada que los lea ni los ejecute (138 bytes)
+F 0xBF76 16
+# --- fin de los bloques de bloques.py ---

@@ -1,0 +1,121 @@
+# Puntos de entrada del banco 0 (se ejecuta en 0x4000).
+#
+# Cada uno lleva la instruccion que lo justifica. Los que ponen "pNN:XXXX"
+# vienen de OTRO banco: el trazador de una sola pagina no puede seguirlos,
+# porque en esa direccion -segun lo que haya en el registro del mapper- puede
+# estar cualquiera de seis bancos. Los que ponen "tabla" salen de una tabla
+# del despachador 0x4140, que va pegada detras de su `call` y esta declarada
+# como datos en el .nocode: el trazador tampoco puede seguirla.
+#
+# Los saltos y llamadas DENTRO del propio banco no se ponen aqui: los
+# encuentra tools/z80trace.py solo, siguiendo el flujo.
+#
+# Este fichero lo regenera `make semillas` (tools/bancos.py escribe).
+0x4050   # p15:BE1F call
+0x4053   # p15:BE85 call
+0x4056   # p09:A79C call
+0x4059   # p08:9D9F jp
+0x405C   # p05:856B call
+0x405F   # a mano, codigo huerfano: la entrada del vector de 0x4050 que salta a 0x4DB5; ninguna instruccion llama a 0x405F (ni a 0x4DB5)
+0x4062   # p04:76E7 call
+0x4065   # p15:B94A call
+0x4068   # p04:74FE call cc
+0x406B   # p06:B266 call
+0x406E   # p05:806C jp
+0x4071   # p04:7E22 jp
+0x4074   # p05:929E jp
+0x4077   # a mano, codigo huerfano: la entrada del vector de 0x4050 que salta a 0x551F; ninguna instruccion llama a 0x4077 (0x551F si se usa directamente)
+0x407A   # p04:7ED8 call
+0x407D   # p02:8605 jp
+0x4080   # p05:8351 jp
+0x4083   # p06:ADEE call
+0x4086   # p05:8285 call
+0x4089   # p09:A66B call
+0x408C   # p09:A202 jp
+0x408F   # p15:B8BA call
+0x4092   # p04:7A90 jp
+0x4095   # cabecera AB: INIT
+0x40EF   # gancho de interrupcion H.KEYI: INIT escribe 0xC3 en 0xFD9A y esta direccion en 0xFD9B (p00:40A0-p00:40A8)
+0x41E9   # p03:B3BC call
+0x41F4   # p03:B3B2 call
+0x4220   # p01:7F11 call
+0x422B   # p02:9926 call
+0x424C   # p03:B669 jp
+0x4257   # p03:B277 jp cc
+0x4260   # p03:B6B8 jp cc
+0x42B8   # p00:428B entrada 0 de la tabla de 0x428E (call 0x4140 en 0x428B)
+0x430C   # p00:428B entrada 1 de la tabla de 0x428E (call 0x4140 en 0x428B)
+0x433C   # p00:428B entrada 2 de la tabla de 0x428E (call 0x4140 en 0x428B)
+0x4348   # p00:433D entrada 0 de la tabla de 0x4340 (call 0x4140 en 0x433D)
+0x437B   # p00:433D entrada 1 de la tabla de 0x4340 (call 0x4140 en 0x433D)
+0x43B4   # p00:433D entrada 2 de la tabla de 0x4340 (call 0x4140 en 0x433D)
+0x43C5   # p00:433D entrada 3 de la tabla de 0x4340 (call 0x4140 en 0x433D)
+0x43F0   # p00:428B entrada 3 de la tabla de 0x428E (call 0x4140 en 0x428B)
+0x4420   # p00:428B entrada 4 de la tabla de 0x428E (call 0x4140 en 0x428B)
+0x4462   # p00:428B entrada 5 de la tabla de 0x428E (call 0x4140 en 0x428B)
+0x44F2   # p00:428B entrada 6 de la tabla de 0x428E (call 0x4140 en 0x428B)
+0x454F   # p00:428B entrada 7 de la tabla de 0x428E (call 0x4140 en 0x428B)
+0x4599   # p00:428B entrada 8 de la tabla de 0x428E (call 0x4140 en 0x428B)
+0x46AD   # p00:428B entrada 13 de la tabla de 0x428E (call 0x4140 en 0x428B)
+0x473A   # p00:428B entrada 9 de la tabla de 0x428E (call 0x4140 en 0x428B)
+0x4769   # p00:428B entrada 10 de la tabla de 0x428E (call 0x4140 en 0x428B)
+0x47CF   # p00:428B entrada 11 de la tabla de 0x428E (call 0x4140 en 0x428B)
+0x484F   # p00:428B entrada 12 de la tabla de 0x428E (call 0x4140 en 0x428B)
+0x488E   # p00:428B entrada 14 de la tabla de 0x428E (call 0x4140 en 0x428B)
+0x48C5   # p00:428B entrada 16 de la tabla de 0x428E (call 0x4140 en 0x428B)
+0x48D3   # p00:48C6 entrada 0 de la tabla de 0x48C9 (call 0x4140 en 0x48C6)
+0x48E4   # p00:48C6 entrada 1 de la tabla de 0x48C9 (call 0x4140 en 0x48C6)
+0x4909   # p00:48C6 entrada 2 de la tabla de 0x48C9 (call 0x4140 en 0x48C6)
+0x4922   # p00:48C6 entrada 3 de la tabla de 0x48C9 (call 0x4140 en 0x48C6)
+0x493D   # p00:48C6 entrada 4 de la tabla de 0x48C9 (call 0x4140 en 0x48C6)
+0x4959   # p00:428B entrada 15 de la tabla de 0x428E (call 0x4140 en 0x428B)
+0x49BA   # p00:428B entrada 17 de la tabla de 0x428E (call 0x4140 en 0x428B)
+0x49D0   # p00:49BB entrada 0 de la tabla de 0x49BE (call 0x4140 en 0x49BB)
+0x49DA   # p00:49BB entrada 1 de la tabla de 0x49BE (call 0x4140 en 0x49BB)
+0x49E5   # p00:49BB entrada 2 de la tabla de 0x49BE (call 0x4140 en 0x49BB)
+0x49F0   # p00:49BB entrada 3 de la tabla de 0x49BE (call 0x4140 en 0x49BB)
+0x49F9   # p00:49BB entrada 4 de la tabla de 0x49BE (call 0x4140 en 0x49BB)
+0x4A1E   # p00:49BB entrada 5 de la tabla de 0x49BE (call 0x4140 en 0x49BB)
+0x4A35   # p00:49BB entrada 6 de la tabla de 0x49BE (call 0x4140 en 0x49BB)
+0x4A51   # p00:49BB entrada 7 de la tabla de 0x49BE (call 0x4140 en 0x49BB)
+0x4A62   # p00:49BB entrada 8 de la tabla de 0x49BE (call 0x4140 en 0x49BB)
+0x4A69   # p00:428B entrada 18 de la tabla de 0x428E (call 0x4140 en 0x428B)
+0x4B5B   # p00:428B entrada 19 de la tabla de 0x428E (call 0x4140 en 0x428B)
+0x4BD8   # p00:428B entrada 20 de la tabla de 0x428E (call 0x4140 en 0x428B)
+0x4BFA   # a mano: p00:4282 ld hl,0x4BFA / push hl antes de despachar los estados 0-2 (p00:428B): su `ret` vuelve aqui
+0x4C6B   # p01:7E2D jp cc
+0x4D5A   # p02:9205 call
+0x4D7B   # p03:B2DC jp cc
+0x4D82   # p02:9211 call
+0x4DDB   # p03:B844 call
+0x4DE3   # p02:88A7 call
+0x4E1F   # p03:AA8B call
+0x5280   # p01:6215 call
+0x5465   # p00:5438 entrada 2 de la tabla de 0x543B (call 0x4140 en 0x5438)
+0x546F   # p00:5438 entrada 11 de la tabla de 0x543B (call 0x4140 en 0x5438)
+0x5474   # p01:624E jp
+0x5487   # p00:5438 entrada 0 de la tabla de 0x543B (call 0x4140 en 0x5438)
+0x5488   # p00:5438 entrada 5 de la tabla de 0x543B (call 0x4140 en 0x5438)
+0x54BF   # p03:BEE8 call
+0x54F3   # p01:6B10 call
+0x54F6   # p01:624B call
+0x54FF   # p03:AFC2 jp
+0x551F   # p03:AFE4 jp
+0x553E   # p03:AE12 jp
+0x5832   # p03:B363 jp
+0x587B   # p02:8327 call
+0x5A2C   # p00:5A1B entrada 0 de la tabla de 0x5A1E (call 0x4140 en 0x5A1B)
+0x5A33   # p00:5A1B entrada 1 de la tabla de 0x5A1E (call 0x4140 en 0x5A1B)
+0x5A3A   # p00:5A1B entrada 2 de la tabla de 0x5A1E (call 0x4140 en 0x5A1B)
+0x5A48   # p00:5A1B entrada 3 de la tabla de 0x5A1E (call 0x4140 en 0x5A1B)
+0x5A5D   # p00:5A1B entrada 4 de la tabla de 0x5A1E (call 0x4140 en 0x5A1B)
+0x5A72   # p00:5A1B entrada 5 de la tabla de 0x5A1E (call 0x4140 en 0x5A1B)
+0x5A80   # p00:5A1B entrada 6 de la tabla de 0x5A1E (call 0x4140 en 0x5A1B)
+0x5BD8   # p01:6BA8 jp
+0x5C25   # p01:6232 call
+0x5D12   # p03:BD4A jp
+0x5E6C   # p01:6A21 call
+0x5E7B   # p01:6A24 call
+0x5F79   # p03:AAA2 jp
+0x5F84   # p01:6056 call
+0x5F8F   # p01:6059 call

@@ -1,0 +1,45 @@
+# notas del banco 13
+
+# --- A MANO: comentarios, nombres y bloques ---
+D 0x74C8 0x74CA palabra_tras_las_musicas  una palabra mas (0x9005, como las tres de la musica 0x96) detras de las 23 musicas y antes del primer efecto: seria el canal A de una musica 0x97, que no tiene B ni C (sus bytes son ya el efecto 1) y que ningun `ld a,0x97` pide
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0x60EC 0x60F2 mezclador_0  tres parejas [and][or], una por canal (0xE1AE), para el registro 7 del PSG (p13:60DF); la pide p13:60CF; lo leen p13:60DF (6 bytes)
+F 0x60EC 2
+D 0x60F2 0x60F8 mezclador_1  tres parejas [and][or], una por canal (0xE1AE), para el registro 7 del PSG (p13:60DF); la pide p13:60C8; lo leen p13:60DF (6 bytes)
+F 0x60F2 2
+D 0x60F8 0x60FE mezclador_2  tres parejas [and][or], una por canal (0xE1AE), para el registro 7 del PSG (p13:60DF); la pide p13:60C1; lo leen p13:60DF (6 bytes)
+F 0x60F8 2
+D 0x60FE 0x6104 mezclador_3  tres parejas [and][or], una por canal (0xE1AE), para el registro 7 del PSG (p13:60DF); la pide p13:60BA; lo leen p13:60DF (6 bytes)
+F 0x60FE 2
+D 0x62D0 0x62E8 notas_62D0  12 periodos del PSG, uno por nota (el nibble alto del byte de la partitura x 2), que p13:6224 elige segun 0xE1C5; lo leen p13:622C (24 bytes)
+F 0x62D0 2
+D 0x62E8 0x6300 notas_62E8  12 periodos del PSG, uno por nota (el nibble alto del byte de la partitura x 2), que p13:6219 elige segun 0xE1C5; lo leen p13:622C (24 bytes)
+F 0x62E8 2
+D 0x6300 0x6318 notas_6300  12 periodos del PSG, uno por nota (el nibble alto del byte de la partitura x 2), que p13:620E elige segun 0xE1C5; lo leen p13:622C (24 bytes)
+F 0x6300 2
+D 0x65A7 0x65BF instrumento_1  12 punteros, uno por nota, a la envolvente del instrumento 1 ((ix+8), p13:627A); lo leen p13:629F (24 bytes)
+F 0x65A7 2
+D 0x65BF 0x65D7 instrumento_2  12 punteros, uno por nota, a la envolvente del instrumento 2 ((ix+8), p13:627A); lo leen p13:629F (24 bytes)
+F 0x65BF 2
+D 0x65D7 0x65EF instrumento_3  12 punteros, uno por nota, a la envolvente del instrumento 3 ((ix+8), p13:627A); lo leen p13:629F (24 bytes)
+F 0x65D7 2
+D 0x65EF 0x6607 instrumento_4  12 punteros, uno por nota, a la envolvente del instrumento 4 ((ix+8), p13:627A); lo leen p13:629F (24 bytes)
+F 0x65EF 2
+D 0x6607 0x661F instrumento_5  12 punteros, uno por nota, a la envolvente del instrumento 5 ((ix+8), p13:627A); lo leen p13:629F (24 bytes)
+F 0x6607 2
+D 0x661F 0x6637 instrumento_0  12 punteros, uno por nota, a la envolvente del instrumento 0 ((ix+8), p13:627A); lo leen p13:629F (24 bytes)
+F 0x661F 2
+D 0x6637 0x73DE envolventes_6637  envolventes de los instrumentos, con el formato de los efectos (p13:64C2); lo leen p13:64C2 (3495 bytes)
+F 0x6637 16
+D 0x73DE 0x743E efectos  48 punteros, uno por efecto de sonido (1-0x30), que p00:4F3C lee con el banco 13 en 0x6000; lo leen p00:4F44 (96 bytes)
+F 0x73DE 2
+D 0x743E 0x74C8 musicas  23 musicas (0x80-0x96), tres punteros cada una: los canales A, B y C (p00:4EAE); lo leen p00:4EB6 (138 bytes)
+F 0x743E 6
+D 0x74CA 0x7DE5 efectos_74CA  los efectos de sonido (p13:64C2); lo leen p13:64C2 (2331 bytes)
+F 0x74CA 16
+D 0x7DE5 0x7DF2 partitura_7DE5  la partitura del canal de 0xE193, que p00:500B pone a mano (y p13:6104 toca); lo leen p00:500E (13 bytes)
+F 0x7DE5 16
+D 0x7DF2 0x8000 efecto_7DF2  la envolvente del canal de 0xE178, que p00:50AC pone a mano en 0xE184; se solapan 2 bloques (0x7DF2-0x7E03, 0x7E02-0x8000); lo leen p00:50AF, p13:6197 (526 bytes)
+F 0x7DF2 16
+# --- fin de los bloques de bloques.py ---

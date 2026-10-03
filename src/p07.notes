@@ -1,0 +1,8 @@
+# notas del banco 07
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0x6000 0x6AD6 bloques  172 bloques de 4 x 4 caracteres, 16 bytes cada uno, que p00:5649 copia a la tabla de nombres de 0xED80 por cada uno de los 40 de la sala; el 0xAB acaba en los dos primeros bytes de la tabla 0x6ABE; se solapan 2 bloques (0x6000-0x6AC0, 0x6ABE-0x6AD6); lo leen p00:5613, p00:564A (2774 bytes)
+F 0x6000 16
+D 0x6AD6 0x8000 salas  las salas de los 11 mapas, 8 x 5 bloques (40 bytes) cada una, seguidas: el castillo (147, de 0x6AD6 a 0x81CE, pasando del banco 7 al 8) y los diez mundos desde 0x81CE (p00:5626); lo leen p00:564A (5418 bytes)
+F 0x6AD6 8
+# --- fin de los bloques de bloques.py ---

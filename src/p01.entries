@@ -1,0 +1,96 @@
+# Puntos de entrada del banco 1 (se ejecuta en 0x6000).
+#
+# Cada uno lleva la instruccion que lo justifica. Los que ponen "pNN:XXXX"
+# vienen de OTRO banco: el trazador de una sola pagina no puede seguirlos,
+# porque en esa direccion -segun lo que haya en el registro del mapper- puede
+# estar cualquiera de seis bancos. Los que ponen "tabla" salen de una tabla
+# del despachador 0x4140, que va pegada detras de su `call` y esta declarada
+# como datos en el .nocode: el trazador tampoco puede seguirla.
+#
+# Los saltos y llamadas DENTRO del propio banco no se ponen aqui: los
+# encuentra tools/z80trace.py solo, siguiendo el flujo.
+#
+# Este fichero lo regenera `make semillas` (tools/bancos.py escribe).
+0x6002   # p00:5FFF sigue tras la instruccion partida
+0x6003   # p00:5FC7 jr cc
+0x6015   # p00:5FCA jr cc
+0x602F   # p00:512C call
+0x604D   # p03:AEAC call
+0x6085   # p00:5420 call
+0x612C   # p03:B30D jp
+0x6158   # p03:B636 call
+0x6171   # p00:541D call
+0x6215   # p00:4303 call
+0x6251   # p00:4319 call
+0x6267   # p01:625E entrada 0 de la tabla de 0x6261 (call 0x4140 en 0x625E)
+0x628E   # p01:625E entrada 2 de la tabla de 0x6261 (call 0x4140 en 0x625E)
+0x6298   # p01:625E entrada 1 de la tabla de 0x6261 (call 0x4140 en 0x625E)
+0x62B1   # p01:62A4 entrada 0 de la tabla de 0x62A7 (call 0x4140 en 0x62A4)
+0x62BD   # p01:62A4 entrada 1 de la tabla de 0x62A7 (call 0x4140 en 0x62A4)
+0x62C2   # p01:62A4 entrada 4 de la tabla de 0x62A7 (call 0x4140 en 0x62A4)
+0x62EF   # p00:5197 call
+0x6371   # p00:5387 call
+0x6398   # p00:538A call
+0x63C2   # p00:511A call
+0x63EA   # p00:519A call
+0x643C   # p00:5390 call
+0x6531   # p00:5393 call
+0x656E   # p00:515C call
+0x65A8   # p00:4849 call
+0x67E2   # p00:4821 jp cc
+0x6903   # p00:4816 call
+0x691A   # p00:5159 call
+0x6957   # p00:42E1 call
+0x6985   # p00:42BF call
+0x69B9   # p00:4885 call
+0x69E3   # p00:517F call
+0x6A1E   # p00:4A3E call
+0x6AC5   # p00:4369 call
+0x6ACA   # p00:4A41 call
+0x6ADC   # p00:4A54 call
+0x6BB0   # p00:5338 call
+0x6C56   # p00:5305 call
+0x6C95   # p00:46DB call
+0x6DF7   # p00:5318 call
+0x6F54   # p01:6F2F entrada 0 de la tabla de 0x6F32 (call 0x4140 en 0x6F2F)
+0x6F73   # p01:6F2F entrada 7 de la tabla de 0x6F32 (call 0x4140 en 0x6F2F)
+0x6F8A   # p01:6F2F entrada 1 de la tabla de 0x6F32 (call 0x4140 en 0x6F2F)
+0x6FB5   # p01:6F2F entrada 3 de la tabla de 0x6F32 (call 0x4140 en 0x6F2F)
+0x6FCE   # p01:6F2F entrada 13 de la tabla de 0x6F32 (call 0x4140 en 0x6F2F)
+0x6FD2   # p01:6F2F entrada 5 de la tabla de 0x6F32 (call 0x4140 en 0x6F2F)
+0x6FD6   # p01:6F2F entrada 4 de la tabla de 0x6F32 (call 0x4140 en 0x6F2F)
+0x6FDA   # p01:6F2F entrada 6 de la tabla de 0x6F32 (call 0x4140 en 0x6F2F)
+0x6FDE   # p01:6F2F entrada 14 de la tabla de 0x6F32 (call 0x4140 en 0x6F2F)
+0x6FE2   # p01:6F2F entrada 2 de la tabla de 0x6F32 (call 0x4140 en 0x6F2F)
+0x7079   # p01:6F2F entrada 8 de la tabla de 0x6F32 (call 0x4140 en 0x6F2F)
+0x707F   # p01:6F2F entrada 9 de la tabla de 0x6F32 (call 0x4140 en 0x6F2F)
+0x70C6   # p01:6F2F entrada 10 de la tabla de 0x6F32 (call 0x4140 en 0x6F2F)
+0x7131   # p01:6F2F entrada 11 de la tabla de 0x6F32 (call 0x4140 en 0x6F2F)
+0x717A   # p01:6F2F entrada 15 de la tabla de 0x6F32 (call 0x4140 en 0x6F2F)
+0x717B   # p01:6F2F entrada 16 de la tabla de 0x6F32 (call 0x4140 en 0x6F2F)
+0x71E3   # p00:530E call
+0x7378   # p00:5321 call
+0x73B7   # p00:4932 call
+0x73D6   # p03:BE81 call
+0x73E4   # p02:9EFC jp
+0x746D   # p00:533E call
+0x766C   # p00:531B call
+0x76C6   # p00:52FF call
+0x77EE   # p00:53A5 call
+0x79B2   # p00:5302 call
+0x79DD   # p00:5347 call
+0x79F4   # p00:4B6B call
+0x7AFE   # p00:53E1 call
+0x7C7E   # p00:534A call
+0x7D82   # p00:4356 call
+0x7DE8   # p00:437E call
+0x7E22   # p00:437B call
+0x7E57   # p00:4755 call
+0x7E8C   # p00:4551 call
+0x7EDD   # p00:4381 call
+0x7EFC   # p00:53ED call
+0x7FA3   # p02:8942 jp
+0x7FAC   # p02:882D call
+0x7FB5   # p02:8906 call
+0x7FBE   # p02:88A4 call
+0x7FC7   # p02:88C5 call

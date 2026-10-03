@@ -1,0 +1,68 @@
+# notas del banco 14
+
+# --- A MANO: comentarios, nombres y bloques ---
+D 0x9006 0x933F fichas_de_choque  fichas de 4 bytes que p03:B954 lee en 0x9006 + 4 x (ix+0x11), con el banco 14 en 0x8000 (p03:B954 llama a 0x420A): dos parejas que devuelve en BC y en HL. El numero de fichas no esta medido (hay sitio para 206 y un byte); el bloque llega hasta el recuadro de 0x933F
+F 0x9006 4
+D 0x933F 0x93E7 recuadro_de_14x12  un recuadro de 14 x 12 caracteres que p01:6226 copia por filas a 0xED29 con p01:6D49 (bancos 1-14-15, p00:42FA)
+F 0x933F 14
+D 0x93E7 0x93F7 sprites_93e7  16 bytes de atributos de sprite que p01:6218 copia a 0xEC80
+D 0x93F7 0x93FF sprites_93f7  8 bytes de atributos de sprite que p01:62B1 copia a 0xEC98
+D 0x93FF 0x9407 sprites_93ff  8 bytes de atributos de sprite que p01:62BD copia a 0xEC98
+D 0x9407 0x940B sprites_9407  4 bytes de atributos de sprite que p01:62DF copia a 0xEC98
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0x8000 0x9006 partituras_7E02_cola  partituras de las musicas (p13:6197): notas, silencios y ordenes (sigue del banco anterior, 0x7E02); lo leen p13:6197 (4102 bytes)
+F 0x8000 16
+D 0x940B 0x9757 dibujos_940B  los dibujos de unos caracteres desde el 0x5A, en rle (0x5C46), que pide la ficha 0x9A96; lo leen p00:5781 (844 bytes)
+F 0x940B 16
+D 0x9757 0x99A9 colores_9757  los colores de unos caracteres desde el 0x5A, en rle (0x5C46), que pide la ficha 0x9A96; lo leen p00:5781 (594 bytes)
+F 0x9757 16
+D 0x99A9 0x9A96 rle_99A9  rle a la VRAM (0x5C46); lo leen p00:5791 (237 bytes)
+F 0x99A9 16
+D 0x9A96 0x9A9D caracteres_9A96  1 fichas de caracteres (0x5AB3): [tercios][dibujos][primer caracter][colores], 6 bytes cada una, y un 0 al final; lo leen p00:5781 (7 bytes)
+F 0x9A96 6
+D 0x9A9D 0x9AA2 copias_9A9D  1 fichas de copia de caracteres (0x5A8D): [desde][hasta][tercios][cuantos], 4 bytes cada una, y un 0 al final; los copia dados la vuelta (0x5B08); lo leen p00:5788 (5 bytes)
+F 0x9A9D 4
+D 0x9AA2 0x9ABD rle_tercios_9AA2  rle a la VRAM, el mismo en los tres tercios (0x5BFC); lo leen p00:5E49, p00:5E75 (27 bytes)
+F 0x9AA2 16
+D 0x9ABD 0x9AD3 rle_tercios_9ABD  rle a la VRAM, el mismo en los tres tercios (0x5BFC); se solapan 2 bloques (0x9ABD-0x9AD3, 0x9ACC-0x9AD3); lo leen p00:5E52, p00:5E84 (22 bytes)
+F 0x9ABD 16
+D 0x9AD3 0x9B24 rle_tercios_9AD3  rle a la VRAM, el mismo en los tres tercios (0x5BFC); lo leen p00:5E1A, p00:5E40 (81 bytes)
+F 0x9AD3 16
+D 0x9B24 0x9BEC rle_tercios_9B24  rle a la VRAM, el mismo en los tres tercios (0x5BFC); lo leen p00:5E23, p00:5E5B (200 bytes)
+F 0x9B24 16
+D 0x9BEC 0x9D90 rle_tercios_9BEC  rle a la VRAM, el mismo en los tres tercios (0x5BFC); lo leen p00:5E9E (420 bytes)
+F 0x9BEC 16
+D 0x9D90 0x9E0A tamanos_de_mosaico  61 parejas [ancho][alto] en caracteres, una por mosaico (p01:6EAB, (ix+0x0A)); lo leen p01:6EAF (122 bytes)
+F 0x9D90 2
+D 0x9E0A 0x9E84 tabla_de_mosaicos  61 punteros a los mosaicos (p01:6D61 y otros, (ix+0x0A)); los 20, 21 y 22 (6 x 12) apuntan donde el 23 (2 x 2); lo leen p01:6D64 (122 bytes)
+F 0x9E0A 2
+D 0x9E84 0x9E88 mosaico_00  el mosaico 0: 2 x 2 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (4 bytes)
+F 0x9E84 2
+D 0x9E88 0x9E8C mosaico_01  el mosaico 1: 2 x 2 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (4 bytes)
+F 0x9E88 2
+D 0x9E8C 0x9E90 mosaico_02  el mosaico 2: 2 x 2 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (4 bytes)
+F 0x9E8C 2
+D 0x9E90 0x9E94 mosaico_03  el mosaico 3: 2 x 2 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (4 bytes)
+F 0x9E90 2
+D 0x9E94 0x9E9A mosaico_04  el mosaico 4: 2 x 3 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (6 bytes)
+F 0x9E94 2
+D 0x9E9A 0x9EA0 mosaico_05  el mosaico 5: 2 x 3 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (6 bytes)
+F 0x9E9A 2
+D 0x9EA0 0x9ED0 mosaico_06  el mosaico 6: 16 x 3 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (48 bytes)
+F 0x9EA0 16
+D 0x9ED0 0x9F00 mosaico_07  el mosaico 7: 16 x 3 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (48 bytes)
+F 0x9ED0 16
+D 0x9F00 0x9F30 mosaico_08  el mosaico 8: 16 x 3 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (48 bytes)
+F 0x9F00 16
+D 0x9F30 0x9F60 mosaico_09  el mosaico 9: 16 x 3 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (48 bytes)
+F 0x9F30 16
+D 0x9F60 0x9F90 mosaico_10  el mosaico 10: 16 x 3 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (48 bytes)
+F 0x9F60 16
+D 0x9F90 0x9FC0 mosaico_11  el mosaico 11: 16 x 3 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (48 bytes)
+F 0x9F90 16
+D 0x9FC0 0x9FFC mosaico_12  el mosaico 12: 10 x 6 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (60 bytes)
+F 0x9FC0 10
+D 0x9FFC 0xA000 mosaico_13  el mosaico 13: 10 x 6 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (4 bytes)
+F 0x9FFC 10
+# --- fin de los bloques de bloques.py ---

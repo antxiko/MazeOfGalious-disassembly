@@ -1,0 +1,150 @@
+# notas del banco 15
+
+# --- A MANO: comentarios, nombres y bloques ---
+D 0xB97B 0xB97F atributos_b97b  4 bytes de atributos de sprite que p15:B827 copia cuatro veces a 0xEC90 (los mismos 4 en los cuatro)
+D 0xB97F 0xB981 dos_dibujos_b97f  dos numeros de dibujo de sprite; p15:B942 coge el bit 0 de 0xF023 y pone uno de los dos en 0xECB1
+D 0xB981 0xB985 sin_nombrar_b981  4 bytes (1C 08 20 0A) entre las tablas de la escena que ninguna instruccion nombra (los de alrededor si); no estan medidos en openMSX
+D 0xB985 0xB989 parejas_b985  dos parejas de caracteres que p15:B913 y p15:B920 ponen en 0xEEAD y 0xEEB2 por turnos (bit 0 de 0xF01F)
+F 0xB985 2
+D 0xB989 0xBAA1 recuadro_de_20x14  un recuadro de 20 x 14 caracteres que p15:B810 copia por filas a 0xED86 con 0x408F (p01:6D49)
+F 0xB989 20
+D 0xBAA1 0xBAE1 dos_variantes  dos variantes de 32 bytes (p15:B8AA o B8B1, al azar con R): 2 filas de 7 caracteres a 0xEEA3, 2 de 8 a 0xEE95 y dos bytes que van a 0xEEE5 y 0xEEDA
+F 0xBAA1 16
+D 0xBAE1 0xBAE9 sprites_bae1  8 bytes de atributos de sprite que p15:B7E6 copia a 0xECA8
+D 0xBAE9 0xBAF1 sprites_bae9  8 bytes de atributos de sprite que p15:B8EA copia a 0xECA8 (p15:B7E9)
+D 0xBAF1 0xBAF5 cuatro_dibujos  4 numeros de dibujo que p15:B7F8 reparte en 0xEC80 (uno por sprite)
+D 0xBAF5 0xBAFD sprites_baf5  8 bytes de atributos de sprite que p15:B83B copia a 0xECA0
+D 0xBAFD 0xBB01 tabla_de_demos  dos punteros, uno por demo (0xE023 = 0 o 1, p01:7E3B)
+F 0xBAFD 2
+D 0xBB01 0xBBBF demo_0  la demo 0: parejas [cuadros][teclas] que p01:7E49 y p01:7E4E van poniendo en 0xE00C y 0xE022; 0xFF en las teclas la acaba (p01:7E2B). 95 parejas
+F 0xBB01 2
+D 0xBBBF 0xBCB9 demo_1  la demo 1, con el mismo formato: 125 parejas
+F 0xBBBF 2
+D 0xBCD5 0xBCEB tabla_bcd3  11 punteros, uno por mapa (p15:BCBE lee 0xBCD3; la palabra 0 son los dos ultimos bytes del codigo), a listas de salas en las que p15:BCC5 pone 0xE617 a 1
+F 0xBCD5 2
+D 0xBCEB 0xBD06 salas_e617  las listas de 0xBCD3, acabadas en 0, compartidas por varios mapas (castillo: 137-143)
+D 0xBD74 0xBD8A tabla_bd72  11 punteros, uno por mapa (p15:BD5D; la palabra 0 son los dos ultimos bytes del codigo), a listas de salas en las que p15:BD64 pone 0xE619 a 1
+F 0xBD74 2
+D 0xBD8A 0xBDA1 salas_e619  las listas de 0xBD72, acabadas en 0 (castillo: 96 y 144-147)
+D 0xBDCE 0xBDE2 tabla_bdce  10 punteros (0xE61A = 0-9, p15:BDB7) a [direccion de VRAM][cuantos][bytes] que p15:BDC5 escribe con WRTVRM
+F 0xBDCE 2
+D 0xBDE2 0xBE1C escrituras_bdce  las 10 escrituras de 0xBDCE: [direccion 0x15C0-0x15C4][2-4][bytes]
+F 0xBEC8 2
+D 0xBEC8 0xBED4 tabla_bec8  6 palabras (0x2000, 0x2800, 0x3000, 0x0000, 0x0800 y 0x1000: los tercios de la tabla de colores y de la de dibujos) que p15:BE85 elige con 0xE69A y a las que suma 0xE69B x 8
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0xA000 0xA038 mosaico_13_cola  el mosaico 13: 10 x 6 caracteres por filas (p01:6D87; el 0 no se pinta) (sigue del banco anterior, 0x9FFC); lo leen p01:6D87 (56 bytes)
+F 0xA000 10
+D 0xA038 0xA07E mosaico_14  el mosaico 14: 10 x 7 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (70 bytes)
+F 0xA038 10
+D 0xA07E 0xA0BA mosaico_15  el mosaico 15: 10 x 6 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (60 bytes)
+F 0xA07E 10
+D 0xA0BA 0xA0DE mosaico_16  el mosaico 16: 6 x 6 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (36 bytes)
+F 0xA0BA 6
+D 0xA0DE 0xA102 mosaico_17  el mosaico 17: 6 x 6 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (36 bytes)
+F 0xA0DE 6
+D 0xA102 0xA126 mosaico_18  el mosaico 18: 6 x 6 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (36 bytes)
+F 0xA102 6
+D 0xA126 0xA14A mosaico_19  el mosaico 19: 6 x 6 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (36 bytes)
+F 0xA126 6
+D 0xA14A 0xA1CE mosaico_23  el mosaico 23: 2 x 2 caracteres por filas (p01:6D87; el 0 no se pinta); se solapan 4 bloques (0xA14A-0xA14E, 0xA14A-0xA192, 0xA14E-0xA18E, 0xA18E-0xA1CE); lo leen p01:6D87 (132 bytes)
+F 0xA14A 2
+D 0xA1CE 0xA20E mosaico_26  el mosaico 26: 8 x 8 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (64 bytes)
+F 0xA1CE 8
+D 0xA20E 0xA24E mosaico_27  el mosaico 27: 8 x 8 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (64 bytes)
+F 0xA20E 8
+D 0xA24E 0xA276 mosaico_28  el mosaico 28: 10 x 4 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (40 bytes)
+F 0xA24E 10
+D 0xA276 0xA29E mosaico_29  el mosaico 29: 10 x 4 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (40 bytes)
+F 0xA276 10
+D 0xA29E 0xA2A6 mosaico_30  el mosaico 30: 2 x 4 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (8 bytes)
+F 0xA29E 2
+D 0xA2A6 0xA2AE mosaico_31  el mosaico 31: 2 x 4 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (8 bytes)
+F 0xA2A6 2
+D 0xA2AE 0xA2B6 mosaico_32  el mosaico 32: 2 x 4 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (8 bytes)
+F 0xA2AE 2
+D 0xA2B6 0xA2BE mosaico_33  el mosaico 33: 2 x 4 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (8 bytes)
+F 0xA2B6 2
+D 0xA2BE 0xA2C0 mosaico_34  el mosaico 34: 2 x 1 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (2 bytes)
+F 0xA2BE 2
+D 0xA2C0 0xA2C2 mosaico_35  el mosaico 35: 2 x 1 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (2 bytes)
+F 0xA2C0 2
+D 0xA2C2 0xA2D4 mosaico_36  el mosaico 36: 6 x 3 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (18 bytes)
+F 0xA2C2 6
+D 0xA2D4 0xA2E6 mosaico_37  el mosaico 37: 6 x 3 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (18 bytes)
+F 0xA2D4 6
+D 0xA2E6 0xA2F8 mosaico_38  el mosaico 38: 6 x 3 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (18 bytes)
+F 0xA2E6 6
+D 0xA2F8 0xA30A mosaico_39  el mosaico 39: 6 x 3 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (18 bytes)
+F 0xA2F8 6
+D 0xA30A 0xA31C mosaico_40  el mosaico 40: 6 x 3 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (18 bytes)
+F 0xA30A 6
+D 0xA31C 0xA32E mosaico_41  el mosaico 41: 6 x 3 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (18 bytes)
+F 0xA31C 6
+D 0xA32E 0xA33E mosaico_42  el mosaico 42: 4 x 4 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (16 bytes)
+F 0xA32E 4
+D 0xA33E 0xA370 mosaico_43  el mosaico 43: 10 x 5 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (50 bytes)
+F 0xA33E 10
+D 0xA370 0xA3A2 mosaico_44  el mosaico 44: 10 x 5 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (50 bytes)
+F 0xA370 10
+D 0xA3A2 0xA3D4 mosaico_45  el mosaico 45: 10 x 5 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (50 bytes)
+F 0xA3A2 10
+D 0xA3D4 0xA406 mosaico_46  el mosaico 46: 10 x 5 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (50 bytes)
+F 0xA3D4 10
+D 0xA406 0xA438 mosaico_47  el mosaico 47: 10 x 5 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (50 bytes)
+F 0xA406 10
+D 0xA438 0xA46A mosaico_48  el mosaico 48: 10 x 5 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (50 bytes)
+F 0xA438 10
+D 0xA46A 0xA4F1 mosaico_49  el mosaico 49: 10 x 5 caracteres por filas (p01:6D87; el 0 no se pinta); se solapan 2 bloques (0xA46A-0xA49C, 0xA46A-0xA4F1); lo leen p01:6D87 (135 bytes)
+F 0xA46A 10
+D 0xA4F1 0xA578 mosaico_53  el mosaico 53: 15 x 9 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (135 bytes)
+F 0xA4F1 15
+D 0xA578 0xA5FF mosaico_54  el mosaico 54: 15 x 9 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (135 bytes)
+F 0xA578 15
+D 0xA5FF 0xA630 mosaico_55  el mosaico 55: 7 x 7 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (49 bytes)
+F 0xA5FF 7
+D 0xA630 0xA661 mosaico_56  el mosaico 56: 7 x 7 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (49 bytes)
+F 0xA630 7
+D 0xA661 0xA665 mosaico_57  el mosaico 57: 2 x 2 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (4 bytes)
+F 0xA661 2
+D 0xA665 0xA697 mosaico_58  el mosaico 58: 10 x 5 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (50 bytes)
+F 0xA665 10
+D 0xA697 0xA6C9 mosaico_59  el mosaico 59: 10 x 5 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (50 bytes)
+F 0xA697 10
+D 0xA6C9 0xA6FB mosaico_60  el mosaico 60: 10 x 5 caracteres por filas (p01:6D87; el 0 no se pinta); lo leen p01:6D87 (50 bytes)
+F 0xA6C9 10
+D 0xA6FB 0xA705 tabla_A6FB  5 punteros a dibujos de filas de (ix+8) caracteres (p01:727C); lo leen p01:7272 (10 bytes)
+F 0xA6FB 2
+D 0xA705 0xA726 dibujos_A6FB  los dibujos de la tabla 0xA6FB, seguidos; lo leen p01:7272 (33 bytes)
+F 0xA705 16
+D 0xA726 0xA72E tabla_A726  4 punteros a dibujos de 3 filas de 1 o 3 caracteres (p01:72DA); lo leen p01:72C6 (8 bytes)
+F 0xA726 2
+D 0xA72E 0xA74C dibujos_A726  los dibujos de la tabla 0xA726, seguidos; lo leen p01:72C6 (30 bytes)
+F 0xA72E 16
+D 0xA74C 0xA754 tabla_A74C  4 punteros a dibujos de 3 filas de 1 o 3 caracteres (p01:72DA); lo leen p01:72B1 (8 bytes)
+F 0xA74C 2
+D 0xA754 0xA772 dibujos_A74C  los dibujos de la tabla 0xA74C, seguidos; lo leen p01:72B1 (30 bytes)
+F 0xA754 16
+D 0xA772 0xA77E dibujo_A772  3 filas de 4 caracteres que p01:731A copia a (0xEA24); lo leen p01:7310 (12 bytes)
+F 0xA772 4
+D 0xA77E 0xA7AE tabla_A77E  24 punteros a tiras de (ix+0x1F) caracteres (p01:6FA6; en el mapa 10 se les resta 0x22, p01:6FAC); lo leen p01:6F90 (48 bytes)
+F 0xA77E 2
+D 0xA7AE 0xA84A dibujos_A77E  los dibujos de la tabla 0xA77E, seguidos; lo leen p01:6F90 (156 bytes)
+F 0xA7AE 16
+D 0xA84A 0xAE28 epilogo_y_creditos  el texto que sube por la pantalla (el epilogo y los creditos, p01:6B40): por linea [columna][largo] y letras de dos medias filas (A = 0x0B, de dos en dos; la de abajo, una menos); 0xFB calla la musica, 0xFD [n] espera, 0xFE linea vacia, 0xFF acaba (tools/textos.py); lo leen p01:6ACA (1502 bytes)
+F 0xA84A 16
+D 0xAE28 0xB09E historia  el texto que sube por la pantalla (la historia del principio, p01:6B40): por linea [columna][largo] y letras de dos medias filas (A = 0x0B, de dos en dos; la de abajo, una menos); 0xFB calla la musica, 0xFD [n] espera, 0xFE linea vacia, 0xFF acaba (tools/textos.py); lo leen p01:6AC5 (630 bytes)
+F 0xAE28 16
+D 0xB09E 0xB106 tabla_de_mensajes  52 punteros, uno por mensaje (p02:9505); si la BIOS no es japonesa (los 4 bits bajos de 0x002B) p02:94F8 suma 0x20: 0-0x13 en japones, 0x20-0x33 en ingles; lo leen p02:9508 (104 bytes)
+F 0xB09E 2
+D 0xB106 0xB7C0 mensajes  los mensajes: [direccion en la copia de la tabla de nombres] y caracteres; 0xFE baja una linea (0x20 mas), 0xFF acaba (p02:9512); varios punteros comparten mensaje; lo leen p02:9512 (1722 bytes)
+F 0xB106 16
+D 0xB860 0xB868 tabla_B860  4 destinos del despachador de 0x4140 (call en p15:B85D): 0xB925, 0xB8D0, 0xB86D, 0xB890; lo leen p15:B85D (8 bytes)
+F 0xB860 2
+D 0xBE22 0xBE2E tabla_BE22  6 destinos del despachador de 0x4140 (call en p15:BE1F): 0xBE2E, 0xBE5C, 0xBEF4, 0xBE5C, 0xBF05, 0xBE5C; lo leen p15:BE1F (12 bytes)
+F 0xBE22 2
+D 0xBF16 0xBFCA rle_BF16  rle a la VRAM (0x5C46); lo leen p00:5923 (180 bytes)
+F 0xBF16 16
+D 0xBFCA 0xC000 relleno_p15  relleno: 54 bytes 0xFF hasta el final del banco, sin nada que los lea ni los ejecute (54 bytes)
+F 0xBFCA 16
+# --- fin de los bloques de bloques.py ---

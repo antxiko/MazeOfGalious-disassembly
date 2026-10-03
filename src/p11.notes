@@ -1,0 +1,154 @@
+# notas del banco 11
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0x8000 0x8010 rle_7FE3_cola  rle a la VRAM (0x5C46) de la pieza de decoracion 0x38 (sigue del banco anterior, 0x7FE3); lo leen p00:59B9 (16 bytes)
+F 0x8000 16
+D 0x8010 0x8093 rle_8010  rle a la VRAM (0x5C46) de la pieza de decoracion 0x09; lo leen p00:59B9 (131 bytes)
+F 0x8010 16
+D 0x8093 0x80C8 rle_8093  rle a la VRAM (0x5C46) de la pieza de decoracion 0x29; lo leen p00:59B9 (53 bytes)
+F 0x8093 16
+D 0x80C8 0x80FB rle_80C8  rle a la VRAM (0x5C46) de la pieza de decoracion 0x02; lo leen p00:59B9 (51 bytes)
+F 0x80C8 16
+D 0x80FB 0x818E rle_80FB  rle a la VRAM (0x5C46) de la pieza de decoracion 0x01; lo leen p00:59B9 (147 bytes)
+F 0x80FB 16
+D 0x818E 0x81EF rle_818E  rle a la VRAM (0x5C46) de la pieza de decoracion 0x08; lo leen p00:59B9 (97 bytes)
+F 0x818E 16
+D 0x81EF 0x81FB rle_81EF  rle a la VRAM (0x5C46) de la pieza de decoracion 0x34; lo leen p00:59B9 (12 bytes)
+F 0x81EF 16
+D 0x81FB 0x826A rle_81FB  rle a la VRAM (0x5C46) de la pieza de decoracion 0x05; lo leen p00:59B9 (111 bytes)
+F 0x81FB 16
+D 0x826A 0x8336 rle_826A  rle a la VRAM (0x5C46) de la pieza de decoracion 0x31; lo leen p00:59B9 (204 bytes)
+F 0x826A 16
+D 0x8336 0x83B7 rle_8336  rle a la VRAM (0x5C46) de la pieza de decoracion 0x11; lo leen p00:59B9 (129 bytes)
+F 0x8336 16
+D 0x83B7 0x8428 rle_83B7  rle a la VRAM (0x5C46) de la pieza de decoracion 0x14; lo leen p00:59B9 (113 bytes)
+F 0x83B7 16
+D 0x8428 0x8514 rle_8428  rle a la VRAM (0x5C46) de la pieza de decoracion 0x0A; lo leen p00:59B9 (236 bytes)
+F 0x8428 16
+D 0x8514 0x85B2 rle_8514  rle a la VRAM (0x5C46) de la pieza de decoracion 0x0E; lo leen p00:59B9 (158 bytes)
+F 0x8514 16
+D 0x85B2 0x85D4 rle_85B2  rle a la VRAM (0x5C46) de la pieza de decoracion 0x2F; lo leen p00:59B9 (34 bytes)
+F 0x85B2 16
+D 0x85D4 0x85FF rle_85D4  rle a la VRAM (0x5C46) de la pieza de decoracion 0x07; lo leen p00:59B9 (43 bytes)
+F 0x85D4 16
+D 0x85FF 0x86A9 rle_85FF  rle a la VRAM (0x5C46) de la pieza de decoracion 0x12; lo leen p00:59B9 (170 bytes)
+F 0x85FF 16
+D 0x86A9 0x8730 rle_86A9  rle a la VRAM (0x5C46) de la pieza de decoracion 0x2E; lo leen p00:59B9 (135 bytes)
+F 0x86A9 16
+D 0x8730 0x8761 rle_8730  rle a la VRAM (0x5C46) de la pieza de decoracion 0x23; lo leen p00:59B9 (49 bytes)
+F 0x8730 16
+D 0x8761 0x8778 rle_8761  rle a la VRAM (0x5C46) de la pieza de decoracion 0x20; lo leen p00:59B9 (23 bytes)
+F 0x8761 16
+D 0x8778 0x8806 rle_8778  rle a la VRAM (0x5C46) de la pieza de decoracion 0x28; lo leen p00:59B9 (142 bytes)
+F 0x8778 16
+D 0x8806 0x8839 rle_8806  rle a la VRAM (0x5C46) de la pieza de decoracion 0x21; lo leen p00:59B9 (51 bytes)
+F 0x8806 16
+D 0x8839 0x887B rle_8839  rle a la VRAM (0x5C46) de la pieza de decoracion 0x03; lo leen p00:59B9 (66 bytes)
+F 0x8839 16
+D 0x887B 0x88D0 rle_887B  rle a la VRAM (0x5C46) de la pieza de decoracion 0x10; lo leen p00:59B9 (85 bytes)
+F 0x887B 16
+D 0x88D0 0x894B rle_88D0  rle a la VRAM (0x5C46) de la pieza de decoracion 0x08; lo leen p00:59B9 (123 bytes)
+F 0x88D0 16
+D 0x894B 0x89FA rle_894B  rle a la VRAM (0x5C46) de la pieza de decoracion 0x0C; lo leen p00:59B9 (175 bytes)
+F 0x894B 16
+D 0x89FA 0x8A5B rle_89FA  rle a la VRAM (0x5C46) de la pieza de decoracion 0x24; lo leen p00:59B9 (97 bytes)
+F 0x89FA 16
+D 0x8A5B 0x8AAA rle_8A5B  rle a la VRAM (0x5C46) de la pieza de decoracion 0x27; lo leen p00:59B9 (79 bytes)
+F 0x8A5B 16
+D 0x8AAA 0x8AEC rle_8AAA  rle a la VRAM (0x5C46) de la pieza de decoracion 0x2B; lo leen p00:59B9 (66 bytes)
+F 0x8AAA 16
+D 0x8AEC 0x8B18 rle_8AEC  rle a la VRAM (0x5C46) de la pieza de decoracion 0x3C; lo leen p00:59B9 (44 bytes)
+F 0x8AEC 16
+D 0x8B18 0x8B25 rle_8B18  rle a la VRAM (0x5C46) de la pieza de decoracion 0x32; lo leen p00:59B9 (13 bytes)
+F 0x8B18 16
+D 0x8B25 0x8B5E rle_8B25  rle a la VRAM (0x5C46) de la pieza de decoracion 0x3E; lo leen p00:59B9 (57 bytes)
+F 0x8B25 16
+D 0x8B5E 0x8BA7 rle_8B5E  rle a la VRAM (0x5C46) de la pieza de decoracion 0x26; lo leen p00:59B9 (73 bytes)
+F 0x8B5E 16
+D 0x8BA7 0x8BC2 rle_8BA7  rle a la VRAM (0x5C46) de la pieza de decoracion 0x3A; lo leen p00:59B9 (27 bytes)
+F 0x8BA7 16
+D 0x8BC2 0x8BE3 rle_8BC2  rle a la VRAM (0x5C46) de la pieza de decoracion 0x39; lo leen p00:59B9 (33 bytes)
+F 0x8BC2 16
+D 0x8BE3 0x8C56 rle_8BE3  rle a la VRAM (0x5C46) de la pieza de decoracion 0x43; lo leen p00:59B9 (115 bytes)
+F 0x8BE3 16
+D 0x8C56 0x8CC4 rle_8C56  rle a la VRAM (0x5C46) de la pieza de decoracion 0x2C; lo leen p00:59B9 (110 bytes)
+F 0x8C56 16
+D 0x8CC4 0x8D26 rle_8CC4  rle a la VRAM (0x5C46) de la pieza de decoracion 0x1F; lo leen p00:59B9 (98 bytes)
+F 0x8CC4 16
+D 0x8D26 0x8D52 rle_8D26  rle a la VRAM (0x5C46) de la pieza de decoracion 0x0B; lo leen p00:59B9 (44 bytes)
+F 0x8D26 16
+D 0x8D52 0x8DED rle_8D52  rle a la VRAM (0x5C46) de la pieza de decoracion 0x25; lo leen p00:59B9 (155 bytes)
+F 0x8D52 16
+D 0x8DED 0x8ECA rle_8DED  rle a la VRAM (0x5C46) de la pieza de decoracion 0x06; lo leen p00:59B9 (221 bytes)
+F 0x8DED 16
+D 0x8ECA 0x8F82 rle_8ECA  rle a la VRAM (0x5C46) de la pieza de decoracion 0x13; lo leen p00:59B9 (184 bytes)
+F 0x8ECA 16
+D 0x8F82 0x8FD5 rle_8F82  rle a la VRAM (0x5C46) de la pieza de decoracion 0x2D; lo leen p00:59B9 (83 bytes)
+F 0x8F82 16
+D 0x8FD5 0x901D rle_8FD5  rle a la VRAM (0x5C46) de la pieza de decoracion 0x22; lo leen p00:59B9 (72 bytes)
+F 0x8FD5 16
+D 0x901D 0x9144 rle_901D  rle a la VRAM (0x5C46) de la pieza de decoracion 0x17; lo leen p00:59B9 (295 bytes)
+F 0x901D 16
+D 0x9144 0x9245 rle_9144  rle a la VRAM (0x5C46) de la pieza de decoracion 0x4C; lo leen p00:59B9 (257 bytes)
+F 0x9144 16
+D 0x9245 0x92B3 rle_9245  rle a la VRAM (0x5C46) de la pieza de decoracion 0x30; lo leen p00:59B9 (110 bytes)
+F 0x9245 16
+D 0x92B3 0x932D rle_92B3  rle a la VRAM (0x5C46) de la pieza de decoracion 0x15; lo leen p00:59B9 (122 bytes)
+F 0x92B3 16
+D 0x932D 0x934F rle_932D  rle a la VRAM (0x5C46) de la pieza de decoracion 0x2A; lo leen p00:59B9 (34 bytes)
+F 0x932D 16
+D 0x934F 0x946E rle_934F  rle a la VRAM (0x5C46) de la pieza de decoracion 0x19; lo leen p00:59B9 (287 bytes)
+F 0x934F 16
+D 0x946E 0x9571 rle_946E  rle a la VRAM (0x5C46) de la pieza de decoracion 0x16; lo leen p00:59B9 (259 bytes)
+F 0x946E 16
+D 0x9571 0x95B1 rle_9571  rle a la VRAM (0x5C46) de la pieza de decoracion 0x36; lo leen p00:59B9 (64 bytes)
+F 0x9571 16
+D 0x95B1 0x95D9 rle_95B1  rle a la VRAM (0x5C46) de la pieza de decoracion 0x42; lo leen p00:59B9 (40 bytes)
+F 0x95B1 16
+D 0x95D9 0x9609 rle_95D9  rle a la VRAM (0x5C46) de la pieza de decoracion 0x42; lo leen p00:59B9 (48 bytes)
+F 0x95D9 16
+D 0x9609 0x96B5 rle_9609  rle a la VRAM (0x5C46) de la pieza de decoracion 0x40; lo leen p00:59B9 (172 bytes)
+F 0x9609 16
+D 0x96B5 0x9739 rle_96B5  rle a la VRAM (0x5C46) de la pieza de decoracion 0x4E; lo leen p00:59B9 (132 bytes)
+F 0x96B5 16
+D 0x9739 0x974F tabla_decoracion  11 punteros, uno por mapa (0xE041) desde el 1, a las piezas de decoracion de cada sala; la tabla se lee desde 0x9737, pero el mapa 0 no existe; lo leen p00:5972 (22 bytes)
+F 0x9739 2
+D 0x974F 0x98A9 decoracion_mapa_1  las piezas de decoracion de cada sala del mapa 1: una lista por sala (147); lo leen p00:5972 (346 bytes)
+F 0x974F 8
+D 0x98A9 0x98CA decoracion_mapa_2  las piezas de decoracion de cada sala del mapa 2: una lista por sala (15); lo leen p00:5972 (33 bytes)
+F 0x98A9 8
+D 0x98CA 0x98E8 decoracion_mapa_3  las piezas de decoracion de cada sala del mapa 3: una lista por sala (15); lo leen p00:5972 (30 bytes)
+F 0x98CA 8
+D 0x98E8 0x9909 decoracion_mapa_4  las piezas de decoracion de cada sala del mapa 4: una lista por sala (16); lo leen p00:5972 (33 bytes)
+F 0x98E8 8
+D 0x9909 0x992C decoracion_mapa_5  las piezas de decoracion de cada sala del mapa 5: una lista por sala (17); lo leen p00:5972 (35 bytes)
+F 0x9909 8
+D 0x992C 0x9950 decoracion_mapa_6  las piezas de decoracion de cada sala del mapa 6: una lista por sala (18); lo leen p00:5972 (36 bytes)
+F 0x992C 8
+D 0x9950 0x997A decoracion_mapa_7  las piezas de decoracion de cada sala del mapa 7: una lista por sala (19); lo leen p00:5972 (42 bytes)
+F 0x9950 8
+D 0x997A 0x99A5 decoracion_mapa_8  las piezas de decoracion de cada sala del mapa 8: una lista por sala (20); lo leen p00:5972 (43 bytes)
+F 0x997A 8
+D 0x99A5 0x99D1 decoracion_mapa_9  las piezas de decoracion de cada sala del mapa 9: una lista por sala (21); lo leen p00:5972 (44 bytes)
+F 0x99A5 8
+D 0x99D1 0x9A09 decoracion_mapa_10  las piezas de decoracion de cada sala del mapa 10: una lista por sala (27); lo leen p00:5972 (56 bytes)
+F 0x99D1 8
+D 0x9A09 0x9A15 decoracion_mapa_11  las piezas de decoracion de cada sala del mapa 11: una lista por sala (6); lo leen p00:5972 (12 bytes)
+F 0x9A09 8
+D 0x9A15 0x9BFA dibujos_9A15  los dibujos de unos caracteres desde el 0x5A, en rle (0x5C46), que pide la ficha 0x616F; lo leen p00:5860 (485 bytes)
+F 0x9A15 16
+D 0x9BFA 0x9CBD dibujos_9BFA  los dibujos de unos caracteres desde el 0xBA, en rle (0x5C46), que pide la ficha 0x6175; lo leen p00:5860 (195 bytes)
+F 0x9BFA 16
+D 0x9CBD 0x9D21 colores_9CBD  los colores de unos caracteres desde el 0x5A, en rle (0x5C46), que pide la ficha 0x616F; lo leen p00:5860 (100 bytes)
+F 0x9CBD 16
+D 0x9D21 0x9DA1 colores_9D21  los colores de unos caracteres desde el 0xBA, en rle (0x5C46), que pide la ficha 0x6175; lo leen p00:5860 (128 bytes)
+F 0x9D21 16
+D 0x9DA1 0x9DC6 dibujos_9DA1  los dibujos de unos caracteres desde el 0xA6, en rle (0x5C46), que pide la ficha 0x61C8; lo leen p00:5860 (37 bytes)
+F 0x9DA1 16
+D 0x9DC6 0x9DDF colores_9DC6  los colores de unos caracteres desde el 0xA6, en rle (0x5C46), que pide la ficha 0x61C8; lo leen p00:5860 (25 bytes)
+F 0x9DC6 16
+D 0x9DDF 0x9FAA dibujos_9DDF  los dibujos de unos caracteres desde el 0x5A, en rle (0x5C46), que pide la ficha 0x61EA; lo leen p00:5860 (459 bytes)
+F 0x9DDF 16
+D 0x9FAA 0xA000 dibujos_9FAA  los dibujos de unos caracteres desde el 0xBA, en rle (0x5C46), que pide la ficha 0x61F0; lo leen p00:5860 (86 bytes)
+F 0x9FAA 16
+# --- fin de los bloques de bloques.py ---

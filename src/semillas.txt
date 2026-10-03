@@ -1,0 +1,41 @@
+# Semillas a mano: 'pNN 0xADDR b6000 b8000 bA000  # por que'.
+#
+# El controlador de sonido (banco 13, en 0x6000) lleva un "programa" por canal:
+# p13:606D salta por `jp (hl)` a la direccion guardada en 0xE100/0xE102/0xE104
+# (los tres canales del PSG) y 0xE106/0xE108/0xE10A (los efectos). Esas
+# direcciones solo aparecen como constantes guardadas en la RAM, asi que el
+# trazador no las ve: van aqui, cada una con la instruccion que la guarda.
+p13 0x6075 13 14 15  # a mano: p13:6030 ld hl,0x6075 / ld (0xE100),hl, (0xE102), (0xE104) (los tres canales en reposo)
+p13 0x610B 13 14 15  # a mano: p00:4ECD ld hl,0x610B / ld (0xE100),hl (canal A de la musica)
+p13 0x6112 13 14 15  # a mano: p00:4ED3 ld hl,0x6112 / ld (0xE102),hl (canal B)
+p13 0x6119 13 14 15  # a mano: p00:4ED9 ld hl,0x6119 / ld (0xE104),hl (canal C)
+p13 0x64A5 13 14 15  # a mano: p00:4F4B ld hl,0x64A5 / ld (0xE106),hl (efecto de sonido)
+p13 0x6104 13 14 15  # a mano: p00:4FFA ld hl,0x6104 / ld (0xE10A),hl (lo que salta p13:6099)
+p13 0x649E 13 14 15  # a mano: p00:509B ld hl,0x649E / ld (0xE108),hl (lo que salta p13:609D)
+p13 0x6098 13 14 15  # a mano: p13:608D ld de,0x6098 y lo guarda en el programa del canal (0xE100 + 2 x 0xE1AF): el canal que acaba se queda en este `ret`
+p04 0x678B 4 5 6  # a mano: p04:66A9 ld hl,0x678B / push hl antes de despachar el tipo: el `ret` del manejador vuelve aqui (scf / ret)
+p04 0x76E2 4 5 6  # a mano: p04:76D0 ld hl,0x76E2 / push hl antes de `call 0x4050` con (ix+1): el `ret` del manejador vuelve aqui
+p00 0x4BFA 1 2 3  # a mano: p00:4282 ld hl,0x4BFA / push hl antes de despachar los estados 0-2 (p00:428B): su `ret` vuelve aqui
+p03 0xA189 1 2 3  # a mano: p03:A2D2 ld hl,0xA189 / push hl: direccion de vuelta del despacho que sigue
+p05 0x9C1C 4 5 6  # a mano: p05:9BB5 ld hl,0x9C1C / push hl antes de `call 0x4050` con (ix+0x1E) - 1
+p06 0xB06C 4 5 6  # a mano: p06:A9A4 y p06:A9BA ld hl,0xB06C / push hl: direccion de vuelta
+p06 0xB071 4 5 6  # a mano: p06:A401 ld hl,0xB071 / push hl antes de `call 0x4050` con (ix+1)
+p06 0xB067 4 5 6  # a mano: p05:9DBE ld hl,0xB067 / push hl: direccion de vuelta
+p06 0xB076 4 5 6  # a mano: p04:7255 ld hl,0xB076 / push hl antes de `call 0x4050` con (ix+1)
+p06 0xB07B 4 5 6  # a mano: p04:70A8 ld hl,0xB07B / push hl antes de `call 0x4050` con (ix+1)
+p06 0xB080 4 5 6  # a mano: p04:6B06 ld hl,0xB080 / push hl: direccion de vuelta
+p06 0xB085 4 5 6  # a mano: p04:6E32 ld hl,0xB085 / push hl: direccion de vuelta
+p06 0xA1F8 4 5 6  # a mano, codigo huerfano: ld (ix+0x17),0 / ret detras de un `jp`; ninguna palabra de los bancos 4-6 vale 0xA1F8
+p06 0xACE2 4 5 6  # a mano, codigo huerfano: call 0x4083 / jp 0x7083 detras de un `jr`; ninguna palabra de los bancos 4-6 vale 0xACE2
+p06 0xADE5 4 5 6  # a mano, codigo huerfano: un byte al azar de la tabla 0xADFB mas B, detras de un `jp`; ninguna palabra de los bancos 4-6 vale 0xADE5
+p06 0xB183 4 5 6  # a mano, codigo huerfano: ld c,3 que sigue en p06:B185 (la otra entrada, p06:B17F, pone ld c,7 y salta por encima); ninguna palabra de los bancos 4-6 vale 0xB183
+p00 0x405F 1 2 3  # a mano, codigo huerfano: la entrada del vector de 0x4050 que salta a 0x4DB5; ninguna instruccion llama a 0x405F (ni a 0x4DB5)
+p00 0x4077 1 2 3  # a mano, codigo huerfano: la entrada del vector de 0x4050 que salta a 0x551F; ninguna instruccion llama a 0x4077 (0x551F si se usa directamente)
+p02 0x8153 1 2 3  # a mano, codigo huerfano: call 0x8161 que el `jr` de p02:8151 se salta siempre; ninguna palabra de los bancos 1-3 vale 0x8153
+p03 0xA871 1 2 3  # a mano, codigo huerfano: jp 0xB337 detras de un `jr`; ninguna palabra de los bancos 1-3 vale 0xA871
+p03 0xA904 1 2 3  # a mano, codigo huerfano: copia 0xE502 a 0xE50D y sigue, detras de un `ret`; nadie lo nombra
+p03 0xAAC1 1 2 3  # a mano, codigo huerfano: inc hl / call 0xADDD..., detras de un `ret`; nadie lo nombra
+p03 0xADF7 1 2 3  # a mano, codigo huerfano: ld b,0x10 / mira (iy+0x0F)..., detras de un `jp`; nadie lo nombra
+p03 0xAE23 1 2 3  # a mano, codigo huerfano: ld c,0 (y en 0xAE25 ld c,1) y cae en p03:AE29, detras de un `jp`; nadie lo nombra
+p03 0xB16F 1 2 3  # a mano, codigo huerfano: res 0,(ix+2)..., detras de un `ret`; nadie lo nombra (los B16F de los bancos 4-6 son de su banco 6)
+p03 0xB17E 1 2 3  # a mano, codigo huerfano: ld a,(0xE52A)... detras del `ret` del otro trozo huerfano de p03:B16F; nadie lo nombra

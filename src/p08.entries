@@ -1,0 +1,28 @@
+# Puntos de entrada del banco 8 (se ejecuta en 0x8000).
+#
+# Cada uno lleva la instruccion que lo justifica. Los que ponen "pNN:XXXX"
+# vienen de OTRO banco: el trazador de una sola pagina no puede seguirlos,
+# porque en esa direccion -segun lo que haya en el registro del mapper- puede
+# estar cualquiera de seis bancos. Los que ponen "tabla" salen de una tabla
+# del despachador 0x4140, que va pegada detras de su `call` y esta declarada
+# como datos en el .nocode: el trazador tampoco puede seguirla.
+#
+# Los saltos y llamadas DENTRO del propio banco no se ponen aqui: los
+# encuentra tools/z80trace.py solo, siguiendo el flujo.
+#
+# Este fichero lo regenera `make semillas` (tools/bancos.py escribe).
+0x9CFA   # p00:5185 call
+0x9D5F   # p00:4263 call
+0x9D7E   # p08:9D67 entrada 0 de la tabla de 0x9D6A (call 0x4140 en 0x9D67)
+0x9DA2   # p08:9D67 entrada 1 de la tabla de 0x9D6A (call 0x4140 en 0x9D67)
+0x9DB5   # p08:9D67 entrada 2 de la tabla de 0x9D6A (call 0x4140 en 0x9D67)
+0x9DBF   # p08:9D67 entrada 3 de la tabla de 0x9D6A (call 0x4140 en 0x9D67)
+0x9DD1   # p08:9D67 entrada 4 de la tabla de 0x9D6A (call 0x4140 en 0x9D67)
+0x9DE3   # p08:9D67 entrada 5 de la tabla de 0x9D6A (call 0x4140 en 0x9D67)
+0x9DF8   # p08:9D67 entrada 6 de la tabla de 0x9D6A (call 0x4140 en 0x9D67)
+0x9E15   # p08:9D67 entrada 9 de la tabla de 0x9D6A (call 0x4140 en 0x9D67)
+0x9E16   # p08:9D67 entrada 7 de la tabla de 0x9D6A (call 0x4140 en 0x9D67)
+0x9E34   # p08:9D67 entrada 8 de la tabla de 0x9D6A (call 0x4140 en 0x9D67)
+0x9E61   # p00:518B call
+0x9F1A   # p00:5188 call
+0x9FD4   # p09:A011 jr

@@ -1,0 +1,75 @@
+# notas del banco 01
+
+# --- A MANO: comentarios, nombres y bloques ---
+D 0x601B 0x602F salida_por_mundo  10 palabras, mapas 2-11, que p01:6003 lee en 0x6017 + 2 x mapa (0x414C): el byte bajo es la Y (0xE505) y el alto la X (0xE507) donde aparece el jugador (la entrada del mapa 1 son los bytes del `jr` de 0x6019)
+F 0x601B 2
+D 0x66BF 0x66C2 tres_bytes_66bf  3 bytes que p01:6623 copia a 0xEF26 antes de pintar el plano del mundo
+D 0x66F7 0x670F marcadores_de_vida  4 fichas de 6 bytes, [direccion en la copia de la tabla de nombres][4 caracteres], que p01:66D5 elige con el jugador (0xE058 y 0xE059) y si tiene algo: la 0 y la 2 son cuatro ceros (borran)
+F 0x66F7 6
+D 0x670F 0x6715 quinta_ficha  una quinta ficha con el mismo formato ([0xEDAF][7A 7B 7C 7D]) que p01:66D5 no puede elegir (C vale 0-3); nada la nombra
+D 0x6776 0x677A cuatro_caracteres_6776  4 caracteres que p01:6718 copia a 0xEE2E
+D 0x68E4 0x68EA seis_dibujos_68e4  6 numeros de dibujo de sprite que p01:68D5 elige con (0xE04E) = 1-6 (0x68E3 + n; el 0 seria el codigo de delante)
+D 0x6C89 0x6C95 seis_parejas_6c89  6 parejas de caracteres que p01:6C7C lee en 0x6C87 + 2 x A (0x414C, A = 1-6) y escribe en (0xE744)
+F 0x6C89 2
+D 0x6CC7 0x6CEB tres_bloques_de_3x4  3 bloques de 3 filas de 4 caracteres que p01:6CA5 elige con (0xE68C) x 12 y copia de 32 en 32
+F 0x6CC7 4
+D 0x7039 0x7079 fichas_7039  16 fichas de 4 bytes que p01:6FED elige con (ix+0x0A) x 4
+F 0x7039 4
+D 0x70BE 0x70C6 parejas_70be  4 parejas que p01:708F elige con (ix+0x0A) x 2
+F 0x70BE 2
+D 0x71D9 0x71DE cinco_bytes_71d9  5 bytes que p01:71AB elige con ((DE) - 0xA0) / 4
+D 0x71DE 0x71E3 cinco_bytes_71de  5 bytes que p01:71BB elige igual con el byte siguiente
+D 0x73AF 0x73B3 bloque_73af  2 x 2 caracteres que p01:7396 copia (dos y dos, una fila mas abajo)
+D 0x73B3 0x73B7 bloque_73b3  2 x 2 caracteres que p01:739C copia igual cuando A no es 0
+D 0x73D2 0x73D6 bloque_73d2  2 x 2 caracteres que p01:73C0 copia a (0xE684)
+D 0x74D8 0x74E1 tres_sprites_74d8  tres ternas que p01:74B2 suma a la posicion de la figura (3 sprites)
+D 0x74E1 0x74EA tres_sprites_74e1  las mismas tres ternas para el otro cuadro (bit 2 de 0xE604, p01:74B9)
+D 0x7529 0x7569 tabla_de_poses_del_jugador  32 punteros, uno por pose del jugador (0xE502, o 0xE53D en el estado 9), que p01:73E4 elige con 0x414C (0xFF no pinta nada)
+F 0x7529 2
+D 0x7569 0x766C poses_del_jugador  las poses: [cuantos sprites] y, por sprite, [dY][dX][dibujo][color] que p01:7400 suma a la posicion del jugador (0xE505/0xE507) y copia a 0xEC80
+D 0x78BA 0x78C4 tamanos_78ba  5 parejas [ancho][alto] que p01:7894 elige con 0x414C y pone en (ix+8) y (ix+9): las de los dibujos de la tabla p15:A6FB (1 x 3, 2 x 3, 3 x 3, 2 x 3 y 3 x 3)
+F 0x78BA 2
+D 0x7CF6 0x7D06 aphrodite_out  la lista de la VRAM (0x5C25) APHRODITE OUT, que p00:453C pinta cuando muere Afrodita (0xE501 = 0); con POPOLON va 0x7D06
+D 0x7D3C 0x7D44 lista_7d3c  una lista de la VRAM ([0x394C] y 5 caracteres de la fuente grande, 0xFF) detras de la de 0x7D33; ninguna instruccion la nombra
+D 0x7DD9 0x7DE3 salas_de_las_demos  5 parejas [mapa][sala] donde empieza una demo (p01:7D90, 0x414C con 0xE023): castillo 146, 1, 37 y 111 y mundo 1 sala 1; 0xE023 solo vale 0 o 1 (p00:43CB), asi que solo se usan las dos primeras
+F 0x7DD9 2
+D 0x7DE3 0x7DE8 cinco_bytes_7de3  5 bytes, uno por demo, que p01:7DB5 pone en 0xE033 (solo se usan los dos primeros)
+D 0x7E88 0x7E8C zeus  Z E U S en ASCII: p01:7E6B compara cada letra pulsada con la de 0x7E88 + (0xE028) y cuenta los aciertos (una palabra secreta)
+D 0x7F98 0x7FA3 once_bytes_7f98  11 bytes que p01:7F5C lee en 0x7F97 + (0xE700) (0x4155), detras de la tabla de despacho de 0x7F82
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0x6000 0x6002 partida_5FFF_cola  la instruccion de p00:5FFF (32 | 07 E5) empieza al final del banco 0 y acaba al principio del 1, que el cartucho pone siempre a continuacion: aqui el resto; lo leen p00:5FFF (2 bytes)
+F 0x6000 4
+D 0x6261 0x6267 tabla_6261  3 destinos del despachador de 0x4140 (call en p01:625E): 0x6267, 0x6298, 0x628E; lo leen p01:625E (6 bytes)
+F 0x6261 2
+D 0x62A7 0x62B1 tabla_62A7  5 destinos del despachador de 0x4140 (call en p01:62A4): 0x62B1, 0x62BD, 0x62BD, 0x62B1, 0x62C2; lo leen p01:62A4 (10 bytes)
+F 0x62A7 2
+D 0x6F32 0x6F54 tabla_6F32  17 destinos del despachador de 0x4140 (call en p01:6F2F): 0x6F54, 0x6F8A, 0x6FE2, 0x6FB5, 0x6FD6, 0x6FD2, 0x6FDA, 0x6F73 ...; lo leen p01:6F2F (34 bytes)
+F 0x6F32 2
+D 0x7CAE 0x7CF6 lista_vram_7CAE  [destino] y bytes a la VRAM; 0xFE otro destino, 0xFF acaba (0x5C25); lo leen p01:6050 (72 bytes)
+F 0x7CAE 16
+D 0x7D06 0x7D14 lista_vram_7D06  [destino] y bytes a la VRAM; 0xFE otro destino, 0xFF acaba (0x5C25); lo leen p00:4544 (14 bytes)
+F 0x7D06 16
+D 0x7D14 0x7D1D lista_vram_7D14  [destino] y bytes a la VRAM; 0xFE otro destino, 0xFF acaba (0x5C25); lo leen p00:45B2 (9 bytes)
+F 0x7D14 16
+D 0x7D1D 0x7D28 lista_vram_7D1D  [destino] y bytes a la VRAM; 0xFE otro destino, 0xFF acaba (0x5C25); lo leen p00:472D (11 bytes)
+F 0x7D1D 16
+D 0x7D28 0x7D33 lista_vram_7D28  la misma lista, que 0x5C3C recorre poniendo ceros (borra); lo leen p00:45AC, p00:4716 (11 bytes)
+F 0x7D28 16
+D 0x7D33 0x7D3C lista_vram_7D33  [destino] y bytes a la VRAM; 0xFE otro destino, 0xFF acaba (0x5C25); lo leen p00:51B2 (9 bytes)
+F 0x7D33 16
+D 0x7D44 0x7D51 lista_vram_7D44  [destino] y bytes a la VRAM; 0xFE otro destino, 0xFF acaba (0x5C25); lo leen p00:4589 (13 bytes)
+F 0x7D44 16
+D 0x7D51 0x7D71 lista_vram_7D51  [destino] y bytes a la VRAM; 0xFE otro destino, 0xFF acaba (0x5C25); lo leen p01:6232 (32 bytes)
+F 0x7D51 16
+D 0x7D71 0x7D82 lista_vram_7D71  [destino] y bytes a la VRAM; 0xFE otro destino, 0xFF acaba (0x5C25); lo leen p00:43FE, p00:4401 (17 bytes)
+F 0x7D71 16
+D 0x7ECF 0x7EDD lista_vram_7ECF  la misma lista, que 0x5C3C recorre poniendo ceros (borra); lo leen p00:4593, p01:7E9D (14 bytes)
+F 0x7ECF 16
+D 0x7F40 0x7F56 tabla_7F40  11 destinos del despachador de 0x4140 (call en p01:7F3D): 0x802E, 0x8170, 0x83A7, 0x847B, 0x8002, 0x89A0, 0x864E, 0x8AA4 ...; lo leen p01:7F3D (22 bytes)
+F 0x7F40 2
+D 0x7F82 0x7F98 tabla_7F82  11 destinos del despachador de 0x4140 (call en p01:7F7F): 0x8013, 0x8279, 0x8384, 0x846E, 0x8002, 0x895C, 0x8627, 0x8A7A ...; lo leen p01:7F7F (22 bytes)
+F 0x7F82 2
+D 0x7FFE 0x8000 partida_7FFE  la instruccion de p01:7FFE (21 D2 | E0) empieza al final del banco 1 y acaba al principio del 2, que el cartucho pone siempre a continuacion: aqui los 2 primeros bytes; lo leen p01:7FFE (2 bytes)
+F 0x7FFE 4
+# --- fin de los bloques de bloques.py ---

@@ -1,0 +1,78 @@
+# notas del banco 02
+
+# --- A MANO: comentarios, nombres y bloques ---
+D 0x8003 0x8013 sitios_8003  8 parejas [Y][X] que p01:7FEE elige con (0xE643) mod 8 (0x414C) para crear la figura 0x63 con p00:424C
+F 0x8003 2
+D 0x8341 0x8349 ocho_bytes_8341  8 bytes que p02:8316 elige con (0xE71D) / 2 y guarda en 0xE705
+D 0x8349 0x8351 ocho_bytes_8349  8 bytes que p02:82A3 elige al azar (R mod 8) y suma a C
+D 0x8608 0x860C cuatro_bytes_8608  4 bytes que p02:85F0 elige con (0xE71C) - 1 y suma a (ix+5)
+D 0x8A1E 0x8A22 dos_parejas_8a1e  dos parejas: p02:8A03 coge una u otra segun (ix+0x17) y dentro un byte al azar
+D 0x8A6E 0x8A74 tabla_8a6e  3 punteros que p02:8A55 elige con (0xE717) (el 3 vale 1) a las parejas de 0x8A74
+F 0x8A6E 2
+D 0x8A74 0x8A7A parejas_8a74  3 parejas [dY][dX] que p02:8A5C suma a la posicion
+F 0x8A74 2
+D 0x8ED7 0x8EDF ocho_bytes_8ed7  8 bytes que p02:8D08 pone en (ix+0x1A) segun (ix+0x18)
+D 0x8EDF 0x8EEF ocho_sitios_8edf  8 parejas que p02:8D94 elige al azar para (ix+7) y (ix+5)
+F 0x8EDF 2
+D 0x8F0A 0x8F14 sala_especial_por_mundo  una sala por mapa 2-11 que p02:8EF8 compara con 0xE042
+D 0x8F14 0x8F1E cosa_de_la_sala_especial  y lo que p02:8F01 pone en 0xE690 cuando se esta en ella
+D 0x9066 0x906E sprites_9066  8 bytes de atributos de sprite que p02:9046 copia a 0xECBC
+D 0x9255 0x926F tabla_9255  13 punteros que p02:9483 elige con (0xE690) - 1 (0x414C) a fichas de 6 bytes
+F 0x9255 2
+D 0x926F 0x92BD fichas_926f  las 13 fichas de 6 bytes de 0x9255, de las que p02:9489 coge el byte C (y el siguiente)
+F 0x926F 6
+D 0x9308 0x930F siete_mensajes  7 numeros de mensaje que p02:92FB elige con (0xE690) - 0x0E y pasa a p02:94EF (el texto, banco 15)
+D 0x94BD 0x94E1 nueve_bloques_2x2  9 bloques de 2 x 2 caracteres que p02:94A3 elige con (C - 1) x 4 y copia en dos filas
+F 0x94BD 4
+D 0x954D 0x9561 mensaje_por_cosa  20 bytes que p02:952E y p02:953D leen en 0x954C + (0xE690): el numero de mensaje (+ 0x18) y un dibujo (x 4 + 0x76) en 0xEDCF
+D 0x9671 0x9695 alfabeto_de_la_contrasena  los 36 simbolos de la contrasena, desordenados: p02:9669 convierte un valor en simbolo y p02:97F5 un simbolo en valor (su posicion + 1)
+D 0x9990 0x9999 salas_de_las_puertas  9 salas del castillo (104, 98, 63, 57, 62, 114, 6, 23 y 108): p02:9943 busca en ellas la sala 0xE042 y p02:9AB9 lleva a la n cuando se pulsa la cifra n en el castillo con 0xE096 puesto y el mundo n ya visitado (bit 0 de 0xE063 + n)
+D 0x9999 0x99AB sitios_de_las_puertas  9 parejas [Y][X], una por sala de 0x9990, que p02:996B lee en 0x9997 + 2 x C y pone en 0xE68A
+F 0x9999 2
+D 0x99AB 0x99B3 cuatro_sitios_99ab  4 parejas [Y][X] que p02:9962 elige con (0xE06E)
+F 0x99AB 2
+D 0x99C4 0x99C8 cuatro_salas_99c4  4 salas que p02:99BA elige al azar (R mod 4, el mismo de 0xE06E) para 0xE06D
+D 0x9B55 0x9B73 tabla_de_hechizos_ascii  10 ternas [puntero][largo], una por hechizo, a sus letras en ASCII (p02:93F5 y la rutina de escribirlos)
+F 0x9B55 3
+D 0x9B73 0x9BB6 hechizos_ascii  YOMAR ELOHIM HAHAKLA BARECHET HEOTYMEO LEPHA NAWABRA ASCHER XYWOLEH HAMALECH en ASCII, seguidos (67 bytes)
+D 0x9C0B 0x9C13 umbrella  UMBRELLA en ASCII: p02:9BFF lo compara con las 8 letras escritas en 0xE6B8 (p02:9B33) y, si coincide, salta a p03:B5EA
+D 0x9C3B 0x9C7B teclado_ascii  el ASCII de cada tecla de las filas 0-7 de la matriz del teclado (8 x 8), que p02:9C2C usa para convertir la primera tecla pulsada (p02:9C13)
+F 0x9C3B 8
+D 0x9C7B 0x9C83 fila_8  8 ceros: una fila mas de la tabla del teclado que p02:9C13 no mira (solo las filas 0-7)
+D 0x9C83 0x9C97 tabla_de_monumentos  10 punteros, mapas 2-11, que p01:69E9 elige con mapa - 2 (0x414C), a las piedras con hechizo
+F 0x9C83 2
+D 0x9C97 0x9DAF monumentos  por mundo, las piedras: [sala][hechizo en el nibble bajo y la Y][X] (3 bytes), acabadas en 0 (p01:69F3)
+F 0x9C97 3
+D 0x9DDA 0x9E07 fichas_del_castillo_9dda  11 fichas de 4 bytes [sala]... del castillo que p02:9DB5 recorre buscando la sala 0xE042, y un 0 al final
+F 0x9DDA 4
+D 0x9EFF 0x9F0F ocho_direcciones  8 parejas [dX][dY] (0xE8, 0, 0x10, 0xF8...), una por cada uno de los 8 sprites, que p02:9EDC lee en 0x9EFD + 2 x B (B = 8..1)
+F 0x9EFF 2
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0x8000 0x8001 partida_7FFE_cola  la instruccion de p01:7FFE (21 D2 | E0) empieza al final del banco 1 y acaba al principio del 2, que el cartucho pone siempre a continuacion: aqui el resto; lo leen p01:7FFE (1 bytes)
+F 0x8000 4
+D 0x8176 0x8182 tabla_8176  6 destinos del despachador de 0x4140 (call en p02:8173): 0x8182, 0x8201, 0x822F, 0x824B, 0x8276, 0x8325; lo leen p02:8173 (12 bytes)
+F 0x8176 2
+D 0x81C4 0x81CC tabla_81C4  4 destinos del despachador de 0x4140 (call en p02:81C1): 0x81CC, 0x81E9, 0x8244, 0x81E9; lo leen p02:81C1 (8 bytes)
+F 0x81C4 2
+D 0x8287 0x828F tabla_8287  4 destinos del despachador de 0x4140 (call en p02:8284): 0x828F, 0x829B, 0x82C6, 0x82DB; lo leen p02:8284 (8 bytes)
+F 0x8287 2
+D 0x869C 0x86A4 tabla_869C  4 destinos del despachador de 0x4140 (call en p02:8699): 0x86A4, 0x86C1, 0x86E0, 0x86FD; lo leen p02:8699 (8 bytes)
+F 0x869C 2
+D 0x881B 0x8825 tabla_881B  5 destinos del despachador de 0x4140 (call en p02:8818): 0x8825, 0x885F, 0x8883, 0x88BA, 0x890E; lo leen p02:8818 (10 bytes)
+F 0x881B 2
+D 0x8AB0 0x8AC0 tabla_8AB0  8 destinos del despachador de 0x4140 (call en p02:8AAD): 0x8AC0, 0x8B14, 0x8B3A, 0x8B96, 0x8BAC, 0x8BBE, 0x8BE6, 0x8C00; lo leen p02:8AAD (16 bytes)
+F 0x8AB0 2
+D 0x8D33 0x8D3D tabla_8D33  5 destinos del despachador de 0x4140 (call en p02:8D30): 0x8D3D, 0x8D65, 0x8D8B, 0x8DC1, 0x8DF7; lo leen p02:8D30 (10 bytes)
+F 0x8D33 2
+D 0x8F4A 0x8F72 tabla_8F4A  20 destinos del despachador de 0x4140 (call en p02:8F47): 0x90C0, 0x9126, 0x8F72, 0x9126, 0x9126, 0x9126, 0x9126, 0x92E8 ...; lo leen p02:8F47 (40 bytes)
+F 0x8F4A 2
+D 0x8F78 0x8F84 tabla_8F78  6 destinos del despachador de 0x4140 (call en p02:8F75): 0x8F84, 0x8FE9, 0x8FE9, 0x8FEA, 0x9075, 0x906E; lo leen p02:8F75 (12 bytes)
+F 0x8F78 2
+D 0x90C6 0x90CE tabla_90C6  4 destinos del despachador de 0x4140 (call en p02:90C3): 0x90CE, 0x90DE, 0x910D, 0x90BF; lo leen p02:90C3 (8 bytes)
+F 0x90C6 2
+D 0x912C 0x9134 tabla_912C  4 destinos del despachador de 0x4140 (call en p02:9129): 0x9134, 0x917C, 0x918C, 0x922A; lo leen p02:9129 (8 bytes)
+F 0x912C 2
+D 0x9E6A 0x9E6F rle_9E6A  rle a la VRAM (0x5C46); lo leen p02:9E67 (5 bytes)
+F 0x9E6A 16
+# --- fin de los bloques de bloques.py ---

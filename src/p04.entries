@@ -1,0 +1,129 @@
+# Puntos de entrada del banco 4 (se ejecuta en 0x6000).
+#
+# Cada uno lleva la instruccion que lo justifica. Los que ponen "pNN:XXXX"
+# vienen de OTRO banco: el trazador de una sola pagina no puede seguirlos,
+# porque en esa direccion -segun lo que haya en el registro del mapper- puede
+# estar cualquiera de seis bancos. Los que ponen "tabla" salen de una tabla
+# del despachador 0x4140, que va pegada detras de su `call` y esta declarada
+# como datos en el .nocode: el trazador tampoco puede seguirla.
+#
+# Los saltos y llamadas DENTRO del propio banco no se ponen aqui: los
+# encuentra tools/z80trace.py solo, siguiendo el flujo.
+#
+# Este fichero lo regenera `make semillas` (tools/bancos.py escribe).
+0x6000   # p00:5168 call
+0x6054   # p00:5165 call
+0x6186   # p00:516F call
+0x62DB   # p00:53CF call
+0x678A   # p04:66B1 entrada 101 de la tabla de 0x66B4 (call 0x4140 en 0x66B1)
+0x678B   # a mano: p04:66A9 ld hl,0x678B / push hl antes de despachar el tipo: el `ret` del manejador vuelve aqui (scf / ret)
+0x69D2   # p00:53D2 call
+0x6A05   # p04:66B1 entrada 90 de la tabla de 0x66B4 (call 0x4140 en 0x66B1)
+0x6A18   # p06:B46F entrada 90 de la tabla de 0xB472 (call 0x4140 en 0xB46F)
+0x6AAA   # p04:66B1 entrada 92 de la tabla de 0x66B4 (call 0x4140 en 0x66B1)
+0x6AC3   # p06:B46F entrada 92 de la tabla de 0xB472 (call 0x4140 en 0xB46F)
+0x6AC4   # p04:66B1 entrada 98 de la tabla de 0x66B4 (call 0x4140 en 0x66B1)
+0x6ACB   # p06:B46F entrada 98 de la tabla de 0xB472 (call 0x4140 en 0xB46F)
+0x6AE8   # p04:66B1 entrada 4 de la tabla de 0x66B4 (call 0x4140 en 0x66B1)
+0x6B06   # p06:B46F entrada 4 de la tabla de 0xB472 (call 0x4140 en 0xB46F)
+0x6B76   # p06:AA1C call
+0x6BD5   # p05:87DA call
+0x6BEE   # p06:AA1F call
+0x6C04   # p06:AA24 call
+0x6C15   # p06:ABF1 call
+0x6C25   # p05:940D call
+0x6C32   # p04:66B1 entrada 25 de la tabla de 0x66B4 (call 0x4140 en 0x66B1)
+0x6C42   # p04:66B1 entrada 28 de la tabla de 0x66B4 (call 0x4140 en 0x66B1)
+0x6C47   # p06:B46F entrada 25 de la tabla de 0xB472 (call 0x4140 en 0xB46F)
+0x6C50   # p04:66B1 entrada 23 de la tabla de 0x66B4 (call 0x4140 en 0x66B1)
+0x6C5D   # p06:B46F entrada 23 de la tabla de 0xB472 (call 0x4140 en 0xB46F)
+0x6CBE   # p06:AD3E jp
+0x6CDB   # p04:66B1 entrada 1 de la tabla de 0x66B4 (call 0x4140 en 0x66B1)
+0x6CF4   # p06:B46F entrada 1 de la tabla de 0xB472 (call 0x4140 en 0xB46F)
+0x6D3B   # p05:883E call
+0x6D43   # p05:8865 call
+0x6D49   # p05:887C jp
+0x6D7F   # p05:87F8 jp
+0x6DFE   # p04:66B1 entrada 7 de la tabla de 0x66B4 (call 0x4140 en 0x66B1)
+0x6E32   # p06:B46F entrada 7 de la tabla de 0xB472 (call 0x4140 en 0xB46F)
+0x6E7D   # p06:B46F entrada 26 de la tabla de 0xB472 (call 0x4140 en 0xB46F)
+0x6EC2   # p04:66B1 entrada 26 de la tabla de 0x66B4 (call 0x4140 en 0x66B1)
+0x6EED   # p04:66B1 entrada 83 de la tabla de 0x66B4 (call 0x4140 en 0x66B1)
+0x6EF0   # p06:AD10 jp
+0x6F55   # p04:66B1 entrada 27 de la tabla de 0x66B4 (call 0x4140 en 0x66B1)
+0x6F5D   # p04:66B1 entrada 3 de la tabla de 0x66B4 (call 0x4140 en 0x66B1)
+0x6F80   # p06:B46F entrada 3 de la tabla de 0xB472 (call 0x4140 en 0xB46F)
+0x700D   # p04:66B1 entrada 8 de la tabla de 0x66B4 (call 0x4140 en 0x66B1)
+0x7020   # p06:B46F entrada 8 de la tabla de 0xB472 (call 0x4140 en 0xB46F)
+0x7062   # p06:ABA7 call
+0x7083   # p06:ACE5 jp
+0x7087   # p06:A801 call
+0x7097   # p04:66B1 entrada 17 de la tabla de 0x66B4 (call 0x4140 en 0x66B1)
+0x70A8   # p06:B46F entrada 17 de la tabla de 0xB472 (call 0x4140 en 0xB46F)
+0x70BC   # p04:70AF entrada 0 de la tabla de 0x70B2 (call 0x4140 en 0x70AF)
+0x70D2   # p04:70AF entrada 1 de la tabla de 0x70B2 (call 0x4140 en 0x70AF)
+0x7123   # p04:70AF entrada 2 de la tabla de 0x70B2 (call 0x4140 en 0x70AF)
+0x7158   # p04:70AF entrada 3 de la tabla de 0x70B2 (call 0x4140 en 0x70AF)
+0x7180   # p04:70AF entrada 4 de la tabla de 0x70B2 (call 0x4140 en 0x70AF)
+0x71C9   # p04:66B1 entrada 15 de la tabla de 0x66B4 (call 0x4140 en 0x66B1)
+0x71CF   # p05:8B3C jp
+0x71D3   # p06:B46F entrada 15 de la tabla de 0xB472 (call 0x4140 en 0xB46F)
+0x7249   # p04:66B1 entrada 19 de la tabla de 0x66B4 (call 0x4140 en 0x66B1)
+0x7255   # p06:B46F entrada 19 de la tabla de 0xB472 (call 0x4140 en 0xB46F)
+0x726B   # p04:725C entrada 0 de la tabla de 0x725F (call 0x4140 en 0x725C)
+0x7286   # p04:725C entrada 1 de la tabla de 0x725F (call 0x4140 en 0x725C)
+0x72C7   # p04:725C entrada 2 de la tabla de 0x725F (call 0x4140 en 0x725C)
+0x72D4   # p04:725C entrada 3 de la tabla de 0x725F (call 0x4140 en 0x725C)
+0x730D   # p04:725C entrada 4 de la tabla de 0x725F (call 0x4140 en 0x725C)
+0x7328   # p04:725C entrada 5 de la tabla de 0x725F (call 0x4140 en 0x725C)
+0x733F   # p06:A094 call
+0x7347   # p04:66B1 entrada 14 de la tabla de 0x66B4 (call 0x4140 en 0x66B1)
+0x7376   # p06:B46F entrada 14 de la tabla de 0xB472 (call 0x4140 en 0xB46F)
+0x73BA   # p04:66B1 entrada 16 de la tabla de 0x66B4 (call 0x4140 en 0x66B1)
+0x73DC   # p06:B46F entrada 16 de la tabla de 0xB472 (call 0x4140 en 0xB46F)
+0x74BA   # p04:66B1 entrada 89 de la tabla de 0x66B4 (call 0x4140 en 0x66B1)
+0x74BB   # p04:66B1 entrada 104 de la tabla de 0x66B4 (call 0x4140 en 0x66B1)
+0x7511   # p06:B46F entrada 104 de la tabla de 0xB472 (call 0x4140 en 0xB46F)
+0x7679   # p04:66B1 entrada 5 de la tabla de 0x66B4 (call 0x4140 en 0x66B1)
+0x76CD   # p06:B46F entrada 5 de la tabla de 0xB472 (call 0x4140 en 0xB46F)
+0x76E2   # a mano: p04:76D0 ld hl,0x76E2 / push hl antes de `call 0x4050` con (ix+1): el `ret` del manejador vuelve aqui
+0x76FF   # p04:76D7 entrada 0 de la tabla de 0x76DA (call 0x4140 en 0x76D7)
+0x771E   # p04:76D7 entrada 1 de la tabla de 0x76DA (call 0x4140 en 0x76D7)
+0x7730   # p04:76D7 entrada 2 de la tabla de 0x76DA (call 0x4140 en 0x76D7)
+0x776E   # p04:76D7 entrada 3 de la tabla de 0x76DA (call 0x4140 en 0x76D7)
+0x784B   # p04:66B1 entrada 12 de la tabla de 0x66B4 (call 0x4140 en 0x66B1)
+0x78BA   # p05:8026 jp
+0x78CD   # p06:B46F entrada 12 de la tabla de 0xB472 (call 0x4140 en 0xB46F)
+0x7937   # p04:66B1 entrada 105 de la tabla de 0x66B4 (call 0x4140 en 0x66B1)
+0x7950   # p04:66B1 entrada 0 de la tabla de 0x66B4 (call 0x4140 en 0x66B1)
+0x7973   # p05:94C6 call
+0x7978   # p06:B46F entrada 0 de la tabla de 0xB472 (call 0x4140 en 0xB46F)
+0x7A93   # p04:66B1 entrada 10 de la tabla de 0x66B4 (call 0x4140 en 0x66B1)
+0x7AC1   # p06:B46F entrada 10 de la tabla de 0xB472 (call 0x4140 en 0xB46F)
+0x7B0D   # p04:66B1 entrada 9 de la tabla de 0x66B4 (call 0x4140 en 0x66B1)
+0x7B4F   # p06:B46F entrada 9 de la tabla de 0xB472 (call 0x4140 en 0xB46F)
+0x7BE9   # p05:950B call
+0x7C5E   # p05:9944 call
+0x7CA9   # p05:98C7 call
+0x7D18   # p04:66B1 entrada 13 de la tabla de 0x66B4 (call 0x4140 en 0x66B1)
+0x7D3A   # p06:B46F entrada 13 de la tabla de 0xB472 (call 0x4140 en 0xB46F)
+0x7D4A   # p04:7D3D entrada 0 de la tabla de 0x7D40 (call 0x4140 en 0x7D3D)
+0x7D53   # p04:7D3D entrada 1 de la tabla de 0x7D40 (call 0x4140 en 0x7D3D)
+0x7D71   # p04:7D3D entrada 2 de la tabla de 0x7D40 (call 0x4140 en 0x7D3D)
+0x7D8E   # p04:7D3D entrada 3 de la tabla de 0x7D40 (call 0x4140 en 0x7D3D)
+0x7DA8   # p06:A97C call
+0x7DB3   # p04:7D3D entrada 4 de la tabla de 0x7D40 (call 0x4140 en 0x7D3D)
+0x7DB8   # p05:819B jp
+0x7DBD   # p05:9E5A jp cc
+0x7DDD   # p05:934C call
+0x7E25   # p05:936B call
+0x7E89   # p04:66B1 entrada 32 de la tabla de 0x66B4 (call 0x4140 en 0x66B1)
+0x7EB5   # p06:B46F entrada 32 de la tabla de 0xB472 (call 0x4140 en 0xB46F)
+0x7F2E   # p04:66B1 entrada 47 de la tabla de 0x66B4 (call 0x4140 en 0x66B1)
+0x7F5F   # p05:8002 jp
+0x7F72   # p06:B46F entrada 47 de la tabla de 0xB472 (call 0x4140 en 0xB46F)
+0x7F84   # p04:7F75 entrada 0 de la tabla de 0x7F78 (call 0x4140 en 0x7F75)
+0x7F94   # p04:7F75 entrada 1 de la tabla de 0x7F78 (call 0x4140 en 0x7F75)
+0x7FA7   # p04:7F75 entrada 2 de la tabla de 0x7F78 (call 0x4140 en 0x7F75)
+0x7FC9   # p05:800E jr
+0x7FCF   # p04:7F75 entrada 3 de la tabla de 0x7F78 (call 0x4140 en 0x7F75)

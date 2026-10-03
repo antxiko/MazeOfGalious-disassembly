@@ -1,0 +1,42 @@
+# notas del banco 00
+
+# --- A MANO: comentarios, nombres y bloques ---
+D 0x5DFC 0x5E06 sala_del_jefe  la sala del jefe de cada mapa, un byte por mapa 1-10 (p00:5DE4 la compara con 0xE042 leyendo 0x5DFB + mapa; el byte del mapa 0 es el `ret` de 0x5DFB): 0 el castillo, y 13, 9, 13, 14, 17, 13, 10, 7 y 25 en los mundos 1-9; el del mapa 11 es el primer byte de la tabla siguiente (5)
+D 0x5E06 0x5E11 fichas_de_cada_mapa  el juego de fichas de cada mapa 1-11 (5, 1, 4, 2, 11, 10, 3, 7, 8, 6, 9) que p00:497C copia a 0xE0D3 leyendo 0x5E05 + mapa; 0xE0D3 elige las fichas de las tablas 0x6157 y 0x6202 del banco 10 (p00:5856)
+D 0x468D 0x469F dos_marcas_por_mundo  9 palabras, mapas 2-10, que p00:464C lee en 0x4689 con 0x414C (mapa 11 sale antes): sus dos bytes son direcciones 0xE0xx que pone a 0
+F 0x468D 2
+D 0x4BCF 0x4BD8 sitio_por_mundo  un byte por mapa 2-10 que p00:4BAC lee en 0x4BCD + mapa (0x4155): el nibble alto - 8 da la Y y el bajo la X (los de los mapas 1 y 11 serian bytes del codigo de alrededor)
+D 0x4C5B 0x4C63 registros_del_vdp  los valores de los registros 0-7 del VDP que p00:4C4A escribe con WRTVDP al arrancar: R0 = 2 y R1 = 0xE2: modo grafico 2 (SCREEN 2) y sprites de 16 x 16; tabla de nombres en 0x3800 (R2 = 0x0E), colores en 0 (R3 = 0x7F), dibujos en 0x2000 (R4 = 7), atributos de sprite en 0x3B00 (R5 = 0x76) y sus dibujos en 0x1800 (R6 = 3); R7 = 0xE4
+D 0x4CE6 0x4CF1 al_empezar  11 bytes que p00:4CD5 copia a 0xE051-0xE05B al empezar la partida (el mapa 1, sala 1, va a 0xE041 justo antes)
+D 0x4EF7 0x4F12 canal_en_blanco  los 27 bytes con los que p00:4E90-4EA6, p00:4F33, p00:5003 y p00:50A4 ponen a cero la ficha de cada canal del sonido antes de arrancar una musica o un efecto
+D 0x581D 0x5825 dibujo_del_caracter_f0  8 bytes de dibujo que p00:57FB copia con LDIRVM a 0x0780 en los tres tercios (el caracter 0xF0)
+D 0x5825 0x5832 cosa_por_0xe690  13 bytes: la cosa que p00:580B pinta en 0x2470 (con p00:58E1) segun 0xE690 = 1-13 (el 0 lee el ultimo byte del dibujo de delante, que es 0, y no pinta nada)
+D 0x5F59 0x5F5F firma_game_master  6 bytes que p00:5F0C compara con los de 0x7FFA de las otras ranuras (p00:5F44, RDSLT): son los ultimos de Konami's Game Master (RC-735). Si estan, bit 2 de 0xF0F8
+D 0x5F5F 0x5F65 firma_knightmare  6 bytes que p00:5F32 compara con los de 0xBFFA: los ultimos de Knightmare (Majyo Densetsu, RC-739). Si estan, bit 0 de 0xF0F8
+D 0x5F65 0x5F6B firma_qbert  6 bytes que p00:5F1F compara con los de 0xBFFA: los ultimos de Q*bert (RC-746). Si estan, bit 1 de 0xF0F8
+D 0x5F6B 0x5F79 iconos_de_arma  7 parejas de caracteres, una por 0xE510 = 0-6, que p01:6076 y p01:67C7 pintan (la 0 son dos ceros)
+F 0x5F6B 2
+D 0x5FBA 0x5FC3 ficha_sala_92  9 bytes que p00:5FB1 copia a 0xE4A1 cuando la sala es la 0x92 (146)
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0x4000 0x4010 cabecera_ab  la cabecera del cartucho: 'AB', INIT (0x4095) y STATEMENT, DEVICE y TEXT a cero; lo leen la BIOS (16 bytes)
+F 0x4000 16
+D 0x4010 0x4050 cabecera_de_konami  la cabecera de Konami que lee el Game Master desde la otra ranura: 'CD', 0x07 0x49 (RC-749) y, detras, direcciones de la RAM del juego (0xE0FE, 0xE104, 0xE1C6...); el propio cartucho no la lee; lo leen el Game Master (64 bytes)
+F 0x4010 8
+D 0x428E 0x42B8 tabla_428E  21 destinos del despachador de 0x4140 (call en p00:428B): 0x42B8, 0x430C, 0x433C, 0x43F0, 0x4420, 0x4462, 0x44F2, 0x454F ...; lo leen p00:428B (42 bytes)
+F 0x428E 2
+D 0x4340 0x4348 tabla_4340  4 destinos del despachador de 0x4140 (call en p00:433D): 0x4348, 0x437B, 0x43B4, 0x43C5; lo leen p00:433D (8 bytes)
+F 0x4340 2
+D 0x48C9 0x48D3 tabla_48C9  5 destinos del despachador de 0x4140 (call en p00:48C6): 0x48D3, 0x48E4, 0x4909, 0x4922, 0x493D; lo leen p00:48C6 (10 bytes)
+F 0x48C9 2
+D 0x49BE 0x49D0 tabla_49BE  9 destinos del despachador de 0x4140 (call en p00:49BB): 0x49D0, 0x49DA, 0x49E5, 0x49F0, 0x49F9, 0x4A1E, 0x4A35, 0x4A51 ...; lo leen p00:49BB (18 bytes)
+F 0x49BE 2
+D 0x4B4E 0x4B5B rle_4B4E  rle a la VRAM (0x5C46); lo leen p00:4B3F (13 bytes)
+F 0x4B4E 16
+D 0x543B 0x5465 tabla_543B  21 destinos del despachador de 0x4140 (call en p00:5438): 0x5487, 0x5487, 0x5465, 0x5465, 0x5487, 0x5488, 0x5465, 0x5465 ...; lo leen p00:5438 (42 bytes)
+F 0x543B 2
+D 0x5A1E 0x5A2C tabla_5A1E  7 destinos del despachador de 0x4140 (call en p00:5A1B): 0x5A2C, 0x5A33, 0x5A3A, 0x5A48, 0x5A5D, 0x5A72, 0x5A80; lo leen p00:5A1B (14 bytes)
+F 0x5A1E 2
+D 0x5FFF 0x6000 partida_5FFF  la instruccion de p00:5FFF (32 | 07 E5) empieza al final del banco 0 y acaba al principio del 1, que el cartucho pone siempre a continuacion: aqui el primer byte; lo leen p00:5FFF (1 bytes)
+F 0x5FFF 4
+# --- fin de los bloques de bloques.py ---

@@ -1,0 +1,53 @@
+# notas del banco 05
+
+# --- A MANO: comentarios, nombres y bloques ---
+D 0x80BC 0x80C0 cuatro_alturas  4 alturas (0x24, 0x44, 0x64, 0x84) que p04:7F84 compara con (ix+5) segun (ix+0x1C)
+D 0x8141 0x8145 cuatro_velocidades  4 bytes que p05:8109 elige al azar (p05:81F1, dos bits) y usa como parte alta de una velocidad
+D 0x819E 0x81A6 tabla_819e  4 punteros que p05:817F elige con (ix+0x16) a las ternas de 0x81A6
+F 0x819E 2
+D 0x81A6 0x81B2 ternas_81a6  4 ternas de bytes (p05:8185 elige una de las tres al azar)
+F 0x81A6 3
+D 0x82E4 0x82F9 colores_82e4  21 bytes que p05:82CE va poniendo en (ix+0x0B), el color, uno cada dos cuadros con (ix+0x19)
+D 0x83BE 0x83C2 cuatro_x  4 posiciones X que p05:83A2 elige al azar para (ix+7)
+D 0x88FD 0x8935 sin_nombrar_88fd  los mismos 56 bytes que p04:6DC6 (16 parejas de pasos y tres ordenaciones de 0-7), otra vez sin que nada los nombre en los bancos 4-6
+D 0x8C05 0x8C0E nueve_bytes_8c05  9 bytes que p05:8BE3 lee con (ix+0x16): el que toca va a (ix+0x14) y (ix+0x0A) y el siguiente a (ix+0x15)
+D 0x8C0E 0x8C17 nueve_bytes_8c0e  lo mismo para el otro lado (bit 0 de (ix+0x17), p05:8BDE)
+D 0x8C17 0x8C1F ocho_bytes_8c17  8 bytes que p05:8BB1 y p05:8BFF pasan en HL a p06:B088
+D 0x8DC5 0x8E05 fichas_8dc5  8 fichas de 8 bytes que p05:8D95 elige con n x 8: el primer byte va a (ix+0x0A)
+F 0x8DC5 8
+D 0x9064 0x9078 veinte_bytes_9064  20 bytes que p05:9029 recorre desde (ix+0x15) con el paso (ix+0x14)
+D 0x939C 0x93AC dibujos_939c  16 bytes que p05:9371 pone en (ix+0x0A) segun (ix+0x18)
+D 0x93AC 0x93BC siguiente_93ac  16 bytes: el (ix+0x18) siguiente cuando el bit 0 de (ix+0x1C) esta puesto (p05:9384)
+D 0x93BC 0x93CC siguiente_93bc  16 bytes: el (ix+0x18) siguiente cuando el bit 0 de (ix+0x1D) esta puesto (p05:938F)
+D 0x93CC 0x93D4 ocho_bytes_93cc  8 bytes que p05:937A pasa en HL a p06:B088
+D 0x9510 0x951C seis_velocidades  6 palabras que p05:94B3 elige con 2 x n + (ix+0x1D) y pasa a p06:B13E
+F 0x9510 2
+D 0x9720 0x9725 cinco_bytes_9720  5 bytes que p05:96B7 elige al azar (0-4)
+D 0x9A61 0x9A67 tres_palabras_9a61  3 palabras que p05:99F7 elige con (ix+0x19) y pasa a p04:736F
+F 0x9A61 2
+D 0x9ADF 0x9AE6 palabras_9adf  las palabras que p05:9A9B elige con 2 x ((ix+0x1E) - 1) + (ix+0x1D) desde 0x9ADF (p05:9A67): parejas de desplazamientos de Y y X
+D 0x9AE6 0x9AE7 desplazamiento_9ae6  un desplazamiento con signo que p05:9A95 pasa a p05:9CB0
+D 0x9C63 0x9C68 cinco_bytes_9c63  5 bytes que p05:9C2C pone en (ix+0x1A) segun (ix+0x19)
+D 0x9C68 0x9C6C desplazamientos_9c68  4 desplazamientos con signo de Y que p05:9CAC suma a (ix+5)
+D 0x9F37 0x9F3B secuencia_9f37  4 bytes que p05:9DD5 recorre con (ix+0x14), uno cada 10 cuadros
+D 0x9F3B 0x9F3F secuencia_9f3b  4 bytes que p05:9E2A recorre igual
+D 0x9F66 0x9F6B cinco_bytes_9f66  5 bytes: p05:9F48 coge el (0xE62F) mod 4 para (ix+0x0D) y el siguiente para (ix+0x0F)
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0x8000 0x8002 partida_7FFF_cola  la instruccion de p04:7FFF (DD | 35 18) empieza al final del banco 4 y acaba al principio del 5, que el cartucho pone siempre a continuacion: aqui el resto; lo leen p04:7FFF (2 bytes)
+F 0x8000 4
+D 0x8B45 0x8B4B tabla_8B45  3 destinos del despachador de 0x4140 (call en p05:8B42): 0x8B4B, 0x8B68, 0x8B8D; lo leen p05:8B42 (6 bytes)
+F 0x8B45 2
+D 0x9225 0x922D tabla_9225  4 destinos del despachador de 0x4140 (call en p05:9222): 0x927A, 0x9243, 0x9288, 0x9243; lo leen p05:9222 (8 bytes)
+F 0x9225 2
+D 0x975A 0x9766 tabla_975A  6 destinos del despachador de 0x4140 (call en p05:9757): 0x9766, 0x97E7, 0x980A, 0x9834, 0x985C, 0x97B3; lo leen p05:9757 (12 bytes)
+F 0x975A 2
+D 0x991F 0x992D tabla_991F  7 destinos del despachador de 0x4140 (call en p05:991C): 0x992D, 0x997A, 0x99A8, 0x99E1, 0x9A0B, 0x9A18, 0x9A39; lo leen p05:991C (14 bytes)
+F 0x991F 2
+D 0x9BBC 0x9BC4 tabla_9BBC  4 destinos del despachador de 0x4140 (call en p05:9BB9): 0x9BC4, 0x9BCC, 0x9BE6, 0x9BFD; lo leen p05:9BB9 (8 bytes)
+F 0x9BBC 2
+D 0x9D62 0x9D6C tabla_9D62  5 destinos del despachador de 0x4140 (call en p05:9D5F): 0x9D85, 0x9D7C, 0x9D8A, 0x9D73, 0x9D6C; lo leen p05:9D5F (10 bytes)
+F 0x9D62 2
+D 0x9DCF 0x9DD5 tabla_9DCF  3 destinos del despachador de 0x4140 (call en p05:9DCC): 0x9DD5, 0x9DFE, 0x9E2A; lo leen p05:9DCC (6 bytes)
+F 0x9DCF 2
+# --- fin de los bloques de bloques.py ---
