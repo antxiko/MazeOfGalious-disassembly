@@ -9,7 +9,10 @@ import glob
 import os
 import sys
 
-from PIL import Image
+try:
+    from PIL import Image
+except ImportError:            # solo lo necesitan los PNG
+    Image = None
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(RAIZ, "tools"))

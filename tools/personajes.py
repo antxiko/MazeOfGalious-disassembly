@@ -4,11 +4,16 @@ tools/sprites.py (la tabla de dibujos de cada sala y las poses de p01:7529).
 
 Uso: personajes.py poses <png>    Popolon y Afrodita: las 32 poses
      personajes.py juegos <png>   los juegos de sprites que cargan las salas
+     personajes.py jefes <png>    los 10 jefes: los mosaicos de cada uno con
+                                  sus graficos (vram.graficos_del_jefe)
 """
 import os
 import sys
 
-from PIL import Image, ImageDraw
+try:
+    from PIL import Image, ImageDraw
+except ImportError:            # las hojas necesitan PIL; los datos y los tests no
+    Image = ImageDraw = None
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(RAIZ, "tools"))
@@ -124,11 +129,51 @@ def hoja_juegos():
     return im.resize((im.width * 2, im.height * 2), Image.NEAREST)
 
 
+# Los mosaicos de cada jefe por mapa: los que tomo 0xE70A en openMSX, cuadro a
+# cuadro durante 6000 cuadros de pelea (tools/omsx_partida.tcl con GO_JEFE=1,
+# work/v_jefeM_MM/traza.txt). El jefe es el hueco 0xE700, de tipo 0xE0D3.
+MOSAICOS_DEL_JEFE = {2: (12, 13, 14, 15), 3: (16, 17, 18, 19), 4: (6, 7, 8, 9, 10, 11),
+                     5: (43, 44, 45, 46, 47, 48), 6: (28, 29), 7: (58, 59, 60),
+                     8: (24, 25, 26, 27), 9: (36, 37, 38, 39, 40, 41, 42),
+                     10: (52, 53, 54), 11: (55, 56)}
+
+
+def hoja_jefes():
+    from dibuja import pinta_caracter
+    rom = V.Rom()
+    filas = []
+    for m, ks in MOSAICOS_DEL_JEFE.items():
+        v = V.carga_sala(rom, V.Vram(rom), m, rom[0x5DFB + m])
+        V.graficos_del_jefe(rom, v, rom[0x5E05 + m], 0)   # el 0xE709 medido (tests/jefes_openmsx.txt)
+        filas.append((m, v, [V.mosaico(rom, k) + (k,) for k in ks]))
+    sep = 8
+    ancho = max(sum(c * 8 + sep for c, f, cs, k in ms) for m, v, ms in filas)
+    alto = sum(max(f * 8 for c, f, cs, k in ms) + 14 for m, v, ms in filas)
+    im = Image.new("RGB", (ancho + 70, alto + 4), FONDO)
+    px = im.load()
+    dr = ImageDraw.Draw(im)
+    y = 2
+    for m, v, ms in filas:
+        dr.text((4, y + 2), "WORLD %d" % (m - 1), fill=(160, 160, 190))
+        x = 70
+        for c, f, cs, k in ms:
+            dr.text((x, y), "%d" % k, fill=(110, 110, 140))
+            for i, ch in enumerate(cs):
+                if ch:
+                    pat, col = v.caracter(1, ch)
+                    pinta_caracter(px, x + (i % c) * 8, y + 12 + (i // c) * 8, pat, col, FONDO)
+            x += c * 8 + sep
+        y += max(f * 8 for c, f, cs, k in ms) + 14
+    return im.resize((im.width * 2, im.height * 2), Image.NEAREST)
+
+
 def main(argv):
     if len(argv) == 3 and argv[1] == "poses":
         hoja_poses().save(argv[2])
     elif len(argv) == 3 and argv[1] == "juegos":
         hoja_juegos().save(argv[2])
+    elif len(argv) == 3 and argv[1] == "jefes":
+        hoja_jefes().save(argv[2])
     else:
         sys.exit(__doc__)
 

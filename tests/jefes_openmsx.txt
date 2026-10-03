@@ -1,0 +1,32 @@
+# Jefes en openMSX: lineas 'mosaicos M k...' = los valores de 0xE70A en 6000
+# cuadros de pelea (work/v_jefeM_MM/traza.txt); lineas 'huella M k sha1' = los
+# dibujos y colores (tres tercios) de los caracteres del mosaico k en un volcado
+# (work/v_jefeL_MM) donde el mosaico esta entero en la tabla de nombres.
+mosaicos 2 12 13 14 15
+mosaicos 3 16 17 18 19
+mosaicos 4 6 7 8 9 10 11
+mosaicos 5 43 44 45 46 47 48
+mosaicos 6 28 29
+mosaicos 7 58 59 60
+mosaicos 8 24 25 26 27
+mosaicos 9 36 37 38 39 40 41 42
+mosaicos 10 52 53 54
+mosaicos 11 55 56
+huella 2 13 8401ab53550afee5 e709=00
+huella 2 12 8519974f75f44343 e709=00
+huella 3 16 b488d0c022c87405 e709=00
+huella 3 19 5c64484d1981bacd e709=00
+huella 3 18 f49db0471d249bfe e709=00
+huella 4 10 103bb84becd33026 e709=00
+huella 5 44 a4dafae40d35b701 e709=00
+huella 6 29 27c6dc0484de5c8c e709=40
+huella 7 60 6f01abaef4422438 e709=00
+huella 7 59 3ec058b519d9a279 e709=00
+huella 8 25 e4dab98e511d5748 e709=00
+huella 9 36 9fa376501426a53a e709=00
+huella 9 42 5f3c49d25bc76458 e709=00
+huella 10 52 e0a8871094a9ced9 e709=00
+huella 10 54 f267006f72a8604b e709=00
+huella 10 53 5a93a5d957975fe4 e709=00
+huella 11 56 db58a4ab3f6a9b56 e709=00
+huella 11 55 68a36f6411ede4c8 e709=00

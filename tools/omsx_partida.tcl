@@ -13,6 +13,8 @@
 # cambio de 0xE000/0xE001 con su cuadro.
 # Con GO_F2=1, GO_ESPERA cuadros despues de llegar pulsa F2 (fila 6, bit 6;
 # lo lee p02:9E07) durante 5 cuadros.
+# Con GO_JEFE=1 apunta tambien en traza.txt cada cambio del mosaico del jefe
+# (0xE70A, el hueco 0xE700) con su tipo (0xE700).
 # GO_OUT=<dir>, GO_SEGS, GO_SALA="MM:SS" (hex), GO_FOTOS="40 200 ...".
 set OUT $::env(GO_OUT)
 set SEGS $::env(GO_SEGS)
@@ -25,6 +27,7 @@ set ::fase arranca
 set ::cuadros 0
 set ::llegada 0
 set ::est ""
+set ::mos -1
 set ::err ""
 set ::t [open [file join $OUT traza.txt] w]
 proc apunta {s} { puts $::t "$::cuadros $s"; flush $::t }
@@ -66,6 +69,10 @@ proc mira {} {
             if {$::JEFE && $n == $::ESPERA} { debug write memory 0xE020 1; apunta "E020=1" }
             if {$::F2 && $n == $::ESPERA} { keymatrixdown 6 0x40; apunta "F2" }
             if {$::F2 && $n == $::ESPERA + 5} { keymatrixup 6 0x40 }
+            if {$::JEFE} {
+                set v [debug read memory 0xE70A]
+                if {$v != $::mos} { set ::mos $v; apunta [format "mosaico %d tipo %02X" $v [debug read memory 0xE700]] }
+            }
             if {[lsearch $::FOTOS $n] >= 0} { vuelca "${::M}${::S}_$n" }
             if {$n >= [lindex $::FOTOS end]} { fin }
         }
