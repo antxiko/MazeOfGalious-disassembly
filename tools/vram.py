@@ -146,6 +146,27 @@ def carga_sala(rom, vram, m, n):
     return vram
 
 
+def graficos_del_jefe(rom, vram, k, e709=0x20):
+    """p00:5856: los graficos del jefe k (0xE0D3 = 0x5E05 + mapa): fichas de
+    0x6157 y copias de 0x6202. El 2 (p00:586C -> p00:5884) va por pasos con
+    0xE61B: fichas en 0x6175 + 7 x paso hasta el 7 (sigue si el bit 5 de
+    0xE709) y copias en 0x621A + 5 x (paso - 8) hasta el 0x2C."""
+    rom.pon(10, 11, 12)
+    if k != 2:
+        vram.fichas(rom.palabra(0x6157 + 2 * k))
+        vram.copias(rom.palabra(0x6202 + 2 * k))
+        return vram
+    e = 1
+    while e:
+        if e < 8:
+            vram.fichas(0x6175 + 7 * e)
+            e = 0 if e >= 7 and not e709 & 0x20 else e + 1
+        else:
+            vram.copias(0x621A + 5 * (e - 8))
+            e = e + 1 if e < 0x2C else 0
+    return vram
+
+
 def nombres(rom, m, n):
     """Los 32 x 20 caracteres de la sala (filas 4-23 de la pantalla), como los
     monta p00:55C6.
