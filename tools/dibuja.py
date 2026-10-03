@@ -88,14 +88,17 @@ def coteja(dirv):
             for fx in range(32):
                 c = nom[fy * 32 + fx]
                 usados.add((terc, c))
+        anim = V.animados(rom, m, n)
         for terc, c in usados:
             o = terc * 0x800 + c * 8
-            if vr[0x2000 + o:0x2000 + o + 8] != mod.v[0x2000 + o:0x2000 + o + 8] or \
-               vr[o:o + 8] != mod.v[o:o + 8]:
+            que = anim.get((terc, c))
+            if (que != "dibujo" and vr[0x2000 + o:0x2000 + o + 8] != mod.v[0x2000 + o:0x2000 + o + 8]) or \
+               (que != "color" and vr[o:o + 8] != mod.v[o:o + 8]):
                 dif_car += 1
         total += dif_nom + dif_car
         print("mapa %2d sala %3d: %3d caracteres de la tabla de nombres distintos, "
-              "%3d de %3d caracteres usados con otro dibujo o color" % (m, n, dif_nom, dif_car, len(usados)))
+              "%3d de %3d caracteres usados con otro dibujo o color (%d animados)"
+              % (m, n, dif_nom, dif_car, len(usados), len(anim)))
     print("total de diferencias: %d" % total)
 
 

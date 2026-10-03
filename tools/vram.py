@@ -135,6 +135,14 @@ def carga_sala(rom, vram, m, n):
             (vram.fichas if f[0] == "f" else vram.copias)(f[1])
     elif m > 1:
         vram.fichas(0x6044)
+    cosa = cosa_de_sala(rom, m, n)          # p00:569D-56A5 y p00:58DE
+    rom.pon(10, 11, 12)
+    if cosa and 7 <= cosa[0] < 0x2D:
+        vram.tercios(rom.palabra(0x6E34 + 2 * cosa[0]), 0x23B0)
+        vram.tercios(rom.palabra(0x6E80 + 2 * cosa[0]), 0x03B0)
+    if n == rom[0x5DFB + m]:                # p00:56FA, la sala del jefe
+        vram.fichas(0x6121)
+        vram.copias(0x6128)
     return vram
 
 
@@ -196,10 +204,175 @@ def tinajas(rom, n):
     return fuera
 
 
+def casilla(y, x):
+    """p00:4DA1: (fila, columna) de la sala para el punto (y, x) de pantalla."""
+    return (y >> 3) - 4, x >> 3
+
+
+def figuras(rom, m, n):
+    """[(tipo, y, x)] de la lista de figuras de la sala (0xA7BC, p08:9D1D):
+    [tipo][y:3 bits, x:5 bits] y un 0 al final."""
+    rom.pon(7, 8, 9)
+    i = rom.palabra(0xA7BC + 2 * m)
+    for _ in range(1, n):
+        while rom[i]:
+            i += 2
+        i += 1
+    fuera = []
+    while rom[i]:
+        c, p = rom[i], rom[i + 1]
+        fuera.append((c, p & 0xE0, (p << 3) & 0xF8))
+        i += 2
+    return fuera
+
+
+def dibujo(rom, tabla, k, ancho, alto):
+    """Las filas del dibujo k de una tabla de punteros del banco 15."""
+    rom.pon(13, 14, 15)
+    a = rom.palabra(tabla + 2 * k)
+    return [[rom[a + f * ancho + c] for c in range(ancho)] for f in range(alto)]
+
+
+# Los bloques que tapan un paso hasta que se abre (p08:9F1A): (mapa, sala) ->
+# donde va en la copia de la tabla de nombres; 3 filas de 4 caracteres 0xF0
+# (p01:7367). La marca que los quita (0xE0A1-0xE0AC) empieza a 0.
+BLOQUES_F0 = {(4, 4): 0xED9C, (2, 12): 0xED80, (3, 13): 0xEE9C, (5, 15): 0xEF0E,
+              (6, 13): 0xEE9C, (7, 8): 0xEF00, (8, 8): 0xEF84, (8, 14): 0xED88,
+              (9, 3): 0xEE1C, (9, 20): 0xEE1C, (10, 26): 0xED84}
+
+
+def cosa_de_sala(rom, m, n):
+    """La cosa (tesoro, cofre...) de la sala, de la tabla 0xB6FC + 2 x mapa
+    (banco 9, p00:5DC9): fichas de 3 bytes [sala][b7 b6 tipo:6][y:5 x:3]. La
+    primera de la sala manda. Devuelve (tipo, y, x) en pixeles, con la y ya
+    bajada 8 para los tipos 1-6 (p00:5DB5), o None.
+    Con las marcas a 0 de partida nueva siempre se pinta (p00:5D68-5DAA)."""
+    rom.pon(7, 8, 9)
+    i = rom.palabra(0xB6FC + 2 * m)
+    while rom[i]:
+        if rom[i] == n:
+            b, p = rom[i + 1], rom[i + 2]
+            tipo = b & 0x3F
+            if not tipo:
+                return None
+            y = p & 0xF8
+            x = (((p & 7) << 2) | ((b >> 6) & 3)) << 3
+            if not y | x:
+                return None
+            if tipo < 7:
+                y += 8
+            return tipo, y, x
+        i += 3
+    return None
+
+
+def piezas(rom, m, n):
+    """Lo que el juego pinta encima de la sala al entrar, con las marcas de una
+    partida nueva (todas a 0): [(fila, columna, caracter)].
+
+      - figuras de 0xA7BC (p08:9D44 las monta, p01:77EE y p01:71E3 las pintan):
+        1 puerta, columna de 3 x 0xC5 (p09:A013); 5 paso escondido, nada hasta
+        que se abre (p09:A415); 2, 3 y 4 el dibujo 0 de las tablas 0xA6FB,
+        0xA726 y 0xA74C (1 x 3); 7 los 3 x 4 de 0xA772 si la marca del mundo
+        no tiene el bit 2; 6 nada al entrar (p09:A52E)
+      - las 13 escaleras del castillo (p09:A746): 0xA6EB [mapa][sala] y 0xA700
+        + 5 x k [y][x][filas]..., columnas de 9A 9B
+      - las puertas de los mundos en el castillo (p02:9DAF): 0x9DDA
+        [sala][mundo][y][x], 2 x 2 de 0x73D2 (p01:73B7)
+      - la cosa de la sala (cosa_de_sala, p01:6C56): tipos 1-6 una pareja de
+        0x6C89, 7-0x2C el cofre 76 77 / 78 79, desde 0x2D 2 x 2 desde
+        0x60 + 4 x (tipo - 0x2D)
+      - los bloques de BLOQUES_F0
+    """
+    fuera = []
+
+    def rect(f0, c0, filas):
+        for df, fila in enumerate(filas):
+            for dc, ch in enumerate(fila):
+                fuera.append((f0 + df, c0 + dc, ch))
+
+    for c, y, x in figuras(rom, m, n):
+        f, k = casilla(y, x)
+        t = c & 0x0F
+        if t == 1:
+            rect(f, k, [[0xC5]] * 3)
+        elif t == 2:
+            rect(f, k, dibujo(rom, 0xA6FB, 0, 1, 3))
+        elif t == 3:
+            rect(f, k, dibujo(rom, 0xA726, 0, 1, 3))
+        elif t == 4:
+            rect(f, k, dibujo(rom, 0xA74C, 0, 1, 3))
+        elif t == 7:
+            rom.pon(13, 14, 15)
+            rect(f, k, [[rom[0xA772 + 4 * r + q] for q in range(4)] for r in range(3)])
+    if m == 1:
+        rom.pon(7, 8, 9)
+        for k in range(13):
+            if rom[0xA6EB + 2 * k] == m and rom[0xA6EC + 2 * k] == n:
+                a = 0xA705 + 5 * k
+                f, c = casilla(rom[a], rom[a + 1])
+                rect(f, c, [[0x9A, 0x9B]] * rom[a + 2])
+        rom.pon(1, 2, 3)
+        i = 0x9DDA
+        while rom[i]:
+            if rom[i] == n:
+                f, c = casilla(rom[i + 2], rom[i + 3])
+                rom.pon(1, 2, 3)
+                rect(f, c, [[rom[0x73D2], rom[0x73D3]], [rom[0x73D4], rom[0x73D5]]])
+            i += 4
+    cosa = cosa_de_sala(rom, m, n)
+    if cosa:
+        tipo, y, x = cosa
+        f, c = casilla(y, x)
+        if tipo < 7:
+            rom.pon(1, 2, 3)
+            a = 0x6C87 + 2 * tipo
+            par = [ch for ch in (rom[a + 1], rom[a]) if ch]
+            rect(f, c, [par])
+        else:
+            b = 0x76 if tipo < 0x2D else 0x60 + 4 * (tipo - 0x2D)
+            rect(f, c, [[b, b + 1], [b + 2, b + 3]])
+    if (m, n) in BLOQUES_F0:
+        a = BLOQUES_F0[(m, n)] - 0xED80
+        rect(a // 32, a % 32, [[0xF0] * 4] * 3)
+    return fuera
+
+
+def _en_lista(rom, tabla, m, n):
+    rom.pon(13, 14, 15)
+    i = rom.palabra(tabla + 2 * m)
+    while rom[i]:
+        if rom[i] == n:
+            return True
+        i += 1
+    return False
+
+
+def animados(rom, m, n):
+    """Los caracteres que el juego anima mientras se esta en la sala, y que por
+    eso cambian en la VRAM de un cuadro a otro: {(tercio, caracter): que}.
+
+      - el agua (p15:BD06): las salas de 0xBCD3 + 2 x mapa giran los dibujos
+        del caracter 0xB6 de los tercios 1 y 2 (0x2DB0 y 0x35B0)
+      - el ciclo de colores (p15:BDA1): las de 0xBD72 + 2 x mapa reescriben los
+        colores del 0xB8 del tercio 2 (0x15C0-0x15C4, tabla 0xBDCE)
+    """
+    fuera = {}
+    if _en_lista(rom, 0xBCD3, m, n):
+        fuera[(1, 0xB6)] = fuera[(2, 0xB6)] = "dibujo"
+    if _en_lista(rom, 0xBD72, m, n):
+        fuera[(2, 0xB8)] = "color"
+    return fuera
+
+
 def nombres_con_objetos(rom, m, n):
-    """La tabla de nombres de la sala con las tinajas y los objetos que se
-    pintan con caracteres (los de ficha sin el bit 7: puertas...)."""
+    """La tabla de nombres de la sala con las tinajas, los objetos que se
+    pintan con caracteres (los de ficha sin el bit 7: puertas...) y las
+    piezas (ver piezas)."""
     t = nombres(rom, m, n)
+    for f, c, ch in piezas(rom, m, n):
+        if 0 <= f < 20 and 0 <= c < 32:
+            t[f][c] = ch
     if m == 1:
         for fy, fx in tinajas(rom, n):
             for dy, dx, c in ((0, 0, 0xBA), (0, 1, 0xBB), (1, 0, 0xBC), (1, 1, 0xBD)):
