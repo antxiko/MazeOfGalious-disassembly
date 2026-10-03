@@ -4072,7 +4072,7 @@ debajo_escalera_ec08:		; lo de debajo de la escalera de 0xEC08
 	ld a,(0ec09h)		;7975
 	jr L_7985		;7978
 debajo_escalera_ec00:		; lo de debajo de la escalera de 0xEC00
-	ld a,(0ec00h)		;797a
+	ld a,(0ec00h)		;797a   ; lee la escalera del castillo de esta sala
 	or a			;797d
 	ret z			;797e
 	ld hl,(0ec05h)		;797f
@@ -4092,7 +4092,7 @@ debajo_bloque_eac9:		; lo de debajo del bloque de 0xEAC9
 	ld hl,0ed9ch		;7996
 	jr L_79A3		;7999
 debajo_bloque_eac0:		; lo de debajo del bloque de 0xEAC0
-	ld a,(0eac0h)		;799b
+	ld a,(0eac0h)		;799b   ; lee la pared de 0xF0 de la sala
 	or a			;799e
 	ret z			;799f
 	ld hl,(0eac2h)		;79a0
@@ -4322,7 +4322,7 @@ repone_el_castillo:		; lo de 0xEB00 de vuelta en las figuras del castillo
 	ldir		;7b2a
 	ret			;7b2c
 repone_eaa0:		; vuelve la columna de 0xEAA0
-	ld de,0eaa0h		;7b2d
+	ld de,0eaa0h		;7b2d   ; apunta a el paso escondido (figura 5)
 	jr L_7B4A		;7b30
 repone_puertas:		; vuelve lo de las puertas de 0xEA00
 	ld ix,0ea00h		;7b32   ; apunta a las puertas del castillo (figura 1, dos de 16 bytes)
@@ -4520,7 +4520,7 @@ repone_escalera_ec08:		; vuelve lo de la escalera de 0xEC08
 	ld a,(0ec09h)		;7c3b
 	jr L_7C4C		;7c3e
 repone_escalera_ec00:		; vuelve lo de la escalera de 0xEC00
-	ld a,(0ec00h)		;7c40
+	ld a,(0ec00h)		;7c40   ; lee la escalera del castillo de esta sala
 	or a			;7c43
 	ret z			;7c44
 	ld de,(0ec05h)		;7c45
@@ -4536,13 +4536,13 @@ L_7C4C:
 	jr nz,L_7C4C		;7c57
 	ret			;7c59
 repone_bloque_eac9:		; vuelve lo del bloque de 0xEAC9
-	ld a,(0eac9h)		;7c5a
+	ld a,(0eac9h)		;7c5a   ; lee el bloque de la sala 4 del mapa 4
 	or a			;7c5d
 	ret z			;7c5e
 	ld de,0ed9ch		;7c5f
 	jr L_7C6D		;7c62
 repone_bloque_eac0:		; vuelve lo del bloque de 0xEAC0
-	ld a,(0eac0h)		;7c64
+	ld a,(0eac0h)		;7c64   ; lee la pared de 0xF0 de la sala
 	or a			;7c67
 	ret z			;7c68
 	ld de,(0eac2h)		;7c69

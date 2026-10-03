@@ -363,7 +363,6 @@ C 0xA077 guarda el paso de la figura
 C 0xA07E banderas_bajas: solo los 4 bits bajos de las banderas
 C 0xA08B sube el paso de la figura
 C 0xA094 banderas_e0: las banderas con 0xE0 y p05:96FA
-C 0xA0A2 banderas_8f: las banderas AND 0x8F
 C 0xA0BD palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 C 0xA0C7 lee las banderas de la figura (bit 7: en pantalla)
 C 0xA0CC guarda las banderas de la figura (bit 7: en pantalla)
@@ -545,7 +544,6 @@ C 0xA706 mira el bit 7 de la velocidad de lado de la figura (alta)
 C 0xA718 byte_de_tabla (por 0x4083): A = el byte HL + A
 C 0xA71C lee el paso de la figura
 C 0xA722 hl_mas_a (por 0x4062): HL += A
-C 0xA727 apunta a el jefe 7 ha mordido
 C 0xA750 apunta a la espera hasta que el jefe escupe
 C 0xA794 guarda el ancho del mosaico
 C 0xA7AC el paso de la figura = 0x01
@@ -791,9 +789,6 @@ C 0xB0DD lee el dibujo (o el mosaico) de la figura
 C 0xB0E1 guarda el dibujo (o el mosaico) de la figura
 C 0xB0E4 lee el tamaño de la figura (tabla 0x9006, banco 14)
 C 0xB0E8 guarda el tamaño de la figura (tabla 0x9006, banco 14)
-C 0xB0FA lee el tipo de la figura
-C 0xB111 suma_16_bits: (HL) += (DE) en 16 bits
-C 0xB11F suma_alta: el byte alto con acarreo
 C 0xB124 sin_lado: la velocidad de lado a 0
 C 0xB133 velocidad_de_lado: la velocidad de lado = DE
 C 0xB137 guarda la velocidad vertical de la figura

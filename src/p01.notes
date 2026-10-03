@@ -1380,6 +1380,8 @@ C 0x789B palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x78CF debajo_figura_3_4: lo de debajo de una de 0xEA50/0xEA60
 C 0x7936 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 C 0x7955 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x797A lee la escalera del castillo de esta sala
+C 0x799B lee la pared de 0xF0 de la sala
 C 0x79B9 debajo_un_ec30: lo de debajo de un hueco de 0xEC30
 C 0x79E0 repone_huecos: lo de debajo de los 16 huecos
 C 0x79E3 repone_el_castillo: lo de 0xEB00 de vuelta en las figuras del castillo
@@ -1405,10 +1407,14 @@ C 0x7B13 repone_eab0: vuelve lo de las de 0xEAB8
 C 0x7B16 repone_figura_7: vuelve lo de la de 0xEA20
 C 0x7B19 repone_eaa0: vuelve la columna de 0xEAA0
 C 0x7B1C repone_bloque_eac9: vuelve lo del bloque de 0xEAC9
+C 0x7B2D apunta a el paso escondido (figura 5)
 C 0x7B32 apunta a las puertas del castillo (figura 1, dos de 16 bytes)
 C 0x7B3D repone_columna: vuelve lo de la columna de IX
 C 0x7B74 repone_figura_2: vuelve lo de una de 0xEA30
 C 0x7BAE repone_figura_3_4: vuelve lo de una de 0xEA50/0xEA60
+C 0x7C40 lee la escalera del castillo de esta sala
+C 0x7C5A lee el bloque de la sala 4 del mapa 4
+C 0x7C64 lee la pared de 0xF0 de la sala
 C 0x7C89 repone_un_ec30: vuelve lo de un hueco de 0xEC30
 C 0x7D86 partida_nueva: RAM a cero, sala 1 del castillo, Popolon y las vidas de 0x4CE6
 C 0x7D8A guarda la tecla de la demostracion (0xFF acaba) y el byte siguiente (16 bits)

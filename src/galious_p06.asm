@@ -100,7 +100,7 @@ L_A094:
 	jr z,L_A0A2		;a09e
 	sub 008h		;a0a0
 L_A0A2:
-	call nc,banderas_8f		;a0a2   ; banderas_8f: las banderas AND 0x8F
+	call nc,banderas_8f		;a0a2   ; sin el bit 0, las banderas AND 0x8F
 	dec a			;a0a5
 	jr z,tipo_2e_entra		;a0a6
 	ld a,(ix+01eh)		;a0a8   ; segun (ix+0x1E): 0, 4 u 8...
@@ -995,7 +995,7 @@ L_A714:
 	pop af			;a725
 	ld (hl),a			;a726
 lengua_del_jefe_7:		; la lengua del jefe 7: una menos y su sitio
-	ld hl,0e722h		;a727   ; apunta a el jefe 7 ha mordido
+	ld hl,0e722h		;a727   ; una lengua menos (0xE722)...
 	dec (hl)			;a72a
 	ld hl,0e724h		;a72b   ; ...la siguiente 0x20 mas alla...
 	ld a,(hl)			;a72e
@@ -2297,7 +2297,7 @@ mueve_figura:		; la y y la x de la figura mas sus velocidades
 	ld a,e			;b0f6
 	add a,008h		;b0f7
 	ld e,a			;b0f9
-	ld a,(ix+000h)		;b0fa   ; lee el tipo de la figura
+	ld a,(ix+000h)		;b0fa   ; ...los tipos 0x24, 0x25, 0x0D, 0x2D y 0x0A...
 	cp 024h		;b0fd
 	jr z,L_B11F		;b0ff
 	cp 025h		;b101
@@ -2308,7 +2308,7 @@ mueve_figura:		; la y y la x de la figura mas sus velocidades
 	jr z,L_B11F		;b10b
 	cp 00ah		;b10d
 	jr z,L_B11F		;b10f
-	call suma_16_bits		;b111   ; suma_16_bits: (HL) += (DE) en 16 bits
+	call suma_16_bits		;b111   ; ...los demas: la y + la vertical...
 suma_16_bits:		; (HL) += (DE) en 16 bits
 	ld a,(de)			;b114
 	add a,(hl)			;b115
@@ -2323,7 +2323,7 @@ suma_alta:		; el byte alto con acarreo
 	inc e			;b11d
 	ret			;b11e
 L_B11F:
-	call suma_alta		;b11f   ; suma_alta: el byte alto con acarreo
+	call suma_alta		;b11f   ; ...ellos, sin la fraccion de la y
 	jr suma_16_bits		;b122
 solo_vertical:		; sin velocidad de lado y la vertical = DE
 	call sin_lado		;b124   ; sin_lado: la velocidad de lado a 0

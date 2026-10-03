@@ -1189,6 +1189,7 @@ C 0xAF06 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y
 C 0xAF18 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 C 0xAF25 guarda la x del personaje
 C 0xAF29 guarda la escalera de 0xEC00 al lado
+C 0xAF2F apunta a las 15 escaleras del castillo que se gastan (2 bytes cada una)
 C 0xAF36 escalera_ec00: la escalera de 0xEC00
 C 0xAF4F lee la y del personaje
 C 0xAF67 lee la y del personaje

@@ -42,6 +42,161 @@ D 0xBEF6 0xBF3C texto_memoria_jp  el de la contrasena buena en japones, que nomb
 D 0xBF3C 0xBF6C texto_contrasena_en  ENTER THE SECRET / CODE AND PRESS / RETURN KEY. (p02:98FF; 0xFE con dos bytes cambia de linea)
 D 0xBF6C 0xBF86 texto_contrasena_mala_en  THAT IS THE WRONG / CODE. (p02:9921)
 D 0xBF86 0xBFE9 texto_memoria_en  MY MEMORY HAS BEEN / BROUGHT BACK! / DEFEAT GALIOUS AND / SAVE PAMPERSE AS / SOON AS POSSIBLE! GO! (p02:9938); su 0xFF es el de 0xBFE8
+C 0xa002 sin 0xE0AB, la pared en 0xEE1C
+C 0xa009 sin 0xE0AC, la pared en 0xED84
+C 0xa013 la figura 1 (puerta): en el hueco siguiente de 0xEA00...
+C 0xa018 ...[1][paso 0][y][x][alto 3]...
+C 0xa029 ...[espera 0x1E][caracter 0xC5]
+C 0xa02e y el siguiente hueco
+C 0xa036 las dos puertas de 0xEA00 cada cuadro
+C 0xa04b si esta, por su paso
+C 0xa05e paso 0: con alguna llave...
+C 0xa065 ...el personaje a su altura...
+C 0xa070 ...pegado a ella mirandola...
+C 0xa088 ...en pie...
+C 0xa08c ...empujando hacia ella...
+C 0xa092 ...un rato (byte 7)...
+C 0xa096 ...gasta una llave y la atraviesa...
+C 0xa0a0 ...con el sonido 0x22
+C 0xa0a7 una llave menos y...
+C 0xa0aa ...el personaje atravesando (estado 7), sin daño
+C 0xa0bb paso 1: la puerta se abre: cada 6 cuadros una casilla menos de alto
+C 0xa0ca al paso siguiente
+C 0xa0ce paso 2: cuando el personaje ha pasado...
+C 0xa0e2 ...en pie, y la puerta vuelve a cerrarse (alto 0, al paso 3)
+C 0xa0ea se cierra: alto 3, paso 0 y el sonido 0x21
+C 0xa0f7 la espera de empujar, 0x1E
+C 0xa0fc la espera de abrir, 6
+C 0xa101 el personaje en pie y con daño
+C 0xa109 NZ si el personaje no esta en pie
+C 0xa10e la figura 2: en el hueco siguiente de 0xEA30...
+C 0xa118 ...[1][0][y][x][dibujo 0][espera 0x1E]
+C 0xa12e las dos de 0xEA30 cada cuadro
+C 0xa148 por su paso
+C 0xa151 paso 0: con llave...
+C 0xa158 ...a su altura...
+C 0xa163 ...pegado y mirandola...
+C 0xa184 ...empujando un rato...
+C 0xa18f ...gasta una llave, la atraviesa...
+C 0xa198 ...el dibujo segun el lado...
+C 0xa19b ...con el sonido 0x21
+C 0xa1a0 al paso siguiente; por la izquierda, 8 a la izquierda
+C 0xa1af paso 1: el personaje pasa: el dibujo siguiente
+C 0xa1c6 paso 2: cuando ha pasado, cerrada otra vez
+C 0xa1f2 una llave menos (BCD)...
+C 0xa202 ...y se repintan
+C 0xa205 la espera de empujar, 0x1E
+C 0xa20a la figura 3: el lado de 0xF000 (bit 4)...
+C 0xa215 ...en 0xEA50: [lado + 1][0][y][x][x][0][espera 0x1E]
+C 0xa22d la de 0xEA50 cada cuadro: el lado...
+C 0xa236 ...girando, aparte...
+C 0xa23a ...el personaje a su altura...
+C 0xa244 ...mirando hacia el lado de la puerta...
+C 0xa259 ...pegado a ella...
+C 0xa262 ...empujando un rato...
+C 0xa26c ...la atraviesa (sin llave)...
+C 0xa274 ...gira, con el sonido 0x23
+C 0xa27d girando: cada 6 cuadros el dibujo siguiente...
+C 0xa28e ...4 dibujos; al volver al 0, en pie
+C 0xa29f la figura 4: en el hueco siguiente de 0xEA60
+C 0xa2b6 las cuatro de 0xEA60 cada cuadro
+C 0xa2c9 si esta, por su paso
+C 0xa2d8 paso 0: el personaje encima?...
+C 0xa2e5 ...si, y con 0xE62E...
+C 0xa2ef ...alguna figura encima?
+C 0xa306 la figura que esta encima deja de moverse...
+C 0xa30e ...la figura 4 se guarda quien la empuja (bytes 0x0A-0x0B)...
+C 0xa31b ...y al paso 1
+C 0xa31f una figura de tipo 0x0A...
+C 0xa325 ...a la altura de la figura 4...
+C 0xa32e ...y pegada a su lado
+C 0xa345 Afrodita sin el objeto 0x29 no...
+C 0xa34d ...a su altura...
+C 0xa358 ...pegado del lado al que mira
+C 0xa373 NZ: no
+C 0xa376 paso 1: quien la empuja...
+C 0xa37f ...una figura: si sigue pegada, otra vez...
+C 0xa38a ...si no, vuelve a moverse
+C 0xa38e al paso 0 con la espera 0x1E
+C 0xa398 el personaje: pegado...
+C 0xa3a1 ...empujando...
+C 0xa3a7 ...un rato...
+C 0xa3ab ...la atraviesa
+C 0xa3b1 6 cuadros, el paso siguiente y el sonido 0x23
+C 0xa3bd la figura que empuja se para un rato
+C 0xa3d3 paso 2: gira: cada 6 cuadros el dibujo siguiente o el anterior...
+C 0xa3e9 ...4 dibujos; al volver al 0...
+C 0xa3f2 ...en pie, al paso 0...
+C 0xa3f8 ...y la figura que empujaba sigue
+C 0xa415 el paso escondido: 0xEAA8 = 0xF0...
+C 0xa41a ...ya abierto si las marcas de la sala tienen el bit 1...
+C 0xa422 ...[1][paso][y][x]
+C 0xa43a el paso escondido cada cuadro: paso 0...
+C 0xa445 ...el personaje cerca (0x19 de alto, 3 de lado)...
+C 0xa459 ...mirando: guarda hacia donde y al paso 1
+C 0xa461 paso 1: sigue mirando hacia alli...
+C 0xa477 ...pegado del otro lado...
+C 0xa489 ...un empujon: al paso 2
+C 0xa492 la espera 0x0F
+C 0xa498 paso 2: cada 0x0F cuadros un empujon mas...
+C 0xa4b2 ...a los tres queda abierto (bit 1 de las marcas de la sala)
+C 0xa4bc mientras se mueve: el personaje a su altura...
+C 0xa4c9 ...si esta encima, se aparta a un lado...
+C 0xa4ec ...y las figuras tambien
+C 0xa52e la figura de 0xEAB0: [1][0][0][0x2C][1]...[0x78]
+C 0xa541 cada cuadro: paso 0...
+C 0xa54c ...el personaje en y 0x78...
+C 0xa553 ...en el lado izquierdo (x 0x18-0x1F) o el derecho (0xE0-0xE7)...
+C 0xa56e ...cuenta 0xEAB3...
+C 0xa57b ...al acabar, el dibujo de la tabla 0xA630 y el sonido 4
+C 0xa58c pasos siguientes: cuenta...
+C 0xa5a0 ...el personaje en la fila y cerca...
+C 0xa5bc ...se mueve un paso hacia el otro lado (0xA630)...
+C 0xa5ed ...al quinto, se acaba
+C 0xa5f3 0x80 cuadros y el paso siguiente
+C 0xa601 paso 5: al llegar al otro borde, vuelve a empezar (0x12C cuadros)
+C 0xa634 la figura 7: rota si las marcas de la sala tienen el bit 2...
+C 0xa641 ...[0 o 1][y][x][golpes de la tabla 0xA65D]
+C 0xa661 cada cuadro: si esta...
+C 0xa668 ...Popolon, o Afrodita con el objeto 0x1C...
+C 0xa670 ...con la espada dando (0xE526)...
+C 0xa679 ...a su altura...
+C 0xa684 ...y pegado del lado que mira...
+C 0xa69d ...un golpe (sonido 0x1E)...
+C 0xa6a4 ...el ultimo: rota (bit 2 de las marcas de la sala) y el sonido 0x2E
+C 0xa6b5 las 15 escaleras de 0xE0B0...
+C 0xa6ba ...las de valor 2...
+C 0xa6d4 ...y a 0 miran si es su sala (tabla 0xA6EB)
+C 0xa746 las 15 escaleras de 0xE0B0 al entrar en la sala...
+C 0xa74e ...las de valor 1 vuelven a 0...
+C 0xa755 ...las de 0 (puestas), si son de esta sala, a 0xEC00
+C 0xa761 la escalera 15 - B: su sala en 0xA6EB...
+C 0xa771 ...su numero en 0xEC00...
+C 0xa77c ...y su ficha de 5 bytes de 0xA700: [y][x][alto][...]...
+C 0xa78c ...el ultimo a 0xEC0F...
+C 0xa794 ...y su casilla en 0xEC05
+C 0xa7a4 al usar la escalera que se gasta (0xEC07)...
+C 0xa7a9 ...su sitio en 0xE0B0: valor 2 y 0x3C (x 32 cuadros) hasta que vuelve...
+C 0xa7b9 ...y se quita de la sala
+C 0xa431 ya abierto: paso 3...
+C 0xa436 ...y 3 empujones
+C 0xa6cb cada 32 cuadros...
+C 0xa6d1 ...cuenta la espera...
+C 0xa6dd ...a 0: si es esta sala, vuelve a 1 (se pone al salir)
+C 0xa21e [0]...
+C 0xa222 ...[y]...
+C 0xa224 ...[x][x]...
+C 0xa228 ...[0]
+C 0xa533 su dibujo 0x2C...
+C 0xa539 ...1...
+C 0xa53e ...y la y 0x78
+C 0xa612 al llegar: 0xEAB6 = 1...
+C 0xa617 ...si ya no cuenta...
+C 0xa61c ...vuelve a empezar: sin sitio...
+C 0xa622 ...0x12C cuadros...
+C 0xa628 ...paso 0
+C 0xa5db la x de la tabla 0xA630...
+C 0xa5e3 ...a 0xEAB8
 
 # --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
 D 0xA000 0xA002 partida_9FFF_cola  la instruccion de p08:9FFF (3A | AB E0) empieza al final del banco 8 y acaba al principio del 9, que el cartucho pone siempre a continuacion: aqui el resto; lo leen p08:9FFF (2 bytes)
@@ -97,89 +252,121 @@ F 0xBFE9 16
 # --- fin de los bloques de bloques.py ---
 
 # --- ANOTACIONES AUTOMATICAS (seccion que reescribe tools/anota.py; no editar a mano) ---
-C 0xA036 apunta a las puertas del castillo (figura 1, dos de 16 bytes)
+L 0xA013 pon_puerta la figura 1 (puerta) en 0xEA00
+L 0xA036 puertas las puertas del castillo: con llave y empujando se abren
+L 0xA04B puerta una puerta por su paso
+L 0xA0A7 gasta_llave_y_pasa una llave menos y el personaje la atraviesa
+L 0xA0AA atraviesa el personaje atravesando (estado 7), sin daño
+L 0xA0CA paso_de_puerta sube el paso (ix+1)
+L 0xA0F7 espera_de_empujar (ix+7) = 0x1E
+L 0xA0FC espera_de_abrir (ix+7) = 6
+L 0xA101 en_pie_con_dano el personaje en pie y con daño
+L 0xA109 no_en_pie NZ si el personaje no esta en pie
+L 0xA10E pon_figura_2 la figura 2 en 0xEA30
+L 0xA12E figuras_2_cuadro las dos de 0xEA30: con llave se atraviesan
+L 0xA143 figura_2_cuadro una de 0xEA30 por su paso
+L 0xA1F2 gasta_llave una llave menos y se repintan
+L 0xA205 espera_de_empujar_2 (ix+5) = 0x1E
+L 0xA20A pon_figura_3 la figura 3 (la que gira) en 0xEA50
+L 0xA21E ficha_de_puerta [0][y][x][x][0][0x1E]
+L 0xA22D figura_3_cuadro la que gira: empujando de su lado se atraviesa
+L 0xA29F pon_figura_4 la figura 4 en 0xEA60
+L 0xA2B6 figuras_4_cuadro las cuatro de 0xEA60 cada cuadro
+L 0xA2C9 figura_4_cuadro una de 0xEA60 por su paso
+L 0xA31F figura_0a_delante Z si una figura de tipo 0x0A esta pegada a la figura 4
+L 0xA345 puede_empujar NZ si el personaje puede empujar la figura 4 (Popolon o el objeto 0x29) y esta pegado
+L 0xA415 pon_paso_escondido la figura 5 (paso escondido) en 0xEAA0
+L 0xA431 paso_ya_abierto el paso escondido ya abierto
+L 0xA43A paso_escondido el paso escondido: se abre empujando tres veces
+L 0xA492 espera_0f 0xEAA7 = 0x0F
+L 0xA4BC aparta_del_paso aparta al personaje y a las figuras del paso que se cierra
+L 0xA52E pon_eab0 la figura de 0xEAB0
+L 0xA541 figura_eab0 la figura de 0xEAB0 cada cuadro
+L 0xA634 pon_figura_7 la figura 7 (pared que se rompe) en 0xEA20
+L 0xA661 rompe_pared la pared de la figura 7 a espadazos (Popolon o el objeto 0x1C)
+L 0xA6B5 escaleras_del_castillo las 15 escaleras de 0xE0B0: cada 32 cuadros, si es su sala
+L 0xA6CB escalera_vuelve cuenta la escalera gastada; a 0, vuelve si es esta sala
+L 0xA746 escaleras_al_entrar las escaleras del castillo de esta sala a 0xEC00
+L 0xA761 escalera_de_la_sala la escalera de esta sala (0xA6EB, 0xA700) a 0xEC00
+L 0xA7A4 gasta_escalera la escalera usada se quita por 0x3C x 32 cuadros
+C 0xA041 puerta: una puerta por su paso
 C 0xA053 despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
-C 0xA05E lee las llaves (BCD, 16 bits)
 C 0xA06B lee la y del personaje
-C 0xA070 lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 C 0xA083 lee la x del personaje
-C 0xA08C lee lo apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
+C 0xA099 gasta_llave_y_pasa: una llave menos y el personaje la atraviesa
 C 0xA0A2 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0xA0AC guarda el estado del personaje (5 = hundirse)
 C 0xA0B0 guarda parpadeando
 C 0xA0B3 guarda la espada (1 empieza, 2 golpeando)
 C 0xA0B7 guarda sin daño (tras un golpe o al entrar)
-C 0xA0CE lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
+C 0xA0BF espera_de_abrir: (ix+7) = 6
 C 0xA0DD lee la x del personaje
 C 0xA0F4 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0xA102 guarda el estado del personaje (5 = hundirse)
 C 0xA105 guarda sin daño (tras un golpe o al entrar)
-C 0xA109 lee el estado del personaje (5 = hundirse)
-C 0xA151 lee las llaves (BCD, 16 bits)
+C 0xA139 figura_2_cuadro: una de 0xEA30 por su paso
 C 0xA15E lee la y del personaje
-C 0xA163 lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 C 0xA17B lee la x del personaje
-C 0xA184 lee lo apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
+C 0xA180 no_en_pie: NZ si el personaje no esta en pie
+C 0xA188 espera_de_empujar_2: (ix+5) = 0x1E
+C 0xA190 gasta_llave_y_pasa: una llave menos y el personaje la atraviesa
 C 0xA19D pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
-C 0xA1AF lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 C 0xA1BC lee la x del personaje
-C 0xA1C6 lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 C 0xA1D3 lee la x del personaje
-C 0xA1F2 apunta a las llaves (BCD)
-C 0xA202 pinta_llaves (por 0x408C): las llaves en la fila 2, columna 24
+C 0xA1DC espera_de_empujar_2: (ix+5) = 0x1E
+C 0xA1EB en_pie_con_dano: el personaje en pie y con daño
 C 0xA23F lee la y del personaje
-C 0xA244 lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
-C 0xA259 lee la x del personaje
-C 0xA262 lee lo apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
+C 0xA25E no_en_pie: NZ si el personaje no esta en pie
 C 0xA27A pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0xA293 en_pie_con_dano: el personaje en pie y con daño
+C 0xA2A8 ficha_de_puerta: [0][y][x][x][0][0x1E]
+C 0xA2BD figura_4_cuadro: una de 0xEA60 por su paso
 C 0xA2DC apunta a el estado del personaje (5 = hundirse)
-C 0xA2EF apunta a los huecos de figura (32 bytes cada uno)
-C 0xA345 apunta a tiene el objeto 0x29
+C 0xA2E0 puede_empujar: NZ si el personaje puede empujar la figura 4 (Popolon o el objeto 0x29) y esta pegado
+C 0xA2FA figura_0a_delante: Z si una figura de tipo 0x0A esta pegada a la figura 4
 C 0xA348 tiene_o_popolon (por 0x4089): NZ si la marca de HL esta puesta o se lleva a Popolon (0xE501)
 C 0xA353 lee la y del personaje
-C 0xA358 lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 C 0xA36B lee la x del personaje
 C 0xA36F lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
-C 0xA3A1 lee lo apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
+C 0xA385 figura_0a_delante: Z si una figura de tipo 0x0A esta pegada a la figura 4
+C 0xA39D no_en_pie: NZ si el personaje no esta en pie
 C 0xA3BA pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
-C 0xA41A lee la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)
+C 0xA41F paso_ya_abierto: el paso escondido ya abierto
 C 0xA448 lee la y del personaje
 C 0xA450 lee la x del personaje
-C 0xA459 lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 C 0xA467 lee la y del personaje
 C 0xA46E lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 C 0xA482 lee la x del personaje
-C 0xA4B2 lee la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)
+C 0xA49F aparta_del_paso: aparta al personaje y a las figuras del paso que se cierra
+C 0xA4A7 espera_0f: 0xEAA7 = 0x0F
 C 0xA4C3 lee la y del personaje
 C 0xA4CE lee la x del personaje
 C 0xA4DD guarda la x del personaje
 C 0xA4E9 guarda la x del personaje
-C 0xA4EC apunta a los huecos de figura (32 bytes cada uno)
 C 0xA4FE lee la y de la figura
 C 0xA509 lee la x de la figura
 C 0xA518 guarda la x de la figura
 C 0xA524 guarda la x de la figura
-C 0xA54C lee la y del personaje
-C 0xA553 lee la x del personaje
 C 0xA55D lee la x del personaje
 C 0xA5A3 lee la y del personaje
 C 0xA5A9 lee la x del personaje
 C 0xA5E8 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0xA605 lee la x del personaje
-C 0xA634 lee la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)
+C 0xA63E apunta a la pared que se rompe (figura 7)
 C 0xA658 byte_de_tabla (por 0x4083): A = el byte HL + A
-C 0xA668 apunta a tiene el objeto 0x1C
 C 0xA66B tiene_o_popolon (por 0x4089): NZ si la marca de HL esta puesta o se lleva a Popolon (0xE501)
 C 0xA67A lee la y del personaje
-C 0xA684 lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 C 0xA688 lee la x del personaje
 C 0xA6A0 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0xA6A7 lee la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)
+C 0xA6AD guarda la pared que se rompe (figura 7)
 C 0xA6B2 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
-C 0xA6CB lee el contador de cuadros de partida
+C 0xA6C0 escalera_vuelve: cuenta la escalera gastada; a 0, vuelve si es esta sala
 C 0xA6DA palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
-C 0xA6DD lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0xA756 escalera_de_la_sala: la escalera de esta sala (0xA6EB, 0xA700) a 0xEC00
 C 0xA767 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 C 0xA76A lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0xA777 apunta a la escalera del castillo de esta sala
 C 0xA79C casilla_de_yx (por 0x4056): HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0xA7BA guarda la escalera del castillo de esta sala
 # --- fin de las anotaciones de anota.py ---

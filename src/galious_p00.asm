@@ -376,7 +376,7 @@ L_4257:
 	jp bancos_1_2_3		;425d   ; bancos_1_2_3: pone los bancos 1, 2 y 3 (y sus copias en 0xF0F1-0xF0F3)
 L_4260:
 	call bancos_7_8_9		;4260   ; bancos_7_8_9: pone los bancos 7, 8 y 9 (y sus copias en 0xF0F1-0xF0F3)
-	call 09d5fh		;4263
+	call 09d5fh		;4263   ; salas_que_abren: en los mundos, las salas que abren otras o ponen 0xE0A2-0xE0AC
 	jp bancos_1_2_3		;4266   ; bancos_1_2_3: pone los bancos 1, 2 y 3 (y sus copias en 0xF0F1-0xF0F3)
 L_4269:
 	call bancos_1_2_3		;4269   ; bancos_1_2_3: pone los bancos 1, 2 y 3 (y sus copias en 0xF0F1-0xF0F3)
@@ -2409,10 +2409,10 @@ monta_lo_de_la_sala:		; lo que va encima de la sala: figuras, cosas, puertas, es
 	call 09dafh		;517c   ; puerta_de_vuelta_de_la_sala: en el castillo, la puerta de vuelta de la sala (0x9DDA) en 0xE680-0xE685
 	call 069e3h		;517f   ; cosa_e678: en los mundos, 0xE678-0xE67A de la lista 0x9C83 de la sala
 	call bancos_7_8_9		;5182   ; con los bancos 7, 8 y 9: p08:9CFA, p08:9F1A, p08:9E61 y las escaleras (p09:A746)
-	call 09cfah		;5185
-	call 09f1ah		;5188
-	call 09e61h		;518b
-	call 0a746h		;518e
+	call 09cfah		;5185   ; figuras_del_castillo_de_la_sala: pone las figuras de la lista 0xA7BC de la sala
+	call 09f1ah		;5188   ; paredes_de_la_sala: las paredes de 0xF0 de las salas que se abren desde otra
+	call 09e61h		;518b   ; escalera_abierta: con el bit 3 de la sala, su escalera (0xEC08)
+	call 0a746h		;518e   ; escaleras_al_entrar: las escaleras del castillo de esta sala a 0xEC00
 	call bancos_1_2_3		;5191   ; bancos_1_2_3: pone los bancos 1, 2 y 3 (y sus copias en 0xF0F1-0xF0F3)
 	call a000_banco_9		;5194   ; p01:62EF y p01:63EA con el banco 9
 	call 062efh		;5197   ; cosas_del_castillo: 0xE6A0 a 0 y lo de la sala del castillo (tabla 0xB8A2)
@@ -2624,15 +2624,15 @@ cuadro_de_partida:		; un cuadro de la partida: todas las rutinas de cada banco
 	call 09b02h		;5360   ; lo tecleado (p02:9B02) y el objeto 0x20 (p02:9BB6)
 	call 09bb6h		;5363   ; objeto_20: con el objeto 0x20 y CTRL, todo se para un rato (hasta 16 veces)
 	call bancos_7_8_9		;5366   ; con los bancos 7, 8 y 9: las figuras del castillo (p09)
-	call 0a036h		;5369
-	call 0a12eh		;536c
-	call 0a22dh		;536f
-	call 0a2b6h		;5372
-	call 0a43ah		;5375
-	call 0a541h		;5378
-	call 0a661h		;537b
-	call 0a6b5h		;537e
-	call 0a7a4h		;5381
+	call 0a036h		;5369   ; puertas: las puertas del castillo: con llave y empujando se abren
+	call 0a12eh		;536c   ; figuras_2_cuadro: las dos de 0xEA30: con llave se atraviesan
+	call 0a22dh		;536f   ; figura_3_cuadro: la que gira: empujando de su lado se atraviesa
+	call 0a2b6h		;5372   ; figuras_4_cuadro: las cuatro de 0xEA60 cada cuadro
+	call 0a43ah		;5375   ; paso_escondido: el paso escondido: se abre empujando tres veces
+	call 0a541h		;5378   ; figura_eab0: la figura de 0xEAB0 cada cuadro
+	call 0a661h		;537b   ; rompe_pared: la pared de la figura 7 a espadazos (Popolon o el objeto 0x1C)
+	call 0a6b5h		;537e   ; escaleras_del_castillo: las 15 escaleras de 0xE0B0: cada 32 cuadros, si es su sala
+	call 0a7a4h		;5381   ; gasta_escalera: la escalera usada se quita por 0x3C x 32 cuadros
 	call bancos_1_2_3		;5384   ; con 1, 2 y 3
 	call 06371h		;5387   ; cuenta_huecos_ec30: los tres huecos de 0xEC30: cuentan y se vacian
 	call 06398h		;538a   ; objeto_21: con el objeto 0x21 y el boton A, p15:B85C con cada hueco de 0xEC30

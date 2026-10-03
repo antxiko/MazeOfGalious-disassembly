@@ -971,23 +971,23 @@ DATA_recuadros_8x8:
 ; ======================================================================
 
 
-L_9CFA:
-	ld hl,0ea60h		;9cfa
+figuras_del_castillo_de_la_sala:		; pone las figuras de la lista 0xA7BC de la sala
+	ld hl,0ea60h		;9cfa   ; las figuras del castillo: sus huecos (0xEA60, 0xEA30, 0xEA00) en 0xF008-0xF00D...
 	ld (0f008h),hl		;9cfd
 	ld hl,0ea30h		;9d00
 	ld (0f00ah),hl		;9d03
 	ld hl,0ea00h		;9d06   ; apunta a las puertas del castillo (figura 1, dos de 16 bytes)
 	ld (0f00ch),hl		;9d09
-	ld a,(0e041h)		;9d0c   ; lee el mapa (1 el castillo, 2-11 los mundos)
+	ld a,(0e041h)		;9d0c   ; ...la lista del mapa en 0xA7BC...
 	ld hl,0a7bch		;9d0f
 	call 04053h		;9d12   ; palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 	ex de,hl			;9d15
-	ld a,(0e042h)		;9d16   ; lee la sala
+	ld a,(0e042h)		;9d16   ; ...saltando las de las salas de antes...
 	dec a			;9d19
 	jr z,L_9D2A		;9d1a
 	ld b,a			;9d1c
 L_9D1D:
-	ld a,(hl)			;9d1d
+	ld a,(hl)			;9d1d   ; ...[tipo][sitio] hasta un 0
 	inc hl			;9d1e
 	or a			;9d1f
 	jr z,L_9D26		;9d20
@@ -997,15 +997,15 @@ L_9D26:
 	dec b			;9d26
 	jp nz,L_9D1D		;9d27
 L_9D2A:
-	ld a,(hl)			;9d2a
+	ld a,(hl)			;9d2a   ; cada figura: el tipo...
 	or a			;9d2b
 	ret z			;9d2c
 	ld c,a			;9d2d
 	inc hl			;9d2e
-	ld a,(hl)			;9d2f
+	ld a,(hl)			;9d2f   ; ...la y en los 3 bits altos del sitio...
 	and 0e0h		;9d30
 	ld d,a			;9d32
-	ld a,(hl)			;9d33
+	ld a,(hl)			;9d33   ; ...la x en los 5 bajos (x 8)...
 	inc hl			;9d34
 	add a,a			;9d35
 	add a,a			;9d36
@@ -1014,11 +1014,11 @@ L_9D2A:
 	ld e,a			;9d3a
 	ld a,c			;9d3b
 	push hl			;9d3c
-	call L_9D44		;9d3d
+	call pon_figura_del_castillo		;9d3d   ; ...se pone
 	pop hl			;9d40
 	jp L_9D2A		;9d41
-L_9D44:
-	ld (0f000h),a		;9d44
+pon_figura_del_castillo:		; una figura del castillo por su tipo
+	ld (0f000h),a		;9d44   ; el tipo y el sitio en 0xF000-0xF003, y por el tipo (bits 0-3, tabla que sigue)
 	ld (0f002h),de		;9d47
 	and 00fh		;9d4b
 	dec a			;9d4d
@@ -1043,8 +1043,8 @@ DATA_tabla_9D51:
 ; ======================================================================
 
 
-L_9D5F:
-	ld de,(0e041h)		;9d5f   ; lee el mapa (0xE041) y la sala (0xE042) de un tiron
+salas_que_abren:		; en los mundos, las salas que abren otras o ponen 0xE0A2-0xE0AC
+	ld de,(0e041h)		;9d5f   ; en los mundos, lo que hace cada sala al entrar (tabla por mapa)
 	ld a,e			;9d63
 	sub 002h		;9d64
 	ret m			;9d66
@@ -1073,87 +1073,87 @@ DATA_tabla_9D6A:
 
 
 L_9D7E:
-	ld a,d			;9d7e
+	ld a,d			;9d7e   ; mapa 2: sala 0x0A abre, sala 0x0C pone 0xE0A2
 	cp 00ah		;9d7f
-	jr z,L_9D8D		;9d81
+	jr z,abre_esta		;9d81
 	cp 00ch		;9d83
 	ret nz			;9d85
-	ld a,001h		;9d86
-	ld (0e0a2h),a		;9d88
-	jr L_9E07		;9d8b
-L_9D8D:
-	ld hl,(0e60eh)		;9d8d   ; lee la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)
+	ld a,001h		;9d86   ; 0xE0A2 = 1: en la sala 2 del mapa 12 se quita la pared (p08:9FA2)
+	ld (0e0a2h),a		;9d88   ; guarda las paredes abiertas de los mundos (0xE0A2-0xE0AC)
+	jr quita_la_pared		;9d8b
+abre_esta:		; el bit 3 en las marcas de la sala y su escalera
+	ld hl,(0e60eh)		;9d8d   ; abre: el bit 3 en las marcas de la sala (la escalera de p08:9E61)...
 	set 3,(hl)		;9d90
-	call L_9E61		;9d92
-L_9D95:
-	ld hl,(0e60eh)		;9d95   ; lee la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)
+	call escalera_abierta		;9d92   ; escalera_abierta: con el bit 3 de la sala, su escalera (0xEC08)
+sonido_de_abierta:		; la primera vez, el sonido 0x2E
+	ld hl,(0e60eh)		;9d95   ; ...la primera vez (bit 4), el sonido 0x2E
 	bit 4,(hl)		;9d98
 	ret nz			;9d9a
 	set 4,(hl)		;9d9b
 	ld a,02eh		;9d9d
 	jp 04059h		;9d9f   ; pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 L_9DA2:
-	ld a,d			;9da2
+	ld a,d			;9da2   ; mapa 3: salas 7 y 0x0E abren, la 0x0D pone 0xE0A3
 	cp 007h		;9da3
-	jr z,L_9D8D		;9da5
+	jr z,abre_esta		;9da5
 	cp 00eh		;9da7
-	jr z,L_9D8D		;9da9
+	jr z,abre_esta		;9da9
 	cp 00dh		;9dab
 	ret nz			;9dad
 	ld a,001h		;9dae
 	ld (0e0a3h),a		;9db0
-	jr L_9E07		;9db3
+	jr quita_la_pared		;9db3
 L_9DB5:
-	ld a,d			;9db5
+	ld a,d			;9db5   ; mapa 4: salas 0x0C y 0x0F abren
 	cp 00ch		;9db6
-	jr z,L_9D8D		;9db8
+	jr z,abre_esta		;9db8
 	cp 00fh		;9dba
-	jr z,L_9D8D		;9dbc
+	jr z,abre_esta		;9dbc
 	ret			;9dbe
 L_9DBF:
-	ld a,d			;9dbf
+	ld a,d			;9dbf   ; mapa 5: la sala 8 abre la 0x0F; la 0x0B pone 0xE0A4
 	cp 008h		;9dc0
 	ld bc,00f05h		;9dc2
-	jp z,L_9E4E		;9dc5
+	jp z,abre_otra		;9dc5   ; abre_otra: el bit 3 en las marcas de la sala B del mapa C
 	cp 00bh		;9dc8
 	ret nz			;9dca
 	ld a,001h		;9dcb
 	ld (0e0a4h),a		;9dcd
 	ret			;9dd0
 L_9DD1:
-	ld a,d			;9dd1
+	ld a,d			;9dd1   ; mapa 6: la sala 3 abre la 0x10; la 0x0E pone 0xE0A5
 	cp 003h		;9dd2
 	ld bc,01006h		;9dd4
-	jp z,L_9E4E		;9dd7
+	jp z,abre_otra		;9dd7   ; abre_otra: el bit 3 en las marcas de la sala B del mapa C
 	cp 00eh		;9dda
 	ret nz			;9ddc
 	ld a,001h		;9ddd
 	ld (0e0a5h),a		;9ddf
 	ret			;9de2
 L_9DE3:
-	ld a,d			;9de3
-	cp 00bh		;9de4
-	jr z,L_9D8D		;9de6
-	cp 00fh		;9de8
+	ld a,d			;9de3   ; mapa 7: la 0x0B abre; la 0x0F abre la 8; la 5 pone 0xE0A6
+	cp 00bh		;9de4   ; la 0x0B abre esta
+	jr z,abre_esta		;9de6
+	cp 00fh		;9de8   ; la 0x0F abre la 8
 	ld bc,00807h		;9dea
-	jr z,L_9E4E		;9ded
-	cp 005h		;9def
+	jr z,abre_otra		;9ded
+	cp 005h		;9def   ; la 5 pone 0xE0A6
 	ret nz			;9df1
 	ld a,001h		;9df2
 	ld (0e0a6h),a		;9df4
 	ret			;9df7
 L_9DF8:
-	ld a,d			;9df8
+	ld a,d			;9df8   ; mapa 8: la 0x12 abre; la 8 pone 0xE0A8; la 0x0F pone 0xE0A9
 	cp 012h		;9df9
-	jp z,L_9D8D		;9dfb
+	jp z,abre_esta		;9dfb   ; abre_esta: el bit 3 en las marcas de la sala y su escalera
 	cp 008h		;9dfe
 	jr nz,L_9E0D		;9e00
 	ld a,001h		;9e02
 	ld (0e0a8h),a		;9e04
-L_9E07:
-	xor a			;9e07
-	ld (0eac0h),a		;9e08
-	jr L_9D95		;9e0b
+quita_la_pared:		; sin la pared de 0xEAC0 y el sonido
+	xor a			;9e07   ; la pared de 0xEAC0 fuera y el sonido
+	ld (0eac0h),a		;9e08   ; guarda la pared de 0xF0 de la sala
+	jr sonido_de_abierta		;9e0b
 L_9E0D:
 	cp 00fh		;9e0d
 	ret nz			;9e0f
@@ -1162,36 +1162,36 @@ L_9E0D:
 L_9E15:
 	ret			;9e15
 L_9E16:
-	ld a,d			;9e16
+	ld a,d			;9e16   ; mapa 9: la 8 abre la 5; la 3 pone 0xE0AA; la 0x14 pone 0xE0AB
 	cp 008h		;9e17
 	ld bc,00509h		;9e19
-	jp z,L_9E4E		;9e1c
+	jp z,abre_otra		;9e1c   ; abre_otra: el bit 3 en las marcas de la sala B del mapa C
 	cp 003h		;9e1f
 	jr nz,L_9E2A		;9e21
 	ld a,001h		;9e23
 	ld (0e0aah),a		;9e25
-	jr L_9E07		;9e28
+	jr quita_la_pared		;9e28
 L_9E2A:
 	cp 014h		;9e2a
 	ret nz			;9e2c
 	ld a,001h		;9e2d
 	ld (0e0abh),a		;9e2f
-	jr L_9E07		;9e32
+	jr quita_la_pared		;9e32
 L_9E34:
-	ld a,d			;9e34
+	ld a,d			;9e34   ; mapa 10: salas 2, 0x0A y 0x12 abren; la 0x1A pone 0xE0AC
 	cp 002h		;9e35
-	jp z,L_9D8D		;9e37
+	jp z,abre_esta		;9e37   ; abre_esta: el bit 3 en las marcas de la sala y su escalera
 	cp 00ah		;9e3a
-	jp z,L_9D8D		;9e3c
+	jp z,abre_esta		;9e3c   ; abre_esta: el bit 3 en las marcas de la sala y su escalera
 	cp 012h		;9e3f
-	jp z,L_9D8D		;9e41
+	jp z,abre_esta		;9e41   ; abre_esta: el bit 3 en las marcas de la sala y su escalera
 	cp 01ah		;9e44
 	ret nz			;9e46
 	ld a,001h		;9e47
 	ld (0e0ach),a		;9e49
-	jr L_9E07		;9e4c
-L_9E4E:
-	ld a,c			;9e4e
+	jr quita_la_pared		;9e4c
+abre_otra:		; el bit 3 en las marcas de la sala B del mapa C
+	ld a,c			;9e4e   ; abre otra sala: el bit 3 en las marcas de la sala B del mapa C
 	ld hl,0af09h		;9e4f
 	call 04053h		;9e52   ; palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 	ld l,b			;9e55
@@ -1202,73 +1202,73 @@ L_9E4E:
 	add hl,de			;9e5d
 	set 3,(hl)		;9e5e
 	ret			;9e60
-L_9E61:
-	ld hl,(0e60eh)		;9e61   ; lee la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)
+escalera_abierta:		; con el bit 3 de la sala, su escalera (0xEC08)
+	ld hl,(0e60eh)		;9e61   ; con el bit 3 de la sala, su escalera (0xEC08)...
 	bit 3,(hl)		;9e64
 	ret z			;9e66
-	ld de,(0e041h)		;9e67   ; lee el mapa (0xE041) y la sala (0xE042) de un tiron
+	ld de,(0e041h)		;9e67   ; ...en el sitio de cada sala: mapa 3 sala 7...
 	ld hl,00703h		;9e6b
 	or a			;9e6e
 	sbc hl,de		;9e6f
 	jp z,L_9EFA		;9e71
-	ld hl,00e03h		;9e74
+	ld hl,00e03h		;9e74   ; ...mapa 3 sala 0x0E...
 	or a			;9e77
 	sbc hl,de		;9e78
 	jp z,L_9EFF		;9e7a
-	ld hl,00c04h		;9e7d
+	ld hl,00c04h		;9e7d   ; ...mapa 4 sala 0x0C...
 	or a			;9e80
 	sbc hl,de		;9e81
 	jp z,L_9EFA		;9e83
-	ld hl,00f04h		;9e86
+	ld hl,00f04h		;9e86   ; ...mapa 4 sala 0x0F...
 	or a			;9e89
 	sbc hl,de		;9e8a
 	jp z,L_9F10		;9e8c
-	ld hl,00f05h		;9e8f
+	ld hl,00f05h		;9e8f   ; ...mapa 5 sala 0x0F...
 	or a			;9e92
 	sbc hl,de		;9e93
 	jp z,L_9EFA		;9e95
-	ld hl,01006h		;9e98
+	ld hl,01006h		;9e98   ; ...mapa 6 sala 0x10...
 	or a			;9e9b
 	sbc hl,de		;9e9c
 	jp z,L_9EFA		;9e9e
-	ld hl,00b07h		;9ea1
+	ld hl,00b07h		;9ea1   ; ...mapa 7 sala 0x0B...
 	or a			;9ea4
 	sbc hl,de		;9ea5
 	jr z,L_9EFA		;9ea7
-	ld hl,00807h		;9ea9
+	ld hl,00807h		;9ea9   ; ...mapa 7 sala 8...
 	or a			;9eac
 	sbc hl,de		;9ead
 	jr z,L_9F04		;9eaf
-	ld hl,01208h		;9eb1
+	ld hl,01208h		;9eb1   ; ...mapa 8 sala 0x12...
 	or a			;9eb4
 	sbc hl,de		;9eb5
 	jr z,L_9F0B		;9eb7
-	ld hl,00509h		;9eb9
+	ld hl,00509h		;9eb9   ; ...mapa 9 sala 5...
 	or a			;9ebc
 	sbc hl,de		;9ebd
 	jr z,L_9EFA		;9ebf
-	ld hl,0020ah		;9ec1
+	ld hl,0020ah		;9ec1   ; ...mapa 10 sala 2...
 	or a			;9ec4
 	sbc hl,de		;9ec5
 	jr z,L_9F10		;9ec7
-	ld hl,00a0ah		;9ec9
+	ld hl,00a0ah		;9ec9   ; ...mapa 10 sala 0x0A...
 	or a			;9ecc
 	sbc hl,de		;9ecd
 	jr z,L_9F15		;9ecf
-	ld hl,0120ah		;9ed1
+	ld hl,0120ah		;9ed1   ; ...mapa 10 sala 0x12...
 	or a			;9ed4
 	sbc hl,de		;9ed5
 	jr z,L_9EFA		;9ed7
-	ld hl,00a02h		;9ed9
+	ld hl,00a02h		;9ed9   ; ...mapa 2 sala 0x0A
 	or a			;9edc
 	sbc hl,de		;9edd
 	ret nz			;9edf
 	ld hl,0ee15h		;9ee0
 L_9EE3:
-	ld a,003h		;9ee3
+	ld a,003h		;9ee3   ; 3 casillas de alto...
 L_9EE5:
-	ex de,hl			;9ee5
-	ld hl,0ec08h		;9ee6
+	ex de,hl			;9ee5   ; ...en 0xEC08: [1][alto][casilla]
+	ld hl,0ec08h		;9ee6   ; apunta a la escalera que aparece
 	ld (hl),001h		;9ee9
 	inc l			;9eeb
 	ld (hl),a			;9eec
@@ -1276,9 +1276,9 @@ L_9EE5:
 	ld (hl),e			;9eee
 	inc l			;9eef
 	ld (hl),d			;9ef0
-	call L_9D95		;9ef1
-L_9EF4:
-	ld a,001h		;9ef4
+	call sonido_de_abierta		;9ef1   ; sonido_de_abierta: la primera vez, el sonido 0x2E
+e6a1_a_uno:		; 0xE6A1 = 1
+	ld a,001h		;9ef4   ; 0xE6A1 = 1
 	ld (0e6a1h),a		;9ef6
 	ret			;9ef9
 L_9EFA:
@@ -1288,7 +1288,7 @@ L_9EFF:
 	ld hl,0ee19h		;9eff
 	jr L_9EE3		;9f02
 L_9F04:
-	ld hl,0ef9ch		;9f04
+	ld hl,0ef9ch		;9f04   ; 4 de alto
 	ld a,004h		;9f07
 	jr L_9EE5		;9f09
 L_9F0B:
@@ -1300,53 +1300,53 @@ L_9F10:
 L_9F15:
 	ld hl,0ed84h		;9f15
 	jr L_9EE3		;9f18
-L_9F1A:
-	ld de,(0e041h)		;9f1a   ; lee el mapa (0xE041) y la sala (0xE042) de un tiron
+paredes_de_la_sala:		; las paredes de 0xF0 de las salas que se abren desde otra
+	ld de,(0e041h)		;9f1a   ; las paredes de 0xF0 de cada sala: mapa 4 sala 4...
 	ld hl,00404h		;9f1e
 	or a			;9f21
 	sbc hl,de		;9f22
 	jr z,L_9F97		;9f24
-	ld hl,00c02h		;9f26
+	ld hl,00c02h		;9f26   ; ...mapa 2 sala 0x0C...
 	or a			;9f29
 	sbc hl,de		;9f2a
 	jp z,L_9FA2		;9f2c
-	ld hl,00d03h		;9f2f
+	ld hl,00d03h		;9f2f   ; ...mapa 3 sala 0x0D...
 	or a			;9f32
 	sbc hl,de		;9f33
 	jp z,L_9FAC		;9f35
-	ld hl,00f05h		;9f38
+	ld hl,00f05h		;9f38   ; ...mapa 5 sala 0x0F...
 	or a			;9f3b
 	sbc hl,de		;9f3c
 	jp z,L_9FB6		;9f3e
-	ld hl,00d06h		;9f41
+	ld hl,00d06h		;9f41   ; ...mapa 6 sala 0x0D...
 	or a			;9f44
 	sbc hl,de		;9f45
 	jp z,L_9FC0		;9f47
-	ld hl,00807h		;9f4a
+	ld hl,00807h		;9f4a   ; ...mapa 7 sala 8...
 	or a			;9f4d
 	sbc hl,de		;9f4e
 	jp z,L_9FCA		;9f50
-	ld hl,00808h		;9f53
+	ld hl,00808h		;9f53   ; ...mapa 8 sala 8...
 	or a			;9f56
 	sbc hl,de		;9f57
 	jp z,L_9FE1		;9f59
-	ld hl,00e08h		;9f5c
+	ld hl,00e08h		;9f5c   ; ...mapa 8 sala 0x0E...
 	or a			;9f5f
 	sbc hl,de		;9f60
 	jp z,L_9FEB		;9f62
-	ld hl,00309h		;9f65
+	ld hl,00309h		;9f65   ; ...mapa 9 sala 3...
 	or a			;9f68
 	sbc hl,de		;9f69
 	jp z,L_9FF5		;9f6b
-	ld hl,01409h		;9f6e
+	ld hl,01409h		;9f6e   ; ...mapa 9 sala 0x14...
 	or a			;9f71
 	sbc hl,de		;9f72
 	jp z,L_9FFF		;9f74
-	ld hl,01a0ah		;9f77
+	ld hl,01a0ah		;9f77   ; ...mapa 10 sala 0x1A...
 	or a			;9f7a
 	sbc hl,de		;9f7b
 	jp z,0a009h		;9f7d
-	ld hl,00b03h		;9f80
+	ld hl,00b03h		;9f80   ; ...y en la sala 0x0B del mapa 3, con el objeto 0x12, la fila 11 se abre (0xEAC8)
 	or a			;9f83
 	sbc hl,de		;9f84
 	ret nz			;9f86
@@ -1355,67 +1355,67 @@ L_9F1A:
 	ret z			;9f8b
 	ld a,001h		;9f8c
 	ld (0eac8h),a		;9f8e   ; guarda lo que abre el objeto 0x12
-	call L_9D95		;9f91
-	jp L_9EF4		;9f94
+	call sonido_de_abierta		;9f91   ; sonido_de_abierta: la primera vez, el sonido 0x2E
+	jp e6a1_a_uno		;9f94   ; e6a1_a_uno: 0xE6A1 = 1
 L_9F97:
-	ld a,(0e0a1h)		;9f97   ; lee las cinco subidas hechas
+	ld a,(0e0a1h)		;9f97   ; mapa 4 sala 4: sin las cinco subidas, el bloque de 0xEAC9
 	or a			;9f9a
 	ret nz			;9f9b
 	ld a,001h		;9f9c
-	ld (0eac9h),a		;9f9e
+	ld (0eac9h),a		;9f9e   ; guarda el bloque de la sala 4 del mapa 4
 	ret			;9fa1
 L_9FA2:
-	ld a,(0e0a2h)		;9fa2
+	ld a,(0e0a2h)		;9fa2   ; sin 0xE0A2, la pared en 0xED80
 	or a			;9fa5
 	ret nz			;9fa6
 	ld de,0ed80h		;9fa7   ; apunta a la pantalla de la sala en la copia (filas 4-23)
 	jr L_9FD4		;9faa
 L_9FAC:
-	ld a,(0e0a3h)		;9fac
+	ld a,(0e0a3h)		;9fac   ; sin 0xE0A3, en 0xEE9C
 	or a			;9faf
 	ret nz			;9fb0
 	ld de,0ee9ch		;9fb1
 	jr L_9FD4		;9fb4
 L_9FB6:
-	ld a,(0e0a4h)		;9fb6
+	ld a,(0e0a4h)		;9fb6   ; sin 0xE0A4, en 0xEF0E
 	or a			;9fb9
 	ret nz			;9fba
 	ld de,0ef0eh		;9fbb
 	jr L_9FD4		;9fbe
 L_9FC0:
-	ld a,(0e0a5h)		;9fc0
+	ld a,(0e0a5h)		;9fc0   ; sin 0xE0A5, en 0xEE9C
 	or a			;9fc3
 	ret nz			;9fc4
 	ld de,0ee9ch		;9fc5
 	jr L_9FD4		;9fc8
 L_9FCA:
-	ld a,(0e0a6h)		;9fca
+	ld a,(0e0a6h)		;9fca   ; sin 0xE0A6, en 0xEF00; con el, el sonido de abierta
 	or a			;9fcd
-	jp nz,L_9D95		;9fce
+	jp nz,sonido_de_abierta		;9fce   ; sonido_de_abierta: la primera vez, el sonido 0x2E
 	ld de,0ef00h		;9fd1
 L_9FD4:
-	ld hl,0eac0h		;9fd4
+	ld hl,0eac0h		;9fd4   ; la pared: 0xEAC0 = 1 y su casilla
 	ld (hl),001h		;9fd7
 	inc l			;9fd9
 	inc l			;9fda
 	ld (hl),e			;9fdb
 	inc l			;9fdc
 	ld (hl),d			;9fdd
-	jp L_9EF4		;9fde
+	jp e6a1_a_uno		;9fde   ; e6a1_a_uno: 0xE6A1 = 1
 L_9FE1:
-	ld a,(0e0a8h)		;9fe1
+	ld a,(0e0a8h)		;9fe1   ; sin 0xE0A8, en 0xEF84
 	or a			;9fe4
 	ret nz			;9fe5
 	ld de,0ef84h		;9fe6
 	jr L_9FD4		;9fe9
 L_9FEB:
-	ld a,(0e0a9h)		;9feb
+	ld a,(0e0a9h)		;9feb   ; sin 0xE0A9, en 0xED88
 	or a			;9fee
 	ret nz			;9fef
 	ld de,0ed88h		;9ff0
 	jr L_9FD4		;9ff3
 L_9FF5:
-	ld a,(0e0aah)		;9ff5
+	ld a,(0e0aah)		;9ff5   ; sin 0xE0AA, en 0xEE1C
 	or a			;9ff8
 	ret nz			;9ff9
 	ld de,0ee1ch		;9ffa

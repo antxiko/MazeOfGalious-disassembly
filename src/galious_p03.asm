@@ -2162,7 +2162,7 @@ escalera_en:		; C si las casillas H + C y H + 16 son escalera (0x9A, 0x9B)
 	ld (0e525h),a		;af29   ; guarda la escalera de 0xEC00 al lado
 	ld c,b			;af2c   ; las escaleras de 0xE0B0 que no estan...
 	ld b,004h		;af2d
-	ld hl,0e0b0h		;af2f
+	ld hl,0e0b0h		;af2f   ; apunta a las 15 escaleras del castillo que se gastan (2 bytes cada una)
 L_AF32:
 	ld a,(hl)			;af32
 	and a			;af33

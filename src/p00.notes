@@ -1136,6 +1136,7 @@ C 0x4257 bancos_4_5_6: pone los bancos 4, 5 y 6 (y sus copias en 0xF0F1-0xF0F3)
 C 0x425A acaba_figura: la figura se acaba: el hueco vacio y una menos
 C 0x425D bancos_1_2_3: pone los bancos 1, 2 y 3 (y sus copias en 0xF0F1-0xF0F3)
 C 0x4260 bancos_7_8_9: pone los bancos 7, 8 y 9 (y sus copias en 0xF0F1-0xF0F3)
+C 0x4263 salas_que_abren: en los mundos, las salas que abren otras o ponen 0xE0A2-0xE0AC
 C 0x4266 bancos_1_2_3: pone los bancos 1, 2 y 3 (y sus copias en 0xF0F1-0xF0F3)
 C 0x4269 bancos_1_2_3: pone los bancos 1, 2 y 3 (y sus copias en 0xF0F1-0xF0F3)
 C 0x426C estado_4: el estado 4 (golpeado)
@@ -1500,6 +1501,10 @@ C 0x516F especiales_de_la_sala: lo especial de cada sala (0xE650-0xE66F)
 C 0x5172 bancos_1_2_3: pone los bancos 1, 2 y 3 (y sus copias en 0xF0F1-0xF0F3)
 C 0x517C puerta_de_vuelta_de_la_sala: en el castillo, la puerta de vuelta de la sala (0x9DDA) en 0xE680-0xE685
 C 0x517F cosa_e678: en los mundos, 0xE678-0xE67A de la lista 0x9C83 de la sala
+C 0x5185 figuras_del_castillo_de_la_sala: pone las figuras de la lista 0xA7BC de la sala
+C 0x5188 paredes_de_la_sala: las paredes de 0xF0 de las salas que se abren desde otra
+C 0x518B escalera_abierta: con el bit 3 de la sala, su escalera (0xEC08)
+C 0x518E escaleras_al_entrar: las escaleras del castillo de esta sala a 0xEC00
 C 0x5191 bancos_1_2_3: pone los bancos 1, 2 y 3 (y sus copias en 0xF0F1-0xF0F3)
 C 0x5197 cosas_del_castillo: 0xE6A0 a 0 y lo de la sala del castillo (tabla 0xB8A2)
 C 0x519A figura_ec20: en el castillo, la figura de la tabla 0xBA53 en 0xEC20
@@ -1560,6 +1565,15 @@ C 0x534D p8000_banco_2: pone el banco 2 en 0x8000
 C 0x5350 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x535A lee_el_mando: el mando en 0xE009 (apretado) y 0xE008 (recien apretado)
 C 0x5363 objeto_20: con el objeto 0x20 y CTRL, todo se para un rato (hasta 16 veces)
+C 0x5369 puertas: las puertas del castillo: con llave y empujando se abren
+C 0x536C figuras_2_cuadro: las dos de 0xEA30: con llave se atraviesan
+C 0x536F figura_3_cuadro: la que gira: empujando de su lado se atraviesa
+C 0x5372 figuras_4_cuadro: las cuatro de 0xEA60 cada cuadro
+C 0x5375 paso_escondido: el paso escondido: se abre empujando tres veces
+C 0x5378 figura_eab0: la figura de 0xEAB0 cada cuadro
+C 0x537B rompe_pared: la pared de la figura 7 a espadazos (Popolon o el objeto 0x1C)
+C 0x537E escaleras_del_castillo: las 15 escaleras de 0xE0B0: cada 32 cuadros, si es su sala
+C 0x5381 gasta_escalera: la escalera usada se quita por 0x3C x 32 cuadros
 C 0x5387 cuenta_huecos_ec30: los tres huecos de 0xEC30: cuentan y se vacian
 C 0x538A objeto_21: con el objeto 0x21 y el boton A, p15:B85C con cada hueco de 0xEC30
 C 0x5390 mueve_de_sala_en_sala: mueve las seis de 0xE4A0 y copia en 0xEC10 la de esta sala

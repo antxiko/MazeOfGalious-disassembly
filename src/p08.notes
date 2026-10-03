@@ -1,5 +1,75 @@
 # notas del banco 08
 
+# --- A MANO: comentarios, nombres y bloques ---
+C 0x9cfa las figuras del castillo: sus huecos (0xEA60, 0xEA30, 0xEA00) en 0xF008-0xF00D...
+C 0x9d0c ...la lista del mapa en 0xA7BC...
+C 0x9d16 ...saltando las de las salas de antes...
+C 0x9d1d ...[tipo][sitio] hasta un 0
+C 0x9d2a cada figura: el tipo...
+C 0x9d2f ...la y en los 3 bits altos del sitio...
+C 0x9d33 ...la x en los 5 bajos (x 8)...
+C 0x9d3d ...se pone
+C 0x9d44 el tipo y el sitio en 0xF000-0xF003, y por el tipo (bits 0-3, tabla que sigue)
+C 0x9d5f en los mundos, lo que hace cada sala al entrar (tabla por mapa)
+C 0x9d7e mapa 2: sala 0x0A abre, sala 0x0C pone 0xE0A2
+C 0x9d86 0xE0A2 = 1: en la sala 2 del mapa 12 se quita la pared (p08:9FA2)
+C 0x9d8d abre: el bit 3 en las marcas de la sala (la escalera de p08:9E61)...
+C 0x9d95 ...la primera vez (bit 4), el sonido 0x2E
+C 0x9da2 mapa 3: salas 7 y 0x0E abren, la 0x0D pone 0xE0A3
+C 0x9db5 mapa 4: salas 0x0C y 0x0F abren
+C 0x9dbf mapa 5: la sala 8 abre la 0x0F; la 0x0B pone 0xE0A4
+C 0x9dd1 mapa 6: la sala 3 abre la 0x10; la 0x0E pone 0xE0A5
+C 0x9de3 mapa 7: la 0x0B abre; la 0x0F abre la 8; la 5 pone 0xE0A6
+C 0x9df8 mapa 8: la 0x12 abre; la 8 pone 0xE0A8; la 0x0F pone 0xE0A9
+C 0x9e07 la pared de 0xEAC0 fuera y el sonido
+C 0x9e16 mapa 9: la 8 abre la 5; la 3 pone 0xE0AA; la 0x14 pone 0xE0AB
+C 0x9e34 mapa 10: salas 2, 0x0A y 0x12 abren; la 0x1A pone 0xE0AC
+C 0x9e4e abre otra sala: el bit 3 en las marcas de la sala B del mapa C
+C 0x9e61 con el bit 3 de la sala, su escalera (0xEC08)...
+C 0x9e67 ...en el sitio de cada sala: mapa 3 sala 7...
+C 0x9e74 ...mapa 3 sala 0x0E...
+C 0x9e7d ...mapa 4 sala 0x0C...
+C 0x9e86 ...mapa 4 sala 0x0F...
+C 0x9e8f ...mapa 5 sala 0x0F...
+C 0x9e98 ...mapa 6 sala 0x10...
+C 0x9ea1 ...mapa 7 sala 0x0B...
+C 0x9ea9 ...mapa 7 sala 8...
+C 0x9eb1 ...mapa 8 sala 0x12...
+C 0x9eb9 ...mapa 9 sala 5...
+C 0x9ec1 ...mapa 10 sala 2...
+C 0x9ec9 ...mapa 10 sala 0x0A...
+C 0x9ed1 ...mapa 10 sala 0x12...
+C 0x9ed9 ...mapa 2 sala 0x0A
+C 0x9ee3 3 casillas de alto...
+C 0x9ee5 ...en 0xEC08: [1][alto][casilla]
+C 0x9ef4 0xE6A1 = 1
+C 0x9f04 4 de alto
+C 0x9f1a las paredes de 0xF0 de cada sala: mapa 4 sala 4...
+C 0x9f26 ...mapa 2 sala 0x0C...
+C 0x9f2f ...mapa 3 sala 0x0D...
+C 0x9f38 ...mapa 5 sala 0x0F...
+C 0x9f41 ...mapa 6 sala 0x0D...
+C 0x9f4a ...mapa 7 sala 8...
+C 0x9f53 ...mapa 8 sala 8...
+C 0x9f5c ...mapa 8 sala 0x0E...
+C 0x9f65 ...mapa 9 sala 3...
+C 0x9f6e ...mapa 9 sala 0x14...
+C 0x9f77 ...mapa 10 sala 0x1A...
+C 0x9f80 ...y en la sala 0x0B del mapa 3, con el objeto 0x12, la fila 11 se abre (0xEAC8)
+C 0x9f97 mapa 4 sala 4: sin las cinco subidas, el bloque de 0xEAC9
+C 0x9fa2 sin 0xE0A2, la pared en 0xED80
+C 0x9fac sin 0xE0A3, en 0xEE9C
+C 0x9fb6 sin 0xE0A4, en 0xEF0E
+C 0x9fc0 sin 0xE0A5, en 0xEE9C
+C 0x9fca sin 0xE0A6, en 0xEF00; con el, el sonido de abierta
+C 0x9fd4 la pared: 0xEAC0 = 1 y su casilla
+C 0x9fe1 sin 0xE0A8, en 0xEF84
+C 0x9feb sin 0xE0A9, en 0xED88
+C 0x9ff5 sin 0xE0AA, en 0xEE1C
+C 0x9de4 la 0x0B abre esta
+C 0x9de8 la 0x0F abre la 8
+C 0x9def la 5 pone 0xE0A6
+
 # --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
 D 0x8000 0x9BE6 salas_cola  las salas de los 11 mapas, 8 x 5 bloques (40 bytes) cada una, seguidas: el castillo (147, de 0x6AD6 a 0x81CE, pasando del banco 7 al 8) y los diez mundos desde 0x81CE (p00:5626) (sigue del banco anterior, 0x6AD6); lo leen p00:564A (7142 bytes)
 F 0x8000 8
@@ -16,22 +86,40 @@ F 0x9FFF 4
 # --- fin de los bloques de bloques.py ---
 
 # --- ANOTACIONES AUTOMATICAS (seccion que reescribe tools/anota.py; no editar a mano) ---
+L 0x9CFA figuras_del_castillo_de_la_sala pone las figuras de la lista 0xA7BC de la sala
+L 0x9D44 pon_figura_del_castillo una figura del castillo por su tipo
+L 0x9D5F salas_que_abren en los mundos, las salas que abren otras o ponen 0xE0A2-0xE0AC
+L 0x9D8D abre_esta el bit 3 en las marcas de la sala y su escalera
+L 0x9D95 sonido_de_abierta la primera vez, el sonido 0x2E
+L 0x9E07 quita_la_pared sin la pared de 0xEAC0 y el sonido
+L 0x9E4E abre_otra el bit 3 en las marcas de la sala B del mapa C
+L 0x9E61 escalera_abierta con el bit 3 de la sala, su escalera (0xEC08)
+L 0x9EF4 e6a1_a_uno 0xE6A1 = 1
+L 0x9F1A paredes_de_la_sala las paredes de 0xF0 de las salas que se abren desde otra
 C 0x9D06 apunta a las puertas del castillo (figura 1, dos de 16 bytes)
-C 0x9D0C lee el mapa (1 el castillo, 2-11 los mundos)
 C 0x9D12 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
-C 0x9D16 lee la sala
 C 0x9D4E despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
-C 0x9D5F lee el mapa (0xE041) y la sala (0xE042) de un tiron
 C 0x9D67 despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
-C 0x9D8D lee la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)
-C 0x9D95 lee la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)
+C 0x9D88 guarda las paredes abiertas de los mundos (0xE0A2-0xE0AC)
+C 0x9D92 escalera_abierta: con el bit 3 de la sala, su escalera (0xEC08)
 C 0x9D9F pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x9DC5 abre_otra: el bit 3 en las marcas de la sala B del mapa C
+C 0x9DD7 abre_otra: el bit 3 en las marcas de la sala B del mapa C
+C 0x9DFB abre_esta: el bit 3 en las marcas de la sala y su escalera
+C 0x9E08 guarda la pared de 0xF0 de la sala
+C 0x9E1C abre_otra: el bit 3 en las marcas de la sala B del mapa C
+C 0x9E37 abre_esta: el bit 3 en las marcas de la sala y su escalera
+C 0x9E3C abre_esta: el bit 3 en las marcas de la sala y su escalera
+C 0x9E41 abre_esta: el bit 3 en las marcas de la sala y su escalera
 C 0x9E52 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
-C 0x9E61 lee la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)
-C 0x9E67 lee el mapa (0xE041) y la sala (0xE042) de un tiron
-C 0x9F1A lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0x9EE6 apunta a la escalera que aparece
+C 0x9EF1 sonido_de_abierta: la primera vez, el sonido 0x2E
 C 0x9F87 lee tiene el objeto 0x12
 C 0x9F8E guarda lo que abre el objeto 0x12
-C 0x9F97 lee las cinco subidas hechas
+C 0x9F91 sonido_de_abierta: la primera vez, el sonido 0x2E
+C 0x9F94 e6a1_a_uno: 0xE6A1 = 1
+C 0x9F9E guarda el bloque de la sala 4 del mapa 4
 C 0x9FA7 apunta a la pantalla de la sala en la copia (filas 4-23)
+C 0x9FCE sonido_de_abierta: la primera vez, el sonido 0x2E
+C 0x9FDE e6a1_a_uno: 0xE6A1 = 1
 # --- fin de las anotaciones de anota.py ---
