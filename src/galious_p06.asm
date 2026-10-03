@@ -103,7 +103,7 @@ L_A0A2:
 	call nc,banderas_8f		;a0a2   ; banderas_8f: las banderas AND 0x8F
 	dec a			;a0a5
 	jr z,tipo_2e_entra		;a0a6
-	ld a,(ix+01eh)		;a0a8
+	ld a,(ix+01eh)		;a0a8   ; segun (ix+0x1E): 0, 4 u 8...
 	ld c,010h		;a0ab
 	and a			;a0ad
 	jr z,L_A0BA		;a0ae
@@ -331,9 +331,9 @@ L_A246:
 busca_cerca:		; Z si A - 3 ... A + B - 4 coincide con (HL)
 	add a,0fdh		;a24c
 busca_en_b:		; Z si (HL) es uno de B valores desde A
-	cp (hl)			;a24e
+	cp (hl)			;a24e   ; A es (HL)?...
 	jr z,L_A256		;a24f
-	inc a			;a251
+	inc a			;a251   ; ...o el siguiente
 	djnz busca_en_b		;a252
 	xor a			;a254
 	ret			;a255
@@ -648,9 +648,9 @@ L_A49B:
 	ld (ix+007h),a		;a4a7   ; guarda la x de la figura
 	jp L_A530		;a4aa
 suma_16_17:		; (ix+0x16, 0x17) + BC
-	ld h,(ix+017h)		;a4ad
+	ld h,(ix+017h)		;a4ad   ; (ix+0x16, 0x17)...
 	ld l,(ix+016h)		;a4b0
-	add hl,bc			;a4b3
+	add hl,bc			;a4b3   ; ...+ BC
 	ld (ix+017h),h		;a4b4
 	ld (ix+016h),l		;a4b7
 	ret			;a4ba
@@ -997,11 +997,11 @@ L_A714:
 lengua_del_jefe_7:		; la lengua del jefe 7: una menos y su sitio
 	ld hl,0e722h		;a727   ; apunta a el jefe 7 ha mordido
 	dec (hl)			;a72a
-	ld hl,0e724h		;a72b
+	ld hl,0e724h		;a72b   ; ...la siguiente 0x20 mas alla...
 	ld a,(hl)			;a72e
 	add a,020h		;a72f
 	ld (hl),a			;a731
-	ld a,(0e720h)		;a732
+	ld a,(0e720h)		;a732   ; ...y 0xE720 - 4
 	sub 004h		;a735
 	and 00fh		;a737
 	ld (0e720h),a		;a739
@@ -1020,23 +1020,23 @@ L_A749:
 	ld (hl),000h		;a753
 	ret			;a755
 dentro_de_1c:		; C si (ix+0x1C) esta entre 8 y 0xB8
-	ld a,(ix+01ch)		;a756
+	ld a,(ix+01ch)		;a756   ; (ix+0x1C) entre 8 y 0xB8...
 	cp 008h		;a759
 	ret c			;a75b
 	cp 0b8h		;a75c
 	ccf			;a75e
 	ret c			;a75f
-	ld a,(ix+01dh)		;a760
+	ld a,(ix+01dh)		;a760   ; ...y el lado
 	bit 7,(ix+014h)		;a763
 	jr z,L_A76B		;a767
 	add a,007h		;a769
 L_A76B:
-	sub (ix+014h)		;a76b
+	sub (ix+014h)		;a76b   ; la mitad del camino...
 	ld c,a			;a76e
 	ld a,(ix+014h)		;a76f
 	add a,c			;a772
 	rra			;a773
-	xor c			;a774
+	xor c			;a774   ; ...si cambia de lado, C
 	rla			;a775
 	ret nc			;a776
 	xor a			;a777
@@ -1373,10 +1373,10 @@ L_AA50:
 	ld a,(ix+017h)		;aa50
 	ld (ix+00ah),a		;aa53   ; guarda el dibujo (o el mosaico) de la figura
 L_AA56:
-	ld a,(ix+01bh)		;aa56
+	ld a,(ix+01bh)		;aa56   ; al llegar a (ix+0x1F)...
 	sub (ix+01fh)		;aa59
 	ret nz			;aa5c
-	ld (ix+01bh),a		;aa5d
+	ld (ix+01bh),a		;aa5d   ; ...a cero y otra vez
 	ld a,(ix+016h)		;aa60
 	jr L_AA4D		;aa63
 L_AA65:
@@ -1438,7 +1438,7 @@ tipo_5c_entra:		; al entrar el tipo 0x5C
 	ld a,001h		;aadb
 	ld (0f030h),a		;aadd
 L_AAE0:
-	ld hl,0f032h		;aae0
+	ld hl,0f032h		;aae0   ; 0xF032 sube hasta 0xF033
 	ld a,(0f033h)		;aae3
 	cp (hl)			;aae6
 	jr z,L_AAEB		;aae7
@@ -1486,13 +1486,13 @@ velocidad_por_cercania:		; la velocidad segun lo cerca que este el personaje
 	jr nc,L_AB3D		;ab39
 	neg		;ab3b
 L_AB3D:
-	cp 040h		;ab3d
+	cp 040h		;ab3d   ; menos de 0x18: 0x280; 0x18-0x27: 0x200...
 	ld de,00100h		;ab3f
 	jr nc,L_AB55		;ab42
-	cp 028h		;ab44
+	cp 028h		;ab44   ; ...0x28-0x3F: 0x180...
 	ld de,00180h		;ab46
 	jr nc,L_AB55		;ab49
-	cp 018h		;ab4b
+	cp 018h		;ab4b   ; ...0x40 o mas: 0x100
 	ld de,00200h		;ab4d
 	jr nc,L_AB55		;ab50
 	ld de,00280h		;ab52
@@ -1502,16 +1502,16 @@ L_AB55:
 	jr nc,L_AB5F		;ab5b
 	neg		;ab5d
 L_AB5F:
-	cp 080h		;ab5f
+	cp 080h		;ab5f   ; la distancia: 0x80 o mas, 0x100...
 	ld hl,00100h		;ab61
 	ret nc			;ab64
-	cp 060h		;ab65
+	cp 060h		;ab65   ; ...0x60, 0x180...
 	ld hl,00180h		;ab67
 	ret nc			;ab6a
-	cp 040h		;ab6b
+	cp 040h		;ab6b   ; ...0x40, 0x200...
 	ld hl,00200h		;ab6d
 	ret nc			;ab70
-	cp 020h		;ab71
+	cp 020h		;ab71   ; ...0x20...
 	ld hl,00280h		;ab73
 	ret nc			;ab76
 	ld hl,00300h		;ab77
@@ -1979,21 +1979,21 @@ L_AECC:
 	ld hl,0e800h		;aed1   ; apunta a los huecos de figura (32 bytes cada uno)
 	ld b,008h		;aed4
 L_AED6:
-	ld d,h			;aed6
+	ld d,h			;aed6   ; DE = la figura siguiente...
 	ld e,l			;aed7
 	ld a,020h		;aed8
 	add a,e			;aeda
 	ld e,a			;aedb
-	ld c,b			;aedc
+	ld c,b			;aedc   ; ...B - 1 parejas
 	dec c			;aedd
 	ret z			;aede
 L_AEDF:
-	push hl			;aedf
+	push hl			;aedf   ; una pareja de figuras: si la otra esta...
 	push de			;aee0
 	ld a,(de)			;aee1
 	or a			;aee2
 	jr z,L_AF44		;aee3
-	ld a,007h		;aee5
+	ld a,007h		;aee5   ; ...sus bytes 7 (la x)...
 	add a,l			;aee7
 	ld l,a			;aee8
 	ld a,007h		;aee9
@@ -2009,11 +2009,11 @@ L_AEDF:
 	cp 01ch		;aefb
 	jp nc,L_AF57		;aefd
 L_AF00:
-	dec l			;af00
+	dec l			;af00   ; las x (bytes 5)...
 	dec l			;af01
 	dec e			;af02
 	dec e			;af03
-	ld a,(de)			;af04
+	ld a,(de)			;af04   ; ...a menos de 0x10?
 	sub (hl)			;af05
 	add a,010h		;af06
 	cp 021h		;af08
@@ -2024,29 +2024,29 @@ L_AF00:
 	jr nc,L_AF17		;af12
 	ld hl,0afd1h		;af14
 L_AF17:
-	exx			;af17
+	exx			;af17   ; las x (bytes 7)...
 	inc l			;af18
 	inc l			;af19
 	inc e			;af1a
 	inc e			;af1b
 	ld a,(de)			;af1c
-	sub (hl)			;af1d
+	sub (hl)			;af1d   ; ...a menos de 0x0B?
 	add a,00bh		;af1e
 	cp 017h		;af20
 	jr nc,L_AF44		;af22
 L_AF24:
-	ex af,af'			;af24
-	ld a,017h		;af25
+	ex af,af'			;af24   ; se tocan: las dos...
+	ld a,017h		;af25   ; HL y DE al byte 0x17 de cada una
 	add a,l			;af27
 	ld l,a			;af28
 	ld a,017h		;af29
 	add a,e			;af2b
 	ld e,a			;af2c
-	ld a,001h		;af2d
+	ld a,001h		;af2d   ; ...con el byte 0x17 a 1
 	ld (de),a			;af2f
 	ld (hl),a			;af30
 	ex af,af'			;af31
-	exx			;af32
+	exx			;af32   ; la direccion del choque de la tabla...
 	ld c,a			;af33
 	ld b,000h		;af34
 	add hl,bc			;af36
@@ -2054,22 +2054,22 @@ L_AF24:
 	exx			;af38
 	inc l			;af39
 	inc e			;af3a
-	ld (hl),a			;af3b
-	add a,008h		;af3c
+	ld (hl),a			;af3b   ; ...a una (byte 0x18)...
+	add a,008h		;af3c   ; ...y la contraria (+8) a la otra
 	and 00fh		;af3e
 	ld (de),a			;af40
-	pop hl			;af41
+	pop hl			;af41   ; y se acaba
 	pop de			;af42
 	ret			;af43
 L_AF44:
-	pop de			;af44
+	pop de			;af44   ; la siguiente figura (32 bytes)...
 	pop hl			;af45
 	ld a,020h		;af46
 	add a,e			;af48
 	ld e,a			;af49
-	dec c			;af4a
+	dec c			;af4a   ; ...C veces...
 	jp nz,L_AEDF		;af4b
-	ld a,020h		;af4e
+	ld a,020h		;af4e   ; ...y la primera de la pareja siguiente
 	add a,l			;af50
 	ld l,a			;af51
 	dec b			;af52
@@ -2082,13 +2082,13 @@ L_AF57:
 	jp nc,L_AF63		;af5d
 	ld hl,0af99h		;af60
 L_AF63:
-	exx			;af63
+	exx			;af63   ; las y (bytes 5)...
 	dec l			;af64
 	dec l			;af65
 	dec e			;af66
 	dec e			;af67
 	ld a,(de)			;af68
-	sub (hl)			;af69
+	sub (hl)			;af69   ; ...a menos de 0x10...
 	add a,010h		;af6a
 	cp 021h		;af6c
 	jp nc,L_AF44		;af6e
@@ -2189,10 +2189,10 @@ L_B036:
 	xor a			;b03b
 	ret			;b03c
 L_B03D:
-	ld a,h			;b03d
+	ld a,h			;b03d   ; es esta misma?...
 	cp d			;b03e
 	jr nz,L_B045		;b03f
-	ld a,l			;b041
+	ld a,l			;b041   ; ...entonces sigue
 	cp e			;b042
 	jr z,L_B034		;b043
 L_B045:
@@ -2287,12 +2287,12 @@ anima:		; el dibujo XOR D y el tamaño XOR B
 	xor a			;b0eb
 	ret			;b0ec
 mueve_figura:		; la y y la x de la figura mas sus velocidades
-	push ix		;b0ed
+	push ix		;b0ed   ; HL = la y de la figura (byte 4)...
 	pop hl			;b0ef
 	ld a,l			;b0f0
 	add a,004h		;b0f1
 	ld l,a			;b0f3
-	ld d,h			;b0f4
+	ld d,h			;b0f4   ; ...DE = su velocidad (byte 0x0C)...
 	ld e,l			;b0f5
 	ld a,e			;b0f6
 	add a,008h		;b0f7
@@ -2314,9 +2314,9 @@ suma_16_bits:		; (HL) += (DE) en 16 bits
 	add a,(hl)			;b115
 	ld (hl),a			;b116
 suma_alta:		; el byte alto con acarreo
-	inc l			;b117
+	inc l			;b117   ; el byte alto...
 	inc e			;b118
-	ld a,(de)			;b119
+	ld a,(de)			;b119   ; ...con acarreo
 	adc a,(hl)			;b11a
 	ld (hl),a			;b11b
 	inc l			;b11c
@@ -2452,19 +2452,19 @@ L_B1FA:
 	ld (0f018h),a		;b1fb
 	ret			;b1fe
 cuadrante:		; el cuadrante y el angulo de A a 0xF010 y 0xF017
-	ld c,a			;b1ff
+	ld c,a			;b1ff   ; el cuadrante: bit 0 de 0xF010 si el angulo pasa de 0x80...
 	add a,a			;b200
 	rla			;b201
 	and 001h		;b202
 	ld l,a			;b204
-	ld a,c			;b205
+	ld a,c			;b205   ; ...bit 0 de 0xF011 si pasa de 0x40 (corrido)...
 	add a,040h		;b206
 	add a,a			;b208
 	rla			;b209
 	and 001h		;b20a
 	ld h,a			;b20c
 	ld (0f010h),hl		;b20d
-	ld a,c			;b210
+	ld a,c			;b210   ; ...y el angulo dentro del cuadrante (0-0x3F) a 0xF017
 	cp 080h		;b211
 	jr c,L_B217		;b213
 	sub 080h		;b215
@@ -2484,25 +2484,25 @@ angulo_al_personaje:		; el angulo desde DE hasta el personaje
 	sub 008h		;b22e
 	ld (0f001h),a		;b230
 L_B233:
-	ld hl,0f010h		;b233
+	ld hl,0f010h		;b233   ; la distancia en y...
 	ld (hl),000h		;b236
-	ld a,(0f000h)		;b238
+	ld a,(0f000h)		;b238   ; ...del personaje a la figura...
 	sub e			;b23b
-	jr nc,L_B241		;b23c
+	jr nc,L_B241		;b23c   ; ...con el signo en 0xF010
 	neg		;b23e
 	inc (hl)			;b240
 L_B241:
-	inc hl			;b241
+	inc hl			;b241   ; la otra distancia...
 	ld (hl),000h		;b242
 	and 0f0h		;b244
 	ld e,a			;b246
-	ld a,(0f001h)		;b247
+	ld a,(0f001h)		;b247   ; ...en x...
 	sub d			;b24a
-	jr nc,L_B250		;b24b
+	jr nc,L_B250		;b24b   ; ...con el signo en 0xF011
 	neg		;b24d
 	inc (hl)			;b24f
 L_B250:
-	rra			;b250
+	rra			;b250   ; la pendiente: de la tabla 0xB274...
 	rra			;b251
 	rra			;b252
 	rra			;b253
@@ -2511,14 +2511,14 @@ L_B250:
 	ld hl,0b274h		;b257
 	call 04062h		;b25a   ; hl_mas_a (por 0x4062): HL += A
 	ld a,(hl)			;b25d
-	ld (0f017h),a		;b25e
+	ld (0f017h),a		;b25e   ; ...el angulo a 0xF017
 	ret			;b261
 por_velocidad:		; DE = E x 0xE609 / 32
-	ld a,(0e609h)		;b262
+	ld a,(0e609h)		;b262   ; E x la velocidad de 0xE609...
 	ld h,a			;b265
 	call 0406bh		;b266   ; multiplica (por 0x406B): HL = H x E
 	xor a			;b269
-	add hl,hl			;b26a
+	add hl,hl			;b26a   ; ...entre 32 (tres desplazamientos)
 	adc a,a			;b26b
 	add hl,hl			;b26c
 	adc a,a			;b26d
@@ -2642,14 +2642,14 @@ acaba_figura:		; la figura se acaba: el hueco vacio y una menos
 	ld (hl),a			;b43b
 	ret			;b43c
 marca_vencida:		; la marca de la figura vencida en la sala (bit 3 de (ix+3))
-	ld a,(ix+003h)		;b43d
+	ld a,(ix+003h)		;b43d   ; con el bit 3 (cuenta en la sala)...
 	bit 3,a		;b440
 	ret z			;b442
-	and 007h		;b443
+	and 007h		;b443   ; ...su numero (bits 0-2) + 1...
 	inc a			;b445
 	ld b,a			;b446
 	xor a			;b447
-	scf			;b448
+	scf			;b448   ; ...su bit
 L_B449:
 	rla			;b449
 	djnz L_B449		;b44a
@@ -2832,19 +2832,19 @@ cuenta_de_tipo:		; cuenta las figuras de este tipo (0xE6C2)
 	ld a,(0e6c7h)		;b57d
 	ld b,002h		;b580
 L_B582:
-	cp (hl)			;b582
+	cp (hl)			;b582   ; ya esta este tipo en 0xE6C2?...
 	jr z,L_B59A		;b583
 	inc hl			;b585
 	djnz L_B582		;b586
-	ld hl,0e6c2h		;b588
+	ld hl,0e6c2h		;b588   ; ...si no, un hueco
 	ld b,002h		;b58b
 L_B58D:
-	ld a,(hl)			;b58d
+	ld a,(hl)			;b58d   ; el primer hueco libre de 0xE6C2...
 	or a			;b58e
 	jr z,L_B596		;b58f
 	inc hl			;b591
 	djnz L_B58D		;b592
-	scf			;b594
+	scf			;b594   ; ...ninguno: C
 	ret			;b595
 L_B596:
 	ld a,(0e6c7h)		;b596
@@ -2868,17 +2868,17 @@ L_B59A:
 	ld b,a			;b5b9
 	ld a,(0e6c7h)		;b5ba
 L_B5BD:
-	cp (hl)			;b5bd
+	cp (hl)			;b5bd   ; busca A en la tabla...
 	jr z,L_B5CB		;b5be
-	add hl,de			;b5c0
+	add hl,de			;b5c0   ; ...de DE en DE
 	djnz L_B5BD		;b5c1
 	or a			;b5c3
 	ret			;b5c4
 L_B5C5:
-	ld a,d			;b5c5
+	ld a,d			;b5c5   ; Z si (HL) es D...
 	cp (hl)			;b5c6
 	ret z			;b5c7
-	ld a,e			;b5c8
+	ld a,e			;b5c8   ; ...o E
 	cp (hl)			;b5c9
 	ret z			;b5ca
 L_B5CB:

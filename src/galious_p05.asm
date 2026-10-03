@@ -58,11 +58,11 @@ crea_6a_bajo:		; crea dos figuras 0x6A en y 0x90, x + 4
 	ld b,002h		;8024
 	jp 078bah		;8026
 L_8029:
-	bit 0,(ix+014h)		;8029
-	ld b,0c4h		;802d
+	bit 0,(ix+014h)		;8029   ; segun el lado (ix+0x14)...
+	ld b,0c4h		;802d   ; ...los dibujos 0xC4/0xC8...
 	ld d,0c8h		;802f
 	jr z,L_8037		;8031
-	ld b,0d8h		;8033
+	ld b,0d8h		;8033   ; ...o 0xD8/0xD4
 	ld d,0d4h		;8035
 L_8037:
 	call dibujo_cada_8		;8037   ; dibujo_cada_8: el dibujo B cambiando cada 8 cuadros
@@ -124,12 +124,12 @@ L_8099:
 	jr nc,L_80A2		;809c
 	ld (ix+01fh),001h		;809e
 L_80A2:
-	ld de,0ffe0h		;80a2
+	ld de,0ffe0h		;80a2   ; la casilla de encima...
 	add hl,de			;80a5
-	ld a,0b9h		;80a6
+	ld a,0b9h		;80a6   ; ...pared: C...
 	cp (hl)			;80a8
 	ret c			;80a9
-	ld de,00021h		;80aa
+	ld de,00021h		;80aa   ; ...la siguiente en diagonal
 	add hl,de			;80ad
 	djnz L_8099		;80ae
 	ld a,(ix+01fh)		;80b0
@@ -788,26 +788,26 @@ L_85C0:
 	cp 0b0h		;85c0
 	jr nc,L_85DE		;85c2
 L_85C4:
-	inc (ix+018h)		;85c4
+	inc (ix+018h)		;85c4   ; cada 4...
 	ld a,(ix+018h)		;85c7
 	sub 004h		;85ca
 	ret nz			;85cc
 	ld (ix+018h),a		;85cd
-	inc (ix+019h)		;85d0
+	inc (ix+019h)		;85d0   ; ...el siguiente, hasta 5
 	ld a,(ix+019h)		;85d3
 	cp 005h		;85d6
 	jr z,L_85F2		;85d8
 	inc (ix+009h)		;85da   ; sube la ficha del tipo (bit 7 sprites, bit 6, bit 4 filas de 0x1A)
 	ret			;85dd
 L_85DE:
-	inc (ix+019h)		;85de
+	inc (ix+019h)		;85de   ; el siguiente...
 	ld a,004h		;85e1
-	inc (ix+018h)		;85e3
+	inc (ix+018h)		;85e3   ; ...4 - cuenta...
 	ld b,(ix+018h)		;85e6
 	sub b			;85e9
 	ld (ix+018h),a		;85ea
 	jr nz,L_85F2		;85ed
-	inc (ix+019h)		;85ef
+	inc (ix+019h)		;85ef   ; ...y el otro
 L_85F2:
 	ld (ix+008h),010h		;85f2
 	res 4,(ix+002h)		;85f6   ; pone a cero el bit 4 de las banderas de la figura (bit 7: en pantalla)
@@ -844,13 +844,13 @@ L_8630:
 	ret			;863c
 tipo_19_entra:		; al entrar el tipo 0x19
 	ld (ix+019h),080h		;863d   ; El tipo 0x19: al entrar
-	ld (ix+008h),004h		;8641
-	ld (ix+01ch),050h		;8645
-	ld a,(0e62fh)		;8649
+	ld (ix+008h),004h		;8641   ; espera 4...
+	ld (ix+01ch),050h		;8645   ; ...0x50...
+	ld a,(0e62fh)		;8649   ; ...segun 0xE62F...
 	ld (ix+01bh),a		;864c
 	or a			;864f
 	jr nz,L_8660		;8650
-	ld a,(0e62ch)		;8652
+	ld a,(0e62ch)		;8652   ; ...o la cuenta 0xE62C
 	inc a			;8655
 	ld (0e62ch),a		;8656
 	dec a			;8659
@@ -858,11 +858,11 @@ tipo_19_entra:		; al entrar el tipo 0x19
 	ld (ix+018h),a		;865c
 	ret			;865f
 L_8660:
-	ld de,0c848h		;8660
+	ld de,0c848h		;8660   ; los dibujos 0xC8/0x48...
 	ld c,002h		;8663
 	dec a			;8665
 	jr z,L_866D		;8666
-	ld de,0c046h		;8668
+	ld de,0c046h		;8668   ; ...o 0xC0/0x46
 	sla c		;866b
 L_866D:
 	ld (ix+00ah),d		;866d   ; guarda el dibujo (o el mosaico) de la figura
@@ -950,14 +950,14 @@ L_8720:
 	ld e,(ix+007h)		;8726   ; lee la x de la figura
 	jp 065dah		;8729   ; crea_figura: crea la figura A en la y D, x E
 L_872C:
-	push ix		;872c
+	push ix		;872c   ; si hay otra 0x19, nada...
 	call busca_19		;872e   ; busca_19: NZ si hay una figura de tipo 0x19
 	pop ix		;8731
 	ret c			;8733
-	ld a,(ix+018h)		;8734
+	ld a,(ix+018h)		;8734   ; ...si no, la mitad de (ix+0x18)...
 	srl a		;8737
 	ld (ix+018h),a		;8739
-	xor a			;873c
+	xor a			;873c   ; ...y al paso 0
 	ld (ix+001h),a		;873d
 	ld (ix+01dh),a		;8740
 	ld (0e62dh),a		;8743
@@ -1006,10 +1006,10 @@ L_8788:
 	xor a			;878d
 	ret			;878e
 L_878F:
-	ld a,h			;878f
+	ld a,h			;878f   ; es esta misma?...
 	cp d			;8790
 	jr nz,L_8797		;8791
-	ld a,l			;8793
+	ld a,l			;8793   ; ...entonces sigue
 	cp e			;8794
 	jr z,L_8786		;8795
 L_8797:
@@ -1841,10 +1841,10 @@ L_8E4D:
 	call 0b195h		;8e72   ; hacia_el_personaje_de: las velocidades desde DE hacia el personaje
 	jp 0b133h		;8e75   ; velocidades: la de lado = DE y la vertical = HL
 L_8E78:
-	ld a,010h		;8e78
+	ld a,010h		;8e78   ; la velocidad 0x10...
 	ld (0e609h),a		;8e7a
 	ld b,000h		;8e7d
-	ld a,(ix+017h)		;8e7f
+	ld a,(ix+017h)		;8e7f   ; ...el cuadrante segun (ix+0x17)
 	cp 040h		;8e82
 	jr c,L_8E90		;8e84
 	cp 080h		;8e86
@@ -1940,12 +1940,12 @@ L_8F34:
 	ret			;8f39
 gira:		; el angulo (ix+0x1A) gira
 	ld a,(ix+01ah)		;8f3a
-	add a,(ix+01bh)		;8f3d
+	add a,(ix+01bh)		;8f3d   ; el angulo gira (ix+0x1B)...
 	ld (ix+01ah),a		;8f40
-	dec (ix+01ch)		;8f43
+	dec (ix+01ch)		;8f43   ; ...cada 0x3C cuadros...
 	ret nz			;8f46
 	ld (ix+01ch),03ch		;8f47
-	bit 0,(ix+01dh)		;8f4b
+	bit 0,(ix+01dh)		;8f4b   ; ...cambia el giro
 	jr z,L_8F64		;8f4f
 	ld a,(ix+01bh)		;8f51
 	sub 008h		;8f54
@@ -1966,15 +1966,15 @@ L_8F71:
 	dec (ix+01bh)		;8f71
 	ret			;8f74
 velocidad_del_angulo:		; las velocidades del angulo (ix+0x1A)
-	ld a,(ix+01ah)		;8f75
+	ld a,(ix+01ah)		;8f75   ; el angulo (ix+0x1A)...
 	call 0b1ffh		;8f78   ; cuadrante: el cuadrante y el angulo de A a 0xF010 y 0xF017
-	ld e,a			;8f7b
+	ld e,a			;8f7b   ; ...su seno y coseno de la tabla 0xB374...
 	ld d,000h		;8f7c
 	sub 03fh		;8f7e
 	neg		;8f80
 	ld hl,0b374h		;8f82
 	push hl			;8f85
-	add hl,de			;8f86
+	add hl,de			;8f86   ; ...el seno
 	ld c,(hl)			;8f87
 	pop hl			;8f88
 	ld e,a			;8f89
@@ -1991,9 +1991,9 @@ velocidad_del_angulo:		; las velocidades del angulo (ix+0x1A)
 	jr z,L_8F9E		;8f9a
 	neg		;8f9c
 L_8F9E:
-	add a,(ix+017h)		;8f9e
+	add a,(ix+017h)		;8f9e   ; la y: el centro mas el seno...
 	ld (ix+005h),a		;8fa1   ; guarda la y de la figura
-	ld a,(0f016h)		;8fa4
+	ld a,(0f016h)		;8fa4   ; ...y la x con el coseno
 	rra			;8fa7
 	rra			;8fa8
 	rra			;8fa9
@@ -2134,14 +2134,14 @@ tipos_32_y_mas_cuadro:		; cada cuadro los tipos 0x32, 0x51
 	jr c,L_90CB		;90b6
 	ret			;90b8
 L_90B9:
-	ld a,b			;90b9
+	ld a,b			;90b9   ; la distancia a B: menos de 0x28, nada...
 	sub (ix+007h)		;90ba   ; le resta la x de la figura
 	ret c			;90bd
 	sub 028h		;90be
 	ret c			;90c0
-	sub 020h		;90c1
+	sub 020h		;90c1   ; ...hasta 0x48...
 	jr c,L_90CB		;90c3
-	sub 010h		;90c5
+	sub 010h		;90c5   ; ...hasta 0x58
 	ret c			;90c7
 	sub 020h		;90c8
 	ret nc			;90ca
@@ -2179,14 +2179,14 @@ L_90D7:
 	jr c,L_9116		;9101
 	ret			;9103
 L_9104:
-	ld a,b			;9104
+	ld a,b			;9104   ; la distancia a B: menos de 0x28, nada...
 	sub (ix+007h)		;9105   ; le resta la x de la figura
 	ret c			;9108
 	sub 028h		;9109
 	ret c			;910b
-	sub 020h		;910c
+	sub 020h		;910c   ; ...hasta 0x48...
 	jr c,L_9116		;910e
-	sub 010h		;9110
+	sub 010h		;9110   ; ...hasta 0x58
 	ret c			;9112
 	sub 020h		;9113
 	ret nc			;9115
@@ -2435,13 +2435,13 @@ tipo_29_entra:		; al entrar el tipo 0x29
 	jp 071cfh		;92e0
 tipo_29_cuadro:		; cada cuadro el tipo 0x29
 	call anima_0c_66		;92e3   ; El tipo 0x29: cada cuadro
-	ld a,(ix+01dh)		;92e6
+	ld a,(ix+01dh)		;92e6   ; con (ix+0x1D)...
 	and a			;92e9
 	jr z,L_9305		;92ea
-	ld a,(ix+01eh)		;92ec
+	ld a,(ix+01eh)		;92ec   ; ...con (ix+0x1E)...
 	and a			;92ef
 	jr z,L_930E		;92f0
-	ld a,(ix+01fh)		;92f2
+	ld a,(ix+01fh)		;92f2   ; ...segun (ix+0x1F)
 	ld b,001h		;92f5
 	call 07e25h		;92f7
 	xor a			;92fa
@@ -2695,15 +2695,15 @@ salto_2c_e2:		; el salto con D = 0x2C, E = 0xE2
 	ld e,0e2h		;94fa
 	jp L_9A77		;94fc
 puede_saltar:		; C si (ix+0x18) deja saltar
-	ld a,(ix+018h)		;94ff
+	ld a,(ix+018h)		;94ff   ; 0xFF: no...
 	cp 0ffh		;9502
 	ret z			;9504
-	cp 005h		;9505
+	cp 005h		;9505   ; ...5 o mas: C...
 	ccf			;9507
 	ret c			;9508
-	rra			;9509
+	rra			;9509   ; ...impar: C...
 	ret c			;950a
-	call 07be9h		;950b
+	call 07be9h		;950b   ; ...si no, p04:7BE9
 	scf			;950e
 	ret			;950f
 
@@ -2865,15 +2865,15 @@ velocidad_por_distancia:		; la velocidad segun la distancia al personaje
 	jr nc,L_965A		;9656
 	neg		;9658
 L_965A:
-	ld c,012h		;965a
+	ld c,012h		;965a   ; la distancia: menos de 0x28, velocidad 0x100...
 	ld de,00100h		;965c
 	cp 028h		;965f
 	jr c,L_968C		;9661
-	ld c,00fh		;9663
+	ld c,00fh		;9663   ; ...menos de 0x48, 0x180...
 	ld de,00180h		;9665
 	cp 048h		;9668
 	jr c,L_968C		;966a
-	ld c,00ch		;966c
+	ld c,00ch		;966c   ; ...si no, mas deprisa
 	ld de,00200h		;966e
 	cp 060h		;9671
 	jr c,L_968C		;9673
@@ -2956,13 +2956,13 @@ L_9706:
 	ld l,(ix+005h)		;9709   ; lee la y de la figura
 L_970C:
 	call 0406eh		;970c   ; casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
-	ccf			;970f
+	ccf			;970f   ; suelo en la casilla...
 	ret nc			;9710
 	inc hl			;9711
-	cp (hl)			;9712
+	cp (hl)			;9712   ; ...o en la de al lado...
 	ccf			;9713
 	ret nc			;9714
-	ld bc,0001fh		;9715
+	ld bc,0001fh		;9715   ; ...o en las de abajo
 	add hl,bc			;9718
 	cp (hl)			;9719
 	ccf			;971a
@@ -3366,12 +3366,12 @@ L_9A0B:
 	ld (ix+01bh),018h		;9a13
 	ret			;9a17
 L_9A18:
-	ld (ix+01ch),000h		;9a18
-	dec (ix+01bh)		;9a1c
+	ld (ix+01ch),000h		;9a18   ; sin (ix+0x1C)...
+	dec (ix+01bh)		;9a1c   ; ...cada 8 cuadros...
 	ld a,(ix+01bh)		;9a1f
 	and 007h		;9a22
 	ret nz			;9a24
-	inc (ix+019h)		;9a25
+	inc (ix+019h)		;9a25   ; ...el siguiente, hasta 3
 	ld a,(ix+019h)		;9a28
 	cp 003h		;9a2b
 	jr z,L_9A32		;9a2d
@@ -3751,10 +3751,10 @@ salto_38_d8:		; si el personaje esta en pie, el salto con D = 0x38, E = 0xD8
 	ret nz			;9c9f
 	ld de,038d8h		;9ca0
 L_9CA3:
-	ld a,(ix+01eh)		;9ca3
+	ld a,(ix+01eh)		;9ca3   ; con salto (ix+0x1E)...
 	and a			;9ca6
 	ret z			;9ca7
-	ld c,a			;9ca8
+	ld c,a			;9ca8   ; ...su entrada en 0x9C68
 	dec c			;9ca9
 	ld b,000h		;9caa
 	ld hl,09c68h		;9cac
@@ -3951,12 +3951,12 @@ DATA_tabla_9DCF:
 L_9DD5:
 	ld hl,09f37h		;9dd5
 L_9DD8:
-	dec (ix+017h)		;9dd8
+	dec (ix+017h)		;9dd8   ; cada 10 cuadros...
 	ret nz			;9ddb
 	ld (ix+017h),00ah		;9ddc
-	ld a,(ix+014h)		;9de0
+	ld a,(ix+014h)		;9de0   ; ...el siguiente...
 	inc (ix+014h)		;9de3
-	cp (ix+013h)		;9de6
+	cp (ix+013h)		;9de6   ; ...hasta (ix+0x13)
 	jr z,L_9DF1		;9de9
 L_9DEB:
 	call 04083h		;9deb   ; byte_de_tabla (por 0x4083): A = el byte HL + A
@@ -3988,12 +3988,12 @@ L_9E19:
 L_9E2A:
 	ld hl,09f3bh		;9e2a
 L_9E2D:
-	dec (ix+017h)		;9e2d
+	dec (ix+017h)		;9e2d   ; cada 10 cuadros...
 	ret nz			;9e30
 	ld (ix+017h),00ah		;9e31
-	ld a,(ix+014h)		;9e35
+	ld a,(ix+014h)		;9e35   ; ...el siguiente...
 	inc (ix+014h)		;9e38
-	cp (ix+013h)		;9e3b
+	cp (ix+013h)		;9e3b   ; ...hasta (ix+0x13)
 	jr z,L_9E42		;9e3e
 	jr L_9DEB		;9e40
 L_9E42:
