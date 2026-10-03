@@ -204,14 +204,15 @@ DATA_caracteres_616F:
 	defb 000h	; 617b
 
 ; ----------------------------------------------------------------------
-; DATOS fichas_sin_uso: SIN USO: seis listas de fichas de caracteres (0x5AB3)
-;   de un solo tercio cada una (4, 2 y 1 dos veces: [tercios][dibujos][primer
-;   caracter][colores] y un 0), entre la lista de la entrada 1 de 0x6157 (que
-;   acaba en 0x617C) y la de la entrada 2 (0x61AC). Ninguna palabra de los 128
-;   KB apunta a ellas: apuntan a los rle sin uso de 0xA148-0xA4BC del banco 12
-;   (64 caracteres desde el 0x5A y 6 desde el 0xBA)
+; DATOS fichas_del_jefe_por_pasos: las fichas de caracteres (0x5AB3) de los
+;   pasos 1-7 del jefe 2 (el del mapa 4: 0x5E09 = 2), una lista de una ficha
+;   por paso: p00:5884 apunta IX a 0x6175 + 7 x 0xE61B. Los pasos 1-3 cargan
+;   un tercio cada uno (arriba, medio, abajo) de los rle de p12:A148/A368 (64
+;   caracteres desde el 0x5A), los 4-6 los de p12:A336/A49D (6 desde el 0xBA)
+;   y el 7 los de p12:9DA1/9DC6 en los tres tercios. La direccion se calcula:
+;   por eso ninguna palabra la nombra
 ;   0x617c..0x61ac  (48 bytes)
-DATA_fichas_sin_uso:
+DATA_fichas_del_jefe_por_pasos:
 	defb 004h,048h,0a1h,05ah,068h,0a3h,000h	; 617c
 	defb 002h,048h,0a1h,05ah,068h,0a3h,000h	; 6183
 	defb 001h,048h,0a1h,05ah,068h,0a3h,000h	; 618a

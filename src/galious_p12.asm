@@ -51,11 +51,12 @@ DATA_colores_A0ED:
 	defb 087h,0c0h,0c7h,0c0h,0c0h,0e0h,0e0h,070h,005h,0c0h,000h	; a13d  .......p...
 
 ; ----------------------------------------------------------------------
-; DATOS dibujos_sin_uso_a148: SIN USO: rle (0x5C46) de 512 bytes, los dibujos
-;   de 64 caracteres desde el 0x5A segun las fichas sin uso de p10:617C; nadie
-;   mas lo apunta
+; DATOS dibujos_jefe_mapa_4: rle (0x5C46) de 512 bytes: los dibujos de 64
+;   caracteres desde el 0x5A del jefe del mapa 4, que cargan los pasos 1-3
+;   (fichas p10:617C, un tercio por paso, p00:5884); la ficha se elige con
+;   0x6175 + 7 x paso, por eso ninguna palabra de la ROM la nombra
 ;   0xa148..0xa336  (494 bytes)
-DATA_dibujos_sin_uso_a148:
+DATA_dibujos_jefe_mapa_4:
 	defb 085h,0dfh,06fh,023h,0d7h,0efh,003h,0f7h,090h,00ah,026h,017h,00ch,000h,001h,002h	; a148  ..o#......&.....
 	defb 000h,07fh,0bfh,0a7h,0dfh,05fh,03fh,07fh,07fh,006h,000h,082h,001h,02ah,004h,000h	; a158  ....._?......*..
 	defb 0a7h,002h,02ch,051h,0a7h,0b9h,0feh,017h,0a1h,093h,045h,002h,006h,000h,001h,007h	; a168  ..,Q......E.....
@@ -89,20 +90,20 @@ DATA_dibujos_sin_uso_a148:
 	defb 0ddh,004h,0ffh,089h,03fh,006h,069h,092h,03fh,025h,000h,022h,094h,000h	; a328  ....?.i.?%."..
 
 ; ----------------------------------------------------------------------
-; DATOS dibujos_sin_uso_a336: SIN USO: rle de 48 bytes, los dibujos de 6
-;   caracteres desde el 0xBA (fichas de p10:6191)
+; DATOS dibujos_jefe_mapa_4_ba: rle de 48 bytes: los dibujos de 6 caracteres
+;   desde el 0xBA del jefe del mapa 4 (pasos 4-6, fichas p10:6191)
 ;   0xa336..0xa368  (50 bytes)
-DATA_dibujos_sin_uso_a336:
+DATA_dibujos_jefe_mapa_4_ba:
 	defb 0b0h,04ah,093h,001h,050h,004h,000h,022h,057h,048h,0ffh,080h,07bh,0fbh,0f7h,00eh	; a336  .J..P.."WH..{...
 	defb 000h,0b5h,0ffh,0ffh,0deh,0ddh,0bdh,073h,000h,056h,0fdh,0fbh,0fbh,0dbh,0bbh,0b5h	; a346  .......s.V......
 	defb 076h,0dch,0dfh,03ch,003h,01dh,0efh,0c7h,03ch,0bch,063h,08ch,070h,006h,078h,0a1h	; a356  v..<....<.c.p.x.
 	defb 0feh,000h	; a366
 
 ; ----------------------------------------------------------------------
-; DATOS colores_sin_uso_a368: SIN USO: rle de 512 bytes, los colores de los 64
-;   caracteres de 0xA148 (fichas de p10:617C)
+; DATOS colores_jefe_mapa_4: rle de 512 bytes: los colores de los 64
+;   caracteres de 0xA148 (pasos 1-3 del jefe del mapa 4, fichas p10:617C)
 ;   0xa368..0xa49d  (309 bytes)
-DATA_colores_sin_uso_a368:
+DATA_colores_jefe_mapa_4:
 	defb 026h,0c0h,081h,020h,003h,0c0h,086h,0c2h,0c0h,0c0h,020h,020h,0c0h,006h,020h,002h	; a368  &.. ......  .. .
 	defb 0c0h,006h,020h,002h,0c0h,002h,020h,081h,0c0h,003h,020h,002h,0c0h,002h,020h,006h	; a378  .. ... ... ... .
 	defb 0c0h,006h,020h,002h,0c0h,081h,0c2h,003h,020h,004h,0c0h,002h,020h,006h,0c0h,003h	; a388  .. ..... ... ...
@@ -125,10 +126,10 @@ DATA_colores_sin_uso_a368:
 	defb 0e0h,020h,004h,0c2h,000h	; a498
 
 ; ----------------------------------------------------------------------
-; DATOS colores_sin_uso_a49d: SIN USO: rle de 48 bytes, los colores de los 6
-;   caracteres de 0xA336 (fichas de p10:6191)
+; DATOS colores_jefe_mapa_4_ba: rle de 48 bytes: los colores de los 6
+;   caracteres de 0xA336 (pasos 4-6 del jefe del mapa 4, fichas p10:6191)
 ;   0xa49d..0xa4bc  (31 bytes)
-DATA_colores_sin_uso_a49d:
+DATA_colores_jefe_mapa_4_ba:
 	defb 002h,0e0h,008h,0c2h,081h,0ech,005h,0e0h,003h,0c2h,005h,0e0h,081h,0c2h,006h,0c0h	; a49d  ................
 	defb 004h,0e0h,003h,020h,081h,0c2h,003h,0c0h,083h,0e0h,0e2h,0fch,003h,0f0h,000h	; a4ad  ... ...........
 
@@ -614,12 +615,12 @@ DATA_dibujos_B760:
 	defb 006h,001h,000h,080h,040h,080h,000h,000h,011h,0c1h,03fh,003h,001h,003h,000h,000h	; b840  ....@.....?.....
 
 ; ----------------------------------------------------------------------
-; DATOS rle_sin_uso_b850: SIN USO: un rle (0x5C46) que se descomprime en 240
-;   bytes, como los dibujos (0xB760) y los colores (0xB940) de la ficha
-;   p10:6121, y que esta justo entre los dos; ninguna palabra de los 128 KB lo
-;   apunta
+; DATOS copia_de_b760: 240 bytes iguales, byte a byte, al rle de 0xB760 (los
+;   dibujos de la ficha p10:6121), justo detras de el; ninguna palabra de los
+;   128 KB vale 0xB850. No esta medido si algo lo lee (si lo leyera, pintaria
+;   lo mismo que 0xB760)
 ;   0xb850..0xb940  (240 bytes)
-DATA_rle_sin_uso_b850:
+DATA_copia_de_b760:
 	defb 0bch,002h,005h,00ch,002h,039h,025h,0aah,050h,000h,000h,0a0h,040h,080h,000h,001h	; b850  .....9%.P...@...
 	defb 006h,000h,000h,001h,001h,003h,03fh,0c1h,011h,002h,005h,008h,012h,02ch,055h,09ah	; b860  ......?......,U.
 	defb 064h,048h,030h,081h,042h,084h,00ch,017h,023h,018h,066h,081h,068h,031h,086h,018h	; b870  dH0.B...#.f.h1..
