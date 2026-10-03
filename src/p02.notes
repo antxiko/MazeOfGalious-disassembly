@@ -633,7 +633,6 @@ C 0x9fcc ...y nueve pasos de 0xE536 sale en (0x88, 0x80)
 C 0x9815 la suma...
 C 0x981f ...la primera letra de la suma - 1, arriba...
 C 0x9826 ...la segunda - 1, abajo...
-C 0x9829 ...Z si coinciden
 C 0x829e una franja menos...
 C 0x829f ...y un salto al azar de la tabla 0x8349...
 C 0x82ac ...entre 1 y 4
@@ -680,6 +679,110 @@ C 0x98dc A valores
 C 0x9914 el rotulo en la fila 18, columna 7
 C 0x9ff4 con 0xE538, a cero...
 C 0x9ffb ...sin 0xE537, nada
+C 0x95f7 la letra a su sitio
+C 0x9601 la suma: el nibble alto + 1...
+C 0x9609 ...una letra
+C 0x960c el bajo + 1: otra
+C 0x9edc la palabra B de 0x9EFD...
+C 0x9ee5 ...+ L' a E...
+C 0x9eea ...+ H' a D
+C 0x9eed [E][D][0xF0][0]
+C 0x9ef7 B veces
+C 0x9fc9 el bit 2 de 0xE066...
+C 0x9fcb ...sin el: nada
+C 0x9fcf 9: el objeto 0x1B en y 0x88, x 0x80 (p02:A049)
+C 0x9fdb 6 o mas: L_9FF4
+C 0x9fe2 0xE538 a 0: nada
+C 0x9fe4 3 o mas: C
+C 0x99cd no: nada
+C 0x99d0 con el bit 0 de 0xE689: nada
+C 0x99d6 0: nada
+C 0x99d8 la espera, una menos...
+C 0x99db ...el paso + 1
+C 0x99dd 4 o mas: L_99E9
+C 0x99e2 la espera otra vez 6
+C 0x99e4 el paso - 1
+C 0x8e05 bytes 0x24 y 0x25 = A
+C 0x8e0d bytes 0x22 y 0x1B = 4
+C 0x8e18 al byte 0x20
+C 0x8e1f byte 0x32 = 0
+C 0x8e26 byte 0x34 = 0x20
+C 0x8e2a byte 0x23 = 1
+C 0x8e31 + 0x26
+C 0x8e36 12 bytes
+C 0x9816 suma los bytes
+C 0x981b E = la suma
+C 0x9820 (0xEB2B - 1) x 16...
+C 0x9827 ...+ 0xEB2C - 1
+C 0x9829 igual a la suma?
+C 0x9974 0xE688 = C
+C 0x9977 0xE68A-0xE68B = DE
+C 0x9980 0xE062 + C
+C 0x9982 bits 0-1
+C 0x998a bit 0: 0xE68C = 2
+C 0x9b1f el mapa x 3...
+C 0x9b24 ...en la tabla 0x9B4F
+C 0x9b27 DE = el texto
+C 0x9b2b 0x10 - el largo
+C 0x9b32 B = el largo
+C 0x907a con el bit 0: nada
+C 0x907e 0xECBC + 1
+C 0x9083 0xECC0 + 1
+C 0x9087 una menos...
+C 0x9093 0xE501 no 0: 0xE05A y 0xE053...
+C 0x9095 ...0: 0xE05B y 0xE057
+C 0x9f86 no 0: nada
+C 0x9f8b solo el castillo
+C 0x9f8d 0x30: L_9FA7
+C 0x9f92 0x4B: L_9FB4
+C 0x9f97 0x28: L_9FC1
+C 0x9f9c 0x18: p02:A003
+C 0x9fa1 0x2B: p02:A01A
+C 0x9356 + 1...
+C 0x9358 ...3 o mas: al 0
+C 0x9363 0xE6CC + eso
+C 0x9368 no 0: L_9373
+C 0x9370 D no 0: L_9341
+C 0x994a esta: L_996A
+C 0x994d C + 1
+C 0x9953 bits 0-1 de 0xE06C...
+C 0x9955 ...a 0: nada
+C 0x995d la sala igual a 0xE06D?
+C 0x9965 la palabra 0xE06E de 0x99AB
+C 0x82a1 0-7 al azar...
+C 0x82a3 ...en la tabla 0x8349
+C 0x82ab + C
+C 0x82ae negativo: L_82B9
+C 0x82b1 menos de 5...
+C 0x82b5 ...si no, 4
+C 0x8c22 0x16 o mas: nada
+C 0x8c25 menos de 0x11: nada
+C 0x8c29 y del jefe + 4
+C 0x8c31 x del jefe a la casilla + byte 0x1E
+C 0x8c38 0xE71E XOR 0x1C
+C 0x8c3d 0x68 por 0x407D
+C 0x8f8d el otro personaje
+C 0x8f91 B = 0xE058 + el
+C 0x8f94 C = dos mas alla
+C 0x8f97 C no 0: L_8FA5
+C 0x9acd sin el objeto: nada
+C 0x9ad2 0xE0D2: nada
+C 0x9ad7 0xE0D4: nada
+C 0x9adc ninguna: nada
+C 0x9add RETURN (0x0D): L_9AE3
+C 0x9ae1 otra: NC
+C 0x9e0a el bit 6 de 0xE002...
+C 0x9e0c ...sin el: nada
+C 0x9e12 apretada a 1
+C 0x9e13 F2 (bit 6)
+C 0x9e19 la de ahora...
+C 0x9e1a ...cambio?
+C 0x9e1c recien apretada: C
+C 0x9e2c apretada a 1
+C 0x9e2d F1 (bit 5)
+C 0x9e33 la de ahora...
+C 0x9e34 ...cambio?
+C 0x9e36 recien apretada: C
 
 # --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
 D 0x8000 0x8001 partida_7FFE_cola  la instruccion de p01:7FFE (21 D2 | E0) empieza al final del banco 1 y acaba al principio del 2, que el cartucho pone siempre a continuacion: aqui el resto; lo leen p01:7FFE (1 bytes)
@@ -1303,7 +1406,6 @@ C 0x934C pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y
 C 0x9353 apunta a el articulo elegido en la tienda
 C 0x935A cursor_al_0: el articulo 0
 C 0x935D lee el articulo elegido en la tienda
-C 0x9363 de_mas_a: DE += A
 C 0x936B articulo_de_tienda: C = precio y D = objeto del articulo 0xE692 de la tienda 0xE690
 C 0x9394 pose_del_personaje: la pose 0xE502 (0xE53D en la pausa) de la tabla 0x7529
 C 0x939A cursor_de_articulo: el cursor 0x6E sobre el articulo elegido
@@ -1370,7 +1472,6 @@ C 0x9894 apunta a las vidas de Afrodita (BCD)
 C 0x98A9 guarda quien juega (0 Afrodita)
 C 0x9905 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x995A lee la sala
-C 0x9965 palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x996E palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x9984 guarda la puerta del mundo: bit 0 abierta, bit 1 se puede abrir
 C 0x998C guarda el dibujo de la puerta del mundo elegido

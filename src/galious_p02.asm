@@ -406,18 +406,18 @@ L_829B:
 	call franja_del_personaje		;829b   ; ...al azar alrededor...
 	dec c			;829e   ; una franja menos...
 	ld a,r		;829f   ; ...y un salto al azar de la tabla 0x8349...
-	and 007h		;82a1
-	ld hl,08349h		;82a3
+	and 007h		;82a1   ; 0-7 al azar...
+	ld hl,08349h		;82a3   ; ...en la tabla 0x8349
 	ld e,a			;82a6
 	ld d,000h		;82a7
 	add hl,de			;82a9
 	ld a,(hl)			;82aa
-	add a,c			;82ab
+	add a,c			;82ab   ; + C
 	jr z,L_82B9		;82ac   ; ...entre 1 y 4
-	jp m,L_82B9		;82ae
-	cp 005h		;82b1
+	jp m,L_82B9		;82ae   ; negativo: L_82B9
+	cp 005h		;82b1   ; menos de 5...
 	jr c,L_82BA		;82b3
-	ld a,004h		;82b5
+	ld a,004h		;82b5   ; ...si no, 4
 	jr L_82BA		;82b7
 L_82B9:
 	inc a			;82b9
@@ -1592,20 +1592,20 @@ L_8C10:
 	ret			;8c1f
 L_8C20:
 	cp 016h		;8c20   ; entre 0x11 y 0x15 escupe una figura 0x68 desde la boca...
-	ret nc			;8c22
+	ret nc			;8c22   ; 0x16 o mas: nada
 	cp 011h		;8c23
-	ret c			;8c25
+	ret c			;8c25   ; menos de 0x11: nada
 	ld a,(0e705h)		;8c26   ; lee la y del jefe
-	add a,004h		;8c29
+	add a,004h		;8c29   ; y del jefe + 4
 	ld d,a			;8c2b
 	ld a,(0e707h)		;8c2c   ; lee la x del jefe
 	and 0f8h		;8c2f
-	add a,(ix+01eh)		;8c31
+	add a,(ix+01eh)		;8c31   ; x del jefe a la casilla + byte 0x1E
 	ld e,a			;8c34
 	ld a,(0e71eh)		;8c35   ; ...alternando el lado (0xE71E)
-	xor 01ch		;8c38
+	xor 01ch		;8c38   ; 0xE71E XOR 0x1C
 	ld (0e71eh),a		;8c3a
-	ld a,068h		;8c3d
+	ld a,068h		;8c3d   ; 0x68 por 0x407D
 	jp 0407dh		;8c3f
 L_8C42:
 	ld (ix+01ch),080h		;8c42   ; al acabar, vuelve al paso y al mosaico de antes
@@ -1808,25 +1808,25 @@ L_8DF7:
 	jr nz,L_8E05		;8e02
 	xor a			;8e04
 L_8E05:
-	ld (ix+024h),a		;8e05
+	ld (ix+024h),a		;8e05   ; bytes 0x24 y 0x25 = A
 	ld (ix+025h),a		;8e08
 	ld a,004h		;8e0b
-	ld (ix+022h),a		;8e0d
+	ld (ix+022h),a		;8e0d   ; bytes 0x22 y 0x1B = 4
 	ld (ix+01bh),a		;8e10
 	call 04de3h		;8e13   ; ...un tiempo al azar...
 	and 00fh		;8e16
-	ld (ix+020h),a		;8e18
+	ld (ix+020h),a		;8e18   ; al byte 0x20
 	xor a			;8e1b
 	ld (ix+001h),a		;8e1c   ; guarda el paso de la figura
-	ld (ix+032h),a		;8e1f
+	ld (ix+032h),a		;8e1f   ; byte 0x32 = 0
 	ld (ix+00ah),038h		;8e22   ; ...mosaico 56...
-	ld (ix+034h),020h		;8e26
-	ld (ix+023h),001h		;8e2a
+	ld (ix+034h),020h		;8e26   ; byte 0x34 = 0x20
+	ld (ix+023h),001h		;8e2a   ; byte 0x23 = 1
 	push ix		;8e2e   ; ...y 12 bytes de la ficha a cero (0x26-0x31)
 	pop hl			;8e30
-	ld a,026h		;8e31
+	ld a,026h		;8e31   ; + 0x26
 	call 04136h		;8e33   ; hl_mas_a: HL += A
-	ld b,00ch		;8e36
+	ld b,00ch		;8e36   ; 12 bytes
 	xor a			;8e38
 L_8E39:
 	ld (hl),a			;8e39
@@ -2057,16 +2057,16 @@ L_8F84:
 	call cursor_al_primero		;8f84   ; paso 0: el nombre...
 	ld hl,0e058h		;8f87   ; ...las vidas del otro (B) y 0xE05A + el otro (C)...
 	ld a,(0e501h)		;8f8a   ; lee quien juega (0 Afrodita)
-	xor 001h		;8f8d
+	xor 001h		;8f8d   ; el otro personaje
 	add a,l			;8f8f
 	ld l,a			;8f90
-	ld b,(hl)			;8f91
+	ld b,(hl)			;8f91   ; B = 0xE058 + el
 	inc l			;8f92
 	inc l			;8f93
-	ld c,(hl)			;8f94
+	ld c,(hl)			;8f94   ; C = dos mas alla
 	ld a,c			;8f95
 	or a			;8f96
-	jr nz,L_8FA5		;8f97
+	jr nz,L_8FA5		;8f97   ; C no 0: L_8FA5
 	ld a,b			;8f99   ; ...sin vidas ni C: el mensaje 0 (30: vuelve con 100, 100 y 20)
 	or a			;8f9a
 	jr z,L_8F9D		;8f9b
@@ -2192,21 +2192,21 @@ L_906E:
 L_9075:
 	ld a,(0e003h)		;9075   ; paso 4: cada dos cuadros los sprites bajan...
 	and 001h		;9078
-	ret nz			;907a
+	ret nz			;907a   ; con el bit 0: nada
 	ld hl,0ecbch		;907b
-	inc (hl)			;907e
+	inc (hl)			;907e   ; 0xECBC + 1
 	ld de,00004h		;907f
 	add hl,de			;9082
-	inc (hl)			;9083
+	inc (hl)			;9083   ; 0xECC0 + 1
 	ld hl,0e694h		;9084   ; ...y al acabar...
-	dec (hl)			;9087
+	dec (hl)			;9087   ; una menos...
 	ret nz			;9088
 	ld a,(0e501h)		;9089   ; ...el otro: 0xE05A/0xE05B menos uno...
 	or a			;908c
 	ld hl,0e05ah		;908d   ; apunta a de Afrodita: baja uno al revivirla (Knightmare lo pone a 99)
 	ld de,0e053h		;9090   ; apunta a el tope de la vida de Afrodita
-	jr nz,L_9099		;9093
-	ld l,05bh		;9095
+	jr nz,L_9099		;9093   ; 0xE501 no 0: 0xE05A y 0xE053...
+	ld l,05bh		;9095   ; ...0: 0xE05B y 0xE057
 	ld e,057h		;9097
 L_9099:
 	ld a,(hl)			;9099
@@ -2625,21 +2625,21 @@ cursor_derecha:		; el articulo siguiente que quede
 	ld b,003h		;9351   ; a la derecha: el siguiente que quede (de 2 vuelve al 0)
 L_9353:
 	ld hl,0e692h		;9353   ; apunta a el articulo elegido en la tienda
-	inc (hl)			;9356
+	inc (hl)			;9356   ; + 1...
 	ld a,(hl)			;9357
-	cp 003h		;9358
+	cp 003h		;9358   ; ...3 o mas: al 0
 	call nc,cursor_al_0		;935a   ; cursor_al_0: el articulo 0
 	ld a,(0e692h)		;935d   ; lee el articulo elegido en la tienda
 	ld de,0e6cch		;9360
-	call 0413bh		;9363   ; de_mas_a: DE += A
+	call 0413bh		;9363   ; 0xE6CC + eso
 	ld a,(de)			;9366
 	or a			;9367
-	jr nz,L_9373		;9368
+	jr nz,L_9373		;9368   ; no 0: L_9373
 	push bc			;936a
 	call articulo_de_tienda		;936b   ; articulo_de_tienda: C = precio y D = objeto del articulo 0xE692 de la tienda 0xE690
 	pop bc			;936e
 	ld a,d			;936f
-	or a			;9370
+	or a			;9370   ; D no 0: L_9341
 	jr nz,L_9341		;9371
 L_9373:
 	djnz L_9353		;9373
@@ -3004,24 +3004,24 @@ L_95F1:
 	push de			;95f2
 	call letra_de_contrasena		;95f3   ; letra_de_contrasena: A = la letra de la tabla 0x9671 para el valor A en la posicion B
 	pop de			;95f6
-	ld (de),a			;95f7
+	ld (de),a			;95f7   ; la letra a su sitio
 	inc hl			;95f8
 	inc de			;95f9
 	djnz L_95F1		;95fa   ; ...43 letras...
 	push de			;95fc
 	call suma_de_contrasena		;95fd   ; ...y la suma, en dos letras mas
 	pop de			;9600
-	ld a,l			;9601
+	ld a,l			;9601   ; la suma: el nibble alto + 1...
 	and 0f0h		;9602
 	rrca			;9604
 	rrca			;9605
 	rrca			;9606
 	rrca			;9607
 	inc a			;9608
-	ld (de),a			;9609
+	ld (de),a			;9609   ; ...una letra
 	inc de			;960a
 	ld a,l			;960b
-	and 00fh		;960c
+	and 00fh		;960c   ; el bajo + 1: otra
 	inc a			;960e
 	ld (de),a			;960f
 	call contrasena_en_grupos		;9610   ; en grupos de 4 a 0xEB80...
@@ -3368,23 +3368,23 @@ suma_buena:		; Z si la suma de las 43 letras es la de las dos ultimas
 	ld b,02bh		;9813
 L_9815:
 	ld a,(de)			;9815   ; la suma...
-	add a,l			;9816
+	add a,l			;9816   ; suma los bytes
 	ld l,a			;9817
 	inc de			;9818
 	djnz L_9815		;9819
-	ld e,l			;981b
+	ld e,l			;981b   ; E = la suma
 	ld hl,0eb2bh		;981c   ; ...contra las dos ultimas (nibble alto y bajo)
 	ld a,(hl)			;981f   ; ...la primera letra de la suma - 1, arriba...
-	dec a			;9820
+	dec a			;9820   ; (0xEB2B - 1) x 16...
 	rlca			;9821
 	rlca			;9822
 	rlca			;9823
 	rlca			;9824
 	inc hl			;9825
 	ld b,(hl)			;9826   ; ...la segunda - 1, abajo...
-	dec b			;9827
+	dec b			;9827   ; ...+ 0xEB2C - 1
 	or b			;9828
-	cp e			;9829   ; ...Z si coinciden
+	cp e			;9829   ; igual a la suma?
 	ret			;982a
 contrasena_a_la_partida:		; los valores de la contraseña a la RAM de la partida
 	ld de,0eb40h		;982b   ; la contraseña a la partida: flechas, monedas y llaves...
@@ -3562,21 +3562,21 @@ puerta_de_mundo:		; en el castillo, la puerta de mundo de la sala (0x9990) en 0x
 	ld bc,00901h		;9946
 L_9949:
 	cp (hl)			;9949
-	jr z,L_996A		;994a
+	jr z,L_996A		;994a   ; esta: L_996A
 	inc hl			;994c
-	inc c			;994d
+	inc c			;994d   ; C + 1
 	djnz L_9949		;994e
 	ld a,(0e06ch)		;9950   ; si no, la del mapa 11: solo con los bits 0-1 de sus marcas...
-	and 003h		;9953
-	ret z			;9955
+	and 003h		;9953   ; bits 0-1 de 0xE06C...
+	ret z			;9955   ; ...a 0: nada
 	ld a,(0e06dh)		;9956   ; ...en su sala (0xE06D)...
 	ld b,a			;9959
 	ld a,(0e042h)		;995a   ; lee la sala
-	cp b			;995d
+	cp b			;995d   ; la sala igual a 0xE06D?
 	ret nz			;995e
 	ld a,(0e06eh)		;995f   ; ...en su sitio (0x99AB)
 	ld hl,099abh		;9962
-	call 0414ch		;9965   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
+	call 0414ch		;9965   ; la palabra 0xE06E de 0x99AB
 	jr L_9971		;9968
 L_996A:
 	ld a,c			;996a   ; el sitio de la puerta C (0x9997)
@@ -3584,22 +3584,22 @@ L_996A:
 	call 0414ch		;996e   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 L_9971:
 	ld hl,0e688h		;9971   ; el mundo, y su sitio en 0xE68A-0xE68B
-	ld (hl),c			;9974
+	ld (hl),c			;9974   ; 0xE688 = C
 	inc l			;9975
 	inc l			;9976
-	ld (hl),e			;9977
+	ld (hl),e			;9977   ; 0xE68A-0xE68B = DE
 	inc l			;9978
 	ld (hl),d			;9979
 	inc l			;997a
 	ld b,000h		;997b
 	ld hl,0e062h		;997d   ; los bits 0-1 de sus marcas: abierta y se puede abrir
-	add hl,bc			;9980
+	add hl,bc			;9980   ; 0xE062 + C
 	ld a,(hl)			;9981
-	and 003h		;9982
+	and 003h		;9982   ; bits 0-1
 	ld (0e689h),a		;9984   ; guarda la puerta del mundo: bit 0 abierta, bit 1 se puede abrir
 	bit 0,a		;9987   ; abierta: el dibujo 2
 	ret z			;9989
-	ld a,002h		;998a
+	ld a,002h		;998a   ; bit 0: 0xE68C = 2
 	ld (0e68ch),a		;998c   ; guarda el dibujo de la puerta del mundo elegido
 	ret			;998f
 
@@ -3666,24 +3666,24 @@ abre_la_puerta:		; la puerta del mundo se abre poco a poco; abierta, se gasta el
 	ld hl,(0e688h)		;99c8   ; con puerta de mundo cerrada...
 	ld a,l			;99cb
 	or a			;99cc
-	ret z			;99cd
+	ret z			;99cd   ; no: nada
 	bit 0,h		;99ce
-	ret nz			;99d0
+	ret nz			;99d0   ; con el bit 0 de 0xE689: nada
 	ld hl,0e68dh		;99d1   ; ...abriendose (0xE68D)...
 	ld a,(hl)			;99d4
 	or a			;99d5
-	ret z			;99d6
+	ret z			;99d6   ; 0: nada
 	inc l			;99d7   ; ...cada 6 cuadros el dibujo siguiente...
-	dec (hl)			;99d8
+	dec (hl)			;99d8   ; la espera, una menos...
 	ret nz			;99d9
 	dec l			;99da
-	inc (hl)			;99db
+	inc (hl)			;99db   ; ...el paso + 1
 	ld a,(hl)			;99dc
-	cp 004h		;99dd
+	cp 004h		;99dd   ; 4 o mas: L_99E9
 	jr nc,L_99E9		;99df
 	inc l			;99e1
-	ld (hl),006h		;99e2
-	dec a			;99e4
+	ld (hl),006h		;99e2   ; la espera otra vez 6
+	dec a			;99e4   ; el paso - 1
 	ld (0e68ch),a		;99e5   ; guarda el dibujo de la puerta del mundo elegido
 	ret			;99e8
 L_99E9:
@@ -3819,19 +3819,19 @@ cifra_del_castillo:		; con el objeto 0x27, la cifra 1-9 lleva a la puerta de ese
 return_al_castillo:		; con el objeto 0x15 y sin jefe, C con RETURN
 	ld a,(0e084h)		;9ac9   ; con el objeto 0x15, sin jefe...
 	and a			;9acc
-	ret z			;9acd
+	ret z			;9acd   ; sin el objeto: nada
 	ld a,(0e0d2h)		;9ace   ; lee el estado del jefe
 	and a			;9ad1
-	ret nz			;9ad2
+	ret nz			;9ad2   ; 0xE0D2: nada
 	ld a,(0e0d4h)		;9ad3   ; lee la cosa del jefe vencido puesta
 	and a			;9ad6
-	ret nz			;9ad7
+	ret nz			;9ad7   ; 0xE0D4: nada
 	call tecla_ascii		;9ad8   ; ...C con RETURN
 	and a			;9adb
-	ret z			;9adc
-	cp 00dh		;9add
+	ret z			;9adc   ; ninguna: nada
+	cp 00dh		;9add   ; RETURN (0x0D): L_9AE3
 	jr z,L_9AE3		;9adf
-	or a			;9ae1
+	or a			;9ae1   ; otra: NC
 	ret			;9ae2
 L_9AE3:
 	scf			;9ae3
@@ -3870,22 +3870,22 @@ compara_nombre:		; Z si las ultimas letras tecleadas son el nombre del jefe del 
 	ld hl,09b4fh		;9b18   ; el nombre del mapa en 0x9B4F: [texto][largo] (3 bytes por mapa)...
 	ld a,(0e041h)		;9b1b   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	ld c,a			;9b1e
-	add a,a			;9b1f
+	add a,a			;9b1f   ; el mapa x 3...
 	add a,c			;9b20
 	ld c,a			;9b21
 	ld b,000h		;9b22
-	add hl,bc			;9b24
+	add hl,bc			;9b24   ; ...en la tabla 0x9B4F
 	ld e,(hl)			;9b25
 	inc hl			;9b26
-	ld d,(hl)			;9b27
+	ld d,(hl)			;9b27   ; DE = el texto
 	inc hl			;9b28
 	ld a,010h		;9b29   ; ...contra las ultimas (largo) de las 16 letras
-	sub (hl)			;9b2b
+	sub (hl)			;9b2b   ; 0x10 - el largo
 	ld c,a			;9b2c
 	ld a,(hl)			;9b2d
 	ld hl,0e6b0h		;9b2e   ; apunta a las 16 ultimas letras tecleadas
 	add hl,bc			;9b31
-	ld b,a			;9b32
+	ld b,a			;9b32   ; B = el largo
 compara_b:		; Z si los B bytes de DE y HL son iguales
 	ld a,(de)			;9b33   ; letra a letra
 	cp (hl)			;9b34
@@ -4227,18 +4227,18 @@ DATA_fichas_del_castillo_9dda:
 
 tecla_f2:		; C al apretar F2 (fila 6, bit 6) si 0xE002 tiene el bit 6
 	ld a,(0e002h)		;9e07   ; solo con el bit 6 de 0xE002
-	and 040h		;9e0a
-	ret z			;9e0c
+	and 040h		;9e0a   ; el bit 6 de 0xE002...
+	ret z			;9e0c   ; ...sin el: nada
 	ld a,006h		;9e0d   ; F2 (fila 6, bit 6)...
 	call 00141h		;9e0f   ; BIOS SNSMAT - Returns the value of the specified line from the keyboard matrix
-	cpl			;9e12
-	and 040h		;9e13
+	cpl			;9e12   ; apretada a 1
+	and 040h		;9e13   ; F2 (bit 6)
 	ld hl,0e606h		;9e15   ; ...recien apretada: C
 	ld c,(hl)			;9e18
-	ld (hl),a			;9e19
-	xor c			;9e1a
+	ld (hl),a			;9e19   ; la de ahora...
+	xor c			;9e1a   ; ...cambio?
 	ret z			;9e1b
-	bit 6,(hl)		;9e1c
+	bit 6,(hl)		;9e1c   ; recien apretada: C
 	ret z			;9e1e
 	scf			;9e1f
 	ret			;9e20
@@ -4248,14 +4248,14 @@ tecla_f1:		; C al apretar F1 (fila 6, bit 5) si 0xE002 tiene el bit 6
 	ret z			;9e26
 	ld a,006h		;9e27   ; F1 (fila 6, bit 5)
 	call 00141h		;9e29   ; BIOS SNSMAT - Returns the value of the specified line from the keyboard matrix
-	cpl			;9e2c
-	and 020h		;9e2d
+	cpl			;9e2c   ; apretada a 1
+	and 020h		;9e2d   ; F1 (bit 5)
 	ld hl,0e607h		;9e2f   ; apunta a F1 apretada
 	ld c,(hl)			;9e32
-	ld (hl),a			;9e33
-	xor c			;9e34
+	ld (hl),a			;9e33   ; la de ahora...
+	xor c			;9e34   ; ...cambio?
 	ret z			;9e35
-	bit 5,(hl)		;9e36
+	bit 5,(hl)		;9e36   ; recien apretada: C
 	ret z			;9e38
 	scf			;9e39
 	ret			;9e3a
@@ -4353,20 +4353,20 @@ L_9ED5:
 L_9EDA:
 	push hl			;9eda
 	ld a,b			;9edb
-	ld hl,09efdh		;9edc
+	ld hl,09efdh		;9edc   ; la palabra B de 0x9EFD...
 	call 0414ch		;9edf   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	exx			;9ee2
 	ld a,l			;9ee3
 	exx			;9ee4
-	add a,e			;9ee5
+	add a,e			;9ee5   ; ...+ L' a E...
 	ld e,a			;9ee6
 	exx			;9ee7
 	ld a,h			;9ee8
 	exx			;9ee9
-	add a,d			;9eea
+	add a,d			;9eea   ; ...+ H' a D
 	ld d,a			;9eeb
 	pop hl			;9eec
-	ld (hl),e			;9eed
+	ld (hl),e			;9eed   ; [E][D][0xF0][0]
 	inc l			;9eee
 	ld (hl),d			;9eef
 	inc l			;9ef0
@@ -4374,7 +4374,7 @@ L_9EDA:
 	inc l			;9ef3
 	ld (hl),000h		;9ef4
 	inc l			;9ef6
-	djnz L_9EDA		;9ef7
+	djnz L_9EDA		;9ef7   ; B veces
 	ld (0e60ah),hl		;9ef9   ; ...y el personaje detras
 	jp 073e4h		;9efc   ; pose_del_personaje: la pose 0xE502 (0xE53D en la pausa) de la tabla 0x7529
 
@@ -4459,20 +4459,20 @@ L_9F79:
 objetos_escondidos:		; los objetos escondidos del castillo (salas 0x30, 0x4B, 0x28, 0x18 y 0x2B)
 	ld a,(0e539h)		;9f82   ; los objetos escondidos del castillo: uno a la vez (0xE539)...
 	and a			;9f85
-	ret nz			;9f86
+	ret nz			;9f86   ; no 0: nada
 	ld hl,(0e041h)		;9f87   ; lee el mapa (0xE041) y la sala (0xE042) de un tiron
 	dec l			;9f8a
-	ret nz			;9f8b
+	ret nz			;9f8b   ; solo el castillo
 	ld a,h			;9f8c   ; ...en la sala 0x30 el 0x13, en la 0x4B el 0x16, en la 0x28 el 0x1B, en la 0x18 el 0x25 y en la 0x2B el 0x26
-	cp 030h		;9f8d
+	cp 030h		;9f8d   ; 0x30: L_9FA7
 	jp z,L_9FA7		;9f8f
-	cp 04bh		;9f92
+	cp 04bh		;9f92   ; 0x4B: L_9FB4
 	jp z,L_9FB4		;9f94
-	cp 028h		;9f97
+	cp 028h		;9f97   ; 0x28: L_9FC1
 	jp z,L_9FC1		;9f99
-	cp 018h		;9f9c
+	cp 018h		;9f9c   ; 0x18: p02:A003
 	jp z,0a003h		;9f9e
-	cp 02bh		;9fa1
+	cp 02bh		;9fa1   ; 0x2B: p02:A01A
 	jp z,0a01ah		;9fa3
 	ret			;9fa6
 L_9FA7:
@@ -4494,21 +4494,21 @@ L_9FC1:
 	and a			;9fc4
 	ret nz			;9fc5
 	ld a,(0e066h)		;9fc6   ; lee las marcas del mapa 5 (bits 7-4: objetos 09 08 07 0A; bit 2: jefe vencido)
-	bit 2,a		;9fc9
-	ret z			;9fcb
+	bit 2,a		;9fc9   ; el bit 2 de 0xE066...
+	ret z			;9fcb   ; ...sin el: nada
 	ld a,(0e536h)		;9fcc   ; ...y nueve pasos de 0xE536 sale en (0x88, 0x80)
-	cp 009h		;9fcf
+	cp 009h		;9fcf   ; 9: el objeto 0x1B en y 0x88, x 0x80 (p02:A049)
 	ld c,01bh		;9fd1
 	ld de,08880h		;9fd3
 	jp z,0a049h		;9fd6
 	cp 006h		;9fd9
-	jr nc,L_9FF4		;9fdb
+	jr nc,L_9FF4		;9fdb   ; 6 o mas: L_9FF4
 	ld b,a			;9fdd
 	ld a,(0e538h)		;9fde
 	and a			;9fe1
-	ret z			;9fe2
+	ret z			;9fe2   ; 0xE538 a 0: nada
 	ld a,b			;9fe3
-	cp 003h		;9fe4
+	cp 003h		;9fe4   ; 3 o mas: C
 	ccf			;9fe6
 	ld a,(0e503h)		;9fe7   ; lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 	jr c,L_9FEF		;9fea

@@ -225,18 +225,18 @@ L_6130:
 	ret nc			;6150
 L_6151:
 	ld e,(ix+00ah)		;6151
-	dec e			;6154
-	ret m			;6155
+	dec e			;6154   ; byte 0x0A - 1...
+	ret m			;6155   ; ...negativo: nada
 	ld (ix+00ah),e		;6156
 	bit 5,(ix+002h)		;6159   ; ...callado, nada...
-	ret nz			;615d
+	ret nz			;615d   ; con el bit 5: nada
 	ld a,(0e1c6h)		;615e   ; ...con 0xE1C6 y sin pausa, a 0
 	or a			;6161
-	jr z,L_616C		;6162
+	jr z,L_616C		;6162   ; 0xE1C6 a 0: L_616C
 	ld a,(0e1c9h)		;6164
 	or a			;6167
-	jr nz,L_616C		;6168
-	ld e,000h		;616a
+	jr nz,L_616C		;6168   ; 0xE1C9 no 0: L_616C
+	ld e,000h		;616a   ; E = 0
 L_616C:
 	jp volumen		;616c   ; volumen: el volumen E del canal
 L_616F:
@@ -264,22 +264,22 @@ L_6197:
 	ld c,a			;6199
 	cp 0d0h		;619a   ; ...0xD0 y mas: ordenes (p13:6348)...
 	jp nc,L_6348		;619c
-	ld (ix+000h),l		;619f
+	ld (ix+000h),l		;619f   ; el puntero a los bytes 0-1
 	ld (ix+001h),h		;61a2
 	cp 0c0h		;61a5   ; ...0xC0-0xCF: silencio...
 	jp nc,L_6318		;61a7
 	and 00fh		;61aa   ; ...0x00-0xBF: el nibble bajo + 1 es la duracion...
 	inc a			;61ac
-	ld b,a			;61ad
+	ld b,a			;61ad   ; B = el nibble bajo + 1
 	ld e,(ix+003h)		;61ae   ; ...x la base (0x03)...
 	ld a,(0e1c5h)		;61b1   ; ...con el jefe herido (0xE1C5), la base 1 o 2 menos: mas deprisa
 	or a			;61b4
-	jr z,L_61C6		;61b5
+	jr z,L_61C6		;61b5   ; 0xE1C5 a 0: L_61C6
 	ld a,(0e1c9h)		;61b7
 	or a			;61ba
-	jr nz,L_61C6		;61bb
+	jr nz,L_61C6		;61bb   ; 0xE1C9 no 0: L_61C6
 	ld a,(0e1c5h)		;61bd   ; lee lo herido que esta el jefe (0, 1, 2)
-	cp 002h		;61c0
+	cp 002h		;61c0   ; 2: E - 1
 	jr nz,L_61C5		;61c2
 	dec e			;61c4
 L_61C5:
@@ -299,23 +299,23 @@ L_61C7:
 	res 5,(ix+002h)		;61dc
 L_61E0:
 	bit 0,(ix+002h)		;61e0   ; tono: el nibble alto es la nota...
-	jp z,L_627A		;61e4
+	jp z,L_627A		;61e4   ; sin el bit 0: L_627A
 	ld a,(ix+009h)		;61e7   ; ...cuando empieza a bajar (0x0B)...
-	sub (ix+005h)		;61ea
-	ld (ix+00bh),a		;61ed
+	sub (ix+005h)		;61ea   ; byte 9 - byte 5...
+	ld (ix+00bh),a		;61ed   ; ...al byte 0x0B
 	bit 5,(ix+002h)		;61f0
-	ret nz			;61f4
+	ret nz			;61f4   ; con el bit 5: nada
 	ld a,(0e1c5h)		;61f5   ; ...con el jefe herido, la tabla de periodos 0x62E8 (1) o 0x6300 (2)...
 	or a			;61f8
-	jr z,L_621E		;61f9
+	jr z,L_621E		;61f9   ; 0xE1C5 a 0: L_621E
 	ld a,(0e1c9h)		;61fb
 	or a			;61fe
-	jr nz,L_621E		;61ff
+	jr nz,L_621E		;61ff   ; 0xE1C9 no 0: L_621E
 	ld a,(0e1c5h)		;6201   ; lee lo herido que esta el jefe (0, 1, 2)
-	cp 002h		;6204
+	cp 002h		;6204   ; no 2: L_6213
 	jr nz,L_6213		;6206
 	ld a,c			;6208
-	and 0f0h		;6209
+	and 0f0h		;6209   ; (C / 16) x 2 en la tabla 0x6300
 	rrca			;620b
 	rrca			;620c
 	rrca			;620d
@@ -386,15 +386,15 @@ L_627A:
 	ld a,(ix+008h)		;627a   ; ruido: la envolvente del instrumento (0x08): 1-5 o la de 0x661F...
 	cp 001h		;627d   ; instrumento 1 (0x65A7)...
 	jr z,L_62B2		;627f
-	cp 002h		;6281
+	cp 002h		;6281   ; 2: L_62B8
 	jr z,L_62B8		;6283
-	cp 003h		;6285
+	cp 003h		;6285   ; 3: L_62BE
 	jr z,L_62BE		;6287
 	cp 004h		;6289   ; ...4 (0x65EF)...
 	jr z,L_62C4		;628b
-	cp 005h		;628d
+	cp 005h		;628d   ; 5: L_62CA
 	jr z,L_62CA		;628f
-	ld hl,0661fh		;6291
+	ld hl,0661fh		;6291   ; los demas: 0x661F
 L_6294:
 	ld a,c			;6294   ; ...la de la nota...
 	and 0f0h		;6295
@@ -496,17 +496,17 @@ DATA_notas_6300:
 L_6318:
 	and 00fh		;6318   ; silencio: su duracion como la de una nota...
 	inc a			;631a
-	ld b,a			;631b
+	ld b,a			;631b   ; B = + 1
 	ld e,(ix+003h)		;631c
 	ld a,(0e1c5h)		;631f   ; ...mas corta con el jefe herido...
 	or a			;6322
-	jr z,L_6334		;6323
+	jr z,L_6334		;6323   ; 0xE1C5 a 0: L_6334
 	ld a,(0e1c9h)		;6325
 	or a			;6328
-	jr nz,L_6334		;6329
+	jr nz,L_6334		;6329   ; 0xE1C9 no 0: L_6334
 	ld a,(0e1c5h)		;632b   ; lee lo herido que esta el jefe (0, 1, 2)
 	cp 002h		;632e
-	jr nz,L_6333		;6330
+	jr nz,L_6333		;6330   ; 2: E - 1
 	dec e			;6332
 L_6333:
 	dec e			;6333
@@ -555,9 +555,9 @@ L_6378:
 	jp L_6197		;637e
 L_6381:
 	inc a			;6381   ; 0xF0-0xFD: el volumen (nibble + 1) y [caida][corte] en 0x05 y 0x06
-	ld (ix+004h),a		;6382
+	ld (ix+004h),a		;6382   ; byte 4 = A + 1
 	ld a,(hl)			;6385   ; el byte de detras...
-	rrca			;6386
+	rrca			;6386   ; el nibble alto - 1...
 	rrca			;6387
 	rrca			;6388
 	rrca			;6389
@@ -577,7 +577,7 @@ L_639A:
 L_63A3:
 	ld a,c			;63a3   ; 0xE0-0xEF: 0xEC vibrato...
 	and 00fh		;63a4
-	cp 00ch		;63a6
+	cp 00ch		;63a6   ; 0x0C: L_6409
 	jr z,L_6409		;63a8
 	cp 006h		;63aa   ; ...0xE0-0xE5 la octava...
 	jp c,L_63E9		;63ac
@@ -586,23 +586,23 @@ L_63A3:
 	jp z,L_6402		;63b4
 	cp 00ah		;63b7   ; ...0xEA salta...
 	jp z,L_6416		;63b9
-	cp 00bh		;63bc
+	cp 00bh		;63bc   ; 0x0B: L_63FB
 	jp z,L_63FB		;63be
 	cp 00dh		;63c1   ; ...0xED llama, 0xEE vuelve...
 	jp z,L_641D		;63c3
-	cp 00eh		;63c6
+	cp 00eh		;63c6   ; 0x0E: L_642B
 	jp z,L_642B		;63c8
 	and 007h		;63cb   ; ...0xE8 y 0xE9: el instrumento (bits 0-2 de las banderas)...
-	ld b,a			;63cd
+	ld b,a			;63cd   ; los bits 0-2...
 	ld a,(ix+002h)		;63ce
 	and 0f8h		;63d1
-	or b			;63d3
+	or b			;63d3   ; ...a los bits 0-2 del byte 2
 	ld (ix+002h),a		;63d4
 	ld a,c			;63d7
 	and 00fh		;63d8
 	cp 008h		;63da   ; ...0xE8 lleva la envolvente de ruido detras
 	jr z,L_63E1		;63dc
-	jp L_6197		;63de
+	jp L_6197		;63de   ; no es 8: sigue leyendo
 L_63E1:
 	ld a,(hl)			;63e1
 	inc hl			;63e2
@@ -675,28 +675,28 @@ vibrato:		; el vibrato del canal
 	jr L_649A		;645b
 L_645D:
 	ld a,(ix+017h)		;645d   ; ...luego cada (nibble alto) cuadros...
-	and 0f0h		;6460
+	and 0f0h		;6460   ; el nibble alto del byte 0x17...
 	rrca			;6462
 	rrca			;6463
 	rrca			;6464
 	rrca			;6465
-	ld e,a			;6466
+	ld e,a			;6466   ; ...en E
 	ld a,(ix+018h)		;6467   ; la cuenta del vibrato
-	inc a			;646a
-	cp e			;646b
+	inc a			;646a   ; byte 0x18 + 1...
+	cp e			;646b   ; ...menor que E: L_649A
 	jr c,L_649A		;646c
 	ld e,(ix+015h)		;646e   ; ...el periodo sube o baja (nibble bajo) alternando...
-	ld d,(ix+014h)		;6471
+	ld d,(ix+014h)		;6471   ; DE = bytes 0x14-0x15
 	ld a,(ix+017h)		;6474
-	and 00fh		;6477
+	and 00fh		;6477   ; B = el nibble bajo del byte 0x17
 	ld b,a			;6479
 	ld a,(ix+019h)		;647a   ; el sentido cambia cada vez
-	cpl			;647d
+	cpl			;647d   ; byte 0x19 al reves
 	ld (ix+019h),a		;647e
 	and a			;6481
 	ld a,e			;6482
-	jr nz,L_648C		;6483
-	add a,b			;6485
+	jr nz,L_648C		;6483   ; ahora no 0: L_648C
+	add a,b			;6485   ; 0: DE + B
 	ld e,a			;6486
 	jr nc,L_6491		;6487
 	inc d			;6489
@@ -732,20 +732,20 @@ paso_de_envolvente:		; un paso de la envolvente o del efecto; C al acabar
 	ld h,(ix+00dh)		;64bf
 L_64C2:
 	ld a,(hl)			;64c2   ; ...el byte: 0xFF acaba (C)...
-	cp 0ffh		;64c3
+	cp 0ffh		;64c3   ; 0xFF: L_65A5
 	jp z,L_65A5		;64c5
 	inc hl			;64c8
 	ld c,a			;64c9
 	cp 0feh		;64ca   ; ...0xFE repite...
 	jp z,L_6530		;64cc
 	and 0f0h		;64cf   ; ...0x2x mezcla...
-	cp 020h		;64d1
+	cp 020h		;64d1   ; 0x2x: L_6550
 	jp z,L_6550		;64d3
 	cp 010h		;64d6   ; ...0x1x: el ruido (registro 6) y sigue...
-	jp nz,L_64EA		;64d8
+	jp nz,L_64EA		;64d8   ; no 0x1x: L_64EA
 	ld a,c			;64db
 	and 00fh		;64dc
-	rlca			;64de
+	rlca			;64de   ; el nibble bajo x 2
 	ld e,a			;64df
 	ld a,006h		;64e0
 	call 00093h		;64e2   ; BIOS WRTPSG - Writes data to PSG-register
@@ -833,27 +833,27 @@ L_6571:
 	call mezcla_los_dos		;6571   ; mezcla_los_dos: el canal con tono y ruido
 L_6574:
 	ld a,c			;6574   ; ...el bit 3 a la envolvente del PSG (bit 4 del volumen)...
-	rlca			;6575
+	rlca			;6575   ; el bit 3 de C al bit 4...
 	and 010h		;6576
-	ld (ix+00ah),a		;6578
+	ld (ix+00ah),a		;6578   ; ...al byte 0x0A
 	ld e,a			;657b
 	call volumen		;657c   ; volumen: el volumen E del canal
 	ld a,(hl)			;657f   ; ...la duracion de cada paso...
 	inc hl			;6580
-	ld (ix+00eh),a		;6581
+	ld (ix+00eh),a		;6581   ; bytes 0x0E y 0x0F = el siguiente
 	ld (ix+00fh),a		;6584
 	ld a,c			;6587   ; ...0x28 y mas: el periodo de la envolvente (registros 12 y 11)
-	cp 020h		;6588
+	cp 020h		;6588   ; 0x20: L_65A3
 	jp z,L_65A3		;658a
-	cp 028h		;658d
+	cp 028h		;658d   ; menos de 0x28: L_64C2
 	jp c,L_64C2		;658f
 	ld e,(hl)			;6592
 	inc hl			;6593
-	ld a,00ch		;6594
+	ld a,00ch		;6594   ; al PSG 12 (periodo de la envolvente, alto)
 	call 00093h		;6596   ; BIOS WRTPSG - Writes data to PSG-register
 	ld e,(hl)			;6599
 	inc hl			;659a
-	ld a,00bh		;659b
+	ld a,00bh		;659b   ; al PSG 11 (periodo de la envolvente, bajo)
 	call 00093h		;659d   ; BIOS WRTPSG - Writes data to PSG-register
 	jp L_64C2		;65a0
 L_65A3:

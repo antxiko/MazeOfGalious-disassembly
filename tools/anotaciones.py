@@ -687,8 +687,8 @@ RUTINAS = {
     (3, 0xB492): ("armas_contra_figuras", "las armas contra las figuras"),
     (3, 0xB4A5): ("arma_contra_figuras", "un arma contra las figuras"),
     (3, 0xB4D1): ("arma_contra_figura", "un arma contra una figura"),
-    (3, 0xB528): ("arma_en_fila", "C si el arma alcanza a la figura en su fila"),
-    (3, 0xB53D): ("arma_en_columna", "C si el arma alcanza a la figura en su columna"),
+    (3, 0xB528): ("filtro_arma_5", "C (puede herir) salvo el arma 5 estallada contra figura con el bit 4 de su byte 3"),
+    (3, 0xB53D): ("filtro_arma_2", "C (puede herir) salvo el arma 2 contra figura con el bit 5 de su byte 3"),
     (3, 0xB54D): ("arma_da", "el arma da en la figura: rebota o la hiere"),
     (3, 0xB575): ("hiere", "la figura pierde una de vida (dos con el objeto 0x25)"),
     (3, 0xB592): ("tipo_que_se_enfada", "Z en los tipos 0x0F, 0x25, 0x49, 0x52, 0x54 y 0x27"),
@@ -1640,5 +1640,4 @@ CAMPOS = {
     0x0B: "el ancho del mosaico",
     0x10: "la vida de la figura",
     0x11: "el tamaño de la figura (tabla 0x9006, banco 14)",
-    0x15: "las columnas de la figura que se pintan",       # p03:B580 la baja en cada golpe; a 0, p03:B604
 }

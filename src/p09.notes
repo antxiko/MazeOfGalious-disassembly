@@ -46,7 +46,6 @@ C 0xa002 sin 0xE0AB, la pared en 0xEE1C
 C 0xa009 sin 0xE0AC, la pared en 0xED84
 C 0xa013 la figura 1 (puerta): en el hueco siguiente de 0xEA00...
 C 0xa018 ...[1][paso 0][y][x][alto 3]...
-C 0xa029 ...[espera 0x1E][caracter 0xC5]
 C 0xa02e y el siguiente hueco
 C 0xa036 las dos puertas de 0xEA00 cada cuadro
 C 0xa04b si esta, por su paso
@@ -161,7 +160,6 @@ C 0xa661 cada cuadro: si esta...
 C 0xa668 ...Popolon, o Afrodita con el objeto 0x1C...
 C 0xa670 ...con la espada dando (0xE526)...
 C 0xa679 ...a su altura...
-C 0xa684 ...y pegado del lado que mira...
 C 0xa69d ...un golpe (sonido 0x1E)...
 C 0xa6a4 ...el ultimo: rota (bit 2 de las marcas de la sala) y el sonido 0x2E
 C 0xa6b5 las 15 escaleras de 0xE0B0...
@@ -197,6 +195,135 @@ C 0xa622 ...0x12C cuadros...
 C 0xa628 ...paso 0
 C 0xa5db la x de la tabla 0xA630...
 C 0xa5e3 ...a 0xEAB8
+C 0xa763 0x0F - B...
+C 0xa767 ...su palabra de 0xA6EB: el mapa y la sala
+C 0xa76e es esta?
+C 0xa770 no: nada
+C 0xa776 0x10 - B: su numero...
+C 0xa77a ...en 0xEC00
+C 0xa77d x 5...
+C 0xa783 ...en la tabla 0xA700
+C 0xa787 4 bytes a 0xEC01-0xEC04
+C 0xa78d el quinto a 0xEC0F
+C 0xa792 0xEC07 = 0
+C 0xa79f la casilla en 0xEC05
+C 0xa59e 5: L_A601
+C 0xa5a6 la y del personaje igual a la de 0xEAB7?
+C 0xa5a7 no: nada
+C 0xa5ac la x - la de 0xEAB8...
+C 0xa5af ...entre -7 y 0x17?
+C 0xa5b1 no: nada
+C 0xa5b2 0xEAB6 = 1
+C 0xa5bb 0xEAB3 no 0: nada
+C 0xa5c5 0xEAB7-0xEAB8 a 0xEABB
+C 0xa5ca 0xEAB1 = 4: L_A5ED
+C 0xa5d4 0xEAB2 a 0: 0xEAB5 + 1
+C 0xa666 no hay: nada
+C 0xa66e Z: nada
+C 0xa673 0xE526 a 0: nada
+C 0xa676 0xE526 = 0
+C 0xa67d la y - la suya...
+C 0xa680 ...- 5, menos de 0x1C?
+C 0xa684 hacia donde mira...
+C 0xa68b ...a la derecha: L_A695
+C 0xa68d a la izquierda: la x - la suya - 0x28...
+C 0xa690 ...menos de 0x0E?
+C 0xa232 no hay: nada
+C 0xa234 C = su byte 0 - 1: el lado
+C 0xa237 paso 1: L_A27D
+C 0xa23c su y + 0x18...
+C 0xa242 ...igual a la del personaje?
+C 0xa247 mirando hacia el lado C?
+C 0xa24c su x
+C 0xa24d a la derecha: B = -8, C = 8 (la tecla de la derecha)...
+C 0xa253 ...a la izquierda: B = 0x10, C = 4 (la de la izquierda)
+C 0xa257 x + B
+C 0xa25c pegado?
+C 0xa261 no en pie: nada
+C 0xa265 apretando hacia ella?
+C 0xa266 no: L_A299
+C 0xa26a la espera, una menos...
+C 0xa26f 0xE529 = A
+C 0xa272 ...otra vez 6
+C 0xa277 su paso + 1
+C 0xa278 el sonido 0x23
+C 0xa14b paso 1: L_A1AF
+C 0xa14e 2 o mas: L_A1C6
+C 0xa155 sin llaves: nada
+C 0xa15b su y + 0x18...
+C 0xa161 ...la del personaje?
+C 0xa166 E = hacia donde mira
+C 0xa16b a la derecha: B = -8, C = 8 (la tecla), D = 1...
+C 0xa173 ...a la izquierda: B = 0x10, C = 4, D = 3
+C 0xa638 el bit 2 del byte de la sala...
+C 0xa63c ...al reves
+C 0xa642 el sitio (0xF002-0xF003)
+C 0xa64b los 4 bits altos de 0xF000...
+C 0xa655 ...en la tabla 0xA65D...
+C 0xa65b ...al byte 3
+C 0xa43f no hay: nada
+C 0xa443 byte 1 no 0: L_A461
+C 0xa44b la y del personaje - la suya...
+C 0xa44c ...menos de 0x19?
+C 0xa453 la x - 8 - la suya...
+C 0xa456 ...menos de 3?
+C 0xa45c hacia donde mira, a 0xEAA9
+C 0xa4fb su y + 8...
+C 0xa501 ...la de la figura igual?
+C 0xa502 no: L_A527
+C 0xa506 su x + 4
+C 0xa50c la x de la figura - eso...
+C 0xa511 ...a menos de 0x14 por la izquierda...
+C 0xa516 ...la figura a su x - 0x10
+C 0xa016 byte 0 = 1
+C 0xa01d byte 1 = 0
+C 0xa020 bytes 2-3: el sitio
+C 0xa024 byte 4 = 3
+C 0xa029 byte 7 = 0x1E
+C 0xa02c byte 8 = 0xC5
+C 0xa031 la siguiente, 16 bytes mas
+C 0xa2cd no hay: nada
+C 0xa2d1 paso 1: L_A376
+C 0xa2d5 2 o mas: L_A3D3
+C 0xa2d9 byte 9 = 0
+C 0xa2e3 no: L_A30E
+C 0xa2e7 byte 9 = 1
+C 0xa2ee 0xE62E a 0: nada
+C 0xa2f4 de 32 en 32
+C 0xa2f7 16 huecos
+C 0xa4c0 su y + 0x18...
+C 0xa4c6 ...la del personaje?
+C 0xa4c7 no: L_A4EC
+C 0xa4cb su x + 4
+C 0xa4d1 la x del personaje - eso...
+C 0xa4d6 ...a menos de 0x0C por la izquierda...
+C 0xa4db ...a su x - 8
+C 0xa546 no hay: nada
+C 0xa54a byte 1 no 0: L_A58C
+C 0xa54f la y del personaje, 0x78?
+C 0xa551 no: nada
+C 0xa552 B = 0
+C 0xa556 x entre 0x18 y 0x1F: L_A565
+C 0xa55c B = 1
+C 0xa560 x entre 0xE0 y 0xE7?
+C 0xa564 no: nada
+C 0xa111 byte 0 = 1
+C 0xa119 byte 1 = 0
+C 0xa11b bytes 2-3: el sitio
+C 0xa11f byte 4 = 0
+C 0xa121 byte 5 = 0x1E
+C 0xa129 la siguiente, 16 bytes mas
+C 0xa064 sin llaves: nada
+C 0xa068 su y + 0x18...
+C 0xa06e ...la del personaje?
+C 0xa073 hacia donde mira
+C 0xa077 a la derecha: B = -8, C = 8...
+C 0xa07d ...a la izquierda: B = 0x10, C = 4
+C 0xa462 paso 2 o mas: L_A498
+C 0xa46a la y - la suya...
+C 0xa46b ...menos de 0x19?
+C 0xa472 mira igual que al empezar (0xEAA9)?
+C 0xa476 no: nada
 
 # --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
 D 0xA000 0xA002 partida_9FFF_cola  la instruccion de p08:9FFF (3A | AB E0) empieza al final del banco 8 y acaba al principio del 9, que el cartucho pone siempre a continuacion: aqui el resto; lo leen p08:9FFF (2 bytes)
@@ -364,7 +491,6 @@ C 0xA6B2 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con lo
 C 0xA6C0 escalera_vuelve: cuenta la escalera gastada; a 0, vuelve si es esta sala
 C 0xA6DA palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 C 0xA756 escalera_de_la_sala: la escalera de esta sala (0xA6EB, 0xA700) a 0xEC00
-C 0xA767 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 C 0xA76A lee el mapa (0xE041) y la sala (0xE042) de un tiron
 C 0xA777 apunta a la escalera del castillo de esta sala
 C 0xA79C casilla_de_yx (por 0x4056): HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)

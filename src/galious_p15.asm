@@ -989,11 +989,11 @@ fila_de_sprites_del_final:		; 4 sprites en fila en y 0x40
 	ld de,0baf1h		;b7f8
 L_B7FB:
 	ld a,040h		;b7fb   ; [y 0x40]...
-	ld (hl),a			;b7fd
+	ld (hl),a			;b7fd   ; 0x40
 	inc hl			;b7fe
 	ld (hl),c			;b7ff   ; ...[x]...
 	inc hl			;b800
-	ld a,010h		;b801
+	ld a,010h		;b801   ; C + 0x10
 	add a,c			;b803
 	ld c,a			;b804
 	ld a,(de)			;b805   ; ...[dibujo de la tabla]...
@@ -1001,9 +1001,9 @@ L_B7FB:
 	inc de			;b807
 	inc hl			;b808
 	ld a,001h		;b809   ; ...[color 1]
-	ld (hl),a			;b80b
+	ld (hl),a			;b80b   ; 1
 	inc hl			;b80c
-	djnz L_B7FB		;b80d
+	djnz L_B7FB		;b80d   ; B veces
 	ret			;b80f
 dibujo_del_final:		; el dibujo de 0xB989 en la pantalla
 	ld de,0ed86h		;b810   ; el dibujo de 0xB989 en 0xED86 (14 filas de 20)
@@ -1069,14 +1069,14 @@ L_B868:
 L_B86D:
 	ld a,(0e003h)		;b86d   ; paso: cada 4 cuadros los sprites de 0xECA0 suben...
 	and 003h		;b870
-	ret nz			;b872
+	ret nz			;b872   ; cada 4 cuadros
 	ld hl,0eca0h		;b873
 	ld a,(hl)			;b876
-	dec a			;b877
+	dec a			;b877   ; 0xECA0 - 1...
 	cp 05fh		;b878
-	jp c,L_B883		;b87a   ; ...hasta la y 0x5F...
+	jp c,L_B883		;b87a   ; ...menos de 0x5F: L_B883
 	ld (hl),a			;b87d
-	ld hl,0eca4h		;b87e
+	ld hl,0eca4h		;b87e   ; ...y a 0xECA4
 	ld (hl),a			;b881
 	ret			;b882
 L_B883:
@@ -1095,15 +1095,15 @@ L_B89A:
 	call parpadeo_del_final		;b89a   ; ...lo de cada 16 cuadros...
 	ld a,(0f032h)		;b89d
 	or a			;b8a0
-	ret nz			;b8a1
+	ret nz			;b8a1   ; 0xF032 no 0: nada
 	ld a,(0e003h)		;b8a2   ; ...cada 64 cuadros, uno de dos dibujos al azar (0xBAA1 o 0xBAC1)...
 	and 03fh		;b8a5
-	ret nz			;b8a7
+	ret nz			;b8a7   ; cada 64 cuadros
 	ld a,r		;b8a8
 	ld hl,0baa1h		;b8aa
-	bit 0,a		;b8ad
+	bit 0,a		;b8ad   ; al azar 0xBAA1...
 	jr z,L_B8B4		;b8af
-	ld hl,0bac1h		;b8b1
+	ld hl,0bac1h		;b8b1   ; ...o 0xBAC1
 L_B8B4:
 	ld de,0eea3h		;b8b4   ; ...en dos trozos de la pantalla...
 	ld bc,00207h		;b8b7
@@ -1120,21 +1120,21 @@ L_B8B4:
 L_B8D0:
 	ld a,(0e003h)		;b8d0   ; paso: cada 4 cuadros los sprites de 0xECA8 bajan hasta 0x3F...
 	and 003h		;b8d3
-	ret nz			;b8d5
+	ret nz			;b8d5   ; cada 4 cuadros
 	ld a,(0f02fh)		;b8d6
 	or a			;b8d9
-	jr nz,L_B8F5		;b8da
+	jr nz,L_B8F5		;b8da   ; 0xF02F no 0: L_B8F5
 	ld a,0ffh		;b8dc
-	ld (0f02bh),a		;b8de
+	ld (0f02bh),a		;b8de   ; 0xF02B = 0xFF
 	ld hl,0eca8h		;b8e1
 	ld a,(hl)			;b8e4
-	inc a			;b8e5
+	inc a			;b8e5   ; 0xECA8 + 1...
 	cp 03fh		;b8e6
-	jr c,L_B8FF		;b8e8
+	jr c,L_B8FF		;b8e8   ; ...menos de 0x3F: L_B8FF
 	ld hl,0bae9h		;b8ea   ; ...luego otros (0xBAE9)...
 	call dos_sprites_eca8		;b8ed   ; dos_sprites_eca8: 2 sprites de HL a 0xECA8
 	ld hl,0f02fh		;b8f0
-	inc (hl)			;b8f3
+	inc (hl)			;b8f3   ; 0xF02F + 1
 	ret			;b8f4
 L_B8F5:
 	ld hl,0eca8h		;b8f5   ; ...y suben hasta 0x2E
@@ -1168,36 +1168,36 @@ L_B920:
 	jr L_B916		;b923
 L_B925:
 	ld hl,0f02bh		;b925   ; paso: cuenta 0xF02B...
-	dec (hl)			;b928
-	jr z,L_B960		;b929
+	dec (hl)			;b928   ; la cuenta, una menos...
+	jr z,L_B960		;b929   ; ...a 0: L_B960
 	ld a,(0f022h)		;b92b   ; ...cada 16 cuadros un sprite de 0xB97F en (0x2B, 0x18), color 15...
 	or a			;b92e
-	jr nz,L_B968		;b92f
+	jr nz,L_B968		;b92f   ; 0xF022 no 0: L_B968
 	ld a,(0e003h)		;b931   ; lee el contador de cuadros
 	and 00fh		;b934
-	ret nz			;b936
+	ret nz			;b936   ; cada 16 cuadros
 	ld hl,0f023h		;b937
-	inc (hl)			;b93a
+	inc (hl)			;b93a   ; 0xF023 + 1
 	ld hl,0ecb0h		;b93b
-	ld a,02bh		;b93e
+	ld a,02bh		;b93e   ; 0xECB0 = 0x2B
 	ld (hl),a			;b940
 	inc hl			;b941
 	ld de,0b97fh		;b942
-	ld a,(0f023h)		;b945
+	ld a,(0f023h)		;b945   ; con el bit 0 de 0xF023, de la tabla 0xB97F
 	and 001h		;b948
 	call 04065h		;b94a   ; de_mas_a (por 0x4065): DE += A
 	ld a,(de)			;b94d
 	ld (hl),a			;b94e
 	inc hl			;b94f
-	ld a,018h		;b950
+	ld a,018h		;b950   ; 0x18
 	ld (hl),a			;b952
 	inc hl			;b953
-	ld a,00fh		;b954
+	ld a,00fh		;b954   ; 0x0F
 	ld (hl),a			;b956
 	xor a			;b957   ; ...y 0xF022 = 1
 	ld (0f030h),a		;b958
 	inc a			;b95b
-	ld (0f022h),a		;b95c
+	ld (0f022h),a		;b95c   ; 0xF022 = 1
 	ret			;b95f
 L_B960:
 	call esconde_ecb0		;b960   ; esconde_ecb0: el sprite de 0xECB0 escondido
@@ -1604,29 +1604,29 @@ DATA_salas_e617:
 agua_que_se_mueve:		; los dibujos del agua rotan cada 2, 4 y 8 cuadros
 	ld a,(0e617h)		;bd06   ; cada cuadro, con 0xE617: los dibujos del agua (0x2DB0-0x2DB7) rotan un bit...
 	and a			;bd09
-	ret z			;bd0a
+	ret z			;bd0a   ; sin agua: nada
 	ld hl,0e618h		;bd0b
-	inc (hl)			;bd0e
+	inc (hl)			;bd0e   ; 0xE618 + 1
 	ld hl,02db5h		;bd0f
-	ld b,003h		;bd12
+	ld b,003h		;bd12   ; 3 dibujos desde 0x2DB5, cada cuadro
 	call rota_dibujos		;bd14   ; rota_dibujos: B bytes de dibujo rotados en dos tercios
 	ld a,(0e618h)		;bd17   ; ...unos cada 2 cuadros...
 	and 001h		;bd1a
-	ret nz			;bd1c
+	ret nz			;bd1c   ; cada 2...
 	ld hl,02db3h		;bd1d
-	ld b,002h		;bd20
+	ld b,002h		;bd20   ; ...2 desde 0x2DB3
 	call rota_dibujos		;bd22   ; rota_dibujos: B bytes de dibujo rotados en dos tercios
 	ld a,(0e618h)		;bd25   ; ...otros cada 4...
 	and 003h		;bd28
-	ret nz			;bd2a
+	ret nz			;bd2a   ; cada 4...
 	ld hl,02db1h		;bd2b
-	ld b,002h		;bd2e
+	ld b,002h		;bd2e   ; ...2 desde 0x2DB1
 	call rota_dibujos		;bd30   ; rota_dibujos: B bytes de dibujo rotados en dos tercios
 	ld a,(0e618h)		;bd33   ; ...otro cada 8
 	and 007h		;bd36
-	ret nz			;bd38
+	ret nz			;bd38   ; cada 8...
 	ld hl,02db0h		;bd39
-	ld b,001h		;bd3c
+	ld b,001h		;bd3c   ; ...1 desde 0x2DB0
 rota_dibujos:		; B bytes de dibujo rotados en dos tercios
 	ld c,002h		;bd3e   ; B bytes de dibujo rotados en dos tercios
 	push hl			;bd40
@@ -1634,17 +1634,17 @@ L_BD41:
 	push hl			;bd41
 	call 0004ah		;bd42   ; BIOS RDVRM - Reads the content of VRAM
 	pop hl			;bd45
-	rlca			;bd46
+	rlca			;bd46   ; rotado
 	push hl			;bd47
 	call 0004dh		;bd48   ; BIOS WRTVRM - Writes data in VRAM
 	pop hl			;bd4b
 	ld de,00800h		;bd4c
-	add hl,de			;bd4f
-	dec c			;bd50
+	add hl,de			;bd4f   ; + 0x800: el banco siguiente
+	dec c			;bd50   ; C bancos
 	jr nz,L_BD41		;bd51
 	pop hl			;bd53
 	inc hl			;bd54
-	djnz rota_dibujos		;bd55
+	djnz rota_dibujos		;bd55   ; B dibujos
 	ret			;bd57
 sala_de_colores:		; 0xE619 en las salas con colores que cambian (0xBD72)
 	ld bc,(0e041h)		;bd58   ; los colores que cambian: las salas del mapa en 0xBD72...
@@ -1699,15 +1699,15 @@ DATA_salas_e619:
 colores_que_cambian:		; cada 4 cuadros los colores del paso siguiente (0xBDCE)
 	ld a,(0e619h)		;bda1   ; cada 4 cuadros, con 0xE619: el paso siguiente (0-9)...
 	and a			;bda4
-	ret z			;bda5
+	ret z			;bda5   ; no: nada
 	ld a,(0e003h)		;bda6   ; lee el contador de cuadros
 	and 003h		;bda9
-	ret nz			;bdab
+	ret nz			;bdab   ; cada 4 cuadros
 	ld hl,0e61ah		;bdac
-	inc (hl)			;bdaf
+	inc (hl)			;bdaf   ; 0xE61A + 1...
 	ld a,(hl)			;bdb0
 	cp 00ah		;bdb1
-	jr nz,L_BDB7		;bdb3
+	jr nz,L_BDB7		;bdb3   ; ...hasta 0x0A, y vuelta a 0
 	xor a			;bdb5
 	ld (hl),a			;bdb6
 L_BDB7:

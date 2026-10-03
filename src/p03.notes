@@ -157,7 +157,6 @@ C 0xa652 subiendo o bajando: el mando...
 C 0xa661 ...arriba (bit 0): sube...
 C 0xa669 ...abajo (bit 1): baja...
 C 0xa671 ...izquierda o derecha: se baja de la escalera hacia ese lado...
-C 0xa695 ...si la casilla de al lado es pared (>= 0xBA) no
 C 0xa6a7 en pie, a un lado de la escalera
 C 0xa6b2 de espaldas...
 C 0xa6b6 ...a 0x100, o 0x140 con el objeto 0x11...
@@ -428,12 +427,7 @@ C 0xb4a5 las armas 1-5 en vuelo...
 C 0xb4b2 ...su tamaño...
 C 0xb4b5 ...contra cada figura
 C 0xb4d1 las que se pueden herir (bit 5)...
-C 0xb4d7 ...en su fila...
-C 0xb4db ...y en su columna
 C 0xb500 el tipo 6 aparte
-C 0xb528 las armas 0-5 siempre...
-C 0xb531 ...las demas, si estallan, solo con el bit 4 de la figura
-C 0xb53d las armas 3 y siguientes no hieren a las de bit 5
 C 0xb54d el arma 5 aparte
 C 0xb554 la figura con escudo (bit 2) la hace rebotar...
 C 0xb55c ...o con el bit 1, si viene de frente
@@ -639,8 +633,6 @@ C 0xb99c la distancia en y...
 C 0xb9a3 ...dentro del alto?
 C 0xb9a8 la distancia en x...
 C 0xb9af ...dentro del ancho?
-C 0xb45f la distancia en x...
-C 0xb463 ...dentro del ancho?
 C 0xa921 una figura...
 C 0xa925 ...y la siguiente
 C 0xb7df un arma...
@@ -651,6 +643,266 @@ C 0xb94c ancho: cuantos x 8
 C 0xabd0 la vuelta: la velocidad de lado al reves...
 C 0xabdb ...y sin la vertical
 C 0xbc1f HL = el tamaño, DE' = la esquina
+C 0xb416 C = la y del personaje - 0x10
+C 0xb41c B = su x - 8
+C 0xb43b sin arma: nada
+C 0xb43d sus banderas...
+C 0xb442 ...sin el bit 0 (estallando): nada
+C 0xb443 ...ya ha hecho daño (bit 3): nada
+C 0xb44a H = su ancho + 0x11
+C 0xb450 L = su alto + 0x11
+C 0xb456 la x del arma - la del personaje (B)...
+C 0xb458 ...+ el ancho...
+C 0xb45c ...menor que H: se cruzan de lado
+C 0xb45f la y del arma - la del personaje (C)...
+C 0xb461 ...+ el alto...
+C 0xb463 ...C si tambien se cruzan de alto
+C 0xb464 C si es menor que L
+C 0xb8a3 y - 0x0E
+C 0xb8a9 x - 6
+C 0xb8ad 0x0C de alto y 0x0C de ancho
+C 0xb8b8 las armas 1 y 2 (tipo menor que 3)...
+C 0xb8c0 y a la casilla de 8, + 2
+C 0xb8c6 x igual
+C 0xb8cc el tipo de arma
+C 0xb8dc la 5 sin estallar (bit 2)...
+C 0xb8e2 ...2 mas a la derecha
+C 0xa695 ...se baja solo si al lado, bajo los pies (y + 5), hay suelo (0xBA o mas)
+C 0xa655 golpeando con la espada: nada
+C 0xa657 un cuadro mas en la escalera (0xE50B)
+C 0xa660 sin mando: nada
+C 0xa663 B = 1: sube...
+C 0xa665 ...C = 2: de espaldas
+C 0xa66e izquierda y derecha a la vez: nada
+C 0xa673 izquierda: B = 1...
+C 0xa677 ...derecha: B = 0
+C 0xa679 E = el lado
+C 0xa680 a la derecha: D = E = 8...
+C 0xa68a ...a la izquierda: -9
+C 0xa68d pared a la izquierda: no
+C 0xa692 pared a la derecha: no
+C 0xa698 y + 5
+C 0xa69e x + D
+C 0xa6a4 suelo?
+C 0xa6a6 no: sigue en la escalera
+C 0xa6ae x + E: un paso al lado
+C 0xa6b9 0x100...
+C 0xa6bf ...o 0x140 con el objeto
+C 0xa6c7 subiendo, en negativo
+C 0xa6cf no mas arriba de 0x27...
+C 0xa6d4 ...ni mas abajo de 0xC0
+C 0xaee4 x - 8
+C 0xaeea y - 1
+C 0xaeec C = 4, B = 0: arriba
+C 0xaef5 x - 8
+C 0xaefb y + 8
+C 0xaefe C = 4, B = 1: abajo
+C 0xaf0f 16 - C...
+C 0xaf15 ...mas a la derecha
+C 0xaf1d escalera tambien?
+C 0xaf23 x a la casilla de 8
+C 0xaf2d 4 parejas...
+C 0xaf33 ...a cero: mira la de 0xEC00
+C 0xaf3b la pareja siguiente
+C 0xaf45 no esta: C y nada
+C 0xaf48 B = su y
+C 0xaf52 para subir: la del personaje - la suya...
+C 0xaf57 ...igual a su byte 4 - 8?
+C 0xaf5d no: C y nada
+C 0xaf64 para bajar: su y - 8...
+C 0xaf6a ...igual a la del personaje?
+C 0xaf71 - su x (byte 2)
+C 0xaf72 a menos de 0x11?
+C 0xaf75 no: C y nada
+C 0xb0c5 en 0xF000
+C 0xb0cf hueco vacio: nada
+C 0xb0da la cuenta de los bits 4-6, una menos...
+C 0xb0e1 ...hasta 0...
+C 0xb0e2 ...y entonces sin el bit 3
+C 0xb0ea la y del personaje - la suya - 1...
+C 0xb0ee ...menos de 0x1F?
+C 0xb0f5 la x del personaje - la suya + 8...
+C 0xb0fa ...menos de 4: a su izquierda
+C 0xb100 entre 0x2D y 0x30: a su derecha
+C 0xb108 la x + 2 - la suya...
+C 0xb10d ...menos de 0x25?
+C 0xb10f no: fuera
+C 0xb114 la y del personaje - la suya - 8...
+C 0xb119 ...no llega: encima
+C 0xb11b ya la llevaba (bit 0 de 0xF000): sigue
+C 0xb125 en el suelo: no
+C 0xb128 la lleva
+C 0xb12f menos de 8 por debajo?
+C 0xb136 en el suelo: nada
+C 0xb139 su y (16 bits)...
+C 0xb140 ...+ 0x20
+C 0xb2b3 en 0xE6A8
+C 0xb2b6 2 x 2 caracteres, desde 0x7A
+C 0xb2bc la fila de abajo (32 - 1)
+C 0xb707 sin cosa: nada
+C 0xb70a su y
+C 0xb711 su y + 2 - la esquina + 4...
+C 0xb718 ...menos de 0x11: tocada
+C 0xb71e su y + 3 - la esquina + 0x0A...
+C 0xb725 ...menos de 0x17?
+C 0xb72a su x + 3 - la esquina + 8...
+C 0xb731 ...menos de 0x15?
+C 0xb737 C = el tipo
+C 0xb746 el objeto C: tenido
+C 0xbcc2 B = 1
+C 0xbcc9 B = 0x20
+C 0xbccf B = 0x10
+C 0xbcd5 B = 4
+C 0xbcdb B = 8
+C 0xbcdf la 5: B = 2
+C 0xbce4 el tipo del jefe - 1...
+C 0xbceb ...su byte de la tabla...
+C 0xbcec ...tiene el bit de esta arma?
+C 0xa330 B = 0x0C...
+C 0xa334 ...o 0x0D
+C 0xa337 la velocidad vertical menor que B: no se mueve de lado
+C 0xa33d los bits 2-3: izquierda, derecha
+C 0xa341 ninguna: nada
+C 0xa343 las dos: nada
+C 0xa348 derecha: BC = 0x100, D = 1 (su pared)...
+C 0xa34f ...izquierda: -0x100, D = 2
+C 0xa35a E = paso - 1
+C 0xa35d paso no 1: D = paso - 1
+C 0xa361 la pared de ese lado (bits de D)
+C 0xa368 BC x 2
+C 0xa377 B - 2...
+C 0xa37c ...la velocidad vertical aun menor?
+C 0xb7ee las armas 1-4...
+C 0xb7f1 ...las demas no
+C 0xb7f2 sin el bit 0: nada
+C 0xb7fe 3 huecos
+C 0xb808 el siguiente, 8 bytes mas
+C 0xb817 vacio: nada
+C 0xb81c byte 1 a 1: rota, nada
+C 0xb824 L = su alto + el del arma + 1
+C 0xb82a H = su ancho + el del arma + 1
+C 0xb4d7 ...que el arma 5 pueda...
+C 0xb4db ...y la 2 tambien
+C 0xb528 tipo - 6 distinto de 0xFF (todas menos la 5): C...
+C 0xb531 ...la 5 sin estallar (bit 2): C...
+C 0xb536 ...estallada, C si la figura no tiene el bit 4
+C 0xb53b NC: no
+C 0xb53d tipo - 3 distinto de 0xFF (todas menos la 2): C...
+C 0xb546 ...la 2: NC si la figura tiene el bit 5...
+C 0xb54b ...y si no, C
+C 0xbd79 x 2: una palabra por tipo
+C 0xbd7f HL = su lista
+C 0xbd81 B = el primer mosaico de la lista
+C 0xbd86 el mosaico - el primero...
+C 0xbd88 ...x 4 bytes
+C 0xbda1 L + 0x18
+C 0xbdab la y - la del jefe...
+C 0xbdac ...menos de 0x28?
+C 0xbdb2 con el bit 5 de 0xE709...
+C 0xbdb4 ...0xE70B...
+C 0xbdb9 ...sin el, 0xE715
+C 0xbdc5 a la casilla de 8
+C 0xbdc9 la x - la del jefe...
+C 0xbdca ...menor que C?
+C 0xbdd0 x + 6
+C 0xbdd4 y + 4
+C 0xbdd8 L + 0x18
+C 0xbde2 la y - la del jefe...
+C 0xbde3 ...menor que L?
+C 0xbde5 B = 0x40, el ancho mas grande
+C 0xbdea con el bit 5 de 0xE709, 0xE70B; sin el, 0xE715
+C 0xbdf7 C = el ancho x 8
+C 0xbe00 C - 0x40...
+C 0xbe03 ...o 0
+C 0xbe04 E = el principio
+C 0xbe0c E = la x del jefe a la casilla de 8
+C 0xbe16 sin el bit 5: D + 8
+C 0xbe1c (A no se usa: la pisa la siguiente)
+C 0xbe1e B = el menor de C y 0x40
+C 0xbe23 D - E...
+C 0xbe24 ...C si es menor que B
+C 0xba86 la entrada del mosaico
+C 0xba8f + lo del mosaico...
+C 0xba90 ...- D
+C 0xba91 el jefe a la derecha (o igual): 0...
+C 0xba95 ...a la izquierda: 1
+C 0xbaed + dy - la y (E)...
+C 0xbaf0 ...menos de 0x10: dentro de alto
+C 0xbaf5 ...si no, + el alto: C si dentro
+C 0xbaf7 fuera
+C 0xbafb + dx - la x (D)...
+C 0xbafe ...menos de 0x10: C, dentro
+C 0xbb02 ...si no, + el ancho: C si dentro
+C 0xb4e2 los tipos 0x60...
+C 0xb4e7 ...0x57...
+C 0xb4ec ...y 0x62 con su tamaño aparte
+C 0xb4f4 L = su alto + el del arma + 1
+C 0xb4fa H = su ancho + el del arma + 1
+C 0xb520 en el paso 4, con (ix+5, ix+7); si no, con (ix+0x12, ix+0x13)
+C 0xb957 su tamaño (ix+0x11)...
+C 0xb95c ...x 4...
+C 0xb95e ...en la tabla 0x9006
+C 0xb964 BC = la primera palabra...
+C 0xb968 ...HL = la segunda
+C 0xb919 los bits 0-2 de su ficha (ix+9)...
+C 0xb91f ...- 1, x 8: L
+C 0xb923 H = 7
+C 0xb96e la y - la de la figura - C...
+C 0xb973 ...+ el alto (E')...
+C 0xb977 ...menor que L?
+C 0xb97a la x - la suya - B...
+C 0xb97f ...+ el ancho (D')...
+C 0xb982 ...C si es menor que H
+C 0xb98a + el alto (E')
+C 0xb98e menor que L?
+C 0xb996 + el ancho (D')
+C 0xb999 C si es menor que H
+C 0xb9a1 + el alto (E')
+C 0xb9a5 menor que L?
+C 0xb9ad + el ancho (D')
+C 0xb9b0 C si es menor que H
+C 0xa5a2 la cuenta (HL)...
+C 0xa5a4 ...otra vez 6
+C 0xa5ab la ultima (B)?
+C 0xa5ae pasada la ultima: la pose 0xFF
+C 0xace7 por encima de ella: se arma
+C 0xace9 a 0x15 o mas por debajo: tambien
+C 0xacf3 la x - la suya + 8...
+C 0xacf6 ...menos de 0x21: aun cerca, nada
+C 0xacfa 0 en el byte 0x1A
+C 0xacfd las banderas + 1 (el bit 0)
+C 0xad00 el paso siguiente
+C 0xa80c llevado
+C 0xa811 la siguiente
+C 0xa81b 0xE52B a cero: solo por abajo
+C 0xa821 ni 1 ni 2: solo por abajo
+C 0xa826 por arriba?
+C 0xa82d por abajo?
+C 0xa242 con pared a un lado: nada
+C 0xa249 HL = 0xE521
+C 0xa24b izquierda: -8...
+C 0xa24f ...derecha: +0x12
+C 0xa252 la x de 0xE521 + B
+C 0xa4d2 hacia arriba (negativa): sin tope
+C 0xa4d8 mas de 6: 6
+C 0xa4e1 sin la fraccion
+C 0xa4e6 la y + la velocidad
+C 0xa4e8 mas arriba de 0x28?
+C 0xa4ec 0x28
+C 0xad83 una menos en pantalla
+C 0xad87 DE = HL + 1
+C 0xad8c 32 bytes
+C 0xae4f 0x46 cuadros (byte 8)
+C 0xae53 y - 0x0C
+C 0xae5b x - 8
+C 0xae6c sin el bit 0
+C 0xae79 la velocidad de lado, al reves
+C 0xae7f -0x800: hacia arriba
+C 0xb3c5 si es 1...
+C 0xb3c7 ...se queda
+C 0xb3ca la mitad
+C 0xb5fa la siguiente
+C 0xb600 una menos
 
 # --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
 D 0xA134 0xA144 tabla_A134  8 destinos del despachador de 0x4140 (call en p03:A131): 0xA144, 0xA2D2, 0xA3AC, 0xA608, 0xA460, 0xA566, 0xA6EA, 0xA5BA; lo leen p03:A131 (16 bytes)
@@ -793,8 +1045,8 @@ L 0xB438 cerca_de_mina C si el personaje esta en la explosion
 L 0xB492 armas_contra_figuras las armas contra las figuras
 L 0xB4A5 arma_contra_figuras un arma contra las figuras
 L 0xB4D1 arma_contra_figura un arma contra una figura
-L 0xB528 arma_en_fila C si el arma alcanza a la figura en su fila
-L 0xB53D arma_en_columna C si el arma alcanza a la figura en su columna
+L 0xB528 filtro_arma_5 C (puede herir) salvo el arma 5 estallada contra figura con el bit 4 de su byte 3
+L 0xB53D filtro_arma_2 C (puede herir) salvo el arma 2 contra figura con el bit 5 de su byte 3
 L 0xB54D arma_da el arma da en la figura: rebota o la hiere
 L 0xB575 hiere la figura pierde una de vida (dos con el objeto 0x25)
 L 0xB592 tipo_que_se_enfada Z en los tipos 0x0F, 0x25, 0x49, 0x52, 0x54 y 0x27
@@ -1033,7 +1285,6 @@ C 0xA6A8 guarda el estado del personaje (5 = hundirse)
 C 0xA6AB lee la x del personaje
 C 0xA6B3 guarda hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 C 0xA6C3 guarda el sentido en la escalera (1 sube, 2 baja)
-C 0xA6C7 de_negado: DE = -DE
 C 0xA6DA guarda la y del personaje con su fraccion (16 bits) y el byte siguiente (16 bits)
 C 0xA6E7 pose_b_mas_bit: la pose B + el bit 3 de (HL)
 C 0xA6EB guarda la espada da en algo
@@ -1410,8 +1661,8 @@ C 0xBB3D lee el jefe vencido (estado 0x13)
 C 0xBB4F tamano_del_arma: DE = la esquina del arma, DE' = su tamaño (0xB8EF)
 C 0xBB52 apunta a el tipo del jefe (el hueco 0xE700 es el jefe)
 C 0xBB59 arma_da_al_jefe: el arma da al jefe: si esa arma le hiere, una de vida menos
-C 0xBB63 arma_en_fila: C si el arma alcanza a la figura en su fila
-C 0xBB67 arma_en_columna: C si el arma alcanza a la figura en su columna
+C 0xBB63 filtro_arma_5: C (puede herir) salvo el arma 5 estallada contra figura con el bit 4 de su byte 3
+C 0xBB67 filtro_arma_2: C (puede herir) salvo el arma 2 contra figura con el bit 5 de su byte 3
 C 0xBB77 despacha: salta a la entrada A de la tabla de palabras que va detras del call
 C 0xBB93 cuerpo_jefe_2: C si toca el cuerpo del jefe 2
 C 0xBBBC se_tocan: C si el recuadro DE/DE' toca a la figura IX (y 5, x 7)

@@ -46,7 +46,6 @@ C 0xb847 cada cuadro del final: cada 2 cuadros cuenta 0xF02B...
 C 0xb85a ...por el paso 0xF031 (tabla que sigue)
 C 0xb868 se acabo el paso de varios cuadros
 C 0xb86d paso: cada 4 cuadros los sprites de 0xECA0 suben...
-C 0xb87a ...hasta la y 0x5F...
 C 0xb883 ...luego 0x40 cuadros y el paso siguiente
 C 0xb890 paso: cuenta...
 C 0xb89a ...lo de cada 16 cuadros...
@@ -110,6 +109,51 @@ C 0xbd64 la sala en la lista?...
 C 0xbd6a ...la siguiente
 C 0xb916 los dos caracteres de la tabla...
 C 0xb91b ...en la pantalla
+C 0xb928 la cuenta, una menos...
+C 0xb929 ...a 0: L_B960
+C 0xb92f 0xF022 no 0: L_B968
+C 0xb936 cada 16 cuadros
+C 0xb93a 0xF023 + 1
+C 0xb93e 0xECB0 = 0x2B
+C 0xb945 con el bit 0 de 0xF023, de la tabla 0xB97F
+C 0xb950 0x18
+C 0xb954 0x0F
+C 0xb95c 0xF022 = 1
+C 0xbd0a sin agua: nada
+C 0xbd0e 0xE618 + 1
+C 0xbd12 3 dibujos desde 0x2DB5, cada cuadro
+C 0xbd1c cada 2...
+C 0xbd20 ...2 desde 0x2DB3
+C 0xbd2a cada 4...
+C 0xbd2e ...2 desde 0x2DB1
+C 0xbd38 cada 8...
+C 0xbd3c ...1 desde 0x2DB0
+C 0xb8d5 cada 4 cuadros
+C 0xb8da 0xF02F no 0: L_B8F5
+C 0xb8de 0xF02B = 0xFF
+C 0xb8e5 0xECA8 + 1...
+C 0xb8e8 ...menos de 0x3F: L_B8FF
+C 0xb8f3 0xF02F + 1
+C 0xb7fd 0x40
+C 0xb801 C + 0x10
+C 0xb80b 1
+C 0xb80d B veces
+C 0xbd46 rotado
+C 0xbd4f + 0x800: el banco siguiente
+C 0xbd50 C bancos
+C 0xbd55 B dibujos
+C 0xbda5 no: nada
+C 0xbdab cada 4 cuadros
+C 0xbdaf 0xE61A + 1...
+C 0xbdb3 ...hasta 0x0A, y vuelta a 0
+C 0xb872 cada 4 cuadros
+C 0xb877 0xECA0 - 1...
+C 0xb87a ...menos de 0x5F: L_B883
+C 0xb87e ...y a 0xECA4
+C 0xb8a1 0xF032 no 0: nada
+C 0xb8a7 cada 64 cuadros
+C 0xb8ad al azar 0xBAA1...
+C 0xb8b1 ...o 0xBAC1
 
 # --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
 D 0xA000 0xA038 mosaico_13_cola  el mosaico 13: 10 x 6 caracteres por filas (p01:6D87; el 0 no se pinta) (sigue del banco anterior, 0x9FFC); lo leen p01:6D87 (56 bytes)

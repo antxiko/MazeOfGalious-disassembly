@@ -129,6 +129,61 @@ C 0x6213 herido 1: la tabla 0x62E8
 C 0x6219 su periodo
 C 0x653c la cuenta de vueltas...
 C 0x6540 ...y salta
+C 0x63a6 0x0C: L_6409
+C 0x63bc 0x0B: L_63FB
+C 0x63c6 0x0E: L_642B
+C 0x63cd los bits 0-2...
+C 0x63d3 ...a los bits 0-2 del byte 2
+C 0x63de no es 8: sigue leyendo
+C 0x6460 el nibble alto del byte 0x17...
+C 0x6466 ...en E
+C 0x646a byte 0x18 + 1...
+C 0x646b ...menor que E: L_649A
+C 0x6471 DE = bytes 0x14-0x15
+C 0x6477 B = el nibble bajo del byte 0x17
+C 0x647d byte 0x19 al reves
+C 0x6483 ahora no 0: L_648C
+C 0x6485 0: DE + B
+C 0x6575 el bit 3 de C al bit 4...
+C 0x6578 ...al byte 0x0A
+C 0x6581 bytes 0x0E y 0x0F = el siguiente
+C 0x6588 0x20: L_65A3
+C 0x658d menos de 0x28: L_64C2
+C 0x6594 al PSG 12 (periodo de la envolvente, alto)
+C 0x659b al PSG 11 (periodo de la envolvente, bajo)
+C 0x619f el puntero a los bytes 0-1
+C 0x61ad B = el nibble bajo + 1
+C 0x61b5 0xE1C5 a 0: L_61C6
+C 0x61bb 0xE1C9 no 0: L_61C6
+C 0x61c0 2: E - 1
+C 0x61e4 sin el bit 0: L_627A
+C 0x61ea byte 9 - byte 5...
+C 0x61ed ...al byte 0x0B
+C 0x61f4 con el bit 5: nada
+C 0x61f9 0xE1C5 a 0: L_621E
+C 0x61ff 0xE1C9 no 0: L_621E
+C 0x6204 no 2: L_6213
+C 0x6209 (C / 16) x 2 en la tabla 0x6300
+C 0x64c3 0xFF: L_65A5
+C 0x64d1 0x2x: L_6550
+C 0x64d8 no 0x1x: L_64EA
+C 0x64de el nibble bajo x 2
+C 0x6382 byte 4 = A + 1
+C 0x6386 el nibble alto - 1...
+C 0x631b B = + 1
+C 0x6323 0xE1C5 a 0: L_6334
+C 0x6329 0xE1C9 no 0: L_6334
+C 0x6330 2: E - 1
+C 0x6154 byte 0x0A - 1...
+C 0x6155 ...negativo: nada
+C 0x615d con el bit 5: nada
+C 0x6162 0xE1C6 a 0: L_616C
+C 0x6168 0xE1C9 no 0: L_616C
+C 0x616a E = 0
+C 0x6281 2: L_62B8
+C 0x6285 3: L_62BE
+C 0x628d 5: L_62CA
+C 0x6291 los demas: 0x661F
 
 # --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
 D 0x60EC 0x60F2 mezclador_0  tres parejas [and][or], una por canal (0xE1AE), para el registro 7 del PSG (p13:60DF); la pide p13:60CF; lo leen p13:60DF (6 bytes)

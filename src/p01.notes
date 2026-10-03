@@ -161,7 +161,6 @@ C 0x64d4 ...y lleva al personaje, lo suelta (0xE52B, 0xE52D)
 C 0x64e3 con el bit 0 de 0xEC12, el bit 2
 C 0x64ee la y (16 bits) mas la velocidad...
 C 0x6501 ...subiendo: hasta la sala y la y de arriba (bytes 0x0C-0x0D)...
-C 0x6516 ...bajando: hasta las de abajo (0x0E-0x0F)
 C 0x651f y da la vuelta: velocidad negada...
 C 0x6528 ...y el bit 1 cambiado
 C 0x6531 la figura de 0xEC20: la y mas la velocidad...
@@ -169,7 +168,6 @@ C 0x654f ...lo que se ha movido en 0xEC2A
 C 0x6555 subiendo, hasta 0xEC2D...
 C 0x6562 ...bajando, hasta 0xEC2F
 C 0x656e 0xE614 a 0 y 16 + 17 huecos de figura
-C 0x657c en el castillo...
 C 0x657e ...dos bits por sala en 0xBA2E...
 C 0x6594 ...0 y 3: nada
 C 0x659a 1 o 2: en 0xE614, y los huecos de la tabla 0xBA28
@@ -454,8 +452,6 @@ C 0x7894 ...su ancho y alto de la tabla 0x78BA a (ix+8) y (ix+9)...
 C 0x78a8 ...y lo de debajo, fila a fila
 C 0x78c4 las cuatro de 0xEA60
 C 0x78d9 la de 0xEA50
-C 0x78e6 la x (byte 2) y la y (byte 4), 8 mas arriba si el dibujo no es el 0...
-C 0x78f8 ...su casilla a los bytes 7-8
 C 0x7904 3 filas de 1 o de 3
 C 0x791e con 0xEAB0, las dos de 0xEAB7: su casilla y dos caracteres
 C 0x794d con 0xEA20: su casilla (0xEA24) y 3 x 4
@@ -615,7 +611,6 @@ C 0x67bd ...si se tiene...
 C 0x67c0 ...su numero (7 - lo que queda)...
 C 0x67c7 ...sus dos caracteres de 0x5F6B...
 C 0x67cf ...a la pantalla
-C 0x67d4 C: se tiene
 C 0x66db 6 bytes por dibujo...
 C 0x66e2 ...en 0x66F7: [casilla]...
 C 0x66ea ...[2 caracteres arriba]...
@@ -623,7 +618,6 @@ C 0x66f2 ...[2 abajo]
 C 0x792b la y y la x...
 C 0x792e ...sin x, no esta
 C 0x793a su casilla a la ficha
-C 0x7940 y sus dos caracteres de debajo
 C 0x70e0 [y]...
 C 0x70e2 ...[x]...
 C 0x70e4 ...[dibujo]...
@@ -698,7 +692,6 @@ C 0x6753 10 por fila
 C 0x6755 B filas
 C 0x6c65 la casilla de la cosa: A...
 C 0x6c69 ...A + 1 a la derecha...
-C 0x6c6c ...y los dos de abajo
 C 0x7514 [y]...
 C 0x7519 ...[x]...
 C 0x751e ...[dibujo]...
@@ -729,7 +722,6 @@ C 0x6f63 ...el primero 0xB5
 C 0x6931 salta una lista (hasta su 0)...
 C 0x6936 ...hasta la de la sala B
 C 0x731b una fila de 4...
-C 0x7323 ...y la siguiente (28 mas alla)
 C 0x77e4 una fila de 14...
 C 0x77e7 ...y la siguiente de 32
 C 0x7a69 una fila...
@@ -854,6 +846,286 @@ C 0x7886 ...la x
 C 0x788e la casilla en los bytes 6-7
 C 0x7899 el dibujo (byte 4)
 C 0x78a0 ancho y alto a (ix+8) y (ix+9)
+C 0x6a62 el caracter B...
+C 0x6a65 ...x 8 en los dibujos...
+C 0x6a6a ...su sitio nuevo: 2 x caracter + 8
+C 0x6a76 los 8 bytes del caracter...
+C 0x6a82 ...a los tres tercios en su sitio nuevo
+C 0x6a8d el anterior
+C 0x6a91 los 36 caracteres de la fuente...
+C 0x783b si esta...
+C 0x783f ...su y...
+C 0x7843 ...y su x...
+C 0x784b ...la casilla a la ficha...
+C 0x7856 ...B casillas de alto
+C 0x675b la casilla siguiente (4 caracteres por objeto)
+C 0x6762 sin el objeto, nada
+C 0x6765 los caracteres del objeto: 4 seguidos desde L
+C 0x676c la fila de abajo
+C 0x6774 C: se tiene
+C 0x6314 la y: 3 bits altos + 8
+C 0x631a la x: 5 bits bajos x 8
+C 0x6320 en 0xF002
+C 0x6329 la siguiente
+C 0x633e [paso 0]
+C 0x6342 [y][x]
+C 0x634e [casilla]
+C 0x635b [numero en la lista]
+C 0x64b0 la lista de salas de la figura
+C 0x64b8 la siguiente de la lista
+C 0x64bf es su sala
+C 0x64c2 su y nueva
+C 0x64c5 sin los bits 3-6
+C 0x64dc y ya no lo lleva
+C 0x653a la y...
+C 0x6540 ...mas la velocidad...
+C 0x6548 ...lo que se ha movido...
+C 0x655b ...subiendo, hasta 0xEC2D
+C 0x66dc x 6
+C 0x66e6 la casilla
+C 0x66ee la fila de abajo
+C 0x6c43 una fila de C...
+C 0x6c4d ...y del mosaico, lo que sobra
+C 0x6c53 B filas
+C 0x78f4 la y en el byte 4...
+C 0x78f8 ...su casilla...
+C 0x78fc ...en los bytes 7-8
+C 0x7909 3 filas de 1 o de 3
+C 0x63d1 la sala de partida
+C 0x63d6 E = el numero de figura
+C 0x63df la siguiente ficha y su entrada
+C 0x66a7 nibble alto x 4...
+C 0x66ab ...+ 0x90: la y
+C 0x66b1 nibble bajo x 8 + 1: la x
+C 0x6a00 el nibble bajo: lo de la sala
+C 0x6a05 la x con el bit de la y
+C 0x6a0c la y
+C 0x6a17 0 se guarda como 0xFF
+C 0x7233 sin alto, nada
+C 0x723c la casilla (bytes 5-6)
+C 0x7242 el caracter (byte 8)
+C 0x7403 + dy...
+C 0x7404 ...- 1
+C 0x740b + dx
+C 0x7418 escondido (y 0xE0)
+C 0x741e la x
+C 0x7422 el dibujo
+C 0x742a en la pausa, el color de la tabla
+C 0x742f hundiendose: parpadeo
+C 0x7437 parpadeando tras un golpe
+C 0x7b4e los bytes 4...
+C 0x7b5b la casilla y el alto
+C 0x64f4 la velocidad (bytes 8-9)...
+C 0x64fb ...a la y
+C 0x6505 subiendo: en la sala y la y de arriba...
+C 0x6516 bajando: las de abajo
+C 0x79cc la casilla
+C 0x79d4 la fila de abajo
+C 0x6d68 su casilla...
+C 0x6d6e ...lo que se ve...
+C 0x6d7b ...con el bit 4 de la ficha, (ix+0x1A) filas
+C 0x6fba el quinto: [y (0x12) - 1]...
+C 0x6fc0 ...[x (0x13)]...
+C 0x6fc5 ...[dibujo 0xA0]...
+C 0x6fc9 ...[color 12]
+C 0x7932 la casilla de la y, x
+C 0x7a7b 0: una columna
+C 0x7a7e 1: una fila
+C 0x7a83 6: 2 x 2 desde su casilla
+C 0x7a8d la fila de abajo
+C 0x6a99 8 bytes a 0...
+C 0x6a9f ...cada 16 (uno de cada dos caracteres)
+C 0x6aaa todos los colores a 0xF0
+C 0x6b2b una fila de 32...
+C 0x6b32 ...y dos filas mas abajo (0x40)
+C 0x6f02 + H...
+C 0x6f09 + L
+C 0x6f11 su color
+C 0x738e el byte 1: rota o entera...
+C 0x7393 ...su casilla (bytes 4-5)...
+C 0x739c ...rota: 0x73B3
+C 0x626a 2 mas abajo
+C 0x6271 0x7C
+C 0x6275 0x8A
+C 0x627c escondido
+C 0x698c la columna x 0x15 + 0xEB...
+C 0x6992 ...x 8...
+C 0x6995 ...en los colores desde 0x0A00
+C 0x699d 21 caracteres de 8 en 8
+C 0x69a7 el byte del caracter siguiente
+C 0x69ae una fila mas de 8
+C 0x69b4 una columna mas
+C 0x6de5 la casilla a la ficha
+C 0x6dee la columna + el ancho...
+C 0x6df2 ...lo que sale por la derecha se quita
+C 0x72de una fila
+C 0x72e5 la siguiente
+C 0x7bde una fila
+C 0x7be5 la siguiente
+C 0x7bfa sin ella, nada
+C 0x7bff su casilla...
+C 0x7c07 ...2 caracteres
+C 0x6b44 32 ceros
+C 0x6b4e 0xFB...
+C 0x6b52 ...calla la musica
+C 0x6c6c la fila de abajo
+C 0x6c74 el cuarto
+C 0x6daa la casilla...
+C 0x6db0 ...lo que se ve...
+C 0x6db6 ...lo que no cabe
+C 0x6e0f la siguiente (32 bytes)
+C 0x6e15 ninguna mas, nada
+C 0x6e17 las de mas...
+C 0x6f93 su casilla
+C 0x6fa0 (ix+0x1F) caracteres
+C 0x6fa6 a la copia
+C 0x747a la siguiente (32 bytes)...
+C 0x7480 ...y su sprite (4 bytes)
+C 0x748a tres huecos
+C 0x74f0 si esta...
+C 0x74f8 ...en su casilla
+C 0x7505 hacia la derecha +1
+C 0x777b de caracteres...
+C 0x7780 ...su casilla...
+C 0x778f ...y lo de debajo
+C 0x7a50 de caracteres (sin el bit 7 de la ficha)...
+C 0x7a55 ...los de bit 6 aparte
+C 0x7a5e el tamaño del mosaico
+C 0x61fc el tope (el byte siguiente)
+C 0x61ff se queda en el tope
+C 0x644b la siguiente (16 bytes)
+C 0x6455 las salas de las seis
+C 0x70c9 cuantos (bits 0-2 de la ficha) - 1
+C 0x70d2 la x
+C 0x70d9 el dibujo...
+C 0x70dc ...la y - 1
+C 0x790f una fila de C...
+C 0x7919 ...y la siguiente
+C 0x7a2e la fila siguiente de 32
+C 0x6b93 15 bytes...
+C 0x6b97 ...el primero al final: un pixel arriba
+C 0x6ba2 a los dibujos desde el caracter 2
+C 0x7266 su dibujo...
+C 0x7269 ...ancho y alto...
+C 0x726f ...de la tabla 0xA6FB
+C 0x7798 sin cosa: nada
+C 0x779c 2 bytes de la fila de arriba...
+C 0x77a0 ...+ 0x1E: la de abajo...
+C 0x77a4 ...otros 2
+C 0x7ae9 sin cosa: nada
+C 0x7aee 2 bytes a la fila de arriba...
+C 0x7af2 ...+ 0x1E: la de abajo
+C 0x6204 0: nada
+C 0x6206 positivo: L_620F
+C 0x6209 negativo: (HL) - 1...
+C 0x620b ...y uno menos pendiente
+C 0x620d C
+C 0x62ca de 4 en 4
+C 0x62d5 en 0xF02C
+C 0x62dd la cuenta, una menos...
+C 0x62e2 ...4 bytes de 0x9407 a 0xEC98...
+C 0x62ed ...y 0xF031 + 1
+C 0x6389 vacio: nada
+C 0x638e byte 1 a 0: nada
+C 0x6393 acabada: el hueco vacio
+C 0x6933 hasta el 0...
+C 0x6937 ...una mas...
+C 0x6938 ...hasta la B
+C 0x6d08 C bytes...
+C 0x6d0d ...la fila siguiente (+32)...
+C 0x6d11 ...B filas
+C 0x6e90 C bytes...
+C 0x6e95 ...la fila siguiente: + 32 - C
+C 0x7107 los demas: 0xD4...
+C 0x710b ...el 0x62: 0xC8
+C 0x7323 + 0x1C: la fila siguiente
+C 0x743b B = 2: L_7456
+C 0x7440 B menos de 2: L_744B
+C 0x7446 0xE000 = 9: L_7456
+C 0x7493 la figura siguiente...
+C 0x7498 ...y 12 bytes mas
+C 0x7670 0: nada
+C 0x7678 1: 0xECF8...
+C 0x767a ...si no, 0xECF0
+C 0x7710 C bytes...
+C 0x7715 ...la fila siguiente: + 32 - C
+C 0x77e2 C bytes
+C 0x7a67 C bytes...
+C 0x7a6e ...la fila siguiente: + 32 - C
+C 0x787b vacio: nada
+C 0x7884 L = su y (byte 2)
+C 0x7887 H = su x (byte 3)
+C 0x788f la casilla a los bytes 6-7
+C 0x789a la palabra del byte 4 en 0x78BA...
+C 0x78a3 ...a los bytes 8-9
+C 0x783c vacio: nada
+C 0x7842 L = byte 2
+C 0x7845 H = byte 3
+C 0x784c la casilla a los bytes 5-6
+C 0x7855 0: nada
+C 0x675c + 4
+C 0x6768 2 x 2 caracteres seguidos...
+C 0x676f ...la fila de abajo (+32)
+C 0x661f sin el objeto: nada
+C 0x6629 3 bytes de 0x66BF a 0xEF26
+C 0x6632 en el castillo: nada
+C 0x6633 la palabra del mapa en 0xAF2A
+C 0x663a en 0xF000...
+C 0x6642 ...la siguiente en 0xF002...
+C 0x6647 ...y el resto en 0xF004
+C 0x6c9a no: nada
+C 0x6c9f bytes 2-3
+C 0x6cab 0xE68C x 12...
+C 0x6cb3 ...en la tabla 0x6CC7
+C 0x6cb5 3 filas
+C 0x7bc1 vacio: nada
+C 0x7bce bytes 7-8: la casilla
+C 0x7bd2 B = 3, C = 1...
+C 0x7bd7 ...con el byte 5, C = 3
+C 0x6539 vacio: nada
+C 0x653d la vieja en 0xEC2A
+C 0x6544 + 0xEC28
+C 0x654d lo que ha cambiado...
+C 0x6559 sin el bit 1: L_6562
+C 0x655e pasa de 0xEC2D?
+C 0x655f no: nada
+C 0x67be no: nada
+C 0x67c2 7 - C
+C 0x67ca x 2: en la tabla 0x5F6B
+C 0x67d1 2 bytes
+C 0x67d4 C
+C 0x61db el acarreo a C
+C 0x61df nada pendiente: nada
+C 0x61e2 - el siguiente...
+C 0x61e3 ...no llega: nada
+C 0x61ea menos que el siguiente?
+C 0x61eb no: nada
+C 0x65de 0xE058 + el personaje...
+C 0x65e1 ...+ 1 en BCD
+C 0x65e8 0xE04C = 0
+C 0x65ee 0xE04D = el personaje
+C 0x65f3 0xE04E = el arma
+C 0x65f5 con arma: nada
+C 0x65f6 C = 1, B = 6
+C 0x792f 0: L_7945
+C 0x793b la casilla, detras
+C 0x7940 2 bytes
+C 0x7e5d castillo, sala 1?
+C 0x7e5e no: nada
+C 0x7e65 C = lo de antes
+C 0x7e67 lo recien apretado...
+C 0x7e69 ...nada: nada
+C 0x7e75 la tecla que toca...
+C 0x7e76 ...es esta?
+C 0x78e2 vacio: nada
+C 0x78e6 E = byte 2
+C 0x78ed C = byte 5
+C 0x78f0 0: tal cual
+C 0x6572 0xE635 = 0x10, 0xE636 = 0x11
+C 0x657c solo el castillo
+C 0x657f la sala / 4...
+C 0x6585 ...en la tabla 0xBA2E
+C 0x658a (la sala x 2) AND 6: su pareja de bits
 
 # --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
 D 0x6000 0x6002 partida_5FFF_cola  la instruccion de p00:5FFF (32 | 07 E5) empieza al final del banco 0 y acaba al principio del 1, que el cartucho pone siempre a continuacion: aqui el resto; lo leen p00:5FFF (2 bytes)
@@ -1189,7 +1461,6 @@ C 0x65EF lee el arma elegida
 C 0x65FA apunta a tiene el objeto 0x01
 C 0x6609 guarda el arma elegida
 C 0x662E lee el mapa (1 el castillo, 2-11 los mundos)
-C 0x6633 palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x6672 palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x667E lee el mapa (1 el castillo, 2-11 los mundos)
 C 0x6682 apunta a los sprites de las marcas del mapa

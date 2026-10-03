@@ -317,21 +317,21 @@ pendiente_popolon:		; la experiencia y la vida pendientes de Popolon
 	ret			;61d7
 paso_de_experiencia:		; un paso de la experiencia; llena, rellena la vida
 	call paso_pendiente		;61d8   ; un paso de la experiencia...
-	rl c		;61db
+	rl c		;61db   ; el acarreo a C
 	bit 0,c		;61dd
-	ret z			;61df
+	ret z			;61df   ; nada pendiente: nada
 	ld a,(hl)			;61e0   ; ...si llega al tope (el byte siguiente)...
 	inc l			;61e1
-	sub (hl)			;61e2
-	ret c			;61e3
+	sub (hl)			;61e2   ; - el siguiente...
+	ret c			;61e3   ; ...no llega: nada
 	dec l			;61e4
 	ld (hl),a			;61e5   ; ...vuelve a empezar desde lo que sobra...
 	inc l			;61e6
 	inc l			;61e7
 	ld a,(hl)			;61e8   ; ...y si la vida no esta en su tope...
 	inc l			;61e9
-	cp (hl)			;61ea
-	ret nc			;61eb
+	cp (hl)			;61ea   ; menos que el siguiente?
+	ret nc			;61eb   ; no: nada
 	ld a,(hl)			;61ec   ; ...se le suma el tope de la vida: barra de experiencia llena = vida
 	exx			;61ed
 	call cambia_vida_de		;61ee   ; cambia_vida_de: como cambia_vida, para el personaje de 0xF000
@@ -343,23 +343,23 @@ paso_de_vida:		; un paso de la vida hasta su tope
 	bit 0,c		;61f8
 	ret z			;61fa
 	ld a,(hl)			;61fb   ; ...sin pasar del tope
-	inc l			;61fc
+	inc l			;61fc   ; el tope (el byte siguiente)
 	cp (hl)			;61fd
 	ret c			;61fe
-	ld a,(hl)			;61ff
+	ld a,(hl)			;61ff   ; se queda en el tope
 	dec l			;6200
 	ld (hl),a			;6201
 	ret			;6202
 paso_pendiente:		; uno arriba o abajo de (HL) segun el pendiente (DE)
 	ld a,(de)			;6203   ; el pendiente: negativo, uno menos y el pendiente sube...
-	or a			;6204
+	or a			;6204   ; 0: nada
 	ret z			;6205
-	jp p,L_620F		;6206
-	dec (hl)			;6209
+	jp p,L_620F		;6206   ; positivo: L_620F
+	dec (hl)			;6209   ; negativo: (HL) - 1...
 	ld a,(de)			;620a
-	inc a			;620b
+	inc a			;620b   ; ...y uno menos pendiente
 	ld (de),a			;620c
-	scf			;620d
+	scf			;620d   ; C
 	ret			;620e
 L_620F:
 	inc (hl)			;620f   ; ...positivo, uno mas y el pendiente baja
@@ -416,18 +416,18 @@ DATA_tabla_6261:
 
 L_6267:
 	ld hl,0ec99h		;6267   ; el sprite baja de 2 en 2...
-	inc (hl)			;626a
+	inc (hl)			;626a   ; 2 mas abajo
 	inc (hl)			;626b
 	ld a,(hl)			;626c
 	cp 06eh		;626d   ; ...en las y 0x6E, 0x7C y 0x8A cambia de dibujo...
 	jr z,L_6286		;626f
-	cp 07ch		;6271
+	cp 07ch		;6271   ; 0x7C
 	jr z,L_6286		;6273
-	cp 08ah		;6275
+	cp 08ah		;6275   ; 0x8A
 	jr z,L_6286		;6277
 	cp 098h		;6279   ; ...y en la 0x98 se esconde: paso siguiente
 	ret nz			;627b
-	ld a,0e0h		;627c
+	ld a,0e0h		;627c   ; escondido
 	ld (0ec98h),a		;627e
 L_6281:
 	ld hl,0f01fh		;6281   ; apunta a el paso del titulo
@@ -488,25 +488,25 @@ L_62C2:
 	ld a,0e0h		;62c7
 L_62C9:
 	ld (hl),a			;62c9
-	inc hl			;62ca
+	inc hl			;62ca   ; de 4 en 4
 	inc hl			;62cb
 	inc hl			;62cc
 	inc hl			;62cd
 	djnz L_62C9		;62ce
 	call titulo_a_vram		;62d0   ; titulo_a_vram: la mitad de arriba y los sprites a la VRAM
 	ld a,078h		;62d3   ; ...y 0x78 cuadros
-	ld (0f02ch),a		;62d5
+	ld (0f02ch),a		;62d5   ; en 0xF02C
 	jr $-87		;62d8
 L_62DA:
 	ld hl,0f02bh		;62da   ; espera 0xF02B cuadros...
-	dec (hl)			;62dd
+	dec (hl)			;62dd   ; la cuenta, una menos...
 	ret nz			;62de
 	ld hl,09407h		;62df   ; ...y el sprite de 0x9407
-	ld de,0ec98h		;62e2
+	ld de,0ec98h		;62e2   ; ...4 bytes de 0x9407 a 0xEC98...
 	ld bc,00004h		;62e5
 	ldir		;62e8
 	ld hl,0f031h		;62ea
-	inc (hl)			;62ed
+	inc (hl)			;62ed   ; ...y 0xF031 + 1
 	ret			;62ee
 cosas_del_castillo:		; 0xE6A0 a 0 y lo de la sala del castillo (tabla 0xB8A2)
 	xor a			;62ef   ; 0xE6A0 a 0; solo en el castillo
@@ -535,20 +535,20 @@ L_6309:
 	jr nz,L_6309		;6310
 	dec hl			;6312
 	ld a,(hl)			;6313   ; [y:3 x:5]: y en los 3 bits altos (+8)...
-	and 0e0h		;6314
+	and 0e0h		;6314   ; la y: 3 bits altos + 8
 	or 008h		;6316
 	ld e,a			;6318
 	ld a,(hl)			;6319   ; ...x en los 5 bajos (x 8)
-	and 01fh		;631a
+	and 01fh		;631a   ; la x: 5 bits bajos x 8
 	rlca			;631c
 	rlca			;631d
 	rlca			;631e
 	ld d,a			;631f
-	ld (0f002h),de		;6320
+	ld (0f002h),de		;6320   ; en 0xF002
 	push hl			;6324
 	call hueco_ec30		;6325   ; a un hueco de 0xEC30
 	pop hl			;6328
-	inc hl			;6329
+	inc hl			;6329   ; la siguiente
 	jr L_6309		;632a
 hueco_ec30:		; pone en el primer hueco libre de 0xEC30 lo de la y, x de 0xF002
 	ld hl,0ec30h		;632c   ; tres huecos de 8 bytes en 0xEC30: el primero libre
@@ -563,17 +563,17 @@ L_6335:
 	ret			;633b
 L_633C:
 	ld (hl),001h		;633c   ; [1][0][y][x]...
-	inc l			;633e
+	inc l			;633e   ; [paso 0]
 	ld (hl),000h		;633f
 	inc l			;6341
-	ld de,(0f002h)		;6342
+	ld de,(0f002h)		;6342   ; [y][x]
 	ld (hl),e			;6346
 	inc l			;6347
 	ld (hl),d			;6348
 	push hl			;6349
 	ex de,hl			;634a
 	call 04da1h		;634b   ; ...[casilla de la copia de nombres]...
-	ex de,hl			;634e
+	ex de,hl			;634e   ; [casilla]
 	pop hl			;634f
 	inc l			;6350
 	ld (hl),e			;6351
@@ -583,7 +583,7 @@ L_633C:
 	ld (hl),00fh		;6355   ; ...[0x0F][numero en la lista]
 	inc l			;6357
 	ld a,(0e6a0h)		;6358   ; lee el numero en la lista de la sala
-	ld (hl),a			;635b
+	ld (hl),a			;635b   ; [numero en la lista]
 	ret			;635c
 marca_de_la_lista:		; NZ si la entrada siguiente de la lista ya esta en las marcas de la sala
 	exx			;635d   ; el numero siguiente (0xE6A0)...
@@ -616,13 +616,13 @@ L_637B:
 cuenta_hueco_ec30:		; el hueco IX cuenta su byte 6; a 0 se vacia
 	ld a,(ix+000h)		;6385   ; los que estan en marcha (byte 1)...
 	or a			;6388
-	ret z			;6389
+	ret z			;6389   ; vacio: nada
 	ld a,(ix+001h)		;638a
 	or a			;638d
-	ret z			;638e
+	ret z			;638e   ; byte 1 a 0: nada
 	dec (ix+006h)		;638f   ; ...cuentan el byte 6; a 0 se vacian
 	ret nz			;6392
-	ld (ix+000h),000h		;6393
+	ld (ix+000h),000h		;6393   ; acabada: el hueco vacio
 	ret			;6397
 objeto_21:		; con el objeto 0x21 y el boton A, p15:B85C con cada hueco de 0xEC30
 	ld a,(0e090h)		;6398   ; con el objeto 0x21...
@@ -657,17 +657,17 @@ figuras_de_sala_en_sala:		; las seis figuras de 0xE4A0 (tablas 0xBB24, 0xBB54)
 L_63CF:
 	ld a,(hl)			;63cf   ; la sala de partida...
 	inc hl			;63d0
-	ex af,af'			;63d1
+	ex af,af'			;63d1   ; la sala de partida
 	ld a,b			;63d2
 	exx			;63d3
 	ld b,000h		;63d4
-	ld e,a			;63d6
+	ld e,a			;63d6   ; E = el numero de figura
 	ex af,af'			;63d7
 	ld c,080h		;63d8   ; ...con C = 0x80
 	push hl			;63da
 	call pon_figura_movil		;63db   ; pon_figura_movil: rellena la ficha de IX
 	pop hl			;63de
-	ld de,00008h		;63df
+	ld de,00008h		;63df   ; la siguiente ficha y su entrada
 	add ix,de		;63e2
 	add hl,de			;63e4
 	exx			;63e5
@@ -732,13 +732,13 @@ L_6446:
 	exx			;6446
 	call mueve_una		;6447   ; mueve_una: mueve una de 0xE4A0 y la cambia de sala por arriba o por abajo
 	exx			;644a
-	add ix,de		;644b
+	add ix,de		;644b   ; la siguiente (16 bytes)
 	djnz L_6446		;644d
 	exx			;644f
 	ld a,(0e041h)		;6450   ; en el castillo, la que esta en esta sala...
 	dec a			;6453
 	ret nz			;6454
-	ld hl,0e4a1h		;6455
+	ld hl,0e4a1h		;6455   ; las salas de las seis
 	ld b,006h		;6458
 	ld de,00010h		;645a
 L_645D:
@@ -785,17 +785,17 @@ L_64A2:
 	ld c,028h		;64ab
 L_64AD:
 	ld a,(ix+000h)		;64ad   ; la sala nueva: lista de 0xBA80 de la figura
-	dec a			;64b0
+	dec a			;64b0   ; la lista de salas de la figura
 	ld hl,0ba80h		;64b1
 	call 0414ch		;64b4   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ex de,hl			;64b7
-	ld e,(ix+003h)		;64b8
+	ld e,(ix+003h)		;64b8   ; la siguiente de la lista
 	ld d,000h		;64bb
 	add hl,de			;64bd
 	ld a,(hl)			;64be
-	ld (ix+001h),a		;64bf
-	ld (ix+005h),c		;64c2
-	ld a,(ix+002h)		;64c5
+	ld (ix+001h),a		;64bf   ; es su sala
+	ld (ix+005h),c		;64c2   ; su y nueva
+	ld a,(ix+002h)		;64c5   ; sin los bits 3-6
 	and 087h		;64c8
 	ld (ix+002h),a		;64ca
 	ld a,(0ec10h)		;64cd   ; si es la que se ve en esta sala...
@@ -804,7 +804,7 @@ L_64AD:
 	ld a,(0e52dh)		;64d4   ; ...y lleva al personaje, lo suelta (0xE52B, 0xE52D)
 	cp (ix+000h)		;64d7
 	jr nz,L_64E3		;64da
-	xor a			;64dc
+	xor a			;64dc   ; y ya no lo lleva
 	ld (0e52bh),a		;64dd
 	ld (0e52dh),a		;64e0   ; guarda la figura que lleva al personaje
 L_64E3:
@@ -816,13 +816,13 @@ L_64E3:
 mueve_y:		; la y mas la velocidad y la vuelta en sus topes
 	ld l,(ix+004h)		;64ee   ; la y (16 bits) mas la velocidad...
 	ld h,(ix+005h)		;64f1
-	ld e,(ix+008h)		;64f4
+	ld e,(ix+008h)		;64f4   ; la velocidad (bytes 8-9)...
 	ld d,(ix+009h)		;64f7
 	add hl,de			;64fa
-	ld (ix+004h),l		;64fb
+	ld (ix+004h),l		;64fb   ; ...a la y
 	ld (ix+005h),h		;64fe
 	bit 1,(ix+002h)		;6501   ; ...subiendo: hasta la sala y la y de arriba (bytes 0x0C-0x0D)...
-	ld a,(ix+001h)		;6505
+	ld a,(ix+001h)		;6505   ; subiendo: en la sala y la y de arriba...
 	jr z,L_6516		;6508
 	cp (ix+00ch)		;650a
 	ret nz			;650d
@@ -832,7 +832,7 @@ mueve_y:		; la y mas la velocidad y la vuelta en sus topes
 	ret nc			;6513
 	jr da_la_vuelta		;6514
 L_6516:
-	cp (ix+00eh)		;6516   ; ...bajando: hasta las de abajo (0x0E-0x0F)
+	cp (ix+00eh)		;6516   ; bajando: las de abajo
 	ret nz			;6519
 	ld a,h			;651a
 	cp (ix+00fh)		;651b
@@ -849,24 +849,24 @@ mueve_ec20:		; la figura de 0xEC20 sube y baja entre sus topes
 	ld ix,0ec20h		;6531   ; la figura de 0xEC20: la y mas la velocidad...
 	ld a,(ix+000h)		;6535
 	and a			;6538
-	ret z			;6539
-	ld hl,(0ec26h)		;653a
-	ld (0ec2ah),hl		;653d
-	ld bc,(0ec28h)		;6540
-	add hl,bc			;6544
+	ret z			;6539   ; vacio: nada
+	ld hl,(0ec26h)		;653a   ; la y...
+	ld (0ec2ah),hl		;653d   ; la vieja en 0xEC2A
+	ld bc,(0ec28h)		;6540   ; ...mas la velocidad...
+	add hl,bc			;6544   ; + 0xEC28
 	ld (0ec26h),hl		;6545
-	ld de,(0ec2ah)		;6548
+	ld de,(0ec2ah)		;6548   ; ...lo que se ha movido...
 	or a			;654c
-	sbc hl,de		;654d
+	sbc hl,de		;654d   ; lo que ha cambiado...
 	ld (0ec2ah),hl		;654f   ; ...lo que se ha movido en 0xEC2A
 	ex de,hl			;6552
 	ld e,c			;6553
 	ld d,b			;6554
 	bit 1,(ix+002h)		;6555   ; subiendo, hasta 0xEC2D...
-	jr z,L_6562		;6559
-	ld a,(0ec2dh)		;655b
-	cp h			;655e
-	ret c			;655f
+	jr z,L_6562		;6559   ; sin el bit 1: L_6562
+	ld a,(0ec2dh)		;655b   ; ...subiendo, hasta 0xEC2D
+	cp h			;655e   ; pasa de 0xEC2D?
+	ret c			;655f   ; no: nada
 	jr L_6568		;6560
 L_6562:
 	ld a,(0ec2fh)		;6562   ; ...bajando, hasta 0xEC2F
@@ -879,19 +879,19 @@ L_6568:
 huecos_de_la_sala:		; 0xE614 y cuantos huecos de figura (tablas 0xBA2E, 0xBA28)
 	xor a			;656e   ; 0xE614 a 0 y 16 + 17 huecos de figura
 	ld (0e614h),a		;656f   ; guarda el tipo de sala del castillo (tabla 0xBA2E)
-	ld hl,01110h		;6572
+	ld hl,01110h		;6572   ; 0xE635 = 0x10, 0xE636 = 0x11
 	ld (0e635h),hl		;6575   ; guarda cuantos huecos de figura hay y el byte siguiente (16 bits)
 	ld de,(0e041h)		;6578   ; lee el mapa (0xE041) y la sala (0xE042) de un tiron
-	dec e			;657c   ; en el castillo...
+	dec e			;657c   ; solo el castillo
 	ret nz			;657d
 	ld c,d			;657e   ; ...dos bits por sala en 0xBA2E...
-	srl c		;657f
+	srl c		;657f   ; la sala / 4...
 	srl c		;6581
 	ld b,000h		;6583
-	ld hl,0ba2eh		;6585
+	ld hl,0ba2eh		;6585   ; ...en la tabla 0xBA2E
 	add hl,bc			;6588
 	ld a,d			;6589
-	add a,a			;658a
+	add a,a			;658a   ; (la sala x 2) AND 6: su pareja de bits
 	and 006h		;658b
 	ld b,a			;658d
 	ld a,(hl)			;658e
@@ -934,23 +934,23 @@ L_65D1:
 L_65D8:
 	ld a,(0e501h)		;65d8   ; las vidas del que juega + 1 (BCD)
 	ld hl,0e058h		;65db   ; apunta a las vidas de Afrodita (BCD)
-	add a,l			;65de
+	add a,l			;65de   ; 0xE058 + el personaje...
 	ld l,a			;65df
 	ld a,(hl)			;65e0
-	add a,001h		;65e1
+	add a,001h		;65e1   ; ...+ 1 en BCD
 	daa			;65e3
 	ld (hl),a			;65e4
 	ld hl,0e04ch		;65e5   ; 0xE04C = 0, 0xE04D = quien juega, 0xE04E = el arma
-	ld (hl),000h		;65e8
+	ld (hl),000h		;65e8   ; 0xE04C = 0
 	ld a,(0e501h)		;65ea   ; lee quien juega (0 Afrodita)
 	inc l			;65ed
-	ld (hl),a			;65ee
+	ld (hl),a			;65ee   ; 0xE04D = el personaje
 	ld a,(0e510h)		;65ef   ; lee el arma elegida
 	inc l			;65f2
-	ld (hl),a			;65f3
+	ld (hl),a			;65f3   ; 0xE04E = el arma
 	or a			;65f4   ; sin arma, la primera de 1-6 que se tenga
-	ret nz			;65f5
-	ld c,001h		;65f6
+	ret nz			;65f5   ; con arma: nada
+	ld c,001h		;65f6   ; C = 1, B = 6
 	ld b,006h		;65f8
 	ld de,0e070h		;65fa   ; apunta a tiene el objeto 0x01
 L_65FD:
@@ -976,28 +976,28 @@ borra_pantalla_de_sala:		; la pantalla de la sala en la copia a cero
 mapa_del_mundo:		; con el objeto 0x0A, el mapa del mundo (0xAF2A) y sus marcas
 	ld a,(0e079h)		;661b   ; con el objeto 0x0A del mundo...
 	or a			;661e
-	ret z			;661f
+	ret z			;661f   ; sin el objeto: nada
 	ld de,0ef26h		;6620   ; ...el rotulo de 0x66BF...
 	ld hl,066bfh		;6623
 	ld bc,00003h		;6626
-	ldir		;6629
+	ldir		;6629   ; 3 bytes de 0x66BF a 0xEF26
 	ld hl,0af2ah		;662b   ; ...y el mapa del mundo: tabla 0xAF2A...
 	ld a,(0e041h)		;662e   ; lee el mapa (1 el castillo, 2-11 los mundos)
 	dec a			;6631
-	ret z			;6632
-	call 0414ch		;6633   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
+	ret z			;6632   ; en el castillo: nada
+	call 0414ch		;6633   ; la palabra del mapa en 0xAF2A
 	ex de,hl			;6636
 	ld e,(hl)			;6637   ; ...[destino][ancho][alto] y las filas
 	inc hl			;6638
 	ld d,(hl)			;6639
-	ld (0f000h),de		;663a
+	ld (0f000h),de		;663a   ; en 0xF000...
 	inc hl			;663e
 	ld c,(hl)			;663f
 	inc hl			;6640
 	ld b,(hl)			;6641
-	ld (0f002h),bc		;6642
+	ld (0f002h),bc		;6642   ; ...la siguiente en 0xF002...
 	inc hl			;6646
-	ld (0f004h),hl		;6647
+	ld (0f004h),hl		;6647   ; ...y el resto en 0xF004
 L_664A:
 	ld de,(0f000h)		;664a   ; una fila del mapa...
 	ld a,(0f002h)		;664e   ; el ancho...
@@ -1041,13 +1041,13 @@ L_664A:
 	ld c,005h		;66a3   ; color 5
 marca_del_mapa:		; el sprite de marca en el sitio de 0xF020
 	and 0f0h		;66a5   ; la y del sprite: nibble alto x 4 + 0x90...
-	rrca			;66a7
+	rrca			;66a7   ; nibble alto x 4...
 	rrca			;66a8
 	and 03ch		;66a9
-	add a,090h		;66ab
+	add a,090h		;66ab   ; ...+ 0x90: la y
 	ld (hl),a			;66ad
 	ld a,(0f020h)		;66ae   ; ...la x: nibble bajo x 8 + 1...
-	rla			;66b1
+	rla			;66b1   ; nibble bajo x 8 + 1: la x
 	rla			;66b2
 	rla			;66b3
 	and 078h		;66b4
@@ -1088,20 +1088,20 @@ personaje_de_objetos:		; un dibujo de 2 x 2 de la tabla 0x66F7
 L_66DA:
 	ld a,c			;66da   ; ...su dibujo de 2 x 2 de la tabla 0x66F7
 	add a,a			;66db   ; 6 bytes por dibujo...
-	ld c,a			;66dc
+	ld c,a			;66dc   ; x 6
 	add a,a			;66dd
 	add a,c			;66de
 	ld c,a			;66df
 	ld b,000h		;66e0
 	ld hl,066f7h		;66e2   ; ...en 0x66F7: [casilla]...
 	add hl,bc			;66e5
-	ld e,(hl)			;66e6
+	ld e,(hl)			;66e6   ; la casilla
 	inc hl			;66e7
 	ld d,(hl)			;66e8
 	inc hl			;66e9
 	ldi		;66ea   ; ...[2 caracteres arriba]...
 	ldi		;66ec
-	ld a,01eh		;66ee
+	ld a,01eh		;66ee   ; la fila de abajo
 	add a,e			;66f0
 	ld e,a			;66f1
 	ldi		;66f2   ; ...[2 abajo]
@@ -1170,29 +1170,29 @@ L_6748:
 	ret			;6759
 objeto_si_se_tiene:		; C y sus 2 x 2 caracteres si se tiene el objeto
 	exx			;675a   ; los caracteres del objeto, de 4 en 4 desde L...
-	ld a,l			;675b
-	add a,004h		;675c
+	ld a,l			;675b   ; la casilla siguiente (4 caracteres por objeto)
+	add a,004h		;675c   ; + 4
 	ld l,a			;675e
 	ld a,(de)			;675f   ; ...si se tiene
 	inc de			;6760
 	exx			;6761
-	or a			;6762
+	or a			;6762   ; sin el objeto, nada
 	ret z			;6763
 	exx			;6764
-	ld a,l			;6765
+	ld a,l			;6765   ; los caracteres del objeto: 4 seguidos desde L
 	exx			;6766
 	ld (hl),a			;6767   ; 2 x 2
-	inc a			;6768
+	inc a			;6768   ; 2 x 2 caracteres seguidos...
 	inc hl			;6769
 	ld (hl),a			;676a
 	inc a			;676b
-	ld bc,0001fh		;676c
-	add hl,bc			;676f
+	ld bc,0001fh		;676c   ; la fila de abajo
+	add hl,bc			;676f   ; ...la fila de abajo (+32)
 	ld (hl),a			;6770
 	inc a			;6771
 	inc hl			;6772
 	ld (hl),a			;6773
-	scf			;6774
+	scf			;6774   ; C: se tiene
 	ret			;6775
 
 ; ----------------------------------------------------------------------
@@ -1246,22 +1246,22 @@ arma_si_se_tiene:		; C y sus dos caracteres si se tiene el arma
 	inc de			;67bb
 	exx			;67bc
 	or a			;67bd   ; ...si se tiene...
-	ret z			;67be
+	ret z			;67be   ; no: nada
 	exx			;67bf
 	ld a,c			;67c0   ; ...su numero (7 - lo que queda)...
 	exx			;67c1
-	sub 007h		;67c2
+	sub 007h		;67c2   ; 7 - C
 	neg		;67c4
 	ex de,hl			;67c6
 	ld hl,05f6bh		;67c7   ; ...sus dos caracteres de 0x5F6B...
-	add a,a			;67ca
+	add a,a			;67ca   ; x 2: en la tabla 0x5F6B
 	ld c,a			;67cb
 	ld b,000h		;67cc
 	add hl,bc			;67ce
 	ldi		;67cf   ; ...a la pantalla
-	ldi		;67d1
+	ldi		;67d1   ; 2 bytes
 	ex de,hl			;67d3
-	scf			;67d4   ; C: se tiene
+	scf			;67d4   ; C
 	ret			;67d5
 fila_de_marco:		; D, 15 x 0x40 y E
 	ld (hl),d			;67d6   ; D, 15 x 0x40 y E
@@ -1489,11 +1489,11 @@ borra_marcas_de_la_sala:		; los sitios de la lista 0xB25D de la sala a 0 en el t
 L_6931:
 	ld a,(de)			;6931   ; salta una lista (hasta su 0)...
 	or a			;6932
-	inc de			;6933
+	inc de			;6933   ; hasta el 0...
 	jr nz,L_6931		;6934
 	ex af,af'			;6936   ; ...hasta la de la sala B
-	inc a			;6937
-	cp b			;6938
+	inc a			;6937   ; ...una mas...
+	cp b			;6938   ; ...hasta la B
 	jr z,L_693E		;6939
 	ex af,af'			;693b
 	jr L_6931		;693c
@@ -1547,32 +1547,32 @@ columna_del_logotipo:		; una columna mas del logotipo; Z al acabar
 	ld a,0ebh		;6989
 	inc b			;698b
 L_698C:
-	add a,015h		;698c
+	add a,015h		;698c   ; la columna x 0x15 + 0xEB...
 	djnz L_698C		;698e
 	ld l,a			;6990
 	ld h,b			;6991
-	add hl,hl			;6992
+	add hl,hl			;6992   ; ...x 8...
 	add hl,hl			;6993
 	add hl,hl			;6994
-	ld de,00a00h		;6995
+	ld de,00a00h		;6995   ; ...en los colores desde 0x0A00
 	add hl,de			;6998
 	ld a,c			;6999
 	call 04136h		;699a   ; hl_mas_a: HL += A
-	ld b,015h		;699d
+	ld b,015h		;699d   ; 21 caracteres de 8 en 8
 	ld de,00008h		;699f
 	ld a,0f0h		;69a2   ; ...sus 21 caracteres en color 0xF0
 L_69A4:
 	call 0004dh		;69a4   ; BIOS WRTVRM - Writes data in VRAM
-	add hl,de			;69a7
+	add hl,de			;69a7   ; el byte del caracter siguiente
 	djnz L_69A4		;69a8
 	ld hl,0e00eh		;69aa   ; 8 por columna...
 	ld a,(hl)			;69ad
-	inc a			;69ae
+	inc a			;69ae   ; una fila mas de 8
 	and 007h		;69af
 	ld (hl),a			;69b1
 	ret nz			;69b2
 	inc hl			;69b3   ; ...y 6 columnas: Z al acabar
-	inc (hl)			;69b4
+	inc (hl)			;69b4   ; una columna mas
 	ld a,(hl)			;69b5
 	cp 006h		;69b6
 	ret			;69b8
@@ -1615,23 +1615,23 @@ L_69F3:
 L_69FE:
 	ex de,hl			;69fe   ; ...la de esta sala: 0xE678 = el nibble bajo (0xFF si es 0)...
 	ld a,(hl)			;69ff
-	and 00fh		;6a00
+	and 00fh		;6a00   ; el nibble bajo: lo de la sala
 	ld b,a			;6a02
 	ld a,(hl)			;6a03   ; ...y y, x en 0xE679-0xE67A
 	inc hl			;6a04
-	ld c,(hl)			;6a05
+	ld c,(hl)			;6a05   ; la x con el bit de la y
 	rr c		;6a06
 	rra			;6a08
 	and 0f8h		;6a09
 	ld e,a			;6a0b
-	ld a,(hl)			;6a0c
+	ld a,(hl)			;6a0c   ; la y
 	and 0f8h		;6a0d
 	ld d,a			;6a0f
 	ld hl,0e678h		;6a10   ; apunta a lo de la sala del estado 0x0C (0xE678-0xE67A)
 	ld a,b			;6a13
 	or a			;6a14
 	jr nz,L_6A18		;6a15
-	dec a			;6a17
+	dec a			;6a17   ; 0 se guarda como 0xFF
 L_6A18:
 	ld (hl),a			;6a18   ; [lo de la sala][y][x]
 	inc l			;6a19
@@ -1665,14 +1665,14 @@ fuente_de_los_textos:		; la fuente de dos medias filas de los textos que suben
 	ld b,023h		;6a5d   ; 36 caracteres...
 L_6A5F:
 	ld de,02000h		;6a5f
-	ld h,000h		;6a62
+	ld h,000h		;6a62   ; el caracter B...
 	ld l,b			;6a64
-	add hl,hl			;6a65
+	add hl,hl			;6a65   ; ...x 8 en los dibujos...
 	add hl,hl			;6a66
 	add hl,hl			;6a67
 	add hl,de			;6a68
 	push hl			;6a69
-	or a			;6a6a
+	or a			;6a6a   ; ...su sitio nuevo: 2 x caracter + 8
 	sbc hl,de		;6a6b
 	add hl,hl			;6a6d
 	ld a,008h		;6a6e
@@ -1680,34 +1680,34 @@ L_6A5F:
 	add hl,de			;6a73
 	ex de,hl			;6a74
 	pop hl			;6a75
-	push bc			;6a76
+	push bc			;6a76   ; los 8 bytes del caracter...
 	push de			;6a77
 	ld bc,00008h		;6a78
 	ld de,0f000h		;6a7b
 	call 00059h		;6a7e   ; BIOS LDIRMV - Block transfers to memory from VRAM
 	pop de			;6a81
-	ld hl,0f000h		;6a82
+	ld hl,0f000h		;6a82   ; ...a los tres tercios en su sitio nuevo
 	ex de,hl			;6a85
 	ld bc,00008h		;6a86
 	call 05bd8h		;6a89   ; ldirvm_tres_tercios: LDIRVM en los tres tercios
 	pop bc			;6a8c
-	dec b			;6a8d
+	dec b			;6a8d   ; el anterior
 	jp p,L_6A5F		;6a8e   ; ...a sus sitios nuevos (2 x caracter + 8)
-	ld d,024h		;6a91
+	ld d,024h		;6a91   ; los 36 caracteres de la fuente...
 	ld hl,02010h		;6a93
 L_6A96:
 	ld bc,00008h		;6a96
-	push de			;6a99
+	push de			;6a99   ; 8 bytes a 0...
 	push hl			;6a9a
 	call filvrm_bc		;6a9b   ; filvrm_bc: BC bytes a 0 en los tres tercios
 	pop hl			;6a9e
-	ld de,00010h		;6a9f
+	ld de,00010h		;6a9f   ; ...cada 16 (uno de cada dos caracteres)
 	add hl,de			;6aa2
 	pop de			;6aa3
 	dec d			;6aa4
 	jr nz,L_6A96		;6aa5
 	ld hl,00000h		;6aa7   ; todo en color 0xF0
-	ld a,0f0h		;6aaa
+	ld a,0f0h		;6aaa   ; todos los colores a 0xF0
 	ld bc,007f8h		;6aac
 	call 05bebh		;6aaf   ; filvrm_tres_tercios: FILVRM en los tres tercios
 	ld hl,02010h		;6ab2
@@ -1773,11 +1773,11 @@ L_6B28:
 	push bc			;6b28
 	push hl			;6b29
 	push de			;6b2a
-	ld bc,00020h		;6b2b
+	ld bc,00020h		;6b2b   ; una fila de 32...
 	ldir		;6b2e
 	pop de			;6b30
 	pop hl			;6b31
-	ld a,040h		;6b32
+	ld a,040h		;6b32   ; ...y dos filas mas abajo (0x40)
 	ld b,a			;6b34
 	call 04136h		;6b35   ; hl_mas_a: HL += A
 	ld a,b			;6b38
@@ -1790,16 +1790,16 @@ linea_del_texto:		; la linea siguiente del texto (0xFB, 0xFD, 0xFE, 0xFF)
 	xor a			;6b41
 	ld b,020h		;6b42
 L_6B44:
-	ld (de),a			;6b44
+	ld (de),a			;6b44   ; 32 ceros
 	inc de			;6b45
 	djnz L_6B44		;6b46
 	pop de			;6b48
 	ld hl,(0f020h)		;6b49   ; ...del texto: 0xFB delante calla la musica...
 	ld a,(hl)			;6b4c
 	inc hl			;6b4d
-	cp 0fbh		;6b4e
+	cp 0fbh		;6b4e   ; 0xFB...
 	jr nz,L_6B59		;6b50
-	ld a,0ffh		;6b52
+	ld a,0ffh		;6b52   ; ...calla la musica
 	call 04e34h		;6b54   ; pide_sonido_ya: como pide_sonido, sin mirar la pausa
 	ld a,(hl)			;6b57
 	inc hl			;6b58
@@ -1839,16 +1839,16 @@ letras_un_pixel:		; los dibujos de las letras suben un pixel
 	ld de,0e800h		;6b8f   ; apunta a los huecos de figura (32 bytes cada uno)
 L_6B92:
 	push bc			;6b92
-	ld bc,0000fh		;6b93
+	ld bc,0000fh		;6b93   ; 15 bytes...
 	ld a,(de)			;6b96   ; ...el byte de arriba pasa abajo
-	ldir		;6b97
+	ldir		;6b97   ; ...el primero al final: un pixel arriba
 	ld (de),a			;6b99
 	inc hl			;6b9a
 	inc de			;6b9b
 	pop bc			;6b9c
 	djnz L_6B92		;6b9d
 	ld bc,00230h		;6b9f   ; y a la VRAM
-	ld hl,02010h		;6ba2
+	ld hl,02010h		;6ba2   ; a los dibujos desde el caracter 2
 e800_a_vram:		; BC bytes de 0xE800 a los tres tercios
 	ld de,0e800h		;6ba5   ; apunta a los huecos de figura (32 bytes cada uno)
 	jp 05bd8h		;6ba8   ; ldirvm_tres_tercios: LDIRVM en los tres tercios
@@ -1933,20 +1933,20 @@ trozo_de_mosaico:		; B filas del mosaico de HL en DE
 L_6C41:
 	push bc			;6c41   ; una fila...
 	push de			;6c42
-	ld b,000h		;6c43
+	ld b,000h		;6c43   ; una fila de C...
 	ldir		;6c45
 	pop de			;6c47
 	ex de,hl			;6c48   ; ...y a la siguiente de la pantalla y del mosaico
 	ld c,020h		;6c49
 	add hl,bc			;6c4b
 	ex de,hl			;6c4c
-	exx			;6c4d
+	exx			;6c4d   ; ...y del mosaico, lo que sobra
 	ld a,c			;6c4e
 	exx			;6c4f
 	ld c,a			;6c50
 	add hl,bc			;6c51
 	pop bc			;6c52
-	djnz L_6C41		;6c53
+	djnz L_6C41		;6c53   ; B filas
 	ret			;6c55
 cosa_en_la_copia:		; los caracteres de la cosa de la sala en su casilla
 	ld a,(0e740h)		;6c56   ; la cosa de la sala en la copia de nombres...
@@ -1963,13 +1963,13 @@ L_6C65:
 	inc a			;6c69   ; ...A + 1 a la derecha...
 	inc l			;6c6a
 	ld (hl),a			;6c6b
-	ld bc,0001fh		;6c6c   ; ...y los dos de abajo
+	ld bc,0001fh		;6c6c   ; la fila de abajo
 	add hl,bc			;6c6f
 	inc a			;6c70
 	ld (hl),a			;6c71
 	inc l			;6c72
 	inc a			;6c73
-	ld (hl),a			;6c74
+	ld (hl),a			;6c74   ; el cuarto
 	ret			;6c75
 L_6C76:
 	add a,a			;6c76
@@ -2007,27 +2007,27 @@ puerta_del_mundo_elegido:		; la puerta de 3 x 4 del mundo elegido (0x6CC7)
 	ld hl,0e688h		;6c95   ; la puerta del mundo elegido...
 	ld a,(hl)			;6c98
 	or a			;6c99
-	ret z			;6c9a
+	ret z			;6c9a   ; no: nada
 	inc l			;6c9b
 	inc l			;6c9c
 	ld e,(hl)			;6c9d   ; ...en su sitio (0xE68A-0xE68B)...
 	inc l			;6c9e
-	ld d,(hl)			;6c9f
+	ld d,(hl)			;6c9f   ; bytes 2-3
 	ex de,hl			;6ca0
 	call 04da1h		;6ca1   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	ex de,hl			;6ca4
 	ld hl,06cc7h		;6ca5   ; ...el dibujo 0xE68C de 0x6CC7 (12 caracteres)...
 	ld a,(0e68ch)		;6ca8   ; lee el dibujo de la puerta del mundo elegido
-	add a,a			;6cab
+	add a,a			;6cab   ; 0xE68C x 12...
 	add a,a			;6cac
 	ld b,a			;6cad
 	add a,a			;6cae
 	add a,b			;6caf
 	ld c,a			;6cb0
 	ld b,000h		;6cb1
-	add hl,bc			;6cb3
+	add hl,bc			;6cb3   ; ...en la tabla 0x6CC7
 	exx			;6cb4   ; ...3 filas de 4
-	ld b,003h		;6cb5
+	ld b,003h		;6cb5   ; 3 filas
 L_6CB7:
 	exx			;6cb7
 	ld bc,00004h		;6cb8
@@ -2072,13 +2072,13 @@ guarda_debajo:		; guarda lo que tapa la figura de mosaico
 L_6D06:
 	push bc			;6d06   ; guarda lo que hay debajo
 	push hl			;6d07
-	ld b,000h		;6d08
+	ld b,000h		;6d08   ; C bytes...
 	ldir		;6d0a
 	pop hl			;6d0c
-	ld c,020h		;6d0d
+	ld c,020h		;6d0d   ; ...la fila siguiente (+32)...
 	add hl,bc			;6d0f
 	pop bc			;6d10
-	djnz L_6D06		;6d11
+	djnz L_6D06		;6d11   ; ...B filas
 	ret			;6d13
 guarda_debajo_yx:		; guarda lo que tapa la figura, con su casilla desde la y y la x
 	ld a,(ix+00ah)		;6d14   ; lo mismo, con su casilla desde la y y la x
@@ -2122,16 +2122,16 @@ pinta_mosaico:		; el mosaico de la figura en la copia, sin los 0
 	ld hl,09e0ah		;6d61
 	call 0414ch		;6d64   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ex de,hl			;6d67
-	ld e,(ix+012h)		;6d68
+	ld e,(ix+012h)		;6d68   ; su casilla...
 	ld d,(ix+013h)		;6d6b
-	ld c,(ix+015h)		;6d6e
+	ld c,(ix+015h)		;6d6e   ; ...lo que se ve...
 	ld b,(ix+014h)		;6d71
 	ld a,(ix+00bh)		;6d74   ; ...lo que sobra de cada fila del mosaico
 	sub c			;6d77
 	exx			;6d78
 	ld c,a			;6d79
 	exx			;6d7a
-	bit 4,(ix+009h)		;6d7b
+	bit 4,(ix+009h)		;6d7b   ; ...con el bit 4 de la ficha, (ix+0x1A) filas
 	jr z,L_6D84		;6d7f
 	ld b,(ix+01ah)		;6d81
 L_6D84:
@@ -2165,11 +2165,11 @@ pinta_mosaico_cortado:		; el mosaico cortado por la izquierda
 	ld hl,09e0ah		;6da3
 	call 0414ch		;6da6   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ex de,hl			;6da9
-	ld e,(ix+012h)		;6daa
+	ld e,(ix+012h)		;6daa   ; la casilla...
 	ld d,(ix+013h)		;6dad
-	ld a,(ix+015h)		;6db0
+	ld a,(ix+015h)		;6db0   ; ...lo que se ve...
 	ld b,(ix+014h)		;6db3
-	ld c,(ix+00bh)		;6db6
+	ld c,(ix+00bh)		;6db6   ; ...lo que no cabe
 	sub c			;6db9
 	exx			;6dba
 	ld c,a			;6dbb
@@ -2207,14 +2207,14 @@ casilla_y_ancho:		; la casilla de la figura y las columnas que caben
 	ld l,(ix+005h)		;6ddc   ; la casilla de la figura (y, x)...
 	ld h,(ix+007h)		;6ddf
 	call 04da1h		;6de2   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
-	ld (ix+012h),l		;6de5
+	ld (ix+012h),l		;6de5   ; la casilla a la ficha
 	ld (ix+013h),h		;6de8
 	ld a,l			;6deb   ; ...y las columnas que caben antes del borde derecho
 	and 01fh		;6dec
-	add a,c			;6dee
+	add a,c			;6dee   ; la columna + el ancho...
 	sub 020h		;6def
 	ret c			;6df1
-	neg		;6df2
+	neg		;6df2   ; ...lo que sale por la derecha se quita
 	add a,c			;6df4
 	ld c,a			;6df5
 	ret			;6df6
@@ -2231,13 +2231,13 @@ L_6E0A:
 	exx			;6e0a
 	call pinta_figura		;6e0b   ; pinta_figura: una figura: sprites, 2 x 2 o mosaico
 	exx			;6e0e
-	add ix,de		;6e0f
+	add ix,de		;6e0f   ; la siguiente (32 bytes)
 	djnz L_6E0A		;6e11
 	ld a,c			;6e13   ; los sprites que sobran...
 	exx			;6e14
-	or a			;6e15
+	or a			;6e15   ; ninguna mas, nada
 	ret z			;6e16
-	ld b,a			;6e17
+	ld b,a			;6e17   ; las de mas...
 	ld a,(0e630h)		;6e18   ; lee la pasada de figuras (0 detras, 1 delante)
 	or a			;6e1b
 	ret nz			;6e1c
@@ -2311,10 +2311,10 @@ L_6E79:
 	ld d,(ix+013h)		;6e8c
 L_6E8F:
 	push bc			;6e8f   ; ...fila a fila
-	ld b,000h		;6e90
+	ld b,000h		;6e90   ; C bytes...
 	ldir		;6e92
 	pop bc			;6e94
-	ld a,020h		;6e95
+	ld a,020h		;6e95   ; ...la fila siguiente: + 32 - C
 	sub c			;6e97
 	add a,e			;6e98
 	ld e,a			;6e99
@@ -2388,18 +2388,18 @@ sprites_de_figura:		; los sprites de la figura segun su ficha
 	ret nz			;6efe
 dos_sprites:		; dos sprites: el desplazado (ix+0x12, 0x13) y el de (ix+0x0A, 0x0B)
 	ld a,(ix+005h)		;6eff   ; el segundo sprite, desplazado: y - 1 + H...
-	add a,h			;6f02
+	add a,h			;6f02   ; + H...
 	dec a			;6f03
 	ld (de),a			;6f04
 	inc e			;6f05
 	ld a,(ix+007h)		;6f06   ; ...x + L...
-	add a,l			;6f09
+	add a,l			;6f09   ; + L
 	ld (de),a			;6f0a
 	inc e			;6f0b
 	ld a,(ix+012h)		;6f0c   ; ...y el dibujo y color de (ix+0x12) y (ix+0x13)
 	ld (de),a			;6f0f
 	inc e			;6f10
-	ld a,(ix+013h)		;6f11
+	ld a,(ix+013h)		;6f11   ; su color
 	ld (de),a			;6f14
 	inc e			;6f15
 un_sprite:		; un sprite: [y - 1][x][dibujo (ix+0x0A)][color (ix+0x0B)]
@@ -2490,15 +2490,15 @@ fila_de_a77e:		; una fila de la tabla 0xA77E
 	ld a,(ix+00ah)		;6f8a   ; una fila de (ix+0x1F) caracteres de la tabla 0xA77E...
 	ld hl,0a77eh		;6f8d
 	call 0414ch		;6f90   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
-	ld l,(ix+012h)		;6f93
+	ld l,(ix+012h)		;6f93   ; su casilla
 	ld h,(ix+013h)		;6f96
 	ld a,(0e041h)		;6f99   ; ...en el mapa 10, con 0x22 menos
 	cp 00ah		;6f9c
 	jr z,L_6FA9		;6f9e
-	ld c,(ix+01fh)		;6fa0
+	ld c,(ix+01fh)		;6fa0   ; (ix+0x1F) caracteres
 	ld b,000h		;6fa3
 	ex de,hl			;6fa5
-	ldir		;6fa6
+	ldir		;6fa6   ; a la copia
 	ret			;6fa8
 L_6FA9:
 	ld b,(ix+01fh)		;6fa9
@@ -2513,17 +2513,17 @@ L_6FAC:
 cuatro_y_uno:		; cuatro sprites de color 15 y uno mas
 	ld a,00fh		;6fb5   ; cuatro sprites de color 15 y uno mas (dibujo 0xA0, color 12)
 	call cuatro_sprites		;6fb7   ; cuatro_sprites: cuatro sprites de 16 x 16 en cuadro (tabla 0x7039) del color de A
-	ld a,(ix+012h)		;6fba
+	ld a,(ix+012h)		;6fba   ; el quinto: [y (0x12) - 1]...
 	dec a			;6fbd
 	ld (de),a			;6fbe
 	inc e			;6fbf
-	ld a,(ix+013h)		;6fc0
+	ld a,(ix+013h)		;6fc0   ; ...[x (0x13)]...
 	ld (de),a			;6fc3
 	inc e			;6fc4
-	ld a,0a0h		;6fc5
+	ld a,0a0h		;6fc5   ; ...[dibujo 0xA0]...
 	ld (de),a			;6fc7
 	inc e			;6fc8
-	ld a,00ch		;6fc9
+	ld a,00ch		;6fc9   ; ...[color 12]
 	ld (de),a			;6fcb
 	inc e			;6fcc
 	ret			;6fcd
@@ -2709,15 +2709,15 @@ DATA_parejas_70be:
 cadena:		; una cadena de sprites (bits 0-2 de la ficha)
 	ld a,008h		;70c6   ; una cadena de sprites de color 8: (bits 0-2 de la ficha) - 1 eslabones...
 	ex af,af'			;70c8
-	ld a,(ix+009h)		;70c9
+	ld a,(ix+009h)		;70c9   ; cuantos (bits 0-2 de la ficha) - 1
 	and 007h		;70cc
 	dec a			;70ce
 	ld (0f007h),a		;70cf
-	ld b,(ix+007h)		;70d2
+	ld b,(ix+007h)		;70d2   ; la x
 	ex de,hl			;70d5
 	call cabeza_de_cadena		;70d6   ; ...la cabeza...
-	ld a,(ix+00ah)		;70d9
-	ld c,(ix+005h)		;70dc
+	ld a,(ix+00ah)		;70d9   ; el dibujo...
+	ld c,(ix+005h)		;70dc   ; ...la y - 1
 	dec c			;70df
 L_70E0:
 	ld (hl),c			;70e0   ; [y]...
@@ -2747,9 +2747,9 @@ L_70FE:
 	ld c,a			;7101
 	ld a,(ix+000h)		;7102   ; ...dibujo 0xD4 (0xC8 en el tipo 0x62)
 	cp 062h		;7105
-	ld a,0d4h		;7107
+	ld a,0d4h		;7107   ; los demas: 0xD4...
 	jr nz,L_70E0		;7109
-	ld a,0c8h		;710b
+	ld a,0c8h		;710b   ; ...el 0x62: 0xC8
 	jr L_70E0		;710d
 L_710F:
 	ex de,hl			;710f
@@ -2961,7 +2961,7 @@ columna_de_figura:		; la columna de la figura IX
 L_7231:
 	ld a,(hl)			;7231   ; si esta y tiene alto (byte 4)...
 	and a			;7232
-	ret z			;7233
+	ret z			;7233   ; sin alto, nada
 	inc hl			;7234
 	inc hl			;7235
 	inc hl			;7236
@@ -2970,13 +2970,13 @@ L_7231:
 	and a			;7239
 	ret z			;723a
 	inc hl			;723b   ; ...su casilla (bytes 5-6) y su caracter (byte 8)...
-	ld e,(hl)			;723c
+	ld e,(hl)			;723c   ; la casilla (bytes 5-6)
 	inc hl			;723d
 	ld d,(hl)			;723e
 	ld b,a			;723f
 	inc hl			;7240
 	inc hl			;7241
-	ld a,(hl)			;7242
+	ld a,(hl)			;7242   ; el caracter (byte 8)
 	ex de,hl			;7243
 L_7244:
 	ld (hl),a			;7244   ; ...en columna
@@ -3001,10 +3001,10 @@ figura_2:		; una de 0xEA30
 	ld a,(ix+000h)		;7261   ; el dibujo (byte 4), ancho y alto (bytes 8-9), en su casilla (6-7)
 	and a			;7264
 	ret z			;7265
-	ld a,(ix+004h)		;7266
-	ld c,(ix+008h)		;7269
+	ld a,(ix+004h)		;7266   ; su dibujo...
+	ld c,(ix+008h)		;7269   ; ...ancho y alto...
 	ld b,(ix+009h)		;726c
-	ld hl,0a6fbh		;726f
+	ld hl,0a6fbh		;726f   ; ...de la tabla 0xA6FB
 	call 0414ch		;7272   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ld l,(ix+006h)		;7275
 	ld h,(ix+007h)		;7278
@@ -3069,12 +3069,12 @@ L_72DA:
 	ld a,c			;72da
 	push bc			;72db
 	ld b,000h		;72dc   ; una fila de C...
-	ldir		;72de
+	ldir		;72de   ; una fila
 	ld c,a			;72e0   ; ...y a la siguiente
 	ld a,020h		;72e1
 	sub c			;72e3
 	ld c,a			;72e4
-	ex de,hl			;72e5
+	ex de,hl			;72e5   ; la siguiente
 	add hl,bc			;72e6
 	ex de,hl			;72e7
 	pop bc			;72e8
@@ -3118,7 +3118,7 @@ L_731A:
 	ldi		;731d
 	ldi		;731f
 	ldi		;7321
-	ld a,01ch		;7323   ; ...y la siguiente (28 mas alla)
+	ld a,01ch		;7323   ; + 0x1C: la fila siguiente
 	add a,e			;7325
 	ld e,a			;7326
 	jr nc,L_732A		;7327
@@ -3193,18 +3193,18 @@ hueco_ec30_a_la_copia:		; los 2 x 2 de un hueco de 0xEC30 (0x73AF entero, 0x73B3
 	ld a,(hl)			;738b   ; su casilla (bytes 4-5)...
 	or a			;738c
 	ret z			;738d
-	inc l			;738e
+	inc l			;738e   ; el byte 1: rota o entera...
 	ld a,(hl)			;738f
 	inc l			;7390
 	inc l			;7391
 	inc l			;7392
-	ld e,(hl)			;7393
+	ld e,(hl)			;7393   ; ...su casilla (bytes 4-5)...
 	inc l			;7394
 	ld d,(hl)			;7395
 	ld hl,073afh		;7396   ; ...2 x 2 de 0x73AF, o de 0x73B3 si el byte 1 no es 0
 	or a			;7399
 	jr z,L_739F		;739a
-	ld hl,073b3h		;739c
+	ld hl,073b3h		;739c   ; ...rota: 0x73B3
 L_739F:
 	ldi		;739f   ; los dos de arriba...
 	ldi		;73a1
@@ -3287,13 +3287,13 @@ L_73F4:
 	inc hl			;73ff
 L_7400:
 	ld a,(0e505h)		;7400   ; la y + dy - 1
-	add a,(hl)			;7403
-	dec a			;7404
+	add a,(hl)			;7403   ; + dy...
+	dec a			;7404   ; ...- 1
 	ld (de),a			;7405
 	inc hl			;7406
 	inc de			;7407
 	ld a,(0e507h)		;7408   ; la x + dx
-	add a,(hl)			;740b
+	add a,(hl)			;740b   ; + dx
 	ld c,a			;740c
 	ld a,b			;740d   ; el tercero se esconde con 0xE523
 	cp 003h		;740e
@@ -3301,38 +3301,38 @@ L_7400:
 	ld a,(0e523h)		;7412   ; lee el tercer sprite escondido
 	and a			;7415
 	jr z,L_741D		;7416
-	ld a,0e0h		;7418
+	ld a,0e0h		;7418   ; escondido (y 0xE0)
 	dec de			;741a
 	ld (de),a			;741b
 	inc de			;741c
 L_741D:
 	ld a,c			;741d
-	ld (de),a			;741e
+	ld (de),a			;741e   ; la x
 	inc hl			;741f
 	inc de			;7420
 	ld a,(hl)			;7421   ; el dibujo
-	ld (de),a			;7422
+	ld (de),a			;7422   ; el dibujo
 	inc hl			;7423
 	inc de			;7424
 	ld a,(0e000h)		;7425   ; lee el ESTADO del juego
 	cp 009h		;7428
-	jr z,L_743A		;742a
+	jr z,L_743A		;742a   ; en la pausa, el color de la tabla
 	ld a,(0e500h)		;742c   ; al hundirse (4) o con 0xE533 = 1, parpadea
-	cp 004h		;742f
+	cp 004h		;742f   ; hundiendose: parpadeo
 	ld c,(hl)			;7431
 	jr z,L_745C		;7432
 	ld a,(0e533h)		;7434   ; lee parpadeando
-	dec a			;7437
+	dec a			;7437   ; parpadeando tras un golpe
 	jr z,L_745C		;7438
 L_743A:
 	ld a,b			;743a   ; el color: el segundo sprite (y el tercero en la pausa) siempre el de la tabla
-	dec a			;743b
+	dec a			;743b   ; B = 2: L_7456
 	dec a			;743c
 	ld a,(hl)			;743d
 	jr z,L_7456		;743e
-	jp m,L_744B		;7440
+	jp m,L_744B		;7440   ; B menos de 2: L_744B
 	ld a,(0e000h)		;7443   ; lee el ESTADO del juego
-	cp 009h		;7446
+	cp 009h		;7446   ; 0xE000 = 9: L_7456
 	ld a,(hl)			;7448
 	jr z,L_7456		;7449
 L_744B:
@@ -3366,23 +3366,23 @@ sprites_de_armas:		; los huecos de 0xE540 y 0xE5A0 a sus sprites
 L_7476:
 	push de			;7476
 	call hueco_e540		;7477   ; hueco_e540: un hueco de 0xE540
-	ld de,00020h		;747a
+	ld de,00020h		;747a   ; la siguiente (32 bytes)...
 	add ix,de		;747d
 	pop de			;747f
-	inc e			;7480
+	inc e			;7480   ; ...y su sprite (4 bytes)
 	inc e			;7481
 	inc e			;7482
 	inc e			;7483
 	djnz L_7476		;7484
 	ld ix,0e5a0h		;7486   ; y los tres de 0xE5A0, tres sprites cada uno, desde 0xEC98
-	ld b,003h		;748a
+	ld b,003h		;748a   ; tres huecos
 	ld de,0ec98h		;748c
 L_748F:
 	push de			;748f
 	call tres_sprites		;7490   ; tres_sprites: tres sprites de la tabla 0x74D8/0x74E1
-	ld de,00020h		;7493
+	ld de,00020h		;7493   ; la figura siguiente...
 	add ix,de		;7496
-	ld de,0000ch		;7498
+	ld de,0000ch		;7498   ; ...y 12 bytes mas
 	pop hl			;749b
 	add hl,de			;749c
 	ex de,hl			;749d
@@ -3447,16 +3447,16 @@ DATA_tres_sprites_74e1:
 hueco_e540:		; un hueco de 0xE540
 	bit 7,(ix+014h)		;74ea   ; un hueco de 0xE540: con el bit 7 de (ix+0x14) aparte
 	jr nz,hueco_e540_sprite		;74ee
-	ld a,(ix+000h)		;74f0
+	ld a,(ix+000h)		;74f0   ; si esta...
 	and a			;74f3
 	ret z			;74f4
 	ld a,(ix+00ah)		;74f5   ; el caracter (ix+0x0A) en la casilla (ix+0x15)
-	ld l,(ix+015h)		;74f8
+	ld l,(ix+015h)		;74f8   ; ...en su casilla
 	ld h,(ix+016h)		;74fb
 	ld (hl),a			;74fe
 	bit 0,(ix+010h)		;74ff   ; y el siguiente caracter (+1 o -1 segun el bit 0 de (ix+0x10)) al lado
 	jr nz,L_7508		;7503
-	inc a			;7505
+	inc a			;7505   ; hacia la derecha +1
 	jr L_7509		;7506
 L_7508:
 	dec a			;7508
@@ -3556,14 +3556,14 @@ DATA_poses_del_jugador:
 sprites_de_sala_en_sala:		; los sprites de las figuras de sala en sala de esta sala
 	ld a,(0e614h)		;766c   ; las figuras de sala en sala de esta sala (0xE614 de ellas)...
 	or a			;766f
-	ret z			;7670
+	ret z			;7670   ; 0: nada
 	exx			;7671
 	ld b,a			;7672
 	exx			;7673
 	ld de,0ecf8h		;7674   ; ...sus sprites en 0xECF8 (o 0xECF0 con dos)
 	dec a			;7677
-	jr z,L_767C		;7678
-	ld e,0f0h		;767a
+	jr z,L_767C		;7678   ; 1: 0xECF8...
+	ld e,0f0h		;767a   ; ...si no, 0xECF0
 L_767C:
 	ld hl,0ec10h		;767c   ; la de 0xEC10...
 	call dos_sprites_e4		;767f   ; dos_sprites_e4: dos sprites 0xE4 de color 15, uno al lado del otro
@@ -3661,10 +3661,10 @@ debajo_de_figura:		; lo de debajo de una figura de caracteres
 	ld (ix+013h),h		;770c
 L_770F:
 	push bc			;770f   ; ...y lo que hay debajo, fila a fila
-	ld b,000h		;7710
+	ld b,000h		;7710   ; C bytes...
 	ldir		;7712
 	pop bc			;7714
-	ld a,020h		;7715
+	ld a,020h		;7715   ; ...la fila siguiente: + 32 - C
 	sub c			;7717
 	add a,l			;7718
 	ld l,a			;7719
@@ -3726,26 +3726,26 @@ debajo_de_un_e540:		; lo de debajo de un hueco de 0xE540
 	ld a,(ix+000h)		;7776   ; los de caracteres (sin el bit 7 de (ix+0x14)): su casilla y dos caracteres
 	or a			;7779
 	ret z			;777a
-	bit 7,(ix+014h)		;777b
+	bit 7,(ix+014h)		;777b   ; de caracteres...
 	ret nz			;777f
-	ld l,(ix+005h)		;7780
+	ld l,(ix+005h)		;7780   ; ...su casilla...
 	ld h,(ix+007h)		;7783
 	call 04da1h		;7786   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	ld (ix+015h),l		;7789
 	ld (ix+016h),h		;778c
-	ldi		;778f
+	ldi		;778f   ; ...y lo de debajo
 	ldi		;7791
 	ret			;7793
 debajo_de_la_cosa:		; lo de debajo de la cosa de la sala
 	ld a,(0e740h)		;7794   ; la cosa de la sala: sus 2 x 2
 	or a			;7797
-	ret z			;7798
+	ret z			;7798   ; sin cosa: nada
 	ld hl,(0e744h)		;7799   ; lee la casilla de la cosa de la sala y el byte siguiente (16 bits)
-	ldi		;779c
+	ldi		;779c   ; 2 bytes de la fila de arriba...
 	ldi		;779e
-	ld bc,0001eh		;77a0
+	ld bc,0001eh		;77a0   ; ...+ 0x1E: la de abajo...
 	add hl,bc			;77a3
-	ldi		;77a4
+	ldi		;77a4   ; ...otros 2
 	ldi		;77a6
 	ret			;77a8
 debajo_del_jefe:		; lo de debajo del jefe
@@ -3777,7 +3777,7 @@ L_77CA:
 L_77E0:
 	push bc			;77e0
 	push hl			;77e1
-	ld b,000h		;77e2
+	ld b,000h		;77e2   ; C bytes
 	ldir		;77e4   ; una fila de 14...
 	pop hl			;77e6
 	ld c,020h		;77e7   ; ...y la siguiente de 32
@@ -3825,22 +3825,22 @@ debajo_de_columna:		; lo de debajo de la columna de IX
 	pop hl			;7839
 L_783A:
 	ld a,(hl)			;783a   ; si esta: su casilla desde la y y la x (bytes 2-3)...
-	or a			;783b
-	ret z			;783c
+	or a			;783b   ; si esta...
+	ret z			;783c   ; vacio: nada
 	push de			;783d
 	ex de,hl			;783e
-	inc de			;783f
+	inc de			;783f   ; ...su y...
 	inc de			;7840
 	ld a,(de)			;7841
-	ld l,a			;7842
-	inc de			;7843
+	ld l,a			;7842   ; L = byte 2
+	inc de			;7843   ; ...y su x...
 	ld a,(de)			;7844
-	ld h,a			;7845
+	ld h,a			;7845   ; H = byte 3
 	call 04da1h		;7846   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	inc de			;7849   ; ...a los bytes 5-6...
 	inc de			;784a
-	ld a,l			;784b
-	ld (de),a			;784c
+	ld a,l			;784b   ; ...la casilla a la ficha...
+	ld (de),a			;784c   ; la casilla a los bytes 5-6
 	inc de			;784d
 	ld a,h			;784e
 	ld (de),a			;784f
@@ -3849,8 +3849,8 @@ L_783A:
 	ld a,(de)			;7852   ; ...y su columna de (byte 4) casillas
 	pop de			;7853
 	and a			;7854
-	ret z			;7855
-	ld b,a			;7856
+	ret z			;7855   ; 0: nada
+	ld b,a			;7856   ; ...B casillas de alto
 L_7857:
 	push bc			;7857   ; un caracter...
 	ldi		;7858
@@ -3875,7 +3875,7 @@ L_786C:
 debajo_figura_2:		; lo de debajo de una de 0xEA30
 	ld a,(ix+000h)		;7877   ; su casilla (bytes 2-3 a 6-7)...
 	and a			;787a
-	ret z			;787b
+	ret z			;787b   ; vacio: nada
 	push ix		;787c   ; HL = la ficha + 2...
 	pop hl			;787e
 	inc hl			;787f
@@ -3883,16 +3883,16 @@ debajo_figura_2:		; lo de debajo de una de 0xEA30
 	push de			;7881
 	ex de,hl			;7882
 	ld a,(de)			;7883   ; ...la y...
-	ld l,a			;7884
+	ld l,a			;7884   ; L = su y (byte 2)
 	inc de			;7885
 	ld a,(de)			;7886   ; ...la x
-	ld h,a			;7887
+	ld h,a			;7887   ; H = su x (byte 3)
 	call 04da1h		;7888   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	inc de			;788b
 	inc de			;788c
 	inc de			;788d
 	ld a,l			;788e   ; la casilla en los bytes 6-7
-	ld (de),a			;788f
+	ld (de),a			;788f   ; la casilla a los bytes 6-7
 	inc de			;7890
 	ld a,h			;7891
 	ld (de),a			;7892
@@ -3901,12 +3901,12 @@ debajo_figura_2:		; lo de debajo de una de 0xEA30
 	dec de			;7897
 	dec de			;7898
 	dec de			;7899   ; el dibujo (byte 4)
-	ld a,(de)			;789a
+	ld a,(de)			;789a   ; la palabra del byte 4 en 0x78BA...
 	call 0414ch		;789b   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	ld b,d			;789e
 	ld c,e			;789f
 	ld (ix+008h),c		;78a0   ; ancho y alto a (ix+8) y (ix+9)
-	ld (ix+009h),b		;78a3
+	ld (ix+009h),b		;78a3   ; ...a los bytes 8-9
 	pop hl			;78a6
 	pop de			;78a7
 L_78A8:
@@ -3960,30 +3960,30 @@ debajo_figura_3_4:		; lo de debajo de una de 0xEA50/0xEA60
 	pop hl			;78df
 	ld a,(hl)			;78e0   ; si esta...
 	and a			;78e1
-	ret z			;78e2
+	ret z			;78e2   ; vacio: nada
 	inc hl			;78e3
 	inc hl			;78e4
 	push de			;78e5
-	ld e,(hl)			;78e6   ; la x (byte 2) y la y (byte 4), 8 mas arriba si el dibujo no es el 0...
+	ld e,(hl)			;78e6   ; E = byte 2
 	inc hl			;78e7
 	inc hl			;78e8
 	inc hl			;78e9
 	ld a,(hl)			;78ea   ; ...el dibujo (byte 5)...
 	dec hl			;78eb
 	dec hl			;78ec
-	ld c,a			;78ed
+	ld c,a			;78ed   ; C = byte 5
 	and a			;78ee
 	ld a,(hl)			;78ef   ; ...la y (byte 4)
-	jr z,L_78F4		;78f0
+	jr z,L_78F4		;78f0   ; 0: tal cual
 	sub 008h		;78f2   ; 8 mas arriba
 L_78F4:
-	inc hl			;78f4
+	inc hl			;78f4   ; la y en el byte 4...
 	ld (hl),a			;78f5
 	ld d,a			;78f6
 	ex de,hl			;78f7
-	call 04da1h		;78f8   ; ...su casilla a los bytes 7-8
+	call 04da1h		;78f8   ; ...su casilla...
 	ex de,hl			;78fb
-	inc hl			;78fc
+	inc hl			;78fc   ; ...en los bytes 7-8
 	inc hl			;78fd
 	inc hl			;78fe
 	ld (hl),e			;78ff
@@ -3994,19 +3994,19 @@ L_78F4:
 	ld a,c			;7904   ; 3 filas de 1 o de 3
 	ld b,003h		;7905
 	ld c,001h		;7907
-	and a			;7909
+	and a			;7909   ; 3 filas de 1 o de 3
 	jr z,L_790E		;790a
 	ld c,003h		;790c
 L_790E:
 	ld a,c			;790e
-	push bc			;790f
+	push bc			;790f   ; una fila de C...
 	ld b,000h		;7910
 	ldir		;7912   ; una fila de C...
 	ld c,a			;7914   ; ...y a la siguiente
 	ld a,020h		;7915
 	sub c			;7917
 	ld c,a			;7918
-	add hl,bc			;7919
+	add hl,bc			;7919   ; ...y la siguiente
 	pop bc			;791a
 	djnz L_790E		;791b
 	ret			;791d
@@ -4024,21 +4024,21 @@ L_792A:
 	inc hl			;792c
 	ld b,(hl)			;792d
 	ld a,b			;792e   ; ...sin x, no esta
-	and a			;792f
+	and a			;792f   ; 0: L_7945
 	jr z,L_7945		;7930
-	push de			;7932
+	push de			;7932   ; la casilla de la y, x
 	ld e,c			;7933
 	ld d,b			;7934
 	ex de,hl			;7935
 	call 04da1h		;7936   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	ex de,hl			;7939
 	inc hl			;793a   ; su casilla a la ficha
-	ld (hl),e			;793b
+	ld (hl),e			;793b   ; la casilla, detras
 	inc hl			;793c
 	ld (hl),d			;793d
 	pop hl			;793e
 	ex de,hl			;793f
-	ld bc,00002h		;7940   ; y sus dos caracteres de debajo
+	ld bc,00002h		;7940   ; 2 bytes
 	ldir		;7943
 L_7945:
 	ld hl,0eabbh		;7945
@@ -4126,13 +4126,13 @@ debajo_un_ec30:		; lo de debajo de un hueco de 0xEC30
 	ld a,l			;79c8   ; ...su casilla (bytes 4-5)...
 	add a,004h		;79c9
 	ld l,a			;79cb
-	ld a,(hl)			;79cc
+	ld a,(hl)			;79cc   ; la casilla
 	inc l			;79cd
 	ld h,(hl)			;79ce
 	ld l,a			;79cf
 	ldi		;79d0   ; ...y sus 2 x 2 de debajo
 	ldi		;79d2
-	ld bc,0001eh		;79d4
+	ld bc,0001eh		;79d4   ; la fila de abajo
 	add hl,bc			;79d7
 	ldi		;79d8
 	ldi		;79da
@@ -4177,7 +4177,7 @@ L_7A26:
 	ldir		;7a2a   ; una fila de 14...
 	pop de			;7a2c   ; ...y la siguiente de 32
 	ex de,hl			;7a2d
-	ld c,020h		;7a2e
+	ld c,020h		;7a2e   ; la fila siguiente de 32
 	add hl,bc			;7a30
 	ex de,hl			;7a31
 	pop bc			;7a32
@@ -4199,24 +4199,24 @@ L_7A40:
 repone_hueco:		; lo de debajo de un hueco
 	bit 7,(ix+002h)		;7a4b   ; en pantalla y de caracteres...
 	ret z			;7a4f
-	ld a,(ix+009h)		;7a50
+	ld a,(ix+009h)		;7a50   ; de caracteres (sin el bit 7 de la ficha)...
 	rla			;7a53
 	ret c			;7a54
-	rla			;7a55
+	rla			;7a55   ; ...los de bit 6 aparte
 	jr c,L_7A77		;7a56
 	ld e,(ix+012h)		;7a58   ; ...el mosaico entero en su casilla
 	ld d,(ix+013h)		;7a5b
-	ld a,(ix+00ah)		;7a5e
+	ld a,(ix+00ah)		;7a5e   ; el tamaño del mosaico
 	push hl			;7a61
 	call tamano_de_mosaico		;7a62   ; tamano_de_mosaico: C = ancho, B = alto del mosaico A (0x9D90)
 	pop hl			;7a65
 L_7A66:
 	push bc			;7a66
-	ld b,000h		;7a67
+	ld b,000h		;7a67   ; C bytes...
 	ldir		;7a69   ; una fila...
 	pop bc			;7a6b
 	ld a,020h		;7a6c   ; ...y la siguiente: 32 - ancho
-	sub c			;7a6e
+	sub c			;7a6e   ; ...la fila siguiente: + 32 - C
 	add a,e			;7a6f
 	ld e,a			;7a70
 	jr nc,L_7A74		;7a71
@@ -4227,16 +4227,16 @@ L_7A74:
 L_7A77:
 	ld a,(ix+00bh)		;7a77   ; los de bit 6: columna, fila o 2 x 2
 	or a			;7a7a
-	jr z,L_7A97		;7a7b
+	jr z,L_7A97		;7a7b   ; 0: una columna
 	dec a			;7a7d
-	jr z,L_7AAD		;7a7e
+	jr z,L_7AAD		;7a7e   ; 1: una fila
 	cp 006h		;7a80
 	ret nz			;7a82
-	ld e,(ix+012h)		;7a83
+	ld e,(ix+012h)		;7a83   ; 6: 2 x 2 desde su casilla
 	ld d,(ix+013h)		;7a86
 	ldi		;7a89
 	ldi		;7a8b
-	ld a,01eh		;7a8d
+	ld a,01eh		;7a8d   ; la fila de abajo
 	call 0413bh		;7a8f   ; de_mas_a: DE += A
 	ldi		;7a92
 	ldi		;7a94
@@ -4289,11 +4289,11 @@ repone_un_e540:		; lo de debajo de un hueco de 0xE540
 repone_la_cosa:		; lo de debajo de la cosa de la sala
 	ld a,(0e740h)		;7ae5   ; la cosa de la sala: 2 x 2
 	or a			;7ae8
-	ret z			;7ae9
+	ret z			;7ae9   ; sin cosa: nada
 	ld de,(0e744h)		;7aea   ; lee la casilla de la cosa de la sala y el byte siguiente (16 bits)
-	ldi		;7aee
+	ldi		;7aee   ; 2 bytes a la fila de arriba...
 	ldi		;7af0
-	ld a,01eh		;7af2
+	ld a,01eh		;7af2   ; ...+ 0x1E: la de abajo
 	add a,e			;7af4
 	ld e,a			;7af5
 	jr nc,L_7AF9		;7af6
@@ -4345,7 +4345,7 @@ L_7B4A:
 	and a			;7b4b
 	ret z			;7b4c
 	push hl			;7b4d   ; el alto (byte 4)...
-	ex de,hl			;7b4e
+	ex de,hl			;7b4e   ; los bytes 4...
 	inc hl			;7b4f
 	inc hl			;7b50
 	inc hl			;7b51
@@ -4358,7 +4358,7 @@ L_7B4A:
 	pop hl			;7b58
 	and a			;7b59   ; sin alto, nada
 	ret z			;7b5a
-	ld b,a			;7b5b
+	ld b,a			;7b5b   ; la casilla y el alto
 L_7B5C:
 	push bc			;7b5c   ; ...en columna
 	ldi		;7b5d
@@ -4425,7 +4425,7 @@ repone_figura_3_4:		; vuelve lo de una de 0xEA50/0xEA60
 	pop de			;7bbe
 	ld a,(de)			;7bbf   ; si esta...
 	and a			;7bc0
-	ret z			;7bc1
+	ret z			;7bc1   ; vacio: nada
 	push hl			;7bc2
 	ex de,hl			;7bc3
 	inc hl			;7bc4
@@ -4438,13 +4438,13 @@ repone_figura_3_4:		; vuelve lo de una de 0xEA50/0xEA60
 	inc hl			;7bcb
 	ld e,(hl)			;7bcc   ; ...su casilla (bytes 7-8)
 	inc hl			;7bcd
-	ld d,(hl)			;7bce
+	ld d,(hl)			;7bce   ; bytes 7-8: la casilla
 	pop hl			;7bcf
 	ld b,003h		;7bd0   ; ...3 filas de 1 o de 3
-	ld c,001h		;7bd2
+	ld c,001h		;7bd2   ; B = 3, C = 1...
 	and a			;7bd4   ; 3 filas de 1 con el dibujo 0, de 3 con los demas
 	jr z,L_7BD9		;7bd5
-	ld c,003h		;7bd7
+	ld c,003h		;7bd7   ; ...con el byte 5, C = 3
 L_7BD9:
 	ld a,c			;7bd9
 	push bc			;7bda
@@ -4455,7 +4455,7 @@ L_7BD9:
 	sub c			;7be2
 	ld c,a			;7be3
 	ex de,hl			;7be4
-	add hl,bc			;7be5
+	add hl,bc			;7be5   ; la siguiente
 	ex de,hl			;7be6
 	pop bc			;7be7
 	djnz L_7BD9		;7be8   ; 3 filas
@@ -4472,17 +4472,17 @@ L_7BF7:
 	exx			;7bf7
 	ld a,(de)			;7bf8   ; si esta...
 	and a			;7bf9
-	jr z,L_7C09		;7bfa
+	jr z,L_7C09		;7bfa   ; sin ella, nada
 	inc de			;7bfc
 	ld a,(de)			;7bfd   ; ...su casilla...
 	ld c,a			;7bfe
-	inc de			;7bff
+	inc de			;7bff   ; su casilla...
 	ld a,(de)			;7c00
 	ld b,a			;7c01
 	ld e,c			;7c02
 	ld d,b			;7c03
 	ld bc,00002h		;7c04   ; ...y sus dos caracteres
-	ldir		;7c07
+	ldir		;7c07   ; ...2 caracteres
 L_7C09:
 	ld de,0eabch		;7c09
 	exx			;7c0c
@@ -4799,22 +4799,22 @@ L_7E35:
 mira_zeus:		; en la pausa de F2 y en la sala 1 del castillo, cuenta las letras de ZEUS
 	ld hl,(0e041h)		;7e57   ; solo en la sala 1 del castillo
 	ld de,00101h		;7e5a
-	rst 20h			;7e5d
-	ret nz			;7e5e
+	rst 20h			;7e5d   ; castillo, sala 1?
+	ret nz			;7e5e   ; no: nada
 	call 09c13h		;7e5f   ; la tecla...
 	ld hl,0e02ah		;7e62
-	ld c,(hl)			;7e65
+	ld c,(hl)			;7e65   ; C = lo de antes
 	ld (hl),a			;7e66   ; ...recien apretada...
-	xor c			;7e67
+	xor c			;7e67   ; lo recien apretado...
 	and (hl)			;7e68
-	ret z			;7e69
+	ret z			;7e69   ; ...nada: nada
 	ld b,a			;7e6a
 	ld de,07e88h		;7e6b   ; ...comparada con la letra que toca de ZEUS (0x7E88)
 	ld hl,0e028h		;7e6e   ; apunta a las letras de ZEUS acertadas
 	ld a,(hl)			;7e71
 	call 0413bh		;7e72   ; de_mas_a: DE += A
-	ld a,(de)			;7e75
-	cp b			;7e76
+	ld a,(de)			;7e75   ; la tecla que toca...
+	cp b			;7e76   ; ...es esta?
 	jr z,L_7E7C		;7e77
 	ld (hl),000h		;7e79   ; una que no va: vuelta a empezar
 	ret			;7e7b

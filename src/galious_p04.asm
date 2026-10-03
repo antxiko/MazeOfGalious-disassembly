@@ -51,32 +51,32 @@ L_601E:
 L_6022:
 	ld a,(hl)			;6022   ; cada figura: el tipo...
 	ld b,a			;6023
-	and 07fh		;6024
+	and 07fh		;6024   ; tipo 0: se acaba
 	ret z			;6026
-	ld (0f000h),a		;6027
+	ld (0f000h),a		;6027   ; en 0xF000
 	inc hl			;602a
 	inc hl			;602b
 	call ya_vencida		;602c   ; ...si ya se vencio (p04:6078), no sale...
 	jr nz,L_6022		;602f
 	dec hl			;6031   ; ...la y: los 5 bits altos del sitio...
 	ld a,(hl)			;6032
-	and 0f8h		;6033
+	and 0f8h		;6033   ; los bits 3-7
 	ld d,a			;6035
 	ld a,(hl)			;6036   ; ...la x: los 3 bajos y el bit 7 del tipo, x 16...
 	inc hl			;6037
-	rl b		;6038
+	rl b		;6038   ; el bit 7 del tipo al acarreo...
 	rla			;603a
 	rla			;603b
 	rla			;603c
 	rla			;603d
 	rla			;603e
-	and 0f0h		;603f
+	and 0f0h		;603f   ; ...bits 4-7
 	ld e,a			;6041
-	ld b,000h		;6042
+	ld b,000h		;6042   ; B = 0
 	ld a,r		;6044   ; ...un numero al azar 0-3...
 	and 003h		;6046
 	ld c,a			;6048
-	ld a,(0f000h)		;6049
+	ld a,(0f000h)		;6049   ; el tipo
 	push hl			;604c
 	call crea_figura		;604d   ; ...y se crea
 	pop hl			;6050
@@ -106,20 +106,20 @@ L_6071:
 ya_vencida:		; NZ si la figura siguiente ya se vencio en esta sala
 	ld a,(0e612h)		;6078   ; en esas salas, NZ si la figura siguiente ya se vencio...
 	or a			;607b
-	ret z			;607c
+	ret z			;607c   ; vuelven todas: Z
 	push hl			;607d
 	push bc			;607e
 	ld hl,0e613h		;607f   ; ...su bit (numero + 1) en el byte de la sala del tramo del mapa
-	ld b,(hl)			;6082
-	inc (hl)			;6083
+	ld b,(hl)			;6082   ; B = su numero...
+	inc (hl)			;6083   ; ...y el siguiente
 	inc b			;6084
 	xor a			;6085
-	scf			;6086
+	scf			;6086   ; el bit de su numero
 L_6087:
 	rla			;6087
 	djnz L_6087		;6088
 	ld hl,(0e60ch)		;608a   ; lee la direccion del byte de la sala en el tramo del mapa y el byte siguiente (16 bits)
-	and (hl)			;608d
+	and (hl)			;608d   ; NZ si esta puesto
 	pop bc			;608e
 	pop hl			;608f
 	ret			;6090
@@ -334,32 +334,32 @@ especiales_de_la_sala:		; lo especial de cada sala (0xE650-0xE66F)
 	call salas_e665		;61a5   ; salas_e665: las salas que generan figuras 0x35 (0xE665)
 	ld hl,(0e041h)		;61a8   ; en el mapa 7, salas 2-4, 7, 8, 0x11 y 0x12...
 	ld a,l			;61ab
-	cp 007h		;61ac
+	cp 007h		;61ac   ; mapa 7?
 	ret nz			;61ae
 	ld a,h			;61af
-	cp 002h		;61b0
+	cp 002h		;61b0   ; sala 2: 5 figuras
 	ld c,005h		;61b2
 	jr z,L_61D9		;61b4
-	cp 003h		;61b6
+	cp 003h		;61b6   ; sala 3: 10
 	ld c,00ah		;61b8
 	jr z,L_61D9		;61ba
-	cp 004h		;61bc
+	cp 004h		;61bc   ; sala 4: 5
 	ld c,005h		;61be
 	jr z,L_61D9		;61c0
-	cp 007h		;61c2
+	cp 007h		;61c2   ; sala 7: 10
 	ld c,00ah		;61c4
 	jr z,L_61D9		;61c6
-	cp 008h		;61c8
+	cp 008h		;61c8   ; sala 8: 10
 	ld c,00ah		;61ca
 	jr z,L_61D9		;61cc
-	cp 011h		;61ce
+	cp 011h		;61ce   ; sala 0x11: 10
 	ld c,00ah		;61d0
 	jr z,L_61D9		;61d2
-	cp 012h		;61d4
+	cp 012h		;61d4   ; sala 0x12: 5
 	ld c,005h		;61d6
 	ret nz			;61d8
 L_61D9:
-	ld hl,0e668h		;61d9   ; ...0xE668 = 1, la espera C (5 o 10) y 0x10
+	ld hl,0e668h		;61d9   ; ...0xE668 = 1, C figuras (5 o 10) y la espera 0x10
 	ld (hl),001h		;61dc
 	inc l			;61de
 	ld (hl),c			;61df
@@ -369,16 +369,16 @@ L_61D9:
 salas_e650:		; en el castillo, salas 0x3A, 0x47, 0x71 y 0x72: 0xE650 = 1
 	ld hl,(0e041h)		;61e4   ; en el castillo, salas 0x3A, 0x47, 0x71 y 0x72: 0xE650 = 1
 	ld a,l			;61e7   ; en el castillo...
-	dec a			;61e8
+	dec a			;61e8   ; solo el castillo
 	ret nz			;61e9
 	ld a,h			;61ea   ; ...las salas 0x3A, 0x47, 0x71 y 0x72
-	cp 03ah		;61eb
+	cp 03ah		;61eb   ; 0x3A
 	jr z,L_61FA		;61ed
-	cp 047h		;61ef
+	cp 047h		;61ef   ; 0x47
 	jr z,L_61FA		;61f1
-	cp 071h		;61f3
+	cp 071h		;61f3   ; 0x71
 	jr z,L_61FA		;61f5
-	cp 072h		;61f7
+	cp 072h		;61f7   ; 0x72
 	ret nz			;61f9
 L_61FA:
 	ld a,001h		;61fa
@@ -426,28 +426,28 @@ L_6233:
 	ret			;6238
 salas_e659:		; castillo 0x89-0x8C: 0xE659 (figuras 0x0D)
 	ld hl,(0e041h)		;6239   ; castillo 0x89-0x8C: 0xE659 = 1-4
-	dec l			;623c
+	dec l			;623c   ; castillo
 	ret nz			;623d
 	ld a,h			;623e
-	sub 089h		;623f
-	cp 004h		;6241
+	sub 089h		;623f   ; salas 0x89...
+	cp 004h		;6241   ; ...a 0x8C
 	ret nc			;6243
-	inc a			;6244
+	inc a			;6244   ; 0xE659 = 1-4
 	ld (0e659h),a		;6245
 	ret			;6248
 salas_e65c:		; las salas que generan figuras 0x21 (0xE65C)
 	ld hl,(0e041h)		;6249   ; mapa 5 salas 0x0A y 0x0C, castillo 0x0A, 0x11, 0x1C, 0x38, 0x49, 0x7A, 0x83, 0x84 y 0x50, mapa 7 sala 8...
 	ld a,l			;624c   ; el mapa: castillo...
-	dec a			;624d
+	dec a			;624d   ; castillo: L_6261
 	jr z,L_6261		;624e
 	cp 006h		;6250   ; ...mapa 7...
 	jr z,L_6287		;6252
 	cp 004h		;6254   ; ...mapa 5: salas 0x0A y 0x0C
 	ret nz			;6256
-	ld a,h			;6257
+	ld a,h			;6257   ; mapa 4, sala 0x0A...
 	cp 00ah		;6258
 	jr z,L_628B		;625a
-	cp 00ch		;625c
+	cp 00ch		;625c   ; ...o 0x0C
 	jr z,L_628B		;625e
 	ret			;6260
 L_6261:
@@ -460,15 +460,15 @@ L_6261:
 	jr z,L_628B		;626c
 	cp 038h		;626e   ; 0x38
 	jr z,L_628B		;6270
-	cp 049h		;6272
+	cp 049h		;6272   ; 0x49
 	jr z,L_628B		;6274
-	cp 07ah		;6276
+	cp 07ah		;6276   ; 0x7A
 	jr z,L_628B		;6278
-	cp 083h		;627a
+	cp 083h		;627a   ; 0x83
 	jr z,L_628B		;627c
-	cp 084h		;627e
+	cp 084h		;627e   ; 0x84
 	jr z,L_628B		;6280
-	cp 050h		;6282
+	cp 050h		;6282   ; 0x50
 	jr z,L_628B		;6284
 	ret			;6286
 L_6287:
@@ -482,13 +482,13 @@ L_628B:
 salas_e65f:		; mapa 6, salas 7-10: 0xE65F (figuras 0x30)
 	ld hl,(0e041h)		;6291   ; mapa 6 salas 7-10: 0xE65F = 1
 	ld a,l			;6294   ; el mapa 6...
-	cp 006h		;6295
+	cp 006h		;6295   ; mapa 6
 	ret nz			;6297
 	ld a,h			;6298   ; ...salas 7-10
-	sub 007h		;6299
-	cp 004h		;629b
+	sub 007h		;6299   ; salas 7...
+	cp 004h		;629b   ; ...a 10
 	ret nc			;629d
-	ld a,001h		;629e
+	ld a,001h		;629e   ; 0xE65F = 1
 	ld (0e65fh),a		;62a0
 	ret			;62a3
 salas_e662:		; castillo 0x5E, 0x5F y 0x66: 0xE662 (figuras 0x38)
@@ -508,14 +508,14 @@ L_62B3:
 salas_e665:		; las salas que generan figuras 0x35 (0xE665)
 	ld hl,(0e041h)		;62b9   ; castillo 0x2F y 0x3B, mapa 9 salas 2 y 0x0E: 0xE665 = 1
 	ld a,l			;62bc   ; el castillo...
-	dec a			;62bd
+	dec a			;62bd   ; castillo: L_62CD
 	jr z,L_62CD		;62be
 	cp 008h		;62c0   ; ...o el mapa 9: salas 2 y 0x0E
 	ret nz			;62c2
 	ld a,h			;62c3
-	cp 002h		;62c4
+	cp 002h		;62c4   ; mapa 8, sala 2...
 	jr z,L_62D5		;62c6
-	cp 00eh		;62c8
+	cp 00eh		;62c8   ; ...o 0x0E
 	jr z,L_62D5		;62ca
 	ret			;62cc
 L_62CD:
@@ -567,15 +567,15 @@ generadores:		; cada cuadro, las figuras que salen solas en las salas especiales
 	jp crea_figura		;631d   ; crea_figura: crea la figura A en la y D, x E
 cuenta_del_generador:		; cuantas y cada cuanto, segun 0xE045
 	ld a,(0e045h)		;6320   ; cuantas: 0x633A + 0xE045...
-	ld de,0633ah		;6323
+	ld de,0633ah		;6323   ; la tabla 0x633A + 0xE045
 	call 04065h		;6326   ; de_mas_a (por 0x4065): DE += A
 	ld a,(de)			;6329
-	ld (hl),a			;632a
+	ld (hl),a			;632a   ; byte 1 = cuantas
 	inc l			;632b
 	ld a,(0e045h)		;632c   ; ...y la espera 0x70 - 2 x 0xE045
-	add a,a			;632f
+	add a,a			;632f   ; x 2...
 	sub 070h		;6330
-	neg		;6332
+	neg		;6332   ; ...0x70 - eso: la espera
 	ld (hl),a			;6334
 	ret			;6335
 
@@ -602,118 +602,118 @@ DATA_dieciseis_bytes_633a:
 generador_e653:		; figuras 8 en y 0xA0 (0xB0 en el mapa 9)
 	ld hl,0e653h		;634a   ; el de 0xE653: cada espera al azar (0x30-0x6F)...
 	bit 0,(hl)		;634d
-	ret z			;634f
+	ret z			;634f   ; apagado: nada
 	inc l			;6350
-	ld a,(hl)			;6351
+	ld a,(hl)			;6351   ; byte 1 a 0: poner la espera
 	or a			;6352
 	jr z,L_636A		;6353
 	inc l			;6355
-	dec (hl)			;6356
+	dec (hl)			;6356   ; la espera, un cuadro menos...
 	ret nz			;6357
 	dec l			;6358
-	dec (hl)			;6359
+	dec (hl)			;6359   ; ...acabada: byte 1 a 0
 	ld a,(0e041h)		;635a   ; ...la figura 8 en y 0xA0 (0xB0 en el mapa 9)
 	cp 009h		;635d
-	ld d,0a0h		;635f
+	ld d,0a0h		;635f   ; y 0xA0...
 	jr nz,L_6365		;6361
-	ld d,0b0h		;6363
+	ld d,0b0h		;6363   ; ...0xB0 en el mapa 9
 L_6365:
-	ld a,008h		;6365
+	ld a,008h		;6365   ; la figura 8
 	jp crea_figura		;6367   ; crea_figura: crea la figura A en la y D, x E
 L_636A:
-	inc (hl)			;636a   ; la espera al azar: 0x30-0x6F
+	inc (hl)			;636a   ; byte 1 a 1
 	inc l			;636b
-	ld a,r		;636c
+	ld a,r		;636c   ; al azar 0-0x3F...
 	and 03fh		;636e
-	add a,030h		;6370
+	add a,030h		;6370   ; ...+ 0x30
 	ld (hl),a			;6372
 	ret			;6373
 generador_e659:		; figuras 0x0D (no en el agua)
 	ld a,(0e511h)		;6374   ; el de 0xE659, no en el agua: la figura 0x0D en y 0x90
 	and a			;6377
-	ret nz			;6378
+	ret nz			;6378   ; en el agua: nada
 	ld hl,0e659h		;6379
 	ld a,(hl)			;637c
 	and a			;637d
-	ret z			;637e
+	ret z			;637e   ; apagado: nada
 	ld b,a			;637f
 	inc l			;6380
-	ld a,(hl)			;6381
+	ld a,(hl)			;6381   ; byte 1 a 0: poner la espera
 	or a			;6382
 	jr z,L_6391		;6383
 	inc l			;6385
-	dec (hl)			;6386
+	dec (hl)			;6386   ; la espera, un cuadro menos...
 	ret nz			;6387
 	dec l			;6388
-	dec (hl)			;6389
+	dec (hl)			;6389   ; ...acabada: byte 1 a 0
 	ld d,090h		;638a
-	ld a,00dh		;638c
+	ld a,00dh		;638c   ; la figura 0x0D
 	jp crea_figura		;638e   ; crea_figura: crea la figura A en la y D, x E
 L_6391:
-	inc (hl)			;6391   ; la espera: 0x90 - 2 x 0xE045
+	inc (hl)			;6391   ; byte 1 a 1
 	ld a,(0e045h)		;6392   ; lee la velocidad de las figuras que apuntan (y los generadores)
-	add a,a			;6395
+	add a,a			;6395   ; x 2...
 	sub 090h		;6396
-	neg		;6398
+	neg		;6398   ; ...0x90 - eso
 	inc l			;639a
 	ld (hl),a			;639b
 	ret			;639c
 generador_e65c:		; figuras 0x21
 	ld hl,0e65ch		;639d   ; el de 0xE65C: la figura 0x21
 	bit 0,(hl)		;63a0
-	ret z			;63a2
+	ret z			;63a2   ; apagado: nada
 	inc l			;63a3
-	ld a,(hl)			;63a4
+	ld a,(hl)			;63a4   ; byte 1 a 0: poner la espera
 	or a			;63a5
 	jr z,L_63B7		;63a6
 	inc l			;63a8
-	dec (hl)			;63a9
+	dec (hl)			;63a9   ; la espera, un cuadro menos...
 	ret nz			;63aa
 	dec l			;63ab
-	dec (hl)			;63ac
-	ld d,000h		;63ad
+	dec (hl)			;63ac   ; ...acabada: byte 1 a 0
+	ld d,000h		;63ad   ; en y 0
 	ld bc,00000h		;63af
-	ld a,021h		;63b2
+	ld a,021h		;63b2   ; la figura 0x21
 	jp crea_figura		;63b4   ; crea_figura: crea la figura A en la y D, x E
 L_63B7:
-	inc (hl)			;63b7
+	inc (hl)			;63b7   ; byte 1 a 1
 	ld a,(0e045h)		;63b8   ; lee la velocidad de las figuras que apuntan (y los generadores)
-	add a,a			;63bb
+	add a,a			;63bb   ; x 2...
 	sub 090h		;63bc
-	neg		;63be
+	neg		;63be   ; ...0x90 - eso
 	inc l			;63c0
 	ld (hl),a			;63c1
 	ret			;63c2
 generador_e65f:		; figuras 0x30
 	ld hl,0e65fh		;63c3   ; el de 0xE65F: la figura 0x30 en y 0x90
 	bit 0,(hl)		;63c6
-	ret z			;63c8
+	ret z			;63c8   ; apagado: nada
 	inc l			;63c9
-	ld a,(hl)			;63ca
+	ld a,(hl)			;63ca   ; byte 1 a 0: poner la espera
 	or a			;63cb
 	jr z,L_63DD		;63cc
 	inc l			;63ce
-	dec (hl)			;63cf
+	dec (hl)			;63cf   ; la espera, un cuadro menos...
 	ret nz			;63d0
 	dec l			;63d1
-	dec (hl)			;63d2
-	ld d,090h		;63d3
+	dec (hl)			;63d2   ; ...acabada: byte 1 a 0
+	ld d,090h		;63d3   ; en y 0x90
 	ld bc,00000h		;63d5
-	ld a,030h		;63d8
+	ld a,030h		;63d8   ; la figura 0x30
 	jp crea_figura		;63da   ; crea_figura: crea la figura A en la y D, x E
 L_63DD:
-	inc (hl)			;63dd
+	inc (hl)			;63dd   ; byte 1 a 1
 	ld a,(0e045h)		;63de   ; lee la velocidad de las figuras que apuntan (y los generadores)
-	add a,a			;63e1
+	add a,a			;63e1   ; x 2...
 	sub 090h		;63e2
-	neg		;63e4
+	neg		;63e4   ; ...0x90 - eso
 	inc l			;63e6
 	ld (hl),a			;63e7
 	ret			;63e8
 generador_e662:		; figuras 0x38
 	ld hl,0e662h		;63e9   ; el de 0xE662: cada 0x20 cuadros la figura 0x38 en uno de 4 sitios (0x6426)
 	bit 0,(hl)		;63ec
-	ret z			;63ee
+	ret z			;63ee   ; apagado: nada
 	inc l			;63ef   ; quedan?
 	ld a,(hl)			;63f0
 	or a			;63f1
@@ -725,13 +725,13 @@ generador_e662:		; figuras 0x38
 	dec l			;63f9
 	dec (hl)			;63fa   ; ...una menos
 	ld a,(hl)			;63fb
-	and 003h		;63fc
+	and 003h		;63fc   ; los bits 0-1 de las que quedan...
 	ld hl,06426h		;63fe   ; uno de 4 sitios
 	ld c,a			;6401
 	ld b,000h		;6402
 	add hl,bc			;6404
-	ld e,(hl)			;6405
-	ld d,0b0h		;6406
+	ld e,(hl)			;6405   ; ...E = la x de la tabla
+	ld d,0b0h		;6406   ; en y 0xB0
 	ld bc,00000h		;6408
 	ld a,038h		;640b   ; la figura 0x38
 	jp crea_figura		;640d   ; crea_figura: crea la figura A en la y D, x E
@@ -740,12 +740,12 @@ L_6410:
 	ld de,0642ah		;6413
 	call 04065h		;6416   ; de_mas_a (por 0x4065): DE += A
 	ld a,(de)			;6419
-	ld (hl),a			;641a
+	ld (hl),a			;641a   ; byte 1 = cuantas
 	inc l			;641b
 	ld a,(0e045h)		;641c   ; lee la velocidad de las figuras que apuntan (y los generadores)
 	add a,a			;641f
-	sub 070h		;6420
-	neg		;6422
+	sub 070h		;6420   ; x 2...
+	neg		;6422   ; ...0x70 - eso: la espera
 	ld (hl),a			;6424
 	ret			;6425
 
@@ -771,44 +771,44 @@ DATA_dieciseis_bytes_642a:
 generador_e665:		; figuras 0x35
 	ld hl,0e665h		;643a   ; el de 0xE665: la figura 0x35
 	bit 0,(hl)		;643d
-	ret z			;643f
+	ret z			;643f   ; apagado: nada
 	inc l			;6440
-	ld a,(hl)			;6441
+	ld a,(hl)			;6441   ; byte 1 a 0: poner la espera
 	or a			;6442
 	jr z,L_6454		;6443
 	inc l			;6445
-	dec (hl)			;6446
+	dec (hl)			;6446   ; la espera, un cuadro menos...
 	ret nz			;6447
 	dec l			;6448
-	dec (hl)			;6449
-	ld d,000h		;644a
+	dec (hl)			;6449   ; ...acabada: byte 1 a 0
+	ld d,000h		;644a   ; en y 0
 	ld bc,00000h		;644c
-	ld a,035h		;644f
+	ld a,035h		;644f   ; la figura 0x35
 	jp crea_figura		;6451   ; crea_figura: crea la figura A en la y D, x E
 L_6454:
-	inc (hl)			;6454
+	inc (hl)			;6454   ; byte 1 a 1
 	ld a,(0e045h)		;6455   ; lee la velocidad de las figuras que apuntan (y los generadores)
-	add a,a			;6458
+	add a,a			;6458   ; x 2...
 	sub 090h		;6459
-	neg		;645b
+	neg		;645b   ; ...0x90 - eso
 	inc l			;645d
 	ld (hl),a			;645e
 	ret			;645f
 generador_e668:		; figuras 0x3E en (0x40, 0x30)
 	ld hl,0e668h		;6460   ; el de 0xE668: cada 0x10 cuadros la figura 0x3E en (0x40, 0x30)
 	bit 0,(hl)		;6463
-	ret z			;6465
+	ret z			;6465   ; apagado: nada
 	inc l			;6466
 	ld a,(hl)			;6467
 	or a			;6468
-	ret z			;6469
+	ret z			;6469   ; no quedan: nada
 	inc l			;646a
-	dec (hl)			;646b
+	dec (hl)			;646b   ; la espera...
 	ret nz			;646c
-	ld (hl),010h		;646d
+	ld (hl),010h		;646d   ; ...otra vez 0x10
 	dec l			;646f
-	dec (hl)			;6470
-	ld de,03040h		;6471
+	dec (hl)			;6470   ; una menos
+	ld de,03040h		;6471   ; y 0x30, x 0x40
 	ld bc,00000h		;6474
 	ld a,03eh		;6477
 	jp crea_figura		;6479   ; crea_figura: crea la figura A en la y D, x E
@@ -1002,32 +1002,32 @@ L_6659:
 	ld b,a			;6659
 	ld a,(0e625h)		;665a   ; lee 0x80: disparo que para el escudo
 	or b			;665d
-	ld (hl),a			;665e
+	ld (hl),a			;665e   ; byte 3
 	inc l			;665f   ; ...[0][y][0][x]...
-	ld (hl),000h		;6660
-	ld de,(0f01ah)		;6662
+	ld (hl),000h		;6660   ; byte 4: 0
+	ld de,(0f01ah)		;6662   ; el sitio
 	inc l			;6666
-	ld (hl),d			;6667
+	ld (hl),d			;6667   ; byte 5: la y
 	inc l			;6668
-	ld (hl),000h		;6669
+	ld (hl),000h		;6669   ; byte 6: 0
 	inc l			;666b
-	ld (hl),e			;666c
+	ld (hl),e			;666c   ; byte 7: la x
 	inc l			;666d
-	ld (hl),000h		;666e
+	ld (hl),000h		;666e   ; byte 8: 0
 	inc l			;6670
 	ex de,hl			;6671   ; ...3 bytes de la ficha del tipo (9-0x0B)...
-	ld hl,(0f01ch)		;6672
+	ld hl,(0f01ch)		;6672   ; la ficha del tipo
 	ldi		;6675
 	ldi		;6677
 	ldi		;6679
 	ex de,hl			;667b
 	ld bc,(0f012h)		;667c   ; ...0xF012 y 0xF014 (0x0C-0x0F)...
-	ld (hl),c			;6680
+	ld (hl),c			;6680   ; 0x0C-0x0D: 0xF012
 	inc l			;6681
 	ld (hl),b			;6682
 	inc l			;6683
 	ld bc,(0f014h)		;6684
-	ld (hl),c			;6688
+	ld (hl),c			;6688   ; 0x0E-0x0F: 0xF014
 	inc l			;6689
 	ld (hl),b			;668a
 	inc l			;668b
@@ -1035,19 +1035,19 @@ L_6659:
 	ldi		;668d   ; ...los otros 2 de la ficha (0x10-0x11: la vida y el tamaño)...
 	ldi		;668f
 	xor a			;6691   ; ...y 14 ceros
-	ld b,00eh		;6692
+	ld b,00eh		;6692   ; 0x12-0x1F
 L_6694:
 	ld (de),a			;6694
 	inc e			;6695
 	djnz L_6694		;6696
 	ld a,(ix+010h)		;6698   ; vida 0xFF: no se le puede herir (sin el bit 5)...
-	inc a			;669b
+	inc a			;669b   ; 0xFF?
 	jr nz,L_66A2		;669c
-	res 5,(ix+002h)		;669e
+	res 5,(ix+002h)		;669e   ; sin el bit 5
 L_66A2:
 	inc a			;66a2   ; ...0xFE: con escudo (bit 2)
 	jr nz,L_66A9		;66a3
-	set 2,(ix+002h)		;66a5
+	set 2,(ix+002h)		;66a5   ; con el bit 2
 L_66A9:
 	ld hl,0678bh		;66a9   ; y lo de entrar de su tipo (tabla que sigue, 107 tipos)
 	push hl			;66ac
@@ -1336,14 +1336,14 @@ DATA_fichas_de_tipo:
 humos:		; cada 16 cuadros un humo (figura 0x5B) alrededor de 0xE6C0
 	ld hl,0e63fh		;69d2   ; lo que deja la figura vencida: cada 16 cuadros...
 	ld a,(hl)			;69d5
-	or a			;69d6
+	or a			;69d6   ; nada: nada
 	ret z			;69d7
-	dec (hl)			;69d8
+	dec (hl)			;69d8   ; un cuadro menos...
 	ld a,(hl)			;69d9
-	and 00fh		;69da
+	and 00fh		;69da   ; ...cada 16
 	ret nz			;69dc
 	ld a,(hl)			;69dd   ; ...un humo (figura 0x5B) alrededor de 0xE6C0 (tabla 0x69FB)
-	rra			;69de
+	rra			;69de   ; / 8, par: entradas de 2 bytes
 	rra			;69df
 	rra			;69e0
 	and 00eh		;69e1
@@ -1353,14 +1353,14 @@ humos:		; cada 16 cuadros un humo (figura 0x5B) alrededor de 0xE6C0
 	add hl,bc			;69e9
 	ld de,(0e6c0h)		;69ea   ; lee donde deja algo la figura vencida y el byte siguiente (16 bits)
 	ld a,e			;69ee
-	add a,(hl)			;69ef
+	add a,(hl)			;69ef   ; (0xE6C0) + el primero: la y
 	ld e,a			;69f0
 	inc hl			;69f1
 	ld a,d			;69f2
-	add a,(hl)			;69f3
-	ld d,e			;69f4
+	add a,(hl)			;69f3   ; (0xE6C1) + el segundo: la x
+	ld d,e			;69f4   ; D = la y, E = la x
 	ld e,a			;69f5
-	ld a,05bh		;69f6
+	ld a,05bh		;69f6   ; la figura 0x5B
 	jp crea_figura_hl		;69f8   ; crea_figura_hl: crea la figura A en DE con HL en 0xF014
 
 ; ----------------------------------------------------------------------
@@ -1453,7 +1453,7 @@ DATA_doce_bytes_6a6b:
 lo_que_deja:		; C = lo que deja la figura vencida: monedas, flechas, llaves o nada (tabla 0x6A9E)
 	ld a,(0e6c6h)		;6a77   ; lo que deja: tres umbrales de la tabla 0x6A9E (de 0xE6C6)...
 	ld b,a			;6a7a
-	add a,a			;6a7b
+	add a,a			;6a7b   ; x 3: tres umbrales por fila
 	add a,b			;6a7c
 	ld c,a			;6a7d
 	ld b,000h		;6a7e
@@ -1462,9 +1462,9 @@ lo_que_deja:		; C = lo que deja la figura vencida: monedas, flechas, llaves o na
 	ld c,05eh		;6a84   ; ...un numero al azar 0-15...
 	ld a,(0e604h)		;6a86   ; lee el contador de cuadros de partida
 	ld b,a			;6a89
-	ld a,r		;6a8a
+	ld a,r		;6a8a   ; + R...
 	add a,b			;6a8c
-	and 00fh		;6a8d
+	and 00fh		;6a8d   ; ...0-15
 	cp (hl)			;6a8f   ; ...por debajo del primero, monedas (0x5E)...
 	ret c			;6a90
 	ld c,05dh		;6a91   ; ...del segundo, flechas (0x5D)...
@@ -1547,7 +1547,7 @@ tipo_05_cuadro:		; cada cuadro el tipo 0x05
 	jp nc,L_6B63		;6b1f
 	call pared_delante		;6b22   ; pared_delante: C con pared delante o en el borde
 	jp c,L_6B63		;6b25
-	dec (ix+015h)		;6b28   ; baja las columnas de la figura que se pintan
+	dec (ix+015h)		;6b28
 	jr z,L_6B4C		;6b2b
 L_6B2D:
 	inc (ix+01fh)		;6b2d
@@ -1567,7 +1567,7 @@ L_6B48:
 	ld (ix+00ah),d		;6b48   ; guarda el dibujo (o el mosaico) de la figura
 	ret			;6b4b
 L_6B4C:
-	ld (ix+015h),00ah		;6b4c   ; las columnas de la figura que se pintan = 0x0A
+	ld (ix+015h),00ah		;6b4c
 	inc (ix+001h)		;6b50   ; sube el paso de la figura
 	call quita_bit_4_figura		;6b53   ; quita_bit_4_figura: quita el bit 4 de las banderas
 L_6B56:
@@ -1590,9 +1590,9 @@ pon_bit_4_figura:		; pone el bit 4 de las banderas
 	set 4,(ix+002h)		;6b76   ; pone a uno el bit 4 de las banderas de la figura (bit 7: en pantalla)
 	ret			;6b7a
 L_6B7B:
-	dec (ix+015h)		;6b7b   ; baja las columnas de la figura que se pintan
+	dec (ix+015h)		;6b7b
 	ret nz			;6b7e
-	ld (ix+015h),078h		;6b7f   ; las columnas de la figura que se pintan = 0x78
+	ld (ix+015h),078h		;6b7f
 	dec (ix+001h)		;6b83   ; baja el paso de la figura
 	call pon_bit_4_figura		;6b86   ; pon_bit_4_figura: pone el bit 4 de las banderas
 	call dibujo_a0_b0		;6b89   ; dibujo_a0_b0: el dibujo 0xA0 o 0xB0 segun hacia donde va
@@ -1726,16 +1726,16 @@ L_6C8A:
 tipo_18_gira:		; cada 4 cuadros, la vuelta siguiente (tabla 0x6CC4)
 	inc (ix+008h)		;6c90   ; cada 4 cuadros...
 	ld a,(ix+008h)		;6c93
-	and 003h		;6c96
+	and 003h		;6c96   ; cada 4 cuadros
 	ret nz			;6c98
 	ld a,(ix+014h)		;6c99   ; ...hacia un lado (0x14 = 1)...
 	and a			;6c9c
-	jr z,L_6CAD		;6c9d
+	jr z,L_6CAD		;6c9d   ; a 0: L_6CAD
 	dec (ix+01fh)		;6c9f   ; ...la vuelta anterior (de 0 a 6)...
 	ld a,(ix+01fh)		;6ca2
-	cp 0ffh		;6ca5
+	cp 0ffh		;6ca5   ; pasado de 0...
 	jr nz,L_6CB8		;6ca7
-	ld a,006h		;6ca9
+	ld a,006h		;6ca9   ; ...6
 	jr L_6CB8		;6cab
 L_6CAD:
 	inc (ix+01fh)		;6cad   ; ...o la siguiente (de 6 a 0)
@@ -1817,7 +1817,7 @@ L_6D32:
 	jp tipo_02_cola		;6d38   ; tipo_02_cola: el tipo 2: los 7 trozos de su cola
 pared_en_14_15:		; C si la casilla (x + (ix+0x14), y + (ix+0x15)) es pared
 	ld b,(ix+014h)		;6d3b
-	ld c,(ix+015h)		;6d3e   ; lee las columnas de la figura que se pintan
+	ld c,(ix+015h)		;6d3e
 	jr pared_en_bc		;6d41
 pared_en_16_17:		; C si la casilla (x + (ix+0x16), y + (ix+0x17)) es pared
 	ld b,(ix+016h)		;6d43
@@ -1941,11 +1941,11 @@ tipo_08_cuadro:		; cada cuadro el tipo 0x08
 	ld a,(ix+005h)		;6e3c   ; lee la y de la figura
 	cp (ix+008h)		;6e3f
 	jr nc,dibujos_cc_d0		;6e42
-	ld (ix+015h),03ch		;6e44   ; las columnas de la figura que se pintan = 0x3C
+	ld (ix+015h),03ch		;6e44
 	call quita_bit_4_figura		;6e48   ; quita_bit_4_figura: quita el bit 4 de las banderas
 	jp 09a07h		;6e4b   ; paso_siguiente_de_figura: sube el paso (ix+1)
 L_6E4E:
-	dec (ix+015h)		;6e4e   ; baja las columnas de la figura que se pintan
+	dec (ix+015h)		;6e4e
 	jr z,L_6E65		;6e51
 	call dibujos_cc_d0		;6e53   ; dibujos_cc_d0: cada 8 cuadros, los dibujos 0xCC/0xD4 o 0xD0/0xD8
 	ld a,(0e604h)		;6e56   ; lee el contador de cuadros de partida
@@ -1983,27 +1983,27 @@ crea_6a_aqui:		; crea la figura 0x6A en la figura
 	jp L_78B7		;6e95
 salas_del_tipo_1b:		; Z en las salas 0x93 y 0x90 del castillo, 5 del mapa 10 y 0x0F del 9
 	ld hl,(0e041h)		;6e98   ; mapa 1 sala 0x93, mapa 0x0A sala 5...
-	ld de,09301h		;6e9b
+	ld de,09301h		;6e9b   ; castillo, sala 0x93...
 	rst 20h			;6e9e
 	jr z,L_6EBB		;6e9f
-	ld de,0050ah		;6ea1
+	ld de,0050ah		;6ea1   ; ...o mapa 10, sala 5: L_6EBB
 	rst 20h			;6ea4
 	jr z,L_6EBB		;6ea5
 	ld de,09001h		;6ea7   ; ...mapa 1 sala 0x90, mapa 9 sala 0x0F...
-	rst 20h			;6eaa
+	rst 20h			;6eaa   ; castillo, sala 0x90...
 	jr z,L_6EB5		;6eab
-	ld de,00f09h		;6ead
+	ld de,00f09h		;6ead   ; ...o mapa 9, sala 0x0F: L_6EB5
 	rst 20h			;6eb0
 	jr z,L_6EB5		;6eb1
 	or a			;6eb3
 	ret nz			;6eb4
 L_6EB5:
 	ld a,(ix+007h)		;6eb5   ; lee la x de la figura
-	cp 020h		;6eb8
+	cp 020h		;6eb8   ; C si la x es menor que 0x20
 	ret			;6eba
 L_6EBB:
 	ld a,(ix+007h)		;6ebb   ; lee la x de la figura
-	cp 0d8h		;6ebe
+	cp 0d8h		;6ebe   ; C si la x es 0xD8 o mas
 	ccf			;6ec0
 	ret			;6ec1
 tipo_1b_entra:		; al entrar el tipo 0x1B
@@ -2043,23 +2043,23 @@ L_6EF0:
 	ld a,(0e624h)		;6ef0
 	ld l,a			;6ef3
 	ld h,000h		;6ef4
-	add hl,hl			;6ef6
+	add hl,hl			;6ef6   ; 0xE624 x 6...
 	ld d,h			;6ef7
 	ld e,l			;6ef8
 	add hl,hl			;6ef9
 	add hl,de			;6efa
-	add hl,bc			;6efb
-	ld e,(hl)			;6efc
+	add hl,bc			;6efb   ; ...en la tabla BC
+	ld e,(hl)			;6efc   ; la primera palabra...
 	inc hl			;6efd
 	ld d,(hl)			;6efe
 	call 0b13eh		;6eff   ; velocidad_de_lado: la velocidad de lado = DE
 	inc hl			;6f02
-	ld e,(hl)			;6f03
+	ld e,(hl)			;6f03   ; la segunda...
 	inc hl			;6f04
 	ld d,(hl)			;6f05
 	call 0b137h		;6f06   ; velocidad_vertical: la velocidad vertical = DE
 	inc hl			;6f09
-	ld e,(hl)			;6f0a
+	ld e,(hl)			;6f0a   ; la tercera...
 	inc hl			;6f0b
 	ld d,(hl)			;6f0c
 	call 0b145h		;6f0d   ; gravedad: la gravedad = DE
@@ -2142,20 +2142,20 @@ L_6FB6:
 	ret z			;6fbb
 	jp 09a07h		;6fbc   ; paso_siguiente_de_figura: sube el paso (ix+1)
 L_6FBF:
-	dec (ix+008h)		;6fbf
-	ret nz			;6fc2
+	dec (ix+008h)		;6fbf   ; la cuenta (byte 8), uno menos...
+	ret nz			;6fc2   ; ...aun no: nada
 	ld a,(ix+00ch)		;6fc3   ; lee la velocidad vertical de la figura
-	ld (ix+008h),a		;6fc6
-	ld a,(ix+014h)		;6fc9
+	ld (ix+008h),a		;6fc6   ; la cuenta otra vez, del byte 0x0C
+	ld a,(ix+014h)		;6fc9   ; byte 0x14...
 	or a			;6fcc
-	ret z			;6fcd
+	ret z			;6fcd   ; ...a 0: nada
 	ld a,(ix+005h)		;6fce   ; lee la y de la figura
-	sub 008h		;6fd1
+	sub 008h		;6fd1   ; y - 8
 	ld (ix+005h),a		;6fd3   ; guarda la y de la figura
-	dec (ix+014h)		;6fd6
-	ret nz			;6fd9
+	dec (ix+014h)		;6fd6   ; byte 0x14, uno menos...
+	ret nz			;6fd9   ; ...aun no a 0: nada
 	ld a,(ix+001h)		;6fda   ; lee el paso de la figura
-	cp 003h		;6fdd
+	cp 003h		;6fdd   ; paso 3: nada
 	ret z			;6fdf
 	jp 0aca6h		;6fe0
 L_6FE3:
@@ -2221,13 +2221,13 @@ tipo_09_suelo:		; el tipo 9: si pisa suelo, rebota
 	ret			;7061
 tipo_09_dibujo:		; cada 4 cuadros el dibujo siguiente (0xC4-0xD0)
 	ld a,(0e604h)		;7062   ; lee el contador de cuadros de partida
-	and 003h		;7065
+	and 003h		;7065   ; cada 4 cuadros
 	ret nz			;7067
 	ld a,(ix+00ah)		;7068   ; lee el dibujo (o el mosaico) de la figura
 	bit 7,(ix+00fh)		;706b   ; mira el bit 7 de la velocidad de lado de la figura (alta)
 	jr z,L_707B		;706f
-	add a,004h		;7071
-	cp 0d4h		;7073
+	add a,004h		;7071   ; a la izquierda: + 4...
+	cp 0d4h		;7073   ; ...de 0xD4 vuelve a 0xC4
 	jr nz,L_7083		;7075
 	ld a,0c4h		;7077
 	jr L_7083		;7079
@@ -2345,7 +2345,7 @@ L_7123:
 	ld bc,00403h		;712b
 	jp z,L_70C3		;712e
 L_7131:
-	dec (ix+015h)		;7131   ; baja las columnas de la figura que se pintan
+	dec (ix+015h)		;7131
 	jr z,L_714E		;7134
 	call tipo_dibujos_b0_bc		;7136   ; tipo_dibujos_b0_bc: cada 10 cuadros los dibujos 0xB0/0xB4 o 0xB8/0xBC
 	call suelo_delante		;7139   ; suelo_delante: C si hay suelo delante de los pies
@@ -2359,10 +2359,10 @@ L_7142:
 	jp L_71AC		;714b
 L_714E:
 	inc (ix+001h)		;714e   ; sube el paso de la figura
-	ld (ix+015h),01eh		;7151   ; las columnas de la figura que se pintan = 0x1E
+	ld (ix+015h),01eh		;7151
 	jp quita_bit_4_figura		;7155   ; quita_bit_4_figura: quita el bit 4 de las banderas
 L_7158:
-	dec (ix+015h)		;7158   ; baja las columnas de la figura que se pintan
+	dec (ix+015h)		;7158
 	ret nz			;715b
 	ld (ix+001h),002h		;715c   ; el paso de la figura = 0x02
 	call pon_bit_4_figura		;7160   ; pon_bit_4_figura: pone el bit 4 de las banderas
@@ -2390,7 +2390,7 @@ espera_80_bf:		; (ix+0x15) = 0x80 + azar
 	ld a,r		;7193
 	and 03fh		;7195
 	add a,080h		;7197
-	ld (ix+015h),a		;7199   ; guarda las columnas de la figura que se pintan
+	ld (ix+015h),a		;7199
 	ret			;719c
 tipo_dibujos_b0_bc:		; cada 10 cuadros los dibujos 0xB0/0xB4 o 0xB8/0xBC
 	ld bc,0b0b4h		;719d   ; los dibujos 0xB0/0xB4 y 0xB8/0xBC...
@@ -2715,29 +2715,29 @@ L_73D9:
 	jp L_7083		;73d9
 tipo_11_cuadro:		; cada cuadro el tipo 0x11
 	ld a,(ix+001h)		;73dc   ; El tipo 0x11: cada cuadro
-	dec a			;73df
+	dec a			;73df   ; paso 1...
 	jr z,L_743A		;73e0
-	jp p,L_7463		;73e2
+	jp p,L_7463		;73e2   ; ...2 o mas
 	call suelo_delante		;73e5   ; suelo_delante: C si hay suelo delante de los pies
-	jp nc,L_7419		;73e8
+	jp nc,L_7419		;73e8   ; sin suelo: da la vuelta
 	call pared_delante		;73eb   ; pared_delante: C con pared delante o en el borde
-	jr c,L_7419		;73ee
-	ld d,00ch		;73f0
+	jr c,L_7419		;73ee   ; con pared: tambien
+	ld d,00ch		;73f0   ; D = 0x0C
 	ld b,000h		;73f2
 	call 0b17fh		;73f4   ; anima_cada_8: cada 8 cuadros, el dibujo XOR D
-	ld a,(ix+017h)		;73f7
+	ld a,(ix+017h)		;73f7   ; byte 0x17...
 	and a			;73fa
 	jr z,L_7406		;73fb
-	dec (ix+018h)		;73fd
+	dec (ix+018h)		;73fd   ; ...la cuenta 0x18, uno menos
 	jr nz,L_740B		;7400
-	ld (ix+017h),000h		;7402
+	ld (ix+017h),000h		;7402   ; acabada: 0x17 = 0
 L_7406:
 	call lado_del_personaje		;7406   ; lado_del_personaje: (ix+0x1D) = el lado del personaje; NC si esta a mas de 0x40
-	jr c,L_741F		;7409
+	jr c,L_741F		;7409   ; a menos de 0x40: L_741F
 L_740B:
-	dec (ix+015h)		;740b   ; baja las columnas de la figura que se pintan
+	dec (ix+015h)		;740b   ; byte 0x15, uno menos...
 	ret nz			;740e
-	ld (ix+015h),05ah		;740f   ; las columnas de la figura que se pintan = 0x5A
+	ld (ix+015h),05ah		;740f   ; ...otra vez 0x5A
 	call quita_bit_4_figura		;7413   ; quita_bit_4_figura: quita el bit 4 de las banderas
 	jp 09a07h		;7416   ; paso_siguiente_de_figura: sube el paso (ix+1)
 L_7419:
@@ -2745,31 +2745,31 @@ L_7419:
 	jp L_73CB		;741c
 L_741F:
 	ld (ix+001h),003h		;741f   ; el paso de la figura = 0x03
-	ld (ix+008h),03ch		;7423
+	ld (ix+008h),03ch		;7423   ; byte 8 = 0x3C
 	call quita_bit_4_figura		;7427   ; quita_bit_4_figura: quita el bit 4 de las banderas
 	bit 0,(ix+01dh)		;742a
-	ld a,0ach		;742e
+	ld a,0ach		;742e   ; el dibujo 0xAC...
 	jr z,L_7434		;7430
-	ld a,0bch		;7432
+	ld a,0bch		;7432   ; ...o 0xBC con el bit 0 del byte 0x1D
 L_7434:
 	call tamano_0		;7434   ; tamano_0: el tamaño 0
 	jp L_7083		;7437
 L_743A:
-	dec (ix+015h)		;743a   ; baja las columnas de la figura que se pintan
+	dec (ix+015h)		;743a   ; byte 0x15, uno menos
 	jr z,L_7453		;743d
 	ld hl,0e604h		;743f   ; apunta a el contador de cuadros de partida
-	bit 3,(hl)		;7442
+	bit 3,(hl)		;7442   ; el bit 3 del contador...
 L_7444:
-	ld a,0b0h		;7444
+	ld a,0b0h		;7444   ; el dibujo 0xB0 y el tamaño 0x59...
 	ld b,059h		;7446
 	jr z,L_744D		;7448
-	ld a,0c0h		;744a
+	ld a,0c0h		;744a   ; ...o 0xC0 y 0x5A
 	inc b			;744c
 L_744D:
 	ld (ix+011h),b		;744d   ; guarda el tamaño de la figura (tabla 0x9006, banco 14)
 	jp L_7083		;7450
 L_7453:
-	ld (ix+015h),01eh		;7453   ; las columnas de la figura que se pintan = 0x1E
+	ld (ix+015h),01eh		;7453   ; byte 0x15 = 0x1E
 	inc (ix+001h)		;7457   ; sube el paso de la figura
 	call lado_del_personaje		;745a   ; lado_del_personaje: (ix+0x1D) = el lado del personaje; NC si esta a mas de 0x40
 	bit 0,(ix+01dh)		;745d
@@ -2777,28 +2777,28 @@ L_7453:
 L_7463:
 	dec a			;7463
 	jr nz,L_7470		;7464
-	dec (ix+015h)		;7466   ; baja las columnas de la figura que se pintan
+	dec (ix+015h)		;7466   ; byte 0x15, uno menos
 	ret nz			;7469
-	ld (ix+015h),078h		;746a   ; las columnas de la figura que se pintan = 0x78
+	ld (ix+015h),078h		;746a   ; ...= 0x78
 	jr L_749F		;746e
 L_7470:
-	dec (ix+008h)		;7470
-	jr z,L_749F		;7473
+	dec (ix+008h)		;7470   ; la cuenta (byte 8), uno menos...
+	jr z,L_749F		;7473   ; ...acabada: el paso 0
 	ld a,(ix+008h)		;7475
-	and 01fh		;7478
+	and 01fh		;7478   ; cada 0x20 cuadros...
 	ret nz			;747a
-	ld (ix+018h),028h		;747b
-	ld (ix+017h),001h		;747f
+	ld (ix+018h),028h		;747b   ; byte 0x18 = 0x28
+	ld (ix+017h),001h		;747f   ; byte 0x17 = 1
 	call 09154h		;7483
-	ld de,00400h		;7486
+	ld de,00400h		;7486   ; 0x400...
 	bit 0,(ix+01dh)		;7489
-	call nz,04068h		;748d   ; de_negado (por 0x4068): DE = -DE
-	ex de,hl			;7490
+	call nz,04068h		;748d   ; ...al reves con el bit 0 del byte 0x1D
+	ex de,hl			;7490   ; HL = la velocidad
 	ld e,(ix+007h)		;7491   ; lee la x de la figura
 	ld a,(ix+005h)		;7494   ; lee la y de la figura
-	add a,008h		;7497
+	add a,008h		;7497   ; y + 8
 	ld d,a			;7499
-	ld a,01dh		;749a
+	ld a,01dh		;749a   ; la figura 0x1D
 	jp crea_figura_hl		;749c   ; crea_figura_hl: crea la figura A en DE con HL en 0xF014
 L_749F:
 	call paso_0_figura		;749f   ; paso_0_figura: el paso a 0
@@ -2828,15 +2828,15 @@ tipo_69_entra:		; al entrar el tipo 0x69
 	ld (ix+01dh),a		;74cb
 L_74CE:
 	set 2,(ix+002h)		;74ce   ; pone a uno el bit 2 de las banderas de la figura (bit 7: en pantalla)
-	ld a,(0e62ah)		;74d2
-	ld (ix+015h),a		;74d5   ; guarda las columnas de la figura que se pintan
-	inc a			;74d8
+	ld a,(0e62ah)		;74d2   ; 0xE62A...
+	ld (ix+015h),a		;74d5   ; ...en el byte 0x15...
+	inc a			;74d8   ; ...y uno mas
 	ld (0e62ah),a		;74d9
 	dec a			;74dc
-	jr nz,L_74EC		;74dd
-	ld (0e62bh),a		;74df
-	ld (ix+018h),a		;74e2
-	ld (ix+016h),028h		;74e5
+	jr nz,L_74EC		;74dd   ; no era 0: L_74EC
+	ld (0e62bh),a		;74df   ; 0xE62B = 0
+	ld (ix+018h),a		;74e2   ; byte 0x18 = 0
+	ld (ix+016h),028h		;74e5   ; byte 0x16 = 0x28
 	call espera_al_azar_69		;74e9   ; espera_al_azar_69: (ix+0x19) al azar (3 o 7)
 L_74EC:
 	ld a,(ix+005h)		;74ec   ; lee la y de la figura
@@ -2866,7 +2866,7 @@ tipo_69_cuadro:		; cada cuadro el tipo 0x69
 	ld a,(0e62bh)		;752d
 	dec a			;7530
 	jp z,L_75D1		;7531
-	ld a,(ix+015h)		;7534   ; lee las columnas de la figura que se pintan
+	ld a,(ix+015h)		;7534
 	and a			;7537
 	ret nz			;7538
 	dec (ix+016h)		;7539
@@ -2954,43 +2954,43 @@ L_75CC:
 	ret			;75d0
 L_75D1:
 	ld a,(0e629h)		;75d1
-	cp (ix+015h)		;75d4   ; compara con las columnas de la figura que se pintan
+	cp (ix+015h)		;75d4
 	ret nz			;75d7
-	dec (ix+016h)		;75d8
+	dec (ix+016h)		;75d8   ; su byte 0x16, uno menos
 	jr z,L_75E6		;75db
 	ld a,(ix+00bh)		;75dd   ; lee el ancho del mosaico
-	xor 00ch		;75e0
+	xor 00ch		;75e0   ; XOR 0x0C
 	ld (ix+00bh),a		;75e2   ; guarda el ancho del mosaico
 	ret			;75e5
 L_75E6:
 	ld (ix+00bh),00fh		;75e6   ; el ancho del mosaico = 0x0F
 	xor a			;75ea
-	ld (0e62bh),a		;75eb
+	ld (0e62bh),a		;75eb   ; 0xE62B = 0
 	push ix		;75ee
 	call busca_69		;75f0   ; busca_69: busca otra figura 0x69
-	ld (ix+016h),010h		;75f3
+	ld (ix+016h),010h		;75f3   ; a la otra 0x69: byte 0x16 = 0x10
 	pop ix		;75f7
 	ld a,(ix+005h)		;75f9
-	add a,00ah		;75fc
+	add a,00ah		;75fc   ; y + 0x0A: D
 	ld d,a			;75fe
-	ld a,(ix+01ah)		;75ff
+	ld a,(ix+01ah)		;75ff   ; su byte 0x1A x 8...
 	add a,a			;7602
 	add a,a			;7603
 	add a,a			;7604
-	ld hl,077fbh		;7605
+	ld hl,077fbh		;7605   ; ...en la tabla 0x77FB
 	call 04083h		;7608   ; byte_de_tabla (por 0x4083): A = el byte HL + A
-	sub 0a0h		;760b
+	sub 0a0h		;760b   ; (el caracter - 0xA0) / 4, bits 0-2...
 	rra			;760d
 	rra			;760e
 	and 007h		;760f
-	ld hl,077cah		;7611
+	ld hl,077cah		;7611   ; ...en la tabla 0x77CA
 	call 04062h		;7614   ; hl_mas_a (por 0x4062): HL += A
 	ld a,(ix+007h)		;7617
-	add a,008h		;761a
+	add a,008h		;761a   ; x + 8 - eso: E
 	sub (hl)			;761c
 	ld e,a			;761d
-	ld b,(ix+01ah)		;761e
-	ld a,006h		;7621
+	ld b,(ix+01ah)		;761e   ; B = el byte 0x1A
+	ld a,006h		;7621   ; la figura 6
 	jp crea_figura_hl		;7623   ; crea_figura_hl: crea la figura A en DE con HL en 0xF014
 
 ; ----------------------------------------------------------------------
@@ -3047,24 +3047,24 @@ L_766D:
 	scf			;7671
 	ret			;7672
 L_7673:
-	cp (ix+015h)		;7673   ; compara con las columnas de la figura que se pintan
+	cp (ix+015h)		;7673
 	jr nz,L_766D		;7676
 	ret			;7678
 tipo_06_entra:		; al entrar el tipo 0x06
 	set 2,(ix+002h)		;7679   ; El tipo 0x06: al entrar
-	ld (ix+014h),000h		;767d
+	ld (ix+014h),000h		;767d   ; byte 0x14 = 0
 	call 0b124h		;7681   ; solo_vertical: sin velocidad de lado y la vertical = DE
-	ld a,(0e624h)		;7684
+	ld a,(0e624h)		;7684   ; B = 0xE624
 	ld b,a			;7687
 	ld a,(ix+007h)		;7688   ; lee la x de la figura
-	cp 027h		;768b
+	cp 027h		;768b   ; x menor que 0x27: L_769C
 	jr c,L_769C		;768d
-	cp 0d5h		;768f
+	cp 0d5h		;768f   ; menor que 0xD5: L_76A5
 	jr c,L_76A5		;7691
 	ld a,b			;7693
-	cp 005h		;7694
+	cp 005h		;7694   ; B menor que 5: se queda...
 	jr c,L_76A6		;7696
-	sub 005h		;7698
+	sub 005h		;7698   ; ...si no, - 5
 	jr L_76A6		;769a
 L_769C:
 	ld a,b			;769c
@@ -3188,19 +3188,19 @@ L_776E:
 	jp L_7083		;777f
 tipo_baja_y_dibujos:		; la y + 0x10 y los dibujos de la tabla 0x77C5
 	ld a,(ix+005h)		;7782   ; lee la y de la figura
-	add a,010h		;7785
+	add a,010h		;7785   ; + 0x10
 	ld (ix+005h),a		;7787   ; guarda la y de la figura
 	ld hl,077c5h		;778a
-	ld d,(ix+01eh)		;778d
+	ld d,(ix+01eh)		;778d   ; DE = su puntero (bytes 0x1E-0x1F)
 	ld e,(ix+01fh)		;7790
 	ld a,(de)			;7793
-	sub 0a0h		;7794
+	sub 0a0h		;7794   ; (el caracter - 0xA0) / 4, bits 0-2...
 	rra			;7796
 	rra			;7797
 	and 007h		;7798
 	call 04083h		;779a   ; byte_de_tabla (por 0x4083): A = el byte HL + A
-	ex af,af'			;779d
-	inc de			;779e
+	ex af,af'			;779d   ; ...lo de la tabla 0x77C5 en A'
+	inc de			;779e   ; el caracter siguiente, igual...
 	ld hl,077cah		;779f
 	ld a,(de)			;77a2
 	sub 0a0h		;77a3
@@ -3208,16 +3208,16 @@ tipo_baja_y_dibujos:		; la y + 0x10 y los dibujos de la tabla 0x77C5
 	rra			;77a6
 	and 007h		;77a7
 	call 04083h		;77a9   ; byte_de_tabla (por 0x4083): A = el byte HL + A
-	ld h,a			;77ac
+	ld h,a			;77ac   ; ...H = lo de la tabla 0x77CA
 	ex af,af'			;77ad
-	ld l,a			;77ae
+	ld l,a			;77ae   ; L = lo de 0x77C5
 	ld a,(ix+007h)		;77af   ; lee la x de la figura
-	add a,l			;77b2
+	add a,l			;77b2   ; x + L - H
 	sub h			;77b3
 	ld (ix+007h),a		;77b4   ; guarda la x de la figura
 	ld h,(ix+01eh)		;77b7
 	ld l,(ix+01fh)		;77ba
-	inc hl			;77bd
+	inc hl			;77bd   ; el puntero, uno mas
 	ld (ix+01eh),h		;77be
 	ld (ix+01fh),l		;77c1
 	ret			;77c4
@@ -3249,19 +3249,19 @@ L_77D8:
 	ld (ix+014h),a		;77d8
 	ld hl,082e4h		;77db
 	call 04083h		;77de   ; byte_de_tabla (por 0x4083): A = el byte HL + A
-	ld (ix+015h),a		;77e1   ; guarda las columnas de la figura que se pintan
+	ld (ix+015h),a		;77e1
 	ret			;77e4
 copia_a_la_ficha:		; copia (ix+0x16) bytes de (ix+0x1E) a la ficha desde 0x18
 	push ix		;77e5   ; copia (ix+0x16) bytes de (ix+0x1E) a la ficha desde 0x18
 	pop hl			;77e7
 	ld de,00018h		;77e8
 	add hl,de			;77eb
-	ex de,hl			;77ec
+	ex de,hl			;77ec   ; DE = la figura + 0x18
 	ld h,(ix+01eh)		;77ed   ; de la direccion de (ix+0x1E)...
 	ld l,(ix+01fh)		;77f0
 	ld b,000h		;77f3
 	ld c,(ix+016h)		;77f5   ; ...(ix+0x16) bytes
-	ldir		;77f8
+	ldir		;77f8   ; copia
 	ret			;77fa
 
 ; ----------------------------------------------------------------------
@@ -3287,31 +3287,31 @@ DATA_ochenta_bytes_77fb:
 
 tipo_0d_entra:		; al entrar el tipo 0x0D
 	ld a,r		;784b   ; el lado al azar en (ix+0x14)...
-	and 001h		;784d
-	ld (ix+014h),a		;784f
+	and 001h		;784d   ; 0 o 1 al azar...
+	ld (ix+014h),a		;784f   ; ...en el byte 0x14
 	ld a,r		;7852   ; ...una de cada dos veces...
-	bit 2,a		;7854
+	bit 2,a		;7854   ; con el bit 2 al azar: L_787F
 	jr nz,L_787F		;7856
 	ld a,(ix+014h)		;7858
 	ld b,0f0h		;785b   ; ...0xF0 o 0x10 segun el lado
 	and a			;785d
-	jr z,L_7862		;785e
-	ld b,010h		;7860
+	jr z,L_7862		;785e   ; 0: B = -0x10...
+	ld b,010h		;7860   ; ...1: +0x10
 L_7862:
 	ld a,(0e507h)		;7862   ; lee la x del personaje
-	add a,b			;7865
+	add a,b			;7865   ; + B
 	call entre_topes		;7866   ; entre_topes: A dentro de los topes de la tabla 0x791F
 	ld a,(0e505h)		;7869   ; lee la y del personaje
-	ld b,000h		;786c
+	ld b,000h		;786c   ; B = 0: y menor que 0x3D...
 	cp 03dh		;786e
 	jr c,L_7889		;7870
-	inc b			;7872
+	inc b			;7872   ; ...1: menor que 0x5D...
 	cp 05dh		;7873
 	jr c,L_7889		;7875
-	inc b			;7877
+	inc b			;7877   ; ...2: menor que 0x7D...
 	cp 07dh		;7878
 	jr c,L_7889		;787a
-	inc b			;787c
+	inc b			;787c   ; ...3: mas abajo
 	jr L_7889		;787d
 L_787F:
 	ld a,r		;787f
@@ -3320,30 +3320,30 @@ L_787F:
 	and 003h		;7886
 	ld b,a			;7888
 L_7889:
-	ld (ix+01ch),b		;7889
+	ld (ix+01ch),b		;7889   ; byte 0x1C = B
 	ld a,b			;788c
-	ld hl,07927h		;788d
+	ld hl,07927h		;788d   ; la palabra B de 0x7927
 	call 04053h		;7890   ; palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 	call 0968ch		;7893
 	ld a,b			;7896
-	ld hl,0792fh		;7897
+	ld hl,0792fh		;7897   ; la palabra B de 0x792F
 	call 04053h		;789a   ; palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 	call 0b137h		;789d   ; velocidad_vertical: la velocidad vertical = DE
-	ld de,00080h		;78a0
+	ld de,00080h		;78a0   ; 0x80
 	call 0b145h		;78a3   ; gravedad: la gravedad = DE
-	bit 0,(ix+014h)		;78a6
-	ld a,0c8h		;78aa
+	bit 0,(ix+014h)		;78a6   ; con el bit 0 del byte 0x14...
+	ld a,0c8h		;78aa   ; ...el dibujo 0xC8...
 	jr z,L_78B0		;78ac
-	ld a,0d0h		;78ae
+	ld a,0d0h		;78ae   ; ...o 0xD0
 L_78B0:
 	ld (ix+00ah),a		;78b0   ; guarda el dibujo (o el mosaico) de la figura
 crea_6a_abajo:		; crea la figura 0x6A en y 0x90
-	ld d,090h		;78b3
+	ld d,090h		;78b3   ; y 0x90
 	ld b,000h		;78b5
 L_78B7:
 	ld e,(ix+007h)		;78b7   ; lee la x de la figura
 L_78BA:
-	ld a,06ah		;78ba
+	ld a,06ah		;78ba   ; la figura 0x6A
 	call crea_figura_hl		;78bc   ; crea_figura_hl: crea la figura A en DE con HL en 0xF014
 	ld a,(ix+000h)		;78bf   ; lee el tipo de la figura
 	cp 030h		;78c2
@@ -3384,10 +3384,10 @@ entre_topes:		; A dentro de los topes de la tabla 0x791F
 	ld c,a			;7904
 	pop af			;7905
 	cp d			;7906
-	jr c,L_790F		;7907
+	jr c,L_790F		;7907   ; menor que D: D
 	cp e			;7909
-	jr c,L_7910		;790a
-	ld a,e			;790c
+	jr c,L_7910		;790a   ; menor que E: se queda
+	ld a,e			;790c   ; si no, E
 	jr L_7910		;790d
 L_790F:
 	ld a,d			;790f
@@ -3395,10 +3395,10 @@ L_7910:
 	ld (ix+007h),a		;7910   ; guarda la x de la figura
 	cp b			;7913
 	ld e,000h		;7914
-	jr c,L_791B		;7916
+	jr c,L_791B		;7916   ; menos de D + 0x30: byte 0x14 = 0
 	cp c			;7918
-	ret c			;7919
-	inc e			;791a
+	ret c			;7919   ; en medio: nada
+	inc e			;791a   ; pasado E - 0x18: 1
 L_791B:
 	ld (ix+014h),e		;791b
 	ret			;791e
@@ -3487,7 +3487,7 @@ anda_o_para:		; si hay suelo y no pared, anda; si no, para
 L_79A1:
 	jp 0b17fh		;79a1   ; anima_cada_8: cada 8 cuadros, el dibujo XOR D
 L_79A4:
-	ld (ix+015h),01eh		;79a4   ; las columnas de la figura que se pintan = 0x1E
+	ld (ix+015h),01eh		;79a4
 	call tamano_0		;79a8   ; tamano_0: el tamaño 0
 	call quita_bit_4_figura		;79ab   ; quita_bit_4_figura: quita el bit 4 de las banderas
 	ld (ix+00ah),0a8h		;79ae   ; el dibujo (o el mosaico) de la figura = 0xA8
@@ -3497,7 +3497,7 @@ L_79B5:
 	call 0b15fh		;79b9   ; vuelta_de_lado: la velocidad de lado al reves
 	jp dibujos_a0_b4		;79bc   ; dibujos_a0_b4: los dibujos 0xA0/0xB0 o 0xB4/0xC4 segun el lado
 L_79BF:
-	dec (ix+015h)		;79bf   ; baja las columnas de la figura que se pintan
+	dec (ix+015h)		;79bf
 	jr z,L_79CB		;79c2
 	ld d,014h		;79c4
 	ld b,000h		;79c6
@@ -3515,13 +3515,13 @@ L_79E4:
 	dec a			;79e4
 	jr nz,L_7A46		;79e5
 	call anda_o_para		;79e7   ; anda_o_para: si hay suelo y no pared, anda; si no, para
-	bit 0,(ix+01eh)		;79ea
+	bit 0,(ix+01eh)		;79ea   ; bit 0 del byte 0x1E
 	jr nz,L_7A03		;79ee
 	ld a,(ix+007h)		;79f0   ; lee la x de la figura
 	bit 7,(ix+00fh)		;79f3   ; mira el bit 7 de la velocidad de lado de la figura (alta)
 	jr nz,L_79FF		;79f7
-	cp (ix+01fh)		;79f9
-	ret c			;79fc
+	cp (ix+01fh)		;79f9   ; a la derecha: hasta el byte 0x1F
+	ret c			;79fc   ; aun no: nada
 	jr L_7A03		;79fd
 L_79FF:
 	cp (ix+01fh)		;79ff
@@ -3614,10 +3614,10 @@ L_7AAB:
 	call 0b13eh		;7ab1   ; velocidad_de_lado: la velocidad de lado = DE
 esperas_al_azar:		; (ix+0x15) y (ix+0x14) al azar
 	ld a,r		;7ab4
-	and 02fh		;7ab6
-	ld (ix+015h),a		;7ab8   ; guarda las columnas de la figura que se pintan
-	add a,050h		;7abb
-	ld (ix+014h),a		;7abd
+	and 02fh		;7ab6   ; R AND 0x2F...
+	ld (ix+015h),a		;7ab8   ; ...al byte 0x15
+	add a,050h		;7abb   ; + 0x50...
+	ld (ix+014h),a		;7abd   ; ...al byte 0x14
 	ret			;7ac0
 tipo_0b_cuadro:		; cada cuadro el tipo 0x0B
 	ld a,(ix+001h)		;7ac1   ; El tipo 0x0B: cada cuadro
@@ -3640,7 +3640,7 @@ L_7AE4:
 	call quita_bit_4_figura		;7ae4   ; quita_bit_4_figura: quita el bit 4 de las banderas
 	jp 09a07h		;7ae7   ; paso_siguiente_de_figura: sube el paso (ix+1)
 L_7AEA:
-	dec (ix+015h)		;7aea   ; baja las columnas de la figura que se pintan
+	dec (ix+015h)		;7aea
 	ret nz			;7aed
 	call pon_bit_4_figura		;7aee   ; pon_bit_4_figura: pone el bit 4 de las banderas
 	call esperas_al_azar		;7af1   ; esperas_al_azar: (ix+0x15) y (ix+0x14) al azar
@@ -3682,15 +3682,15 @@ L_7B4A:
 	jp 098f9h		;7b4c
 tipo_0a_cuadro:		; cada cuadro el tipo 0x0A
 	ld a,(ix+001h)		;7b4f   ; El tipo 0x0A: cada cuadro
-	dec a			;7b52
+	dec a			;7b52   ; paso 1...
 	jr z,L_7BA1		;7b53
-	jp p,L_7C0A		;7b55
+	jp p,L_7C0A		;7b55   ; ...2 o mas
 	call anda_tipo_01		;7b58   ; anda_tipo_01: anda; en el borde, da la vuelta
-	dec (ix+008h)		;7b5b
-	jr z,L_7B9B		;7b5e
-	ld a,(ix+018h)		;7b60
+	dec (ix+008h)		;7b5b   ; la cuenta (byte 8)...
+	jr z,L_7B9B		;7b5e   ; ...acabada: L_7B9B
+	ld a,(ix+018h)		;7b60   ; byte 0x18...
 	and a			;7b63
-	jp z,0947dh		;7b64
+	jp z,0947dh		;7b64   ; ...a 0: 0x947D
 	ret			;7b67
 anda_tipo_01:		; anda; en el borde, da la vuelta
 	call dibujo_b0_c0		;7b68   ; dibujo_b0_c0: cada 4 cuadros el dibujo 0xB0 o 0xC0
@@ -3808,19 +3808,19 @@ cambia_dibujo_8:		; el dibujo XOR 8 y la vertical al reves
 	ld (ix+00ah),a		;7c58   ; guarda el dibujo (o el mosaico) de la figura
 	jp 0b16fh		;7c5b   ; vuelta_vertical: la velocidad vertical al reves
 suelo_o_escalera:		; C si debajo hay suelo (0xBA o mas) o escalera (0xD2)
-	ld (ix+014h),000h		;7c5e
-	ld bc,0ffe0h		;7c62
+	ld (ix+014h),000h		;7c5e   ; byte 0x14 = 0
+	ld bc,0ffe0h		;7c62   ; la casilla de encima (-32)
 	add hl,bc			;7c65
 	ld a,(hl)			;7c66
-	cp 0d2h		;7c67
+	cp 0d2h		;7c67   ; escalera (0xD2)?
 	jr z,L_7C7F		;7c69
-	cp 0bah		;7c6b
+	cp 0bah		;7c6b   ; 0xBA o mas: C, suelo
 	ccf			;7c6d
 	ret c			;7c6e
 	ld a,(ix+007h)		;7c6f   ; lee la x de la figura
 	bit 7,(ix+00fh)		;7c72   ; mira el bit 7 de la velocidad de lado de la figura (alta)
 	jr z,L_7C7B		;7c76
-	cp 010h		;7c78
+	cp 010h		;7c78   ; hacia la izquierda: C si la x es menor que 0x10
 	ret			;7c7a
 L_7C7B:
 	cp 0d8h		;7c7b
@@ -3860,46 +3860,46 @@ tipo_01_escalera:		; mira la escalera arriba o abajo
 	dec a			;7cba
 	jr nz,L_7CC6		;7cbb
 	ld a,(ix+005h)		;7cbd   ; lee la y de la figura
-	add a,00fh		;7cc0
+	add a,00fh		;7cc0   ; y + 0x0F
 	ld l,a			;7cc2
 	jp L_7CCE		;7cc3
 L_7CC6:
 	dec a			;7cc6
 	ret nz			;7cc7
 	ld a,(ix+005h)		;7cc8   ; lee la y de la figura
-	add a,018h		;7ccb
+	add a,018h		;7ccb   ; y + 0x18
 	ld l,a			;7ccd
 L_7CCE:
 	ld h,(ix+007h)		;7cce   ; lee la x de la figura
-	ld c,004h		;7cd1
+	ld c,004h		;7cd1   ; C = 4
 	push hl			;7cd3
 	ld a,h			;7cd4
-	add a,c			;7cd5
+	add a,c			;7cd5   ; x + 4
 	ld h,a			;7cd6
 	call 04056h		;7cd7   ; casilla_de_yx (por 0x4056): HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	ld a,(hl)			;7cda
 	pop hl			;7cdb
-	sub 09ah		;7cdc
+	sub 09ah		;7cdc   ; escalera (0x9A o 0x9B)?
 	cp 002h		;7cde
-	ret nc			;7ce0
-	ld a,010h		;7ce1
+	ret nc			;7ce0   ; no: NC
+	ld a,010h		;7ce1   ; 16 - C...
 	sub c			;7ce3
 	ld c,a			;7ce4
 	ld a,h			;7ce5
-	add a,c			;7ce6
+	add a,c			;7ce6   ; ...mas a la derecha
 	ld h,a			;7ce7
 	push hl			;7ce8
 	call 04056h		;7ce9   ; casilla_de_yx (por 0x4056): HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	ld a,(hl)			;7cec
 	pop hl			;7ced
-	sub 09ah		;7cee
+	sub 09ah		;7cee   ; escalera tambien?
 	cp 002h		;7cf0
 	ret nc			;7cf2
 	ld a,h			;7cf3
-	sub 008h		;7cf4
+	sub 008h		;7cf4   ; - 8, a la casilla de 8
 	and 0f8h		;7cf6
 	ld (ix+007h),a		;7cf8   ; guarda la x de la figura
-	scf			;7cfb
+	scf			;7cfb   ; C: en la escalera
 	ret			;7cfc
 dibujo_b0_c0:		; cada 4 cuadros el dibujo 0xB0 o 0xC0
 	bit 7,(ix+00fh)		;7cfd   ; mira el bit 7 de la velocidad de lado de la figura (alta)
@@ -3987,7 +3987,7 @@ espera_10_1f:		; (ix+0x15) = 0x10 + azar
 	call 081f1h		;7da8   ; azar_5: A = R con el contador de cuadros
 	and 00fh		;7dab
 	add a,010h		;7dad
-	ld (ix+015h),a		;7daf   ; guarda las columnas de la figura que se pintan
+	ld (ix+015h),a		;7daf
 	ret			;7db2
 L_7DB3:
 	dec (ix+017h)		;7db3
@@ -3999,7 +3999,7 @@ L_7DBD:
 	call rebota_arriba_abajo		;7dbd   ; rebota_arriba_abajo: entre la y 0x28 y 0xB0 da la vuelta
 	ld e,004h		;7dc0
 	call anima_1c_66		;7dc2   ; anima_1c_66: anima con D = 0x1C, B = 0x66
-	dec (ix+015h)		;7dc5   ; baja las columnas de la figura que se pintan
+	dec (ix+015h)		;7dc5
 	ret nz			;7dc8
 	call espera_10_1f		;7dc9   ; espera_10_1f: (ix+0x15) = 0x10 + azar
 	call 081f1h		;7dcc   ; azar_5: A = R con el contador de cuadros
@@ -4021,7 +4021,7 @@ L_7DEC:
 	cp 028h		;7dec
 	jr nc,L_7DFB		;7dee
 L_7DF0:
-	ld (ix+015h),010h		;7df0   ; las columnas de la figura que se pintan = 0x10
+	ld (ix+015h),010h		;7df0
 	ld (ix+01dh),001h		;7df4
 	call 0b16fh		;7df8   ; vuelta_vertical: la velocidad vertical al reves
 L_7DFB:
@@ -4035,7 +4035,7 @@ L_7E09:
 	cp 008h		;7e09
 	ret nc			;7e0b
 L_7E0C:
-	ld (ix+015h),010h		;7e0c   ; las columnas de la figura que se pintan = 0x10
+	ld (ix+015h),010h		;7e0c
 	ld (ix+01ch),001h		;7e10
 	jp 0b15fh		;7e14   ; vuelta_de_lado: la velocidad de lado al reves
 pared_encima:		; C si encima hay pared
@@ -4155,11 +4155,11 @@ tipo_21_cuadro:		; cada cuadro el tipo 0x21
 	ld b,001h		;7ed1
 L_7ED3:
 	add a,b			;7ed3
-	ret c			;7ed4
+	ret c			;7ed4   ; se pasa: nada
 	ld h,a			;7ed5
-	ld e,008h		;7ed6
+	ld e,008h		;7ed6   ; E = 8
 	call 0407ah		;7ed8   ; pared_en (por 0x407A): C si la casilla (y+E) llega al umbral de 0xF020
-	ret nc			;7edb
+	ret nc			;7edb   ; NC: nada
 	ld a,058h		;7edc
 	ld (ix+011h),a		;7ede   ; guarda el tamaño de la figura (tabla 0x9006, banco 14)
 	call 0b15fh		;7ee1   ; vuelta_de_lado: la velocidad de lado al reves
@@ -4201,13 +4201,13 @@ L_7F2B:
 	jp 0b17fh		;7f2b   ; anima_cada_8: cada 8 cuadros, el dibujo XOR D
 tipo_30_entra:		; al entrar el tipo 0x30
 	ld a,r		;7f2e   ; El tipo 0x30: al entrar
-	and 003h		;7f30
-	ld (ix+01ch),a		;7f32
+	and 003h		;7f30   ; 0-3 al azar...
+	ld (ix+01ch),a		;7f32   ; ...en el byte 0x1C
 	call 081f1h		;7f35   ; azar_5: A = R con el contador de cuadros
-	and 0bfh		;7f38
-	add a,020h		;7f3a
+	and 0bfh		;7f38   ; AND 0xBF...
+	add a,020h		;7f3a   ; ...+ 0x20
 	ld (ix+007h),a		;7f3c   ; guarda la x de la figura
-	cp 080h		;7f3f
+	cp 080h		;7f3f   ; a la derecha de 0x80: B = 1
 	ld b,000h		;7f41
 	jr c,L_7F46		;7f43
 	inc b			;7f45
@@ -4291,7 +4291,7 @@ L_7FCF:
 	ld a,(ix+007h)		;7fd8   ; lee la x de la figura
 	bit 7,(ix+00fh)		;7fdb   ; mira el bit 7 de la velocidad de lado de la figura (alta)
 	jr z,L_7FE8		;7fdf
-	cp (ix+01ah)		;7fe1
+	cp (ix+01ah)		;7fe1   ; a la izquierda: hasta el byte 0x1A
 	jr c,$+33		;7fe4
 	jr L_7FED		;7fe6
 L_7FE8:

@@ -357,18 +357,18 @@ L_A23D:
 	jr L_A1F2		;a23d
 empujado:		; empujado a un lado (0xE520)
 	ld a,(0e519h)		;a23f   ; empujado: 0xE520 = 1 a la izquierda (-8), 2 a la derecha (+0x12)...
-	and 003h		;a242
+	and 003h		;a242   ; con pared a un lado: nada
 	ret nz			;a244
 	ld hl,0e520h		;a245   ; apunta a empujado (1 a la izquierda, 2 a la derecha)
 	ld a,(hl)			;a248
-	inc hl			;a249
+	inc hl			;a249   ; HL = 0xE521
 	dec a			;a24a
-	ld b,0f8h		;a24b
+	ld b,0f8h		;a24b   ; izquierda: -8...
 	jr z,L_A251		;a24d
-	ld b,012h		;a24f
+	ld b,012h		;a24f   ; ...derecha: +0x12
 L_A251:
 	ld a,(hl)			;a251   ; ...desde la x de 0xE521
-	add a,b			;a252
+	add a,b			;a252   ; la x de 0xE521 + B
 	jp L_A893		;a253
 L_A256:
 	ld a,(0e008h)		;a256   ; arriba recien apretado...
@@ -490,41 +490,41 @@ salto:		; estado 1: el salto (control de lado, techo, caida)
 	ld a,(0e501h)		;a329   ; estado 1, el salto: Afrodita llega a 0x0C, Popolon a 0x0D...
 	and a			;a32c
 	ld a,(0e509h)		;a32d   ; lee la velocidad vertical del personaje
-	ld b,00ch		;a330
+	ld b,00ch		;a330   ; B = 0x0C...
 	jr z,L_A336		;a332
-	ld b,00dh		;a334
+	ld b,00dh		;a334   ; ...o 0x0D
 L_A336:
 	push bc			;a336   ; ...subiendo aun...
-	cp b			;a337
+	cp b			;a337   ; la velocidad vertical menor que B: no se mueve de lado
 	jr c,L_A376		;a338
 	ld a,(0e009h)		;a33a   ; ...izquierda o derecha apretadas...
-	rra			;a33d
+	rra			;a33d   ; los bits 2-3: izquierda, derecha
 	rra			;a33e
 	and 003h		;a33f
-	jr z,L_A376		;a341
-	cp 003h		;a343
+	jr z,L_A376		;a341   ; ninguna: nada
+	cp 003h		;a343   ; las dos: nada
 	jr z,L_A376		;a345
 	dec a			;a347   ; ...velocidad 0x100 a un lado...
-	ld bc,00100h		;a348
+	ld bc,00100h		;a348   ; derecha: BC = 0x100, D = 1 (su pared)...
 	ld d,001h		;a34b
 	jr nz,L_A353		;a34d
-	ld bc,0ff00h		;a34f
+	ld bc,0ff00h		;a34f   ; ...izquierda: -0x100, D = 2
 	inc d			;a352
 L_A353:
 	call mira_a		;a353   ; ...mirando hacia alli...
 	ld a,(0e50eh)		;a356   ; lee el paso en la escalera
 	dec a			;a359
-	ld e,a			;a35a
+	ld e,a			;a35a   ; E = paso - 1
 	jr z,L_A35E		;a35b
-	ld d,a			;a35d
+	ld d,a			;a35d   ; paso no 1: D = paso - 1
 L_A35E:
 	ld a,(0e519h)		;a35e   ; ...si no hay pared...
-	and d			;a361
+	and d			;a361   ; la pared de ese lado (bits de D)
 	jr nz,L_A376		;a362
 	ld a,e			;a364   ; ...al principio del salto, el doble...
 	and a			;a365
 	jr nz,L_A36C		;a366
-	sla c		;a368
+	sla c		;a368   ; BC x 2
 	rl b		;a36a
 L_A36C:
 	ld a,(0e511h)		;a36c   ; ...en el agua, la cuarta parte...
@@ -533,10 +533,10 @@ L_A36C:
 	call x_mas_bc		;a373   ; ...y se mueve
 L_A376:
 	pop bc			;a376   ; en lo alto del salto...
-	dec b			;a377
+	dec b			;a377   ; B - 2...
 	dec b			;a378
 	ld a,(0e509h)		;a379   ; lee la velocidad vertical del personaje
-	cp b			;a37c
+	cp b			;a37c   ; ...la velocidad vertical aun menor?
 	jr nc,L_A3AC		;a37d
 	ld a,(0e501h)		;a37f   ; ...Popolon llevado por la figura, hasta 6...
 	and a			;a382
@@ -720,23 +720,23 @@ L_A4CA:
 	ld de,00080h		;a4cd
 	add hl,de			;a4d0
 	ld a,h			;a4d1
-	bit 7,a		;a4d2
+	bit 7,a		;a4d2   ; hacia arriba (negativa): sin tope
 	jr nz,L_A4DC		;a4d4
 	ld b,006h		;a4d6   ; ...hasta 6...
-	cp b			;a4d8
+	cp b			;a4d8   ; mas de 6: 6
 	jr c,L_A4DC		;a4d9
 	ld a,b			;a4db
 L_A4DC:
 	ld h,a			;a4dc
 	ld (0e512h),hl		;a4dd   ; guarda la velocidad vertical del golpe o la caida (16 bits) y el byte siguiente (16 bits)
 	ex de,hl			;a4e0
-	ld e,000h		;a4e1
+	ld e,000h		;a4e1   ; sin la fraccion
 	ld hl,(0e504h)		;a4e3   ; ...la y, no mas arriba de 0x28...
-	add hl,de			;a4e6
+	add hl,de			;a4e6   ; la y + la velocidad
 	ld a,h			;a4e7
-	cp 028h		;a4e8
+	cp 028h		;a4e8   ; mas arriba de 0x28?
 	jr nc,L_A4EE		;a4ea
-	ld a,028h		;a4ec
+	ld a,028h		;a4ec   ; 0x28
 L_A4EE:
 	ld h,a			;a4ee
 	ld (0e504h),hl		;a4ef   ; guarda la y del personaje con su fraccion (16 bits) y el byte siguiente (16 bits)
@@ -832,16 +832,16 @@ L_A595:
 L_A59F:
 	dec a			;a59f   ; ...paso 2: cada 6 cuadros la pose siguiente hasta la ultima...
 	jr nz,L_A5B2		;a5a0
-	dec (hl)			;a5a2
+	dec (hl)			;a5a2   ; la cuenta (HL)...
 	ret nz			;a5a3
-	ld (hl),006h		;a5a4
+	ld (hl),006h		;a5a4   ; ...otra vez 6
 	ld hl,0e502h		;a5a6   ; apunta a la pose del personaje
 	inc (hl)			;a5a9
 	ld a,(hl)			;a5aa
-	cp b			;a5ab
+	cp b			;a5ab   ; la ultima (B)?
 	ret nz			;a5ac
 	dec (hl)			;a5ad
-	ld a,0ffh		;a5ae
+	ld a,0ffh		;a5ae   ; pasada la ultima: la pose 0xFF
 	jr L_A595		;a5b0
 L_A5B2:
 	dec (hl)			;a5b2   ; ...paso 3: se acaba la vida
@@ -933,81 +933,81 @@ L_A64E:
 	ld (0e522h),a		;a64f
 L_A652:
 	ld a,(0e508h)		;a652   ; subiendo o bajando: el mando...
-	and a			;a655
+	and a			;a655   ; golpeando con la espada: nada
 	ret nz			;a656
-	ld hl,0e50bh		;a657
+	ld hl,0e50bh		;a657   ; un cuadro mas en la escalera (0xE50B)
 	inc (hl)			;a65a
 	ld a,(0e52eh)		;a65b   ; lee el mando del personaje (bits 0-3: arriba, abajo, izquierda, derecha)
 	and 00fh		;a65e
-	ret z			;a660
+	ret z			;a660   ; sin mando: nada
 	srl a		;a661   ; ...arriba (bit 0): sube...
-	ld b,001h		;a663
-	ld c,002h		;a665
+	ld b,001h		;a663   ; B = 1: sube...
+	ld c,002h		;a665   ; ...C = 2: de espaldas
 	jr c,L_A6B2		;a667
 	inc b			;a669   ; ...abajo (bit 1): baja...
 	srl a		;a66a
 	jr c,L_A6B2		;a66c
-	cp 003h		;a66e
+	cp 003h		;a66e   ; izquierda y derecha a la vez: nada
 	ret z			;a670
 	ld b,001h		;a671   ; ...izquierda o derecha: se baja de la escalera hacia ese lado...
-	srl a		;a673
+	srl a		;a673   ; izquierda: B = 1...
 	jr c,L_A678		;a675
-	dec b			;a677
+	dec b			;a677   ; ...derecha: B = 0
 L_A678:
 	ld a,b			;a678
-	ld e,a			;a679
+	ld e,a			;a679   ; E = el lado
 	ld (0e503h),a		;a67a   ; guarda hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 	call pose_en_pie		;a67d   ; pose_en_pie: la pose 0 o 2 segun hacia donde mira
-	ld a,e			;a680
+	ld a,e			;a680   ; a la derecha: D = E = 8...
 	and a			;a681
 	ld hl,0e519h		;a682   ; apunta a las paredes del personaje (bit 0 derecha, bit 1 izquierda, bit 3 suelo)
 	ld d,008h		;a685
 	ld e,d			;a687
 	jr z,L_A692		;a688
-	ld d,0f7h		;a68a
+	ld d,0f7h		;a68a   ; ...a la izquierda: -9
 	ld e,d			;a68c
-	bit 1,(hl)		;a68d
+	bit 1,(hl)		;a68d   ; pared a la izquierda: no
 	ret nz			;a68f
 	jr L_A695		;a690
 L_A692:
-	bit 0,(hl)		;a692
+	bit 0,(hl)		;a692   ; pared a la derecha: no
 	ret nz			;a694
 L_A695:
-	ld a,(0e505h)		;a695   ; ...si la casilla de al lado es pared (>= 0xBA) no
-	add a,005h		;a698
+	ld a,(0e505h)		;a695   ; ...se baja solo si al lado, bajo los pies (y + 5), hay suelo (0xBA o mas)
+	add a,005h		;a698   ; y + 5
 	ld l,a			;a69a
 	ld a,(0e507h)		;a69b   ; lee la x del personaje
-	add a,d			;a69e
+	add a,d			;a69e   ; x + D
 	ld h,a			;a69f
 	call 04da1h		;a6a0   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	ld a,(hl)			;a6a3
-	cp 0bah		;a6a4
-	ret c			;a6a6
+	cp 0bah		;a6a4   ; suelo?
+	ret c			;a6a6   ; no: sigue en la escalera
 	xor a			;a6a7   ; en pie, a un lado de la escalera
 	ld (0e500h),a		;a6a8   ; guarda el estado del personaje (5 = hundirse)
 	ld a,(0e507h)		;a6ab   ; lee la x del personaje
-	add a,e			;a6ae
+	add a,e			;a6ae   ; x + E: un paso al lado
 	jp L_A893		;a6af
 L_A6B2:
 	ld a,c			;a6b2   ; de espaldas...
 	ld (0e503h),a		;a6b3   ; guarda hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 	ld a,(0e080h)		;a6b6   ; ...a 0x100, o 0x140 con el objeto 0x11...
-	ld de,00100h		;a6b9
+	ld de,00100h		;a6b9   ; 0x100...
 	and a			;a6bc
 	jr z,L_A6C2		;a6bd
-	ld de,00140h		;a6bf
+	ld de,00140h		;a6bf   ; ...o 0x140 con el objeto
 L_A6C2:
 	ld a,b			;a6c2   ; ...hacia arriba o hacia abajo...
 	ld (0e50ch),a		;a6c3   ; guarda el sentido en la escalera (1 sube, 2 baja)
 	dec a			;a6c6
-	call z,0415ch		;a6c7   ; de_negado: DE = -DE
+	call z,0415ch		;a6c7   ; subiendo, en negativo
 	ld hl,(0e504h)		;a6ca   ; ...entre la y 0x27 y la 0xC0
 	add hl,de			;a6cd
 	ld a,h			;a6ce
-	ld b,027h		;a6cf
+	ld b,027h		;a6cf   ; no mas arriba de 0x27...
 	cp b			;a6d1
 	jr c,L_A6D9		;a6d2
-	ld b,0c0h		;a6d4
+	ld b,0c0h		;a6d4   ; ...ni mas abajo de 0xC0
 	cp b			;a6d6
 	jr c,L_A6DA		;a6d7
 L_A6D9:
@@ -1181,26 +1181,26 @@ sale_de_la_sala:		; por que lado sale de la sala (0xE01A)
 	ld hl,0e4a2h		;a807
 L_A80A:
 	bit 2,(hl)		;a80a
-	jr nz,L_A84A		;a80c
+	jr nz,L_A84A		;a80c   ; llevado
 	ld de,00010h		;a80e   ; ...las seis
-	add hl,de			;a811
+	add hl,de			;a811   ; la siguiente
 	djnz L_A80A		;a812
 	dec a			;a814   ; saltando sin figura, o en la escalera subiendo...
 	jr nz,L_A81F		;a815
 	ld a,(0e52bh)		;a817
 	and a			;a81a
-	jr z,L_A82A		;a81b
+	jr z,L_A82A		;a81b   ; 0xE52B a cero: solo por abajo
 	jr L_A823		;a81d
 L_A81F:
 	cp 002h		;a81f
-	jr nz,L_A82A		;a821
+	jr nz,L_A82A		;a821   ; ni 1 ni 2: solo por abajo
 L_A823:
 	ld a,(0e505h)		;a823   ; ...por arriba (y < 0x28)
-	cp 028h		;a826
+	cp 028h		;a826   ; por arriba?
 	jr c,L_A84E		;a828
 L_A82A:
 	ld a,(0e505h)		;a82a   ; por abajo (y >= 0xC0)
-	cp 0c0h		;a82d
+	cp 0c0h		;a82d   ; por abajo?
 	jr nc,L_A865		;a82f
 	ld a,(0e507h)		;a831   ; por la izquierda (x < 0x10)
 	cp 010h		;a834
@@ -1830,21 +1830,21 @@ L_ACDE:
 	jr nz,L_AD04		;acdf
 	ld a,(0e505h)		;ace1   ; lee la y del personaje
 	sub (iy+005h)		;ace4
-	jr c,L_ACF9		;ace7
-	cp 015h		;ace9
+	jr c,L_ACF9		;ace7   ; por encima de ella: se arma
+	cp 015h		;ace9   ; a 0x15 o mas por debajo: tambien
 	jr nc,L_ACF9		;aceb
 	ld a,(0e507h)		;aced   ; lee la x del personaje
 	sub (iy+007h)		;acf0
-	add a,008h		;acf3
+	add a,008h		;acf3   ; la x - la suya + 8...
 	ret c			;acf5
-	cp 021h		;acf6
+	cp 021h		;acf6   ; ...menos de 0x21: aun cerca, nada
 	ret c			;acf8
 L_ACF9:
 	xor a			;acf9   ; ...y se arma
-	ld (iy+01ah),a		;acfa
-	inc (iy+002h)		;acfd
+	ld (iy+01ah),a		;acfa   ; 0 en el byte 0x1A
+	inc (iy+002h)		;acfd   ; las banderas + 1 (el bit 0)
 L_AD00:
-	inc (iy+001h)		;ad00
+	inc (iy+001h)		;ad00   ; el paso siguiente
 	ret			;ad03
 L_AD04:
 	bit 2,(iy+002h)		;ad04   ; paso 3: parpadea (tabla de colores 0xAD2E) hasta que estalla
@@ -1928,14 +1928,14 @@ acaba_arma:		; el arma se acaba: una menos y el hueco a cero
 	jr nz,L_AD83		;ad7e
 	ld hl,0e51dh		;ad80   ; apunta a las armas 5 en pantalla
 L_AD83:
-	dec (hl)			;ad83
+	dec (hl)			;ad83   ; una menos en pantalla
 	push iy		;ad84   ; ...y el hueco a cero
 	pop hl			;ad86
-	ld e,l			;ad87
+	ld e,l			;ad87   ; DE = HL + 1
 	ld d,h			;ad88
 	inc de			;ad89
 	ld (hl),000h		;ad8a
-	ld bc,0001fh		;ad8c
+	ld bc,0001fh		;ad8c   ; 32 bytes
 	ldir		;ad8f
 	ret			;ad91
 arma_mas_velocidad:		; la y y la x del arma mas su velocidad
@@ -2038,24 +2038,24 @@ L_AE47:
 	ret			;ae4a
 estalla:		; el arma estalla (sonido 0x26)
 	set 2,(iy+002h)		;ae4b   ; estalla: 0x46 cuadros, el dibujo mas arriba y el sonido 0x26
-	ld (iy+008h),046h		;ae4f
-	ld a,(iy+005h)		;ae53
+	ld (iy+008h),046h		;ae4f   ; 0x46 cuadros (byte 8)
+	ld a,(iy+005h)		;ae53   ; y - 0x0C
 	sub 00ch		;ae56
 	ld (iy+005h),a		;ae58
-	ld a,(iy+007h)		;ae5b
+	ld a,(iy+007h)		;ae5b   ; x - 8
 	sub 008h		;ae5e
 	ld (iy+007h),a		;ae60
 	ld a,026h		;ae63
 	jp 04e1fh		;ae65   ; pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 rebota:		; el arma rebota (sonido 0x1D)
 	set 1,(iy+002h)		;ae68   ; rebota: la velocidad de lado al reves, -0x800 hacia arriba y el sonido 0x1D
-	res 0,(iy+002h)		;ae6c
+	res 0,(iy+002h)		;ae6c   ; sin el bit 0
 	ld e,(iy+00eh)		;ae70
 	ld d,(iy+00fh)		;ae73
 	call 0415ch		;ae76   ; de_negado: DE = -DE
-	ld (iy+00eh),e		;ae79
+	ld (iy+00eh),e		;ae79   ; la velocidad de lado, al reves
 	ld (iy+00fh),d		;ae7c
-	ld de,0f800h		;ae7f
+	ld de,0f800h		;ae7f   ; -0x800: hacia arriba
 	ld (iy+00ch),e		;ae82
 	ld (iy+00dh),d		;ae85
 L_AE88:
@@ -2114,22 +2114,22 @@ paredes_del_personaje:		; las cuatro paredes del personaje a 0xE519
 	ret			;aee0
 escalera_arriba:		; C con escalera para subir
 	ld a,(0e507h)		;aee1   ; escalera para subir: delante y arriba del personaje
-	sub 008h		;aee4
+	sub 008h		;aee4   ; x - 8
 	ld h,a			;aee6
 	ld a,(0e505h)		;aee7   ; lee la y del personaje
-	dec a			;aeea
+	dec a			;aeea   ; y - 1
 	ld l,a			;aeeb
-	ld c,004h		;aeec
+	ld c,004h		;aeec   ; C = 4, B = 0: arriba
 	ld b,000h		;aeee
 	jr escalera_en		;aef0
 escalera_abajo:		; C con escalera para bajar
 	ld a,(0e507h)		;aef2   ; escalera para bajar: debajo de los pies
-	sub 008h		;aef5
+	sub 008h		;aef5   ; x - 8
 	ld h,a			;aef7
 	ld a,(0e505h)		;aef8   ; lee la y del personaje
-	add a,008h		;aefb
+	add a,008h		;aefb   ; y + 8
 	ld l,a			;aefd
-	ld c,004h		;aefe
+	ld c,004h		;aefe   ; C = 4, B = 1: abajo
 	ld b,001h		;af00
 escalera_en:		; C si las casillas H + C y H + 16 son escalera (0x9A, 0x9B)
 	push hl			;af02   ; la casilla a C de la x...
@@ -2141,37 +2141,37 @@ escalera_en:		; C si las casillas H + C y H + 16 son escalera (0x9A, 0x9B)
 	pop hl			;af0a
 	sub 09ah		;af0b   ; ...es escalera (0x9A o 0x9B)?...
 	cp 002h		;af0d
-	ret nc			;af0f
+	ret nc			;af0f   ; 16 - C...
 	ld a,010h		;af10   ; ...y la de 16 - C mas alla...
 	sub c			;af12
 	ld c,a			;af13
 	ld a,h			;af14
-	add a,c			;af15
+	add a,c			;af15   ; ...mas a la derecha
 	ld h,a			;af16
 	push hl			;af17
 	call 04da1h		;af18   ; casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 	ld a,(hl)			;af1b
 	pop hl			;af1c
-	sub 09ah		;af1d
+	sub 09ah		;af1d   ; escalera tambien?
 	cp 002h		;af1f
 	ret nc			;af21
 	ld a,h			;af22   ; ...el personaje ajustado a la escalera
-	and 0f8h		;af23
+	and 0f8h		;af23   ; x a la casilla de 8
 	ld (0e507h),a		;af25   ; guarda la x del personaje
 	xor a			;af28
 	ld (0e525h),a		;af29   ; guarda la escalera de 0xEC00 al lado
 	ld c,b			;af2c   ; las escaleras de 0xE0B0 que no estan...
-	ld b,004h		;af2d
+	ld b,004h		;af2d   ; 4 parejas...
 	ld hl,0e0b0h		;af2f   ; apunta a las 15 escaleras del castillo que se gastan (2 bytes cada una)
 L_AF32:
 	ld a,(hl)			;af32
-	and a			;af33
+	and a			;af33   ; ...a cero: mira la de 0xEC00
 	push hl			;af34
 	push bc			;af35
 	call z,escalera_ec00		;af36   ; escalera_ec00: la escalera de 0xEC00
 	pop bc			;af39
 	pop hl			;af3a
-	inc hl			;af3b
+	inc hl			;af3b   ; la pareja siguiente
 	inc hl			;af3c
 	djnz L_AF32		;af3d
 	scf			;af3f   ; C: hay escalera
@@ -2179,42 +2179,42 @@ L_AF32:
 escalera_ec00:		; mira la escalera de 0xEC00 junto al personaje
 	ld hl,0ec00h		;af41   ; la escalera de 0xEC00, si esta...
 	ld a,(hl)			;af44
-	and a			;af45
+	and a			;af45   ; no esta: C y nada
 	jr z,L_AF7B		;af46
-	inc hl			;af48
+	inc hl			;af48   ; B = su y
 	ld a,(hl)			;af49
 	ld b,a			;af4a
 	bit 0,c		;af4b   ; ...arriba o abajo de ella...
 	jr nz,L_AF63		;af4d
 	ld a,(0e505h)		;af4f   ; lee la y del personaje
-	sub b			;af52
+	sub b			;af52   ; para subir: la del personaje - la suya...
 	inc hl			;af53
 	inc hl			;af54
 	inc hl			;af55
 	push af			;af56
-	ld a,(hl)			;af57
+	ld a,(hl)			;af57   ; ...igual a su byte 4 - 8?
 	sub 008h		;af58
 	ld b,a			;af5a
 	pop af			;af5b
 	cp b			;af5c
-	jr nz,L_AF7B		;af5d
+	jr nz,L_AF7B		;af5d   ; no: C y nada
 	dec hl			;af5f
 	dec hl			;af60
 	jr L_AF6E		;af61
 L_AF63:
 	ld a,b			;af63
-	sub 008h		;af64
+	sub 008h		;af64   ; para bajar: su y - 8...
 	ld b,a			;af66
 	ld a,(0e505h)		;af67   ; lee la y del personaje
-	sub b			;af6a
+	sub b			;af6a   ; ...igual a la del personaje?
 	jr nz,L_AF7B		;af6b
 	inc hl			;af6d
 L_AF6E:
 	ld a,(0e507h)		;af6e   ; ...y a menos de 0x11 de lado: 0xE525 = 1
-	sub (hl)			;af71
-	cp 011h		;af72
+	sub (hl)			;af71   ; - su x (byte 2)
+	cp 011h		;af72   ; a menos de 0x11?
 	ccf			;af74
-	ret c			;af75
+	ret c			;af75   ; no: C y nada
 	ld a,001h		;af76
 	ld (0e525h),a		;af78   ; guarda la escalera de 0xEC00 al lado
 L_AF7B:
@@ -2406,64 +2406,64 @@ L_B09F:
 	ret			;b0c1
 figura_que_lleva:		; si el personaje esta encima, al lado o debajo de la figura
 	ld a,(ix+002h)		;b0c2   ; la figura: guarda sus banderas y quita el bit 0...
-	ld (0f000h),a		;b0c5
+	ld (0f000h),a		;b0c5   ; en 0xF000
 	res 0,(ix+002h)		;b0c8
 	ld a,(ix+000h)		;b0cc
-	and a			;b0cf
+	and a			;b0cf   ; hueco vacio: nada
 	ret z			;b0d0
 	bit 3,(ix+002h)		;b0d1   ; ...con el bit 3, cuenta y nada mas...
 	jr z,L_B0E7		;b0d5
 	ld a,(ix+002h)		;b0d7
-	sub 010h		;b0da
+	sub 010h		;b0da   ; la cuenta de los bits 4-6, una menos...
 	ld (ix+002h),a		;b0dc
 	and 070h		;b0df
-	ret nz			;b0e1
-	res 3,(ix+002h)		;b0e2
+	ret nz			;b0e1   ; ...hasta 0...
+	res 3,(ix+002h)		;b0e2   ; ...y entonces sin el bit 3
 	ret			;b0e6
 L_B0E7:
 	ld a,(0e505h)		;b0e7   ; ...el personaje a su altura...
-	sub (ix+005h)		;b0ea
+	sub (ix+005h)		;b0ea   ; la y del personaje - la suya - 1...
 	dec a			;b0ed
-	cp 01fh		;b0ee
+	cp 01fh		;b0ee   ; ...menos de 0x1F?
 	jr nc,L_B105		;b0f0
 	ld a,(0e507h)		;b0f2   ; ...pegado a su izquierda, se para...
-	sub (ix+007h)		;b0f5
+	sub (ix+007h)		;b0f5   ; la x del personaje - la suya + 8...
 	add a,008h		;b0f8
-	cp 004h		;b0fa
+	cp 004h		;b0fa   ; ...menos de 4: a su izquierda
 	jr c,L_B15C		;b0fc
 	sub 02dh		;b0fe   ; ...pegado a su derecha, tambien...
-	cp 004h		;b100
+	cp 004h		;b100   ; entre 0x2D y 0x30: a su derecha
 	call c,a_la_derecha_de_figura		;b102   ; a_la_derecha_de_figura: el personaje en x + 0x28 de la figura
 L_B105:
 	ld a,(0e507h)		;b105   ; ...encima de ella (0x25 de ancho)...
-	add a,002h		;b108
+	add a,002h		;b108   ; la x + 2 - la suya...
 	sub (ix+007h)		;b10a
-	cp 025h		;b10d
-	jr nc,L_B147		;b10f
+	cp 025h		;b10d   ; ...menos de 0x25?
+	jr nc,L_B147		;b10f   ; no: fuera
 	ld a,(0e505h)		;b111   ; ...un poco por encima: la lleva (bit 0)...
-	sub (ix+005h)		;b114
+	sub (ix+005h)		;b114   ; la y del personaje - la suya - 8...
 	sub 008h		;b117
-	jr nc,L_B12D		;b119
-	ld a,(0f000h)		;b11b
+	jr nc,L_B12D		;b119   ; ...no llega: encima
+	ld a,(0f000h)		;b11b   ; ya la llevaba (bit 0 de 0xF000): sigue
 	bit 0,a		;b11e
 	jr nz,L_B128		;b120
 	ld hl,0e519h		;b122   ; apunta a las paredes del personaje (bit 0 derecha, bit 1 izquierda, bit 3 suelo)
-	bit 3,(hl)		;b125
+	bit 3,(hl)		;b125   ; en el suelo: no
 	ret nz			;b127
 L_B128:
-	set 0,(ix+002h)		;b128
+	set 0,(ix+002h)		;b128   ; la lleva
 	ret			;b12c
 L_B12D:
 	sub 010h		;b12d   ; ...un poco por debajo: le da en la cabeza (la y + 0x20)
-	cp 008h		;b12f
+	cp 008h		;b12f   ; menos de 8 por debajo?
 	jr nc,L_B147		;b131
 	ld hl,0e519h		;b133   ; apunta a las paredes del personaje (bit 0 derecha, bit 1 izquierda, bit 3 suelo)
-	bit 3,(hl)		;b136
+	bit 3,(hl)		;b136   ; en el suelo: nada
 	ret nz			;b138
-	ld l,(ix+004h)		;b139
+	ld l,(ix+004h)		;b139   ; su y (16 bits)...
 	ld h,(ix+005h)		;b13c
 	ld a,h			;b13f
-	add a,020h		;b140
+	add a,020h		;b140   ; ...+ 0x20
 	ld h,a			;b142
 	ld (0e504h),hl		;b143   ; guarda la y del personaje con su fraccion (16 bits) y el byte siguiente (16 bits)
 	ret			;b146
@@ -2672,13 +2672,13 @@ L_B2A0:
 toca_el_final:		; la figura 0x6B: el final (0xE024 = 1)
 	ld l,(ix+012h)		;b2ad   ; el final: sus caracteres 0x7A-0x7D se quedan (0xE6A8)...
 	ld h,(ix+013h)		;b2b0
-	ld (0e6a8h),hl		;b2b3
-	ld a,07ah		;b2b6
+	ld (0e6a8h),hl		;b2b3   ; en 0xE6A8
+	ld a,07ah		;b2b6   ; 2 x 2 caracteres, desde 0x7A
 	ld (hl),a			;b2b8
 	inc hl			;b2b9
 	inc a			;b2ba
 	ld (hl),a			;b2bb
-	ld bc,0001fh		;b2bc
+	ld bc,0001fh		;b2bc   ; la fila de abajo (32 - 1)
 	add hl,bc			;b2bf
 	inc a			;b2c0
 	ld (hl),a			;b2c1
@@ -2827,11 +2827,11 @@ L_B3BF:
 	ld a,(0e088h)		;b3bf   ; con el objeto 0x19, la mitad (si es mas de 1)
 	or a			;b3c2
 	jr z,L_B3CE		;b3c3
-	ld c,b			;b3c5
+	ld c,b			;b3c5   ; si es 1...
 	dec c			;b3c6
-	jr z,L_B3CE		;b3c7
+	jr z,L_B3CE		;b3c7   ; ...se queda
 	ld a,b			;b3c9
-	rra			;b3ca
+	rra			;b3ca   ; la mitad
 	and 07fh		;b3cb
 	ld b,a			;b3cd
 L_B3CE:
@@ -2877,10 +2877,10 @@ mina_hiere:		; la explosion del arma 5 hiere al personaje
 	ret nz			;b410
 	ld a,(0e505h)		;b411   ; lee la y del personaje
 	sub 010h		;b414
-	ld c,a			;b416
+	ld c,a			;b416   ; C = la y del personaje - 0x10
 	ld a,(0e507h)		;b417   ; lee la x del personaje
 	sub 008h		;b41a
-	ld b,a			;b41c
+	ld b,a			;b41c   ; B = su x - 8
 	ld iy,0e5a0h		;b41d   ; ...las tres de 0xE5A0
 	ld a,003h		;b421
 	ld (0e623h),a		;b423
@@ -2895,40 +2895,40 @@ L_B426:
 	ret			;b437
 cerca_de_mina:		; C si el personaje esta en la explosion
 	ld a,(iy+000h)		;b438   ; estallando (bit 0) y aun sin hacer daño (bit 3)...
-	or a			;b43b
+	or a			;b43b   ; sin arma: nada
 	ret z			;b43c
-	ld a,(iy+002h)		;b43d
+	ld a,(iy+002h)		;b43d   ; sus banderas...
 	bit 0,a		;b440
-	ret z			;b442
-	and 008h		;b443
+	ret z			;b442   ; ...sin el bit 0 (estallando): nada
+	and 008h		;b443   ; ...ya ha hecho daño (bit 3): nada
 	ret nz			;b445
 	call tamano_del_arma		;b446   ; ...su tamaño...
 	exx			;b449
-	ld a,d			;b44a
+	ld a,d			;b44a   ; H = su ancho + 0x11
 	add a,011h		;b44b
 	exx			;b44d
 	ld h,a			;b44e
 	exx			;b44f
-	ld a,e			;b450
+	ld a,e			;b450   ; L = su alto + 0x11
 	add a,011h		;b451
 	exx			;b453
 	ld l,a			;b454
 	ld a,d			;b455   ; ...C si el personaje esta dentro
-	sub b			;b456
+	sub b			;b456   ; la x del arma - la del personaje (B)...
 	exx			;b457
-	add a,d			;b458
+	add a,d			;b458   ; ...+ el ancho...
 	exx			;b459
 	jr c,L_B45E		;b45a
-	cp h			;b45c
+	cp h			;b45c   ; ...menor que H: se cruzan de lado
 	ret nc			;b45d
 L_B45E:
 	ld a,e			;b45e
-	sub c			;b45f   ; la distancia en x...
+	sub c			;b45f   ; la y del arma - la del personaje (C)...
 	exx			;b460
-	add a,e			;b461
+	add a,e			;b461   ; ...+ el alto...
 	exx			;b462
-	ret c			;b463   ; ...dentro del ancho?
-	cp l			;b464
+	ret c			;b463   ; ...C si tambien se cruzan de alto
+	cp l			;b464   ; C si es menor que L
 	ret			;b465
 L_B466:
 	bit 2,(iy+002h)		;b466   ; dentro: si aun no estalla, estalla...
@@ -2988,26 +2988,26 @@ arma_contra_figura:		; un arma contra una figura
 	ld a,(ix+002h)		;b4d1   ; las que se pueden herir (bit 5)...
 	and 020h		;b4d4
 	ret z			;b4d6
-	call arma_en_fila		;b4d7   ; ...en su fila...
+	call filtro_arma_5		;b4d7   ; ...que el arma 5 pueda...
 	ret nc			;b4da
-	call arma_en_columna		;b4db   ; ...y en su columna
+	call filtro_arma_2		;b4db   ; ...y la 2 tambien
 	ret nc			;b4de
 	ld a,(ix+000h)		;b4df
-	cp 060h		;b4e2
+	cp 060h		;b4e2   ; los tipos 0x60...
 	jp z,L_B50B		;b4e4
-	cp 057h		;b4e7
+	cp 057h		;b4e7   ; ...0x57...
 	jp z,L_B511		;b4e9
-	cp 062h		;b4ec
+	cp 062h		;b4ec   ; ...y 0x62 con su tamaño aparte
 	jp z,L_B517		;b4ee
 	call tamano_de_figura		;b4f1   ; tamano_de_figura: BC y HL = el tamaño del tipo (tabla 0x9006, banco 14)
 L_B4F4:
-	ld a,l			;b4f4
+	ld a,l			;b4f4   ; L = su alto + el del arma + 1
 	exx			;b4f5
 	add a,e			;b4f6
 	inc a			;b4f7
 	exx			;b4f8
 	ld l,a			;b4f9
-	ld a,h			;b4fa
+	ld a,h			;b4fa   ; H = su ancho + el del arma + 1
 	exx			;b4fb
 	add a,d			;b4fc
 	inc a			;b4fd
@@ -3028,30 +3028,30 @@ L_B517:
 	jp L_B4F4		;b51a
 L_B51D:
 	ld a,(ix+001h)		;b51d
-	cp 004h		;b520
+	cp 004h		;b520   ; en el paso 4, con (ix+5, ix+7); si no, con (ix+0x12, ix+0x13)
 	jp z,se_tocan		;b522   ; se_tocan: C si el recuadro DE/DE' toca a la figura IX (y 5, x 7)
 	jp se_tocan_12_13		;b525   ; se_tocan_12_13: C si el recuadro toca el de (ix+0x12, ix+0x13)
-arma_en_fila:		; C si el arma alcanza a la figura en su fila
-	ld a,(iy+000h)		;b528   ; las armas 0-5 siempre...
+filtro_arma_5:		; C (puede herir) salvo el arma 5 estallada contra figura con el bit 4 de su byte 3
+	ld a,(iy+000h)		;b528   ; tipo - 6 distinto de 0xFF (todas menos la 5): C...
 	sub 006h		;b52b
 	cp 0ffh		;b52d
 	ret c			;b52f
 	scf			;b530
-	bit 2,(iy+002h)		;b531   ; ...las demas, si estallan, solo con el bit 4 de la figura
+	bit 2,(iy+002h)		;b531   ; ...la 5 sin estallar (bit 2): C...
 	ret z			;b535
-	bit 4,(ix+003h)		;b536
+	bit 4,(ix+003h)		;b536   ; ...estallada, C si la figura no tiene el bit 4
 	ret z			;b53a
-	or a			;b53b
+	or a			;b53b   ; NC: no
 	ret			;b53c
-arma_en_columna:		; C si el arma alcanza a la figura en su columna
-	ld a,(iy+000h)		;b53d   ; las armas 3 y siguientes no hieren a las de bit 5
+filtro_arma_2:		; C (puede herir) salvo el arma 2 contra figura con el bit 5 de su byte 3
+	ld a,(iy+000h)		;b53d   ; tipo - 3 distinto de 0xFF (todas menos la 2): C...
 	sub 003h		;b540
 	cp 0ffh		;b542
 	ret c			;b544
 	or a			;b545
-	bit 5,(ix+003h)		;b546
+	bit 5,(ix+003h)		;b546   ; ...la 2: NC si la figura tiene el bit 5...
 	ret nz			;b54a
-	scf			;b54b
+	scf			;b54b   ; ...y si no, C
 	ret			;b54c
 arma_da:		; el arma da en la figura: rebota o la hiere
 	ld a,(iy+000h)		;b54d   ; el arma 5 aparte
@@ -3138,10 +3138,10 @@ L_B5F1:
 	ld a,(ix+000h)		;b5f2   ; lee el tipo de la figura
 	cp 00eh		;b5f5
 	call z,vence		;b5f7   ; ...vencidas
-	ld bc,00020h		;b5fa
+	ld bc,00020h		;b5fa   ; la siguiente
 	add ix,bc		;b5fd
 	pop af			;b5ff
-	dec a			;b600
+	dec a			;b600   ; una menos
 	jr nz,L_B5F1		;b601
 	ret			;b603
 vence:		; la figura vencida: experiencia (0xBF27, doble con el objeto 0x1B) y lo que deja
@@ -3287,43 +3287,43 @@ L_B6F6:
 recoge_la_cosa:		; recoger la cosa de la sala: objeto, marcas y lo del 0x0C
 	call tamano_del_personaje		;b701   ; la cosa de la sala: el personaje...
 	ld hl,0e740h		;b704   ; apunta a el hueco de la cosa de la sala: tipo, y, x
-	ld a,(hl)			;b707
+	ld a,(hl)			;b707   ; sin cosa: nada
 	or a			;b708
 	ret z			;b709
-	inc l			;b70a
+	inc l			;b70a   ; su y
 	inc l			;b70b
 	cp 007h		;b70c   ; ...las de 1-6 son mas bajas...
 	jr nc,L_B71D		;b70e
 	ld a,(hl)			;b710
-	add a,002h		;b711
+	add a,002h		;b711   ; su y + 2 - la esquina + 4...
 	sub e			;b713
 	add a,004h		;b714
 	jr c,L_B728		;b716
-	cp 011h		;b718
+	cp 011h		;b718   ; ...menos de 0x11: tocada
 	jr c,L_B728		;b71a
 	ret			;b71c
 L_B71D:
 	ld a,(hl)			;b71d   ; ...las demas 0x17 de alto...
-	add a,003h		;b71e
+	add a,003h		;b71e   ; su y + 3 - la esquina + 0x0A...
 	sub e			;b720
 	add a,00ah		;b721
 	jr c,L_B728		;b723
-	cp 017h		;b725
+	cp 017h		;b725   ; ...menos de 0x17?
 	ret nc			;b727
 L_B728:
 	inc l			;b728   ; ...y 0x15 de ancho
 	ld a,(hl)			;b729
-	add a,003h		;b72a
+	add a,003h		;b72a   ; su x + 3 - la esquina + 8...
 	sub d			;b72c
 	add a,008h		;b72d
 	jr c,L_B734		;b72f
-	cp 015h		;b731
+	cp 015h		;b731   ; ...menos de 0x15?
 	ret nc			;b733
 L_B734:
 	dec l			;b734   ; tocada: el hueco vacio...
 	dec l			;b735
 	dec l			;b736
-	ld a,(hl)			;b737
+	ld a,(hl)			;b737   ; C = el tipo
 	ld c,a			;b738
 	ld (hl),000h		;b739
 	sub 02dh		;b73b   ; ...0x2D-0x2F aparte...
@@ -3331,7 +3331,7 @@ L_B734:
 	ld b,000h		;b740   ; ...los objetos: su marca a 1...
 	ld hl,0e06fh		;b742
 	add hl,bc			;b745
-	ld (hl),001h		;b746
+	ld (hl),001h		;b746   ; el objeto C: tenido
 	ld a,c			;b748   ; ...0x2B y 0x2C: el nivel 2 o 3 de 0xE097 y su marca
 	sub 02bh		;b749
 	jr c,cosa_cogida		;b74b
@@ -3427,19 +3427,19 @@ L_B7DE:
 	ret			;b7ea
 arma_contra_ec30:		; un arma contra las tinajas
 	ld a,(iy+000h)		;b7eb
-	dec a			;b7ee
+	dec a			;b7ee   ; las armas 1-4...
 	cp 004h		;b7ef
-	ret nc			;b7f1
-	bit 0,(iy+002h)		;b7f2
+	ret nc			;b7f1   ; ...las demas no
+	bit 0,(iy+002h)		;b7f2   ; sin el bit 0: nada
 	ret z			;b7f6
 	call tamano_del_arma		;b7f7   ; tamano_del_arma: DE = la esquina del arma, DE' = su tamaño (0xB8EF)
 	ld ix,0ec30h		;b7fa   ; apunta a tres huecos de 8 bytes de la lista de la sala (0xB8A2)
-	ld a,003h		;b7fe
+	ld a,003h		;b7fe   ; 3 huecos
 	ld (0e623h),a		;b800
 L_B803:
 	call toca_ec30		;b803   ; las tres tinajas
 	jr c,L_B833		;b806
-	ld bc,00008h		;b808
+	ld bc,00008h		;b808   ; el siguiente, 8 bytes mas
 	add ix,bc		;b80b
 	ld hl,0e623h		;b80d
 	dec (hl)			;b810
@@ -3447,20 +3447,20 @@ L_B803:
 	ret			;b813
 toca_ec30:		; C si el arma toca el hueco de 0xEC30
 	ld a,(ix+000h)		;b814   ; si esta entera (byte 1 a 0)...
-	or a			;b817
+	or a			;b817   ; vacio: nada
 	ret z			;b818
 	ld a,(ix+001h)		;b819
-	dec a			;b81c
+	dec a			;b81c   ; byte 1 a 1: rota, nada
 	ret z			;b81d
 	ld bc,00000h		;b81e   ; ...su recuadro de 0x10 x 0x14...
 	ld hl,01410h		;b821
-	ld a,l			;b824
+	ld a,l			;b824   ; L = su alto + el del arma + 1
 	exx			;b825
 	add a,e			;b826
 	inc a			;b827
 	exx			;b828
 	ld l,a			;b829
-	ld a,h			;b82a
+	ld a,h			;b82a   ; H = su ancho + el del arma + 1
 	exx			;b82b
 	add a,d			;b82c
 	inc a			;b82d
@@ -3529,41 +3529,41 @@ L_B899:
 	jp golpe_a_tinaja		;b89d   ; golpe_a_tinaja: la tinaja pierde 1 (5 con Popolon o el objeto 0x1F)
 tamano_del_personaje:		; DE = la esquina del personaje, DE' = su tamaño
 	ld a,(0e505h)		;b8a0   ; el personaje: su esquina (y - 0x0E, x - 6) y 0x0C x 0x0C
-	sub 00eh		;b8a3
+	sub 00eh		;b8a3   ; y - 0x0E
 	ld e,a			;b8a5
 	ld a,(0e507h)		;b8a6   ; lee la x del personaje
-	sub 006h		;b8a9
+	sub 006h		;b8a9   ; x - 6
 	ld d,a			;b8ab
 	exx			;b8ac
-	ld de,00c0ch		;b8ad
+	ld de,00c0ch		;b8ad   ; 0x0C de alto y 0x0C de ancho
 	exx			;b8b0
 	ret			;b8b1
 tamano_del_arma:		; DE = la esquina del arma, DE' = su tamaño (0xB8EF)
 	ld e,(iy+005h)		;b8b2   ; el arma: su sitio...
 	ld d,(iy+007h)		;b8b5
-	ld a,(iy+000h)		;b8b8
+	ld a,(iy+000h)		;b8b8   ; las armas 1 y 2 (tipo menor que 3)...
 	sub 003h		;b8bb
 	jr nc,L_B8CB		;b8bd
 	ld a,e			;b8bf   ; ...las 1 y 2 ajustadas a la casilla...
-	and 0f8h		;b8c0
+	and 0f8h		;b8c0   ; y a la casilla de 8, + 2
 	add a,002h		;b8c2
 	ld e,a			;b8c4
 	ld a,d			;b8c5
-	and 0f8h		;b8c6
+	and 0f8h		;b8c6   ; x igual
 	add a,002h		;b8c8
 	ld d,a			;b8ca
 L_B8CB:
 	exx			;b8cb   ; ...su tamaño de la tabla 0xB8EF...
-	ld a,(iy+000h)		;b8cc
+	ld a,(iy+000h)		;b8cc   ; el tipo de arma
 	ld hl,lb8efh		;b8cf
 	call 0414ch		;b8d2   ; palabra_de_tabla: DE = la palabra A de la tabla de HL
 	exx			;b8d5
 	ld a,(iy+000h)		;b8d6   ; ...el arma 5 estallando, mas grande (0x20 x 0x20)
 	cp 005h		;b8d9
 	ret nz			;b8db
-	bit 2,(iy+002h)		;b8dc
+	bit 2,(iy+002h)		;b8dc   ; la 5 sin estallar (bit 2)...
 	jr nz,L_B8E5		;b8e0
-	inc d			;b8e2
+	inc d			;b8e2   ; ...2 mas a la derecha
 	inc d			;b8e3
 	ret			;b8e4
 L_B8E5:
@@ -3614,14 +3614,14 @@ L_B905:
 	ret			;b915
 tamano_60:		; el tamaño del tipo 0x60
 	ld bc,00000h		;b916   ; el tipo 0x60: alto 7, ancho 8 x (cuantos)
-	ld a,(ix+009h)		;b919
+	ld a,(ix+009h)		;b919   ; los bits 0-2 de su ficha (ix+9)...
 	and 007h		;b91c
 	dec a			;b91e
-	add a,a			;b91f
+	add a,a			;b91f   ; ...- 1, x 8: L
 	add a,a			;b920
 	add a,a			;b921
 	ld l,a			;b922
-	ld h,007h		;b923
+	ld h,007h		;b923   ; H = 7
 	ret			;b925
 tamano_57:		; el tamaño del tipo 0x57
 	ld bc,00000h		;b926   ; el 0x57: 8 de alto, 8 x (ix+0x1F) de ancho
@@ -3655,80 +3655,80 @@ L_B94A:
 	ret			;b953
 tamano_de_figura:		; BC y HL = el tamaño del tipo (tabla 0x9006, banco 14)
 	call 0420ah		;b954   ; el tamaño del tipo: tabla 0x9006 (banco 14)...
-	ld l,(ix+011h)		;b957
+	ld l,(ix+011h)		;b957   ; su tamaño (ix+0x11)...
 	ld h,000h		;b95a
-	add hl,hl			;b95c
+	add hl,hl			;b95c   ; ...x 4...
 	add hl,hl			;b95d
-	ld bc,09006h		;b95e
+	ld bc,09006h		;b95e   ; ...en la tabla 0x9006
 	add hl,bc			;b961
 	ld c,(hl)			;b962   ; ...BC el desplazamiento, HL el tamaño
 	inc hl			;b963
-	ld b,(hl)			;b964
+	ld b,(hl)			;b964   ; BC = la primera palabra...
 	inc hl			;b965
 	ld a,(hl)			;b966
 	inc hl			;b967
-	ld h,(hl)			;b968
+	ld h,(hl)			;b968   ; ...HL = la segunda
 	ld l,a			;b969
 	jp 041ffh		;b96a   ; p8000_banco_2: pone el banco 2 en 0x8000
 se_tocan:		; C si el recuadro DE/DE' toca a la figura IX (y 5, x 7)
 	ld a,e			;b96d   ; C si se solapan: en la y...
-	sub (ix+005h)		;b96e
+	sub (ix+005h)		;b96e   ; la y - la de la figura - C...
 	sub c			;b971
 	exx			;b972
-	add a,e			;b973
+	add a,e			;b973   ; ...+ el alto (E')...
 	exx			;b974
 	jr c,L_B979		;b975
-	cp l			;b977
+	cp l			;b977   ; ...menor que L?
 	ret nc			;b978
 L_B979:
 	ld a,d			;b979   ; ...y en la x
-	sub (ix+007h)		;b97a
+	sub (ix+007h)		;b97a   ; la x - la suya - B...
 	sub b			;b97d
 	exx			;b97e
-	add a,d			;b97f
+	add a,d			;b97f   ; ...+ el ancho (D')...
 	exx			;b980
 	ret c			;b981
-	cp h			;b982
+	cp h			;b982   ; ...C si es menor que H
 	ret			;b983
 se_tocan_2_3:		; C si el recuadro toca el de (ix+2, ix+3)
 	ld a,e			;b984
 	sub (ix+002h)		;b985   ; la distancia en y...
 	sub c			;b988
 	exx			;b989
-	add a,e			;b98a
+	add a,e			;b98a   ; + el alto (E')
 	exx			;b98b
 	jr c,L_B990		;b98c   ; ...dentro del alto?
-	cp l			;b98e
+	cp l			;b98e   ; menor que L?
 	ret nc			;b98f
 L_B990:
 	ld a,d			;b990
 	sub (ix+003h)		;b991   ; la distancia en x...
 	sub b			;b994
 	exx			;b995
-	add a,d			;b996
+	add a,d			;b996   ; + el ancho (D')
 	exx			;b997
 	ret c			;b998   ; ...dentro del ancho?
-	cp h			;b999
+	cp h			;b999   ; C si es menor que H
 	ret			;b99a
 se_tocan_12_13:		; C si el recuadro toca el de (ix+0x12, ix+0x13)
 	ld a,e			;b99b
 	sub (ix+012h)		;b99c   ; la distancia en y...
 	sub c			;b99f
 	exx			;b9a0
-	add a,e			;b9a1
+	add a,e			;b9a1   ; + el alto (E')
 	exx			;b9a2
 	jr c,L_B9A7		;b9a3   ; ...dentro del alto?
-	cp l			;b9a5
+	cp l			;b9a5   ; menor que L?
 	ret nc			;b9a6
 L_B9A7:
 	ld a,d			;b9a7
 	sub (ix+013h)		;b9a8   ; la distancia en x...
 	sub b			;b9ab
 	exx			;b9ac
-	add a,d			;b9ad
+	add a,d			;b9ad   ; + el ancho (D')
 	exx			;b9ae
 	ret c			;b9af   ; ...dentro del ancho?
-	cp h			;b9b0
+	cp h			;b9b0   ; C si es menor que H
 	ret			;b9b1
 choque_con_el_jefe:		; el personaje contra el jefe: golpeado y el daño de 0xBAD2
 	ld a,(0e700h)		;b9b2   ; con jefe...
@@ -3876,15 +3876,15 @@ golpeado_por_el_jefe:		; golpeado por el jefe
 lado_del_jefe:		; 0xE514 = el lado del jefe
 	ld a,(0e70ah)		;ba82   ; el lado del golpe: la x del jefe mas lo del mosaico (0xBA9A)
 	ld c,a			;ba85
-	ld b,000h		;ba86
+	ld b,000h		;ba86   ; la entrada del mosaico
 	ld hl,0ba9ah		;ba88
 	add hl,bc			;ba8b
 	ld a,(0e707h)		;ba8c   ; lee la x del jefe
-	add a,(hl)			;ba8f
-	sub d			;ba90
-	ld a,000h		;ba91
+	add a,(hl)			;ba8f   ; + lo del mosaico...
+	sub d			;ba90   ; ...- D
+	ld a,000h		;ba91   ; el jefe a la derecha (o igual): 0...
 	jr nc,L_BA96		;ba93
-	inc a			;ba95
+	inc a			;ba95   ; ...a la izquierda: 1
 L_BA96:
 	ld (0e514h),a		;ba96   ; guarda el lado del golpe
 	ret			;ba99
@@ -3936,24 +3936,24 @@ L_BAE1:
 	jp 041ffh		;bae7   ; p8000_banco_2: pone el banco 2 en 0x8000
 toca_recuadro:		; C si DE esta en el recuadro de HL
 	ld a,(0e705h)		;baea   ; C si la y y la x estan dentro del recuadro [dy][alto][dx][ancho]
-	add a,(hl)			;baed
+	add a,(hl)			;baed   ; + dy - la y (E)...
 	inc hl			;baee
 	sub e			;baef
-	cp 010h		;baf0
+	cp 010h		;baf0   ; ...menos de 0x10: dentro de alto
 	jr c,L_BAF8		;baf2
 	inc hl			;baf4
-	add a,(hl)			;baf5
+	add a,(hl)			;baf5   ; ...si no, + el alto: C si dentro
 	dec hl			;baf6
-	ret nc			;baf7
+	ret nc			;baf7   ; fuera
 L_BAF8:
 	ld a,(0e707h)		;baf8   ; lee la x del jefe
-	add a,(hl)			;bafb
+	add a,(hl)			;bafb   ; + dx - la x (D)...
 	inc hl			;bafc
 	sub d			;bafd
-	cp 010h		;bafe
+	cp 010h		;bafe   ; ...menos de 0x10: C, dentro
 	ret c			;bb00
 	inc hl			;bb01
-	add a,(hl)			;bb02
+	add a,(hl)			;bb02   ; ...si no, + el ancho: C si dentro
 	ret			;bb03
 recuadro_del_mosaico:		; HL = el recuadro del mosaico del jefe (0x928A, banco 14)
 	call 0420ah		;bb04   ; el recuadro: tabla 0x928A por tipo (banco 14)...
@@ -4009,9 +4009,9 @@ arma_toca_al_jefe:		; C si el arma hiere al jefe (tabla 0xBB7A por tipo)
 	ld a,(0e702h)		;bb5d   ; el jefe se puede herir (bit 5)...
 	and 020h		;bb60
 	ret z			;bb62
-	call arma_en_fila		;bb63   ; arma_en_fila: C si el arma alcanza a la figura en su fila
+	call filtro_arma_5		;bb63   ; filtro_arma_5: C (puede herir) salvo el arma 5 estallada contra figura con el bit 4 de su byte 3
 	ret nc			;bb66
-	call arma_en_columna		;bb67   ; arma_en_columna: C si el arma alcanza a la figura en su columna
+	call filtro_arma_2		;bb67   ; filtro_arma_2: C (puede herir) salvo el arma 2 contra figura con el bit 5 de su byte 3
 	ret nc			;bb6a
 	ld a,(iy+000h)		;bb6b   ; ...el arma 5 aparte...
 	cp 005h		;bb6e
@@ -4226,29 +4226,29 @@ L_BCBC:
 	ret			;bcc0
 arma_que_hiere:		; C si esa arma no hiere a ese jefe (tabla 0xBD0A; rebota)
 	or a			;bcc1   ; que arma: la espada (A no 0) el bit 0...
-	ld b,001h		;bcc2
+	ld b,001h		;bcc2   ; B = 1
 	jr nz,L_BCE1		;bcc4
 	ld a,c			;bcc6   ; ...el arma 1 el bit 5, la 2 el 4, la 3 el 2, la 4 el 3, la 5 el 1
 	cp 001h		;bcc7
-	ld b,020h		;bcc9
+	ld b,020h		;bcc9   ; B = 0x20
 	jr z,L_BCE1		;bccb
 	cp 002h		;bccd
-	ld b,010h		;bccf
+	ld b,010h		;bccf   ; B = 0x10
 	jr z,L_BCE1		;bcd1
 	cp 003h		;bcd3
-	ld b,004h		;bcd5
+	ld b,004h		;bcd5   ; B = 4
 	jr z,L_BCE1		;bcd7
 	cp 004h		;bcd9
-	ld b,008h		;bcdb
+	ld b,008h		;bcdb   ; B = 8
 	jr z,L_BCE1		;bcdd
-	ld b,002h		;bcdf
+	ld b,002h		;bcdf   ; la 5: B = 2
 L_BCE1:
 	ld a,(0e700h)		;bce1   ; los bits de las armas que hieren a cada jefe (tabla 0xBD0A)...
-	dec a			;bce4
+	dec a			;bce4   ; el tipo del jefe - 1...
 	ld hl,0bd0ah		;bce5
 	call 04136h		;bce8   ; hl_mas_a: HL += A
-	ld a,(hl)			;bceb
-	and b			;bcec
+	ld a,(hl)			;bceb   ; ...su byte de la tabla...
+	and b			;bcec   ; ...tiene el bit de esta arma?
 	jr nz,L_BCFB		;bced
 	ld a,c			;bcef   ; ...si no le hace nada, rebota con el sonido 0x1D (la 5 en silencio)
 	cp 005h		;bcf0
@@ -4328,19 +4328,19 @@ recuadro_del_jefe:		; el recuadro del mosaico del jefe (0x91EC, banco 14)
 	call 0420ah		;bd70   ; el recuadro del mosaico del jefe: tabla 0x91EC (banco 14)
 	ld hl,091ech		;bd73
 	ld a,(0e700h)		;bd76   ; lee el tipo del jefe (el hueco 0xE700 es el jefe)
-	add a,a			;bd79
+	add a,a			;bd79   ; x 2: una palabra por tipo
 	call 04136h		;bd7a   ; hl_mas_a: HL += A
 	ld a,(hl)			;bd7d
 	inc hl			;bd7e
-	ld h,(hl)			;bd7f
+	ld h,(hl)			;bd7f   ; HL = su lista
 	ld l,a			;bd80
 recuadro_de_mosaico:		; BC y HL del recuadro del mosaico de la tabla HL
-	ld b,(hl)			;bd81
+	ld b,(hl)			;bd81   ; B = el primer mosaico de la lista
 	inc hl			;bd82
 	ld a,(0e70ah)		;bd83   ; lee el mosaico del jefe
-	sub b			;bd86
+	sub b			;bd86   ; el mosaico - el primero...
 	add a,a			;bd87
-	add a,a			;bd88
+	add a,a			;bd88   ; ...x 4 bytes
 	ld c,a			;bd89
 	ld b,000h		;bd8a
 	add hl,bc			;bd8c
@@ -4361,20 +4361,20 @@ L_BD9D:
 	call cabeza_jefe_2		;bd9d   ; cabeza_jefe_2: A = la x de la cabeza del jefe 2
 L_BDA0:
 	ld a,l			;bda0   ; ...de alto 0x28...
-	add a,018h		;bda1
+	add a,018h		;bda1   ; L + 0x18
 	ld l,a			;bda3
 	ld a,(0e705h)		;bda4   ; lee la y del jefe
 	add a,000h		;bda7
 	ld b,a			;bda9
 	ld a,e			;bdaa
-	sub b			;bdab
-	cp 028h		;bdac
+	sub b			;bdab   ; la y - la del jefe...
+	cp 028h		;bdac   ; ...menos de 0x28?
 	ret nc			;bdae
 	ld a,(0e709h)		;bdaf   ; ...de ancho segun lo crecido
-	and 020h		;bdb2
-	ld a,(0e70bh)		;bdb4
+	and 020h		;bdb2   ; con el bit 5 de 0xE709...
+	ld a,(0e70bh)		;bdb4   ; ...0xE70B...
 	jr nz,L_BDBC		;bdb7
-	ld a,(0e715h)		;bdb9
+	ld a,(0e715h)		;bdb9   ; ...sin el, 0xE715
 L_BDBC:
 	dec a			;bdbc   ; ancho x 8 + H
 	add a,a			;bdbd
@@ -4383,35 +4383,35 @@ L_BDBC:
 	add a,h			;bdc0
 	ld c,a			;bdc1
 	ld a,(0e707h)		;bdc2   ; lee la x del jefe
-	and 0f8h		;bdc5
+	and 0f8h		;bdc5   ; a la casilla de 8
 	ld b,a			;bdc7
 	ld a,d			;bdc8   ; C si esta dentro
-	sub b			;bdc9
-	cp c			;bdca
+	sub b			;bdc9   ; la x - la del jefe...
+	cp c			;bdca   ; ...menor que C?
 	ret			;bdcb
 cabeza_jefe_2:		; la cabeza del jefe 2
 	ld hl,00c04h		;bdcc   ; la cabeza del jefe 2
 	ld a,d			;bdcf
-	add a,006h		;bdd0
+	add a,006h		;bdd0   ; x + 6
 	ld d,a			;bdd2
 	ld a,e			;bdd3
-	add a,l			;bdd4
+	add a,l			;bdd4   ; y + 4
 	ld e,a			;bdd5
 	ret			;bdd6
 cuerpo_jefe_2:		; C si toca el cuerpo del jefe 2
 	ld a,l			;bdd7   ; C si toca el cuerpo crecido del jefe 2
-	add a,018h		;bdd8
+	add a,018h		;bdd8   ; L + 0x18
 	ld l,a			;bdda
 	ld a,(0e705h)		;bddb   ; lee la y del jefe
 	add a,000h		;bdde
 	ld b,a			;bde0
 	ld a,e			;bde1
-	sub b			;bde2
-	cp l			;bde3
+	sub b			;bde2   ; la y - la del jefe...
+	cp l			;bde3   ; ...menor que L?
 	ret nc			;bde4
-	ld b,040h		;bde5
+	ld b,040h		;bde5   ; B = 0x40, el ancho mas grande
 	ld a,(0e709h)		;bde7
-	and 020h		;bdea
+	and 020h		;bdea   ; con el bit 5 de 0xE709, 0xE70B; sin el, 0xE715
 	ld a,(0e715h)		;bdec
 	jr z,L_BDF4		;bdef
 	ld a,(0e70bh)		;bdf1
@@ -4419,40 +4419,40 @@ L_BDF4:
 	add a,a			;bdf4   ; el ancho x 8
 	add a,a			;bdf5
 	add a,a			;bdf6
-	ld c,a			;bdf7
+	ld c,a			;bdf7   ; C = el ancho x 8
 	ld a,(0e709h)		;bdf8   ; creciendo hacia la izquierda...
 	and 020h		;bdfb
 	jr z,L_BE07		;bdfd
 	ld a,c			;bdff
-	sub b			;be00
+	sub b			;be00   ; C - 0x40...
 	jr nc,L_BE04		;be01
-	xor a			;be03
+	xor a			;be03   ; ...o 0
 L_BE04:
-	ld e,a			;be04
+	ld e,a			;be04   ; E = el principio
 	jr L_BE1D		;be05
 L_BE07:
 	ld a,(0e707h)		;be07   ; lee la x del jefe
 	and 0f8h		;be0a
-	ld e,a			;be0c
+	ld e,a			;be0c   ; E = la x del jefe a la casilla de 8
 	ld a,(0e709h)		;be0d   ; ...o hacia la derecha
 	and 020h		;be10
 	ld a,000h		;be12
 	jr nz,L_BE1C		;be14
-	ld a,d			;be16
+	ld a,d			;be16   ; sin el bit 5: D + 8
 	sub 0f8h		;be17
 	ld d,a			;be19
 	ld a,0f8h		;be1a
 L_BE1C:
-	add a,e			;be1c
+	add a,e			;be1c   ; (A no se usa: la pisa la siguiente)
 L_BE1D:
 	ld a,c			;be1d
-	cp b			;be1e
+	cp b			;be1e   ; B = el menor de C y 0x40
 	jr nc,L_BE22		;be1f
 	ld b,c			;be21
 L_BE22:
 	ld a,d			;be22
-	sub e			;be23
-	cp b			;be24
+	sub e			;be23   ; D - E...
+	cp b			;be24   ; ...C si es menor que B
 	ret			;be25
 empieza_la_taza:		; la pausa: sentado en la taza 600 cuadros
 	ld a,01ch		;be26   ; la pausa: la pose 0x1C (sentado en la taza) 600 cuadros...
