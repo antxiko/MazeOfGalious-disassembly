@@ -147,14 +147,30 @@ def carga_sala(rom, vram, m, n):
 
 
 def nombres(rom, m, n):
-    """Los 32 x 20 caracteres de la sala (filas 4-23 de la pantalla)."""
+    """Los 32 x 20 caracteres de la sala (filas 4-23 de la pantalla), como los
+    monta p00:55C6.
+
+    Con las marcas de partida nueva: la sala 6 del mapa 6 sale de la otra
+    planta de 0x8DAE mientras 0xE085 este a 0 (p00:55F7), y en la sala del
+    jefe (0x5DFB + mapa) va encima el recuadro de 8 x 8 de 0x9BE2 + 2 x mapa
+    en la fila 4, columna 12 (la 6 en el mapa 7), p00:55C9 con 0xE615 = 1
+    (p02:9AE5)."""
     rom.pon(7, 8, 9)
-    sala = M.sala(rom.d, m, n)
+    if (m, n) == (6, 6):
+        sala = [rom[0x8DAE + i] for i in range(40)]
+    else:
+        sala = M.sala(rom.d, m, n)
     t = [[0] * 32 for _ in range(20)]
     for k, b in enumerate(sala):
         bx, by = k % 8, k // 8
         for i in range(16):
             t[by * 4 + i // 4][bx * 4 + i % 4] = rom[0x6000 + 16 * b + i]
+    if n == rom[0x5DFB + m]:
+        a = rom.palabra(0x9BE2 + 2 * m)
+        f0 = 6 if m == 7 else 4
+        for f in range(8):
+            for c in range(8):
+                t[f0 + f][12 + c] = rom[a + 8 * f + c]
     return t
 
 
@@ -282,6 +298,9 @@ def piezas(rom, m, n):
       - la cosa de la sala (cosa_de_sala, p01:6C56): tipos 1-6 una pareja de
         0x6C89, 7-0x2C el cofre 76 77 / 78 79, desde 0x2D 2 x 2 desde
         0x60 + 4 x (tipo - 0x2D)
+      - las 9 puertas de vuelta de los mundos en el castillo (p02:9943): salas
+        de 0x9990, [y][x] de 0x9999, 3 x 4 de 0x6CC7 (p01:6C95; el dibujo 0,
+        el de mundo sin visitar)
       - los bloques de BLOQUES_F0
     """
     fuera = []
@@ -291,6 +310,18 @@ def piezas(rom, m, n):
             for dc, ch in enumerate(fila):
                 fuera.append((f0 + df, c0 + dc, ch))
 
+    # la cosa va primero: las figuras la tapan (3:4 y 7:6, figura 7)
+    cosa = cosa_de_sala(rom, m, n)
+    if cosa:
+        tipo, y, x = cosa
+        f, c = casilla(y, x)
+        if tipo < 7:
+            rom.pon(1, 2, 3)
+            a = 0x6C87 + 2 * tipo
+            rect(f, c, [[rom[a + 1], rom[a]]])     # el 0 tambien se escribe
+        else:
+            b = 0x76 if tipo < 0x2D else 0x60 + 4 * (tipo - 0x2D)
+            rect(f, c, [[b, b + 1], [b + 2, b + 3]])
     for c, y, x in figuras(rom, m, n):
         f, k = casilla(y, x)
         t = c & 0x0F
@@ -320,18 +351,12 @@ def piezas(rom, m, n):
                 rom.pon(1, 2, 3)
                 rect(f, c, [[rom[0x73D2], rom[0x73D3]], [rom[0x73D4], rom[0x73D5]]])
             i += 4
-    cosa = cosa_de_sala(rom, m, n)
-    if cosa:
-        tipo, y, x = cosa
-        f, c = casilla(y, x)
-        if tipo < 7:
-            rom.pon(1, 2, 3)
-            a = 0x6C87 + 2 * tipo
-            par = [ch for ch in (rom[a + 1], rom[a]) if ch]
-            rect(f, c, [par])
-        else:
-            b = 0x76 if tipo < 0x2D else 0x60 + 4 * (tipo - 0x2D)
-            rect(f, c, [[b, b + 1], [b + 2, b + 3]])
+    if m == 1:
+        rom.pon(1, 2, 3)
+        for i in range(9):
+            if rom[0x9990 + i] == n:
+                f, c = casilla(rom[0x9999 + 2 * i], rom[0x999A + 2 * i])
+                rect(f, c, [[rom[0x6CC7 + 4 * r + q] for q in range(4)] for r in range(3)])
     if (m, n) in BLOQUES_F0:
         a = BLOQUES_F0[(m, n)] - 0xED80
         rect(a // 32, a % 32, [[0xF0] * 4] * 3)
@@ -365,10 +390,22 @@ def animados(rom, m, n):
     return fuera
 
 
+def es_especial(rom, m, n):
+    """La sala especial de cada mundo (p02:8EEF): 0x8F0A + mapa - 2 da la sala
+    y 0x8F14 + mapa - 2 lo que va a 0xE690. Con 0xE690 puesto p00:514D salta
+    todo el montaje (p00:5561 tambien lo mira): la sala queda NEGRA."""
+    if m < 2:
+        return False
+    rom.pon(1, 2, 3)
+    return rom[0x8F0A + m - 2] == n and n != 0
+
+
 def nombres_con_objetos(rom, m, n):
     """La tabla de nombres de la sala con las tinajas, los objetos que se
     pintan con caracteres (los de ficha sin el bit 7: puertas...) y las
     piezas (ver piezas)."""
+    if es_especial(rom, m, n):
+        return [[0] * 32 for _ in range(20)]
     t = nombres(rom, m, n)
     for f, c, ch in piezas(rom, m, n):
         if 0 <= f < 20 and 0 <= c < 32:
@@ -380,7 +417,16 @@ def nombres_con_objetos(rom, m, n):
                     t[fy - 4 + dy][fx + dx] = c
     for tipo, b7, y, x in objetos(rom, m, n):
         fi = ficha_de_tipo(rom, tipo)
-        if fi[0] & 0x80 or fi[1] >= 61:
+        if fi[0] & 0x80:                    # sprite
+            continue
+        if fi[0] & 0x40:
+            # p01:6E4E -> 6F2C, que elige con el tercer byte; solo el tipo 4
+            # lo tiene, con un 0: p01:6F54, una columna de (ix+14) caracteres
+            # (0 al entrar) y un 0x99 debajo
+            if fi[2] == 0 and 0 <= y // 8 - 4 < 20:
+                t[y // 8 - 4][x // 8] = 0x99
+            continue
+        if fi[1] >= 61:
             continue
         c, f, cs = mosaico(rom, fi[1])
         for k, ch in enumerate(cs):
