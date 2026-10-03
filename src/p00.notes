@@ -1137,6 +1137,7 @@ C 0x425D bancos_1_2_3: pone los bancos 1, 2 y 3 (y sus copias en 0xF0F1-0xF0F3)
 C 0x4260 bancos_7_8_9: pone los bancos 7, 8 y 9 (y sus copias en 0xF0F1-0xF0F3)
 C 0x4266 bancos_1_2_3: pone los bancos 1, 2 y 3 (y sus copias en 0xF0F1-0xF0F3)
 C 0x4269 bancos_1_2_3: pone los bancos 1, 2 y 3 (y sus copias en 0xF0F1-0xF0F3)
+C 0x426C estado_4: el estado 4 (golpeado)
 C 0x4274 bancos_4_5_6: pone los bancos 4, 5 y 6 (y sus copias en 0xF0F1-0xF0F3)
 C 0x427B lee el ESTADO del juego
 C 0x42C9 apunta a la espera del paso, en cuadros
@@ -1386,6 +1387,7 @@ C 0x49AD paso_siguiente: sube el paso 0xE001
 C 0x49B3 guarda las vecinas de la sala: arriba, abajo, izquierda, derecha y el byte siguiente (16 bits)
 C 0x49BB despacha: salta a la entrada A de la tabla de palabras que va detras del call
 C 0x49D2 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x49DF empieza_el_cierre: el recuadro que se cierra en el final
 C 0x49E2 paso_siguiente: sube el paso 0xE001
 C 0x49E8 sala_a_vram: la pantalla de la sala (0xED80) a las filas 4-23
 C 0x49F4 sala_a_vram: la pantalla de la sala (0xED80) a las filas 4-23
@@ -1457,9 +1459,13 @@ C 0x4B9F al_estado: al estado A con el paso 0 y 0x20 cuadros de espera
 C 0x4BAF byte_de_tabla: A = el byte HL + A
 C 0x4BC1 pon_cosa: la cosa C en la y D, x E (hueco 0xE740)
 C 0x4BC6 guarda la cosa del jefe vencido puesta
+C 0x4BDA alegria: los saltos y el rotulo del estado 0x14
+C 0x4BDD lee los saltos de alegria
 C 0x4BE5 monta_la_planta: la planta y lo que la cambia (objeto 0x18, mapa 4); no en salas especiales
+C 0x4BE8 mas_vida: el tope de la vida + 8 (hasta 0x48) y la vida llena
 C 0x4BED al_estado: al estado A con el paso 0 y 0x20 cuadros de espera
 C 0x4BF1 guarda estado 0x14 pedido
+C 0x4BF4 empieza_la_alegria: estado 0x14: 9 saltos de alegria
 C 0x4BF7 paso_siguiente: sube el paso 0xE001
 C 0x4C05 apunta a la espera del paso, en cuadros
 C 0x4C21 estado_a: el estado A con el paso 0
@@ -1491,6 +1497,7 @@ C 0x4D84 apunta a las llaves (BCD)
 C 0x4DBE casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 C 0x4DDE lee quien juega (0 Afrodita)
 C 0x4DE8 apunta a el contador de cuadros
+C 0x4DFF guarda lo herido que esta el jefe (0, 1, 2)
 C 0x4E03 guarda la musica que suena
 C 0x4E12 guarda los programas de los cuatro canales de sonido (0xE100-0xE107) y el byte siguiente (16 bits)
 C 0x4E20 pide_sonido_ya: como pide_sonido, sin mirar la pausa
@@ -1510,6 +1517,7 @@ C 0x4E71 sonido_especial: 0xFA/0xFF se apaga, 0xFB/0xFC, 0xFD/0xFE la pausa
 C 0x4E75 efecto: el efecto A si no suena uno mayor (tabla 0x73DC, canal 0xE15D)
 C 0x4E8A lee la musica que suena
 C 0x4ED0 guarda los programas de los cuatro canales de sonido (0xE100-0xE107) y el byte siguiente (16 bits)
+C 0x4F23 lee en el agua
 C 0x4F64 fin_de_la_pausa_del_sonido: 0xFE: la musica y el PSG como estaban
 C 0x510E borra_e540: 0xE51C, 0xE51D y 0xE540-0xE5FF a cero
 C 0x5111 graficos_de_la_sala: la carga grafica de la sala (tools/vram.py carga_sala)
@@ -1560,9 +1568,17 @@ C 0x5241 lee el mapa (0xE041) y la sala (0xE042) de un tiron
 C 0x5249 palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x5258 guarda la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)
 C 0x525B a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x526F guarda las armas 1-4 en pantalla y el byte siguiente (16 bits)
 C 0x5272 apunta a tres huecos de 32 bytes (armas)
 C 0x5292 guarda el estado del personaje (5 = hundirse)
+C 0x5295 guarda hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 C 0x5298 guarda la pose del personaje
+C 0x529B guarda la espada (1 empieza, 2 golpeando)
+C 0x529E guarda sin daño (tras un golpe o al entrar)
+C 0x52A1 guarda parpadeando
+C 0x52A5 guarda sin daño (tras un golpe o al entrar)
+C 0x52A9 guarda parpadeando
+C 0x52AE guarda los cuadros de parpadeo tras un golpe
 C 0x52C3 guarda la x del personaje
 C 0x52C8 guarda la y del personaje
 C 0x52D3 palabra_de_tabla: DE = la palabra A de la tabla de HL
@@ -1584,6 +1600,7 @@ C 0x531B sprites_de_sala_en_sala: los sprites de las figuras de sala en sala de 
 C 0x531E figuras_sueltas: 0xE602 = 0
 C 0x5321 huecos_ec30_en_la_copia: los tres huecos de 0xEC30 en la copia de nombres
 C 0x5327 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x532A paredes_del_personaje: las cuatro paredes del personaje a 0xE519
 C 0x532D p8000_banco_14: pone el banco 14 en 0x8000
 C 0x5330 a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
 C 0x5335 pinta_figuras: las figuras de los huecos: A = 0 las de detras, 1 las de delante
@@ -1609,6 +1626,9 @@ C 0x53A8 debajo_ec30: lo de debajo de los huecos de 0xEC30
 C 0x53AB figuras_del_castillo: las figuras del castillo de cada cuadro
 C 0x53AE huecos_ec30_en_la_copia: los tres huecos de 0xEC30 en la copia de nombres
 C 0x53B4 a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
+C 0x53B7 personaje: el personaje cada cuadro
+C 0x53BA mueve_armas: las armas se mueven y se acaban fuera de la pantalla
+C 0x53BD figuras_que_llevan: las figuras de 0xEC10 y 0xEC20 con el personaje
 C 0x53D8 p8000_banco_14: pone el banco 14 en 0x8000
 C 0x53DB a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
 C 0x53DE apunta a el tampon de 0xEB00 (lo de debajo de las figuras; la contraseña)
@@ -1618,6 +1638,16 @@ C 0x53EA a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x53ED jefe_cada_cuadro: el jefe: humo, salida y lo de su tipo
 C 0x53F0 objetos_escondidos: los objetos escondidos del castillo (salas 0x30, 0x4B, 0x28, 0x18 y 0x2B)
 C 0x53F3 mira_umbrella: con el objeto 0x26, las 8 ultimas letras contra UMBRELLA
+C 0x53F6 recoge_la_cosa: recoger la cosa de la sala: objeto, marcas y lo del 0x0C
+C 0x53F9 armas_contra_figuras: las armas contra las figuras
+C 0x53FC espada_contra_figuras: la espada contra las figuras
+C 0x53FF armas_contra_el_jefe: las armas contra el jefe
+C 0x5402 espada_al_jefe: la espada contra el jefe
+C 0x5405 choque_con_el_jefe: el personaje contra el jefe: golpeado y el daño de 0xBAD2
+C 0x5408 choques_con_figuras: el personaje contra las figuras de los huecos
+C 0x540B mina_hiere: la explosion del arma 5 hiere al personaje
+C 0x540E lee_el_monumento: el arma 6 junto a la cosa 0xE678 de la sala: estado 0x0C
+C 0x5411 armas_contra_ec30: las armas contra los huecos de 0xEC30
 C 0x5414 entra_en_el_mundo: con abajo delante de la puerta abierta: al estado 8
 C 0x5417 abre_la_puerta: la puerta del mundo se abre poco a poco; abierta, se gasta el objeto 0x0C
 C 0x541A sale_del_mundo: con abajo delante de la puerta de vuelta: estado 0x10
@@ -1845,6 +1875,7 @@ C 0x5F81 cifra_baja: pinta la cifra baja de (DE) y sigue con cifras_bcd
 C 0x5F8C cifra_baja: pinta la cifra baja de (DE) y sigue con cifras_bcd
 C 0x5F97 cifra_baja: pinta la cifra baja de (DE) y sigue con cifras_bcd
 C 0x5FA1 guarda el estado del personaje (5 = hundirse)
+C 0x5FA4 guarda sin daño (tras un golpe o al entrar)
 C 0x5FE2 guarda la y del personaje
 C 0x5FF5 guarda la y del personaje y el byte siguiente (16 bits)
 # --- fin de las anotaciones de anota.py ---

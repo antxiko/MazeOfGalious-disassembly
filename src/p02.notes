@@ -915,6 +915,7 @@ C 0x8224 lee la y del jefe
 C 0x8254 lee el contador de cuadros de partida
 C 0x8273 paso_del_jefe: sube el paso del jefe (ix+1)
 C 0x8284 despacha: salta a la entrada A de la tabla de palabras que va detras del call
+C 0x8292 lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 C 0x82BB lee la x del personaje
 C 0x82D1 lee la x del personaje
 C 0x8300 quita_bit_4: quita el bit 4 de las banderas
@@ -1267,21 +1268,32 @@ C 0x9C2F hl_mas_a: HL += A
 C 0x9DC6 apunta a hay puerta de vuelta en la sala
 C 0x9DD3 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 C 0x9E2F apunta a F1 apretada
+C 0x9E3D guarda la cuenta del golpe
 C 0x9E51 guarda la x del personaje
 C 0x9E5E pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0x9E67 rle_a_vram: descomprime el rle de DE en la VRAM de HL
+C 0x9E78 guarda la y del personaje con su fraccion (16 bits) y el byte siguiente (16 bits)
+C 0x9E81 pose_b_mas_bit: la pose B + el bit 3 de (HL)
 C 0x9E8B guarda un paso de varios cuadros en marcha
+C 0x9E9E guarda la y del personaje con su fraccion (16 bits) y el byte siguiente (16 bits)
+C 0x9EA7 pose_b_mas_bit: la pose B + el bit 3 de (HL)
 C 0x9EB4 guarda la y del personaje
 C 0x9EB8 guarda el estado del personaje (5 = hundirse)
+C 0x9EBB guarda el paso en la escalera
 C 0x9EC1 lee la y, x de la puerta del mundo y el byte siguiente (16 bits)
 C 0x9EDF palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x9EFC pose_del_personaje: la pose 0xE502 (0xE53D en la pausa) de la tabla 0x7529
 C 0x9F1D guarda la x del personaje
+C 0x9F27 guarda la cuenta del golpe
+C 0x9F35 guarda la y del personaje con su fraccion (16 bits) y el byte siguiente (16 bits)
+C 0x9F38 apunta a la cuenta del golpe
 C 0x9F3C sprites_puerta_de_vuelta: los 8 sprites de la puerta de vuelta
 C 0x9F3F fin_del_paso: 0xE608 a 0
+C 0x9F48 guarda la y del personaje con su fraccion (16 bits) y el byte siguiente (16 bits)
 C 0x9F4F guarda la x del personaje
 C 0x9F76 color_de_fondo: el registro 7 del VDP = B
 C 0x9F7F color_de_fondo: el registro 7 del VDP = B
 C 0x9F87 lee el mapa (0xE041) y la sala (0xE042) de un tiron
 C 0x9FC6 lee las marcas del mapa 5 (bits 7-4: objetos 09 08 07 0A; bit 2: jefe vencido)
+C 0x9FE7 lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 # --- fin de las anotaciones de anota.py ---

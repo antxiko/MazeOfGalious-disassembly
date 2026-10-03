@@ -48,5 +48,11 @@ F 0x7DF2 16
 C 0x6033 guarda los programas de los cuatro canales de sonido (0xE100-0xE107) y el byte siguiente (16 bits)
 C 0x604E lee los programas de los cuatro canales de sonido (0xE100-0xE107) y el byte siguiente (16 bits)
 C 0x6085 apunta a los programas de los cuatro canales de sonido (0xE100-0xE107)
+C 0x61B1 lee lo herido que esta el jefe (0, 1, 2)
+C 0x61BD lee lo herido que esta el jefe (0, 1, 2)
+C 0x61F5 lee lo herido que esta el jefe (0, 1, 2)
+C 0x6201 lee lo herido que esta el jefe (0, 1, 2)
+C 0x631F lee lo herido que esta el jefe (0, 1, 2)
+C 0x632B lee lo herido que esta el jefe (0, 1, 2)
 C 0x6515 lee la musica que suena
 # --- fin de las anotaciones de anota.py ---

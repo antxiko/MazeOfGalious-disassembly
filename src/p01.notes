@@ -1096,6 +1096,7 @@ C 0x6009 palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x600D guarda la y del personaje
 C 0x6011 guarda la x del personaje
 C 0x6030 guarda la sala especial (pista o tienda)
+C 0x603C guarda empujado (1 a la izquierda, 2 a la derecha)
 C 0x6050 lista_a_vram: pinta la lista de DE: [destino] y bytes, 0xFE otro destino, 0xFF acaba
 C 0x6056 pinta_monedas: las monedas en la fila 1, columna 24
 C 0x6059 pinta_llaves: las llaves en la fila 2, columna 24
@@ -1155,12 +1156,14 @@ C 0x6358 lee el numero en la lista de la sala
 C 0x635E apunta a el numero en la lista de la sala
 C 0x636B lee la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)
 C 0x637C cuenta_hueco_ec30: el hueco IX cuenta su byte 6; a 0 se vacia
+C 0x63BA rompe_tinaja: la tinaja se rompe y queda rota en las marcas de la sala
 C 0x63DB pon_figura_movil: rellena la ficha de IX
 C 0x63F1 apunta a la figura que sube y baja del castillo
 C 0x6447 mueve_una: mueve una de 0xE4A0 y la cambia de sala por arriba o por abajo
 C 0x645D lee la sala
 C 0x6467 guarda la figura de sala en sala que esta en esta sala
 C 0x6471 apunta a la figura de sala en sala que esta en esta sala
+C 0x648F lee la figura que lo lleva al salir de la sala
 C 0x64B4 palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0x64E0 guarda la figura que lleva al personaje
 C 0x656B da_la_vuelta: la velocidad negada y el bit 1 cambiado
@@ -1330,7 +1333,9 @@ C 0x73DE apunta a la copia de la tabla de sprites (128 bytes)
 C 0x73E7 lee el ESTADO del juego
 C 0x73F1 lee la pose del personaje
 C 0x73F7 palabra_de_tabla: DE = la palabra A de la tabla de HL
+C 0x7412 lee el tercer sprite escondido
 C 0x7425 lee el ESTADO del juego
+C 0x7434 lee parpadeando
 C 0x7443 lee el ESTADO del juego
 C 0x744C apunta a quien juega (0 Afrodita)
 C 0x7477 hueco_e540: un hueco de 0xE540
@@ -1457,6 +1462,7 @@ C 0x7EE7 apunta a F5 ya apretada
 C 0x7F03 empieza_el_humo: 0xE0D2 = 2, 0x41 cuadros de humo y la musica 0x90
 C 0x7F08 humo: una nube cada 8 cuadros en los sitios de 0x8003
 C 0x7F11 a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
+C 0x7F14 para_con_escudo: C si el personaje quieto para el disparo mirando hacia el (sonido 0x1D)
 C 0x7F1A a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 C 0x7F25 lee el tipo del jefe (el hueco 0xE700 es el jefe)
 C 0x7F2F a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)

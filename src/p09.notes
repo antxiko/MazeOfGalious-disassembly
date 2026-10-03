@@ -101,24 +101,34 @@ C 0xA036 apunta a las puertas del castillo (figura 1, dos de 16 bytes)
 C 0xA053 despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
 C 0xA05E lee las llaves (BCD, 16 bits)
 C 0xA06B lee la y del personaje
+C 0xA070 lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 C 0xA083 lee la x del personaje
 C 0xA08C lee lo apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 C 0xA0A2 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0xA0AC guarda el estado del personaje (5 = hundirse)
+C 0xA0B0 guarda parpadeando
+C 0xA0B3 guarda la espada (1 empieza, 2 golpeando)
+C 0xA0B7 guarda sin daño (tras un golpe o al entrar)
+C 0xA0CE lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 C 0xA0DD lee la x del personaje
 C 0xA0F4 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0xA102 guarda el estado del personaje (5 = hundirse)
+C 0xA105 guarda sin daño (tras un golpe o al entrar)
 C 0xA109 lee el estado del personaje (5 = hundirse)
 C 0xA151 lee las llaves (BCD, 16 bits)
 C 0xA15E lee la y del personaje
+C 0xA163 lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 C 0xA17B lee la x del personaje
 C 0xA184 lee lo apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 C 0xA19D pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0xA1AF lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 C 0xA1BC lee la x del personaje
+C 0xA1C6 lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 C 0xA1D3 lee la x del personaje
 C 0xA1F2 apunta a las llaves (BCD)
 C 0xA202 pinta_llaves (por 0x408C): las llaves en la fila 2, columna 24
 C 0xA23F lee la y del personaje
+C 0xA244 lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 C 0xA259 lee la x del personaje
 C 0xA262 lee lo apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 C 0xA27A pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
@@ -127,13 +137,17 @@ C 0xA2EF apunta a los huecos de figura (32 bytes cada uno)
 C 0xA345 apunta a tiene el objeto 0x29
 C 0xA348 tiene_o_popolon (por 0x4089): NZ si la marca de HL esta puesta o se lleva a Popolon (0xE501)
 C 0xA353 lee la y del personaje
+C 0xA358 lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 C 0xA36B lee la x del personaje
+C 0xA36F lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 C 0xA3A1 lee lo apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 C 0xA3BA pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0xA41A lee la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)
 C 0xA448 lee la y del personaje
 C 0xA450 lee la x del personaje
+C 0xA459 lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 C 0xA467 lee la y del personaje
+C 0xA46E lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 C 0xA482 lee la x del personaje
 C 0xA4B2 lee la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)
 C 0xA4C3 lee la y del personaje
@@ -157,6 +171,7 @@ C 0xA658 byte_de_tabla (por 0x4083): A = el byte HL + A
 C 0xA668 apunta a tiene el objeto 0x1C
 C 0xA66B tiene_o_popolon (por 0x4089): NZ si la marca de HL esta puesta o se lleva a Popolon (0xE501)
 C 0xA67A lee la y del personaje
+C 0xA684 lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 C 0xA688 lee la x del personaje
 C 0xA6A0 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0xA6A7 lee la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)

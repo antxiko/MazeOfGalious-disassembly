@@ -397,7 +397,7 @@ DATA_tabla_8287:
 
 L_828F:
 	call franja_del_personaje		;828f   ; cerca del personaje...
-	ld a,(0e503h)		;8292
+	ld a,(0e503h)		;8292   ; lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 	rra			;8295
 	rl c		;8296
 	ld a,c			;8298
@@ -4261,7 +4261,7 @@ tecla_f1:		; C al apretar F1 (fila 6, bit 5) si 0xE002 tiene el bit 6
 	ret			;9e3a
 entra_por_la_puerta:		; al entrar en el mundo: la pose de espaldas, la musica 0x82 y los sprites de la puerta
 	ld a,080h		;9e3b   ; al entrar en el mundo: 0x80 cuadros...
-	ld (0e50fh),a		;9e3d
+	ld (0e50fh),a		;9e3d   ; guarda la cuenta del golpe
 	xor a			;9e40
 	ld (0e50bh),a		;9e41
 	ld hl,0e68ah		;9e44   ; ...desde la puerta (su y + 8, guardada en 0xE0D0)...
@@ -4298,11 +4298,11 @@ sube_por_la_puerta:		; cada cuadro el personaje entra en la puerta del mundo
 	ld de,00040h		;9e72
 	or a			;9e75
 	sbc hl,de		;9e76
-	ld (0e504h),hl		;9e78
+	ld (0e504h),hl		;9e78   ; guarda la y del personaje con su fraccion (16 bits) y el byte siguiente (16 bits)
 	ld hl,0e50bh		;9e7b
 	inc (hl)			;9e7e
 	ld b,00eh		;9e7f   ; ...con la pose 0x0E (p03:A5F4)...
-	call 0a5f4h		;9e81
+	call 0a5f4h		;9e81   ; pose_b_mas_bit: la pose B + el bit 3 de (HL)
 	ld hl,0e50fh		;9e84   ; ...hasta que acaba la cuenta
 	dec (hl)			;9e87
 	jr nz,L_9EC0		;9e88
@@ -4319,11 +4319,11 @@ baja_hasta_el_suelo:		; cada cuadro baja hasta pisar suelo
 	ld hl,(0e504h)		;9e97   ; ...baja 0x40 cada cuadro...
 	ld de,00040h		;9e9a
 	add hl,de			;9e9d
-	ld (0e504h),hl		;9e9e
+	ld (0e504h),hl		;9e9e   ; guarda la y del personaje con su fraccion (16 bits) y el byte siguiente (16 bits)
 	ld hl,0e50bh		;9ea1
 	inc (hl)			;9ea4
 	ld b,010h		;9ea5
-	call 0a5f4h		;9ea7
+	call 0a5f4h		;9ea7   ; pose_b_mas_bit: la pose B + el bit 3 de (HL)
 	call 0afb5h		;9eaa   ; ...hasta pisar suelo (p03:AFB5)...
 	jr nc,L_9EC0		;9ead
 	ld a,(0e505h)		;9eaf   ; ...y queda en pie
@@ -4331,7 +4331,7 @@ baja_hasta_el_suelo:		; cada cuadro baja hasta pisar suelo
 	ld (0e505h),a		;9eb4   ; guarda la y del personaje
 	xor a			;9eb7
 	ld (0e500h),a		;9eb8   ; guarda el estado del personaje (5 = hundirse)
-	ld (0e50eh),a		;9ebb
+	ld (0e50eh),a		;9ebb   ; guarda el paso en la escalera
 	jr fin_del_paso		;9ebe
 L_9EC0:
 	exx			;9ec0   ; los sprites de la puerta del mundo...
@@ -4409,7 +4409,7 @@ entra_en_la_vuelta:		; al entrar en la puerta de vuelta
 	ld b,00eh		;9f23   ; ...la pose 0x0E y 0x40 cuadros
 L_9F25:
 	ld a,040h		;9f25
-	ld (0e50fh),a		;9f27
+	ld (0e50fh),a		;9f27   ; guarda la cuenta del golpe
 	ld a,b			;9f2a
 	jp L_9E59		;9f2b
 baja_por_la_vuelta:		; cada cuadro entra en la puerta de vuelta
@@ -4417,8 +4417,8 @@ baja_por_la_vuelta:		; cada cuadro entra en la puerta de vuelta
 	ld de,00040h		;9f31
 	add hl,de			;9f34
 L_9F35:
-	ld (0e504h),hl		;9f35
-	ld hl,0e50fh		;9f38
+	ld (0e504h),hl		;9f35   ; guarda la y del personaje con su fraccion (16 bits) y el byte siguiente (16 bits)
+	ld hl,0e50fh		;9f38   ; apunta a la cuenta del golpe
 	dec (hl)			;9f3b
 	jp nz,sprites_puerta_de_vuelta		;9f3c   ; sprites_puerta_de_vuelta: los 8 sprites de la puerta de vuelta
 	jp fin_del_paso		;9f3f   ; fin_del_paso: 0xE608 a 0
@@ -4426,7 +4426,7 @@ sale_de_la_vuelta:		; al volver al castillo, delante de la puerta guardada
 	ld a,(0e0d0h)		;9f42   ; al volver: delante de la puerta guardada (0xE0D0, 0xE0D1), pose 0x10
 	ld c,000h		;9f45
 	ld b,a			;9f47
-	ld (0e504h),bc		;9f48
+	ld (0e504h),bc		;9f48   ; guarda la y del personaje con su fraccion (16 bits) y el byte siguiente (16 bits)
 	ld a,(0e0d1h)		;9f4c
 	ld (0e507h),a		;9f4f   ; guarda la x del personaje
 	ld b,010h		;9f52
@@ -4510,7 +4510,7 @@ L_9FC1:
 	ld a,b			;9fe3
 	cp 003h		;9fe4
 	ccf			;9fe6
-	ld a,(0e503h)		;9fe7
+	ld a,(0e503h)		;9fe7   ; lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 	jr c,L_9FEF		;9fea
 	and a			;9fec
 	jr L_9FF0		;9fed

@@ -101,7 +101,7 @@ L_A05E:
 	ld a,(0e505h)		;a06b   ; lee la y del personaje
 	cp c			;a06e
 	ret nz			;a06f
-	ld a,(0e503h)		;a070
+	ld a,(0e503h)		;a070   ; lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 	and a			;a073
 	ld a,(ix+003h)		;a074
 	ld b,0f8h		;a077
@@ -135,10 +135,10 @@ L_A0AA:
 	ld a,007h		;a0aa
 	ld (0e500h),a		;a0ac   ; guarda el estado del personaje (5 = hundirse)
 	xor a			;a0af
-	ld (0e533h),a		;a0b0
-	ld (0e508h),a		;a0b3
+	ld (0e533h),a		;a0b0   ; guarda parpadeando
+	ld (0e508h),a		;a0b3   ; guarda la espada (1 empieza, 2 golpeando)
 	inc a			;a0b6
-	ld (0e518h),a		;a0b7
+	ld (0e518h),a		;a0b7   ; guarda sin daño (tras un golpe o al entrar)
 	ret			;a0ba
 L_A0BB:
 	dec (ix+007h)		;a0bb
@@ -152,7 +152,7 @@ L_A0CA:
 	inc (ix+001h)		;a0ca
 	ret			;a0cd
 L_A0CE:
-	ld a,(0e503h)		;a0ce
+	ld a,(0e503h)		;a0ce   ; lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 	and a			;a0d1
 	ld a,(ix+003h)		;a0d2
 	ld b,010h		;a0d5
@@ -181,7 +181,7 @@ L_A0FC:
 L_A101:
 	xor a			;a101
 	ld (0e500h),a		;a102   ; guarda el estado del personaje (5 = hundirse)
-	ld (0e518h),a		;a105
+	ld (0e518h),a		;a105   ; guarda sin daño (tras un golpe o al entrar)
 	ret			;a108
 L_A109:
 	ld a,(0e500h)		;a109   ; lee el estado del personaje (5 = hundirse)
@@ -238,7 +238,7 @@ L_A143:
 	ld a,(0e505h)		;a15e   ; lee la y del personaje
 	cp b			;a161
 	ret nz			;a162
-	ld a,(0e503h)		;a163
+	ld a,(0e503h)		;a163   ; lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 	ld e,a			;a166
 	and a			;a167
 	ld a,(ix+003h)		;a168
@@ -279,7 +279,7 @@ L_A1A0:
 	ld (ix+003h),a		;a1ab
 	ret			;a1ae
 L_A1AF:
-	ld a,(0e503h)		;a1af
+	ld a,(0e503h)		;a1af   ; lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 	ld e,a			;a1b2
 	and a			;a1b3
 	ld a,(ix+003h)		;a1b4
@@ -293,7 +293,7 @@ L_A1BB:
 	inc (ix+004h)		;a1c1
 	jr L_A1A0		;a1c4
 L_A1C6:
-	ld a,(0e503h)		;a1c6
+	ld a,(0e503h)		;a1c6   ; lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 	ld c,a			;a1c9
 	and a			;a1ca
 	ld a,(ix+003h)		;a1cb
@@ -376,7 +376,7 @@ L_A22D:
 	ld a,(0e505h)		;a23f   ; lee la y del personaje
 	cp b			;a242
 	ret nz			;a243
-	ld a,(0e503h)		;a244
+	ld a,(0e503h)		;a244   ; lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 	cp c			;a247
 	ret nz			;a248
 	and a			;a249
@@ -528,7 +528,7 @@ L_A345:
 	ld a,(0e505h)		;a353   ; lee la y del personaje
 	cp b			;a356
 	ret nz			;a357
-	ld a,(0e503h)		;a358
+	ld a,(0e503h)		;a358   ; lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 	and a			;a35b
 	ld a,(iy+004h)		;a35c
 	ld b,0f8h		;a35f
@@ -541,7 +541,7 @@ L_A369:
 	ld b,a			;a36a
 	ld a,(0e507h)		;a36b   ; lee la x del personaje
 	cp b			;a36e
-	ld a,(0e503h)		;a36f
+	ld a,(0e503h)		;a36f   ; lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 	ret			;a372
 L_A373:
 	xor a			;a373
@@ -659,7 +659,7 @@ L_A43A:
 	sub (hl)			;a455
 	cp 003h		;a456
 	ret nc			;a458
-	ld a,(0e503h)		;a459
+	ld a,(0e503h)		;a459   ; lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 	ld (0eaa9h),a		;a45c
 	jr L_A4B7		;a45f
 L_A461:
@@ -670,7 +670,7 @@ L_A461:
 	sub (hl)			;a46a
 	cp 019h		;a46b
 	ret nc			;a46d
-	ld a,(0e503h)		;a46e
+	ld a,(0e503h)		;a46e   ; lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 	ld b,a			;a471
 	ld a,(0eaa9h)		;a472
 	cp b			;a475
@@ -1005,7 +1005,7 @@ L_A661:
 	cp 01ch		;a680
 	ret nc			;a682
 	inc hl			;a683
-	ld a,(0e503h)		;a684
+	ld a,(0e503h)		;a684   ; lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 	and a			;a687
 	ld a,(0e507h)		;a688   ; lee la x del personaje
 	jr z,L_A695		;a68b

@@ -69,8 +69,10 @@ C 0x8285 musica_espera (por 0x4086): deja esperando la musica A
 C 0x82D1 byte_de_tabla (por 0x4083): A = el byte HL + A
 C 0x8351 musica_ya (por 0x4080): sin musica esperando, la musica A
 C 0x83A5 byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0x83CE lee en el agua
 C 0x83F9 lee la x del personaje
 C 0x840C lee la x del personaje
+C 0x841E lee en el agua
 C 0x8424 lee la y del personaje
 C 0x846A pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0x84D2 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
@@ -78,6 +80,7 @@ C 0x84F1 lee la x del personaje
 C 0x855F lee la y del personaje
 C 0x856B hl_negado (por 0x405C): HL = -HL
 C 0x8590 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x8608 suelta_figura: la figura deja de llevarlo
 C 0x8706 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0x8749 apunta a los huecos de figura (32 bytes cada uno)
 C 0x874D lee el tipo de la figura
@@ -108,6 +111,7 @@ C 0x8C26 lee la x del personaje
 C 0x8C8C lee el contador de cuadros de partida
 C 0x8CD2 lee el contador de cuadros de partida
 C 0x8CF1 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0x8D5E suelta_figura: la figura deja de llevarlo
 C 0x8D61 lee el contador de cuadros de partida
 C 0x8DC2 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0x8E43 lee el contador de cuadros de partida
@@ -127,8 +131,13 @@ C 0x91A3 lee la x del personaje
 C 0x91E3 lee el contador de cuadros de partida
 C 0x91FB pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0x9222 despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0x9231 suelta_figura: la figura deja de llevarlo
+C 0x9249 lee los pasos de la caida
+C 0x924F lee la velocidad vertical del golpe o la caida (16 bits) y el byte siguiente (16 bits)
 C 0x9282 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0x929E pared_en_fila (por 0x4074): C si una de las casillas (y+B, x+D) o (y+B, x+E) llega al umbral de 0xF020
+C 0x9319 suelta_figura: la figura deja de llevarlo
+C 0x9320 suelta_figura: la figura deja de llevarlo
 C 0x9338 lee el contador de cuadros de partida
 C 0x9374 byte_de_tabla (por 0x4083): A = el byte HL + A
 C 0x9395 byte_de_tabla (por 0x4083): A = el byte HL + A
@@ -190,6 +199,7 @@ C 0x9EE7 lee la x del personaje
 C 0x9F34 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0x9F4B byte_de_tabla (por 0x4083): A = el byte HL + A
 C 0x9FB8 casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
+C 0x9FCE suelta_figura: la figura deja de llevarlo
 C 0x9FF0 casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 C 0x9FF5 casilla_derecha (por 0x4071): compara 0xB9 con el caracter de HL + 1
 # --- fin de las anotaciones de anota.py ---

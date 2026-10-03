@@ -380,7 +380,7 @@ L_4260:
 	jp bancos_1_2_3		;4266   ; bancos_1_2_3: pone los bancos 1, 2 y 3 (y sus copias en 0xF0F1-0xF0F3)
 L_4269:
 	call bancos_1_2_3		;4269   ; bancos_1_2_3: pone los bancos 1, 2 y 3 (y sus copias en 0xF0F1-0xF0F3)
-	call 0b389h		;426c
+	call 0b389h		;426c   ; estado_4: el estado 4 (golpeado)
 	ld b,002h		;426f
 	call 0b3ceh		;4271
 	jp bancos_4_5_6		;4274   ; bancos_4_5_6: pone los bancos 4, 5 y 6 (y sus copias en 0xF0F1-0xF0F3)
@@ -1384,7 +1384,7 @@ L_49DA:
 	ld hl,0e004h		;49da   ; paso 1: espera y p03:A05A
 	dec (hl)			;49dd
 	ret nz			;49de
-	call 0a05ah		;49df
+	call 0a05ah		;49df   ; empieza_el_cierre: el recuadro que se cierra en el final
 L_49E2:
 	jp paso_siguiente		;49e2   ; paso_siguiente: sube el paso 0xE001
 L_49E5:
@@ -1642,19 +1642,19 @@ DATA_sitio_por_mundo:
 
 L_4BD8:
 	djnz L_4BF0		;4bd8   ; estado 0x14, paso 0: p15:BE81 hasta que 0xE53F vuelve a 0
-	call 0be81h		;4bda
-	ld a,(0e53fh)		;4bdd
+	call 0be81h		;4bda   ; alegria: los saltos y el rotulo del estado 0x14
+	ld a,(0e53fh)		;4bdd   ; lee los saltos de alegria
 	and a			;4be0
 	ret nz			;4be1
 	call vecinas_de_la_sala		;4be2   ; p00:5218, p00:5561 y p03:AE9A, y a la partida
 	call monta_la_planta		;4be5   ; monta_la_planta: la planta y lo que la cambia (objeto 0x18, mapa 4); no en salas especiales
-	call 0ae9ah		;4be8
+	call 0ae9ah		;4be8   ; mas_vida: el tope de la vida + 8 (hasta 0x48) y la vida llena
 	ld a,005h		;4beb
 	jp al_estado		;4bed   ; al_estado: al estado A con el paso 0 y 0x20 cuadros de espera
 L_4BF0:
 	xor a			;4bf0   ; paso 1: 0xE031 a 0 y p15:BE5F
 	ld (0e031h),a		;4bf1   ; guarda estado 0x14 pedido
-	call 0be5fh		;4bf4
+	call 0be5fh		;4bf4   ; empieza_la_alegria: estado 0x14: 9 saltos de alegria
 	jp paso_siguiente		;4bf7   ; paso_siguiente: sube el paso 0xE001
 tecla_en_el_titulo:		; espacio o M en el titulo empieza; en los estados 1 y 2 vuelve al 0
 	call mando		;4bfa   ; el mando...
@@ -1991,7 +1991,7 @@ sonido_a_cero:		; el estado del sonido a cero y los canales callados
 	ld (0e1c1h),a		;4df6
 	ld (0e1c2h),a		;4df9
 	ld (0e1c6h),a		;4dfc
-	ld (0e1c5h),a		;4dff
+	ld (0e1c5h),a		;4dff   ; guarda lo herido que esta el jefe (0, 1, 2)
 calla:		; los programas de canal al vacio de 0x6075
 	xor a			;4e02   ; calla: los cuatro programas de canal (0xE100-0xE106)...
 	ld (0e1c7h),a		;4e03   ; guarda la musica que suena
@@ -2143,7 +2143,7 @@ efecto:		; el efecto A si no suena uno mayor (tabla 0x73DC, canal 0xE15D)
 L_4F1F:
 	cp 025h		;4f1f   ; el 0x25 no suena con 0xE511 = 1
 	jr nz,L_4F2C		;4f21
-	ld a,(0e511h)		;4f23
+	ld a,(0e511h)		;4f23   ; lee en el agua
 	or a			;4f26
 	cp 001h		;4f27
 	jr nz,L_4F2C		;4f29
@@ -2519,7 +2519,7 @@ borra_e600:		; 0xE600-0xF03F a cero
 	ret			;526b
 borra_e540:		; 0xE51C, 0xE51D y 0xE540-0xE5FF a cero
 	ld hl,00000h		;526c   ; 0xE51C-0xE51D y 0xE540-0xE5FF a cero
-	ld (0e51ch),hl		;526f
+	ld (0e51ch),hl		;526f   ; guarda las armas 1-4 en pantalla y el byte siguiente (16 bits)
 	ld hl,0e540h		;5272   ; apunta a tres huecos de 32 bytes (armas)
 	ld de,0e541h		;5275
 	ld bc,000bfh		;5278
@@ -2537,17 +2537,17 @@ entra_el_personaje:		; el personaje al entrar: estado a cero y el sitio de la ta
 	call a000_banco_9		;528e   ; el personaje al entrar en la sala: estado 0...
 	xor a			;5291
 	ld (0e500h),a		;5292   ; guarda el estado del personaje (5 = hundirse)
-	ld (0e503h),a		;5295
+	ld (0e503h),a		;5295   ; guarda hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 	ld (0e502h),a		;5298   ; guarda la pose del personaje
-	ld (0e508h),a		;529b
-	ld (0e518h),a		;529e
-	ld (0e533h),a		;52a1
+	ld (0e508h),a		;529b   ; guarda la espada (1 empieza, 2 golpeando)
+	ld (0e518h),a		;529e   ; guarda sin daño (tras un golpe o al entrar)
+	ld (0e533h),a		;52a1   ; guarda parpadeando
 	inc a			;52a4   ; ...0xE518 = 1, 0xE533 = 2, 0xE532 = 8
-	ld (0e518h),a		;52a5
+	ld (0e518h),a		;52a5   ; guarda sin daño (tras un golpe o al entrar)
 	inc a			;52a8
-	ld (0e533h),a		;52a9
+	ld (0e533h),a		;52a9   ; guarda parpadeando
 	ld a,008h		;52ac
-	ld (0e532h),a		;52ae
+	ld (0e532h),a		;52ae   ; guarda los cuadros de parpadeo tras un golpe
 	ld hl,(0e041h)		;52b1   ; en la sala 0x8A del castillo...
 	ld de,08a01h		;52b4
 	rst 20h			;52b7
@@ -2602,7 +2602,7 @@ cuadro_de_partida:		; un cuadro de la partida: todas las rutinas de cada banco
 	call 07378h		;5321   ; huecos_ec30_en_la_copia: los tres huecos de 0xEC30 en la copia de nombres
 	call p8000_banco_2		;5324   ; con 2 y 3: p03:AEBC
 	call a000_banco_3		;5327   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
-	call 0aebch		;532a
+	call 0aebch		;532a   ; paredes_del_personaje: las cuatro paredes del personaje a 0xE519
 	call p8000_banco_14		;532d   ; p8000_banco_14: pone el banco 14 en 0x8000
 	call a000_banco_15		;5330   ; a000_banco_15: pone el banco 15 en 0xA000 (y su copia en 0xF0F3)
 	ld a,001h		;5333   ; p01:6DF7 con A = 1
@@ -2650,9 +2650,9 @@ cuadro_de_partida:		; un cuadro de la partida: todas las rutinas de cada banco
 	call 07378h		;53ae   ; huecos_ec30_en_la_copia: los tres huecos de 0xEC30 en la copia de nombres
 	call p8000_banco_2		;53b1   ; con 2 y 3: p03:A0F4, p03:AD4C, p03:B095
 	call a000_banco_3		;53b4   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
-	call 0a0f4h		;53b7
-	call 0ad4ch		;53ba
-	call 0b095h		;53bd
+	call 0a0f4h		;53b7   ; personaje: el personaje cada cuadro
+	call 0ad4ch		;53ba   ; mueve_armas: las armas se mueven y se acaban fuera de la pantalla
+	call 0b095h		;53bd   ; figuras_que_llevan: las figuras de 0xEC10 y 0xEC20 con el personaje
 	call bancos_4_5_6		;53c0   ; con los bancos 4, 5 y 6: los enemigos
 	call 0b3b4h		;53c3
 	call 0b3c5h		;53c6
@@ -2671,16 +2671,16 @@ cuadro_de_partida:		; un cuadro de la partida: todas las rutinas de cada banco
 	call 07efch		;53ed   ; jefe_cada_cuadro: el jefe: humo, salida y lo de su tipo
 	call 09f82h		;53f0   ; objetos_escondidos: los objetos escondidos del castillo (salas 0x30, 0x4B, 0x28, 0x18 y 0x2B)
 	call 09beeh		;53f3   ; mira_umbrella: con el objeto 0x26, las 8 ultimas letras contra UMBRELLA
-	call 0b701h		;53f6
-	call 0b492h		;53f9
-	call 0b6c1h		;53fc
-	call 0bb24h		;53ff
-	call 0bd55h		;5402
-	call 0b9b2h		;5405
-	call 0b1c1h		;5408
-	call 0b40ch		;540b
-	call 0b194h		;540e
-	call 0b7d5h		;5411
+	call 0b701h		;53f6   ; recoge_la_cosa: recoger la cosa de la sala: objeto, marcas y lo del 0x0C
+	call 0b492h		;53f9   ; armas_contra_figuras: las armas contra las figuras
+	call 0b6c1h		;53fc   ; espada_contra_figuras: la espada contra las figuras
+	call 0bb24h		;53ff   ; armas_contra_el_jefe: las armas contra el jefe
+	call 0bd55h		;5402   ; espada_al_jefe: la espada contra el jefe
+	call 0b9b2h		;5405   ; choque_con_el_jefe: el personaje contra el jefe: golpeado y el daño de 0xBAD2
+	call 0b1c1h		;5408   ; choques_con_figuras: el personaje contra las figuras de los huecos
+	call 0b40ch		;540b   ; mina_hiere: la explosion del arma 5 hiere al personaje
+	call 0b194h		;540e   ; lee_el_monumento: el arma 6 junto a la cosa 0xE678 de la sala: estado 0x0C
+	call 0b7d5h		;5411   ; armas_contra_ec30: las armas contra los huecos de 0xEC30
 	call 099ffh		;5414   ; entra_en_el_mundo: con abajo delante de la puerta abierta: al estado 8
 	call 099c8h		;5417   ; abre_la_puerta: la puerta del mundo se abre poco a poco; abierta, se gasta el objeto 0x0C
 	call 09a76h		;541a   ; sale_del_mundo: con abajo delante de la puerta de vuelta: estado 0x10
@@ -4404,7 +4404,7 @@ fin_del_estado_7:		; el estado 7 del personaje vuelve a 0
 	ret nz			;5f9f
 	xor a			;5fa0
 	ld (0e500h),a		;5fa1   ; guarda el estado del personaje (5 = hundirse)
-	ld (0e518h),a		;5fa4
+	ld (0e518h),a		;5fa4   ; guarda sin daño (tras un golpe o al entrar)
 	ret			;5fa7
 sala_92:		; en la sala 0x92, 9 bytes de 0x5FBA a 0xE4A1
 	ld a,(0e042h)		;5fa8   ; en la sala 0x92, 9 bytes de 0x5FBA a 0xE4A1

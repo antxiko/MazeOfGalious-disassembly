@@ -23,6 +23,634 @@ D 0xBF93 0xBFF0 relleno_b3  relleno: 93 bytes 0xFF entre los datos y la marca de
 D 0xBFF0 0xC000 marca_de_konami  la marca de Konami del final del banco 3 (la destapo Manuel Pazos): leyendo hacia atras, 0xAA, 0x49 (el RC-749 en BCD), 0x0D (13 caracteres) y el titulo al reves con la fuente del juego (katakana desde 0xBA): ガリウス ノ メイキュウ. Sus 6 ultimos bytes son los que otros cartuchos de Konami buscan en 0xBFFA
 D 0xB8F1 0xB8FB tamanos_b8f1  5 parejas que p03:B8CF lee en 0xB8EF + 2 x (iy+0) (0x414C, tipo 1-5): dos medidas (3 y 0x0C, 3 y 0x0C, 8 y 8, 4 y 8, 4 y 0x0C) que p03:B8E5 usa con la posicion de la figura
 F 0xB8F1 2
+C 0xa05a el final: un recuadro que se cierra desde la pantalla entera (0x20 x 0x14, 10 vueltas)
+C 0xa06d cada 10 cuadros una vuelta: la fila de arriba...
+C 0xa07a ...la de abajo...
+C 0xa08e ...la columna de la izquierda...
+C 0xa094 ...y la de la derecha, a 0...
+C 0xa0a1 ...y el recuadro una casilla mas dentro
+C 0xa0b7 Z al acabar las 10
+C 0xa0bc una fila de 0xE6AD casillas a 0, salvo las de 0xE6A8
+C 0xa0cb una columna de 0xE6AC casillas a 0, salvo las de 0xE6A8
+C 0xa0e1 Z si HL es una de las 2 x 2 casillas de 0xE6A8 (las que se quedan)
+C 0xa0f4 el personaje cada cuadro: el suelo, el agua, lo del mando, las armas
+C 0xa103 Afrodita en la sala 0x0B del mapa 8 se hunde...
+C 0xa113 ...si no, en el agua (0xE511)...
+C 0xa118 ...no baja de la y 0xB9
+C 0xa124 p03:A8D9 y p03:A8F2...
+C 0xa12e ...y por el estado del personaje (tabla que sigue)
+C 0xa144 estado 0, en pie: sin suelo debajo...
+C 0xa149 ...y sin el bit 3 de 0xE519, a caer
+C 0xa150 con 0xE508, arriba es saltar
+C 0xa157 el mando de 0xE52E: derecha (bit 3)...
+C 0xa164 ...izquierda (bit 2)...
+C 0xa16a ...abajo (bit 1)...
+C 0xa16e ...arriba (bit 0)
+C 0xa172 sin derecha ni izquierda...
+C 0xa178 ...con 0xE520, empujado
+C 0xa190 a caer: la velocidad de caida 0x0C (Afrodita) o 0x0D (Popolon)...
+C 0xa1a1 ...estado 2
+C 0xa1a7 a la izquierda: mirando a la izquierda (0xE503 = 1)...
+C 0xa1ac ...la pose de andar
+C 0xa1c1 los pasos (p03:A2C4)
+C 0xa1cb pared a la izquierda: se para
+C 0xa1de la velocidad: en el agua -0x80...
+C 0xa1e7 ...normal -0x200...
+C 0xa1ea ...con el objeto 0x11, -0x280
+C 0xa1f2 se mueve en x
+C 0xa1f5 a la derecha: mirando a la derecha (0xE503 = 0)
+C 0xa216 pared a la derecha: se para
+C 0xa229 en el agua 0x80, normal 0x200, con el objeto 0x11 0x280
+C 0xa23f empujado: 0xE520 = 1 a la izquierda (-8), 2 a la derecha (+0x12)...
+C 0xa251 ...desde la x de 0xE521
+C 0xa256 arriba recien apretado...
+C 0xa25c ...con escalera delante (p03:AEE1)...
+C 0xa261 ...a subir: sentido 1, pose 0x0E
+C 0xa265 a la escalera: el sentido en 0xE50C...
+C 0xa272 ...guarda la pose y hacia donde mira...
+C 0xa27e ...de espaldas (2)...
+C 0xa283 ...estado 3
+C 0xa28b arriba recien apretado: saltar...
+C 0xa296 ...desde velocidad 0...
+C 0xa29e ...estado 1, con el sonido 1
+C 0xa2a6 abajo recien apretado...
+C 0xa2ae ...con escalera debajo (p03:AEF2)...
+C 0xa2b4 ...ajustado a la casilla...
+C 0xa2be ...a bajar: sentido 2, pose 0x10
+C 0xa2c4 cada 4 cuadros el paso siguiente de la pose
+C 0xa2d2 estado 3, en la escalera: por el paso 0xE50E
+C 0xa2ec arriba o abajo apretados...
+C 0xa2fe ...hacia donde mira...
+C 0xa301 ...y el paso 2 o 3
+C 0xa304 el paso
+C 0xa308 si esta en la figura que sube y baja (0xEC12), la lleva
+C 0xa316 la pose de escalera: 4, o 6 con 0xE508
+C 0xa329 estado 1, el salto: Afrodita llega a 0x0C, Popolon a 0x0D...
+C 0xa336 ...subiendo aun...
+C 0xa33a ...izquierda o derecha apretadas...
+C 0xa347 ...velocidad 0x100 a un lado...
+C 0xa353 ...mirando hacia alli...
+C 0xa35e ...si no hay pared...
+C 0xa364 ...al principio del salto, el doble...
+C 0xa36c ...en el agua, la cuarta parte...
+C 0xa373 ...y se mueve
+C 0xa376 en lo alto del salto...
+C 0xa37f ...Popolon llevado por la figura, hasta 6...
+C 0xa392 ...sin arriba apretado se corta el salto...
+C 0xa399 ...y en el techo (y < 0x29 o el bit 2 de 0xE519)
+C 0xa3a7 la velocidad
+C 0xa3ac bajando: con suelo debajo...
+C 0xa3b8 ...p03:BF02 y el mando segun hacia donde mira
+C 0xa3c8 al caer al suelo: el sonido 2 (si no venia saltando)...
+C 0xa3d1 ...en pie
+C 0xa3e3 la pose 0 (derecha) o 2 (izquierda)
+C 0xa3f0 cayendo: la tabla de velocidades 0xA953 (Afrodita, hasta 0x18) o 0xA951 (Popolon, 0x1A)...
+C 0xa400 ...el paso siguiente...
+C 0xa404 ...en el agua uno de cada cuatro...
+C 0xa413 ...hasta el tope...
+C 0xa41d ...la velocidad de la tabla...
+C 0xa424 ...la cuarta parte en el agua...
+C 0xa42b ...y la y baja
+C 0xa437 salto hacia la derecha
+C 0xa43d salto hacia la izquierda
+C 0xa443 BC / 4
+C 0xa44c mira hacia el lado A (0 derecha, 1 izquierda)...
+C 0xa458 ...y la pose con el bit 0 cambiado
+C 0xa460 golpeado: paso 0...
+C 0xa46b ...la pose 0x0C o 0x0A segun el lado del golpe (0xE514)...
+C 0xa478 ...hacia arriba -0x180...
+C 0xa47e ...y hacia atras 0x400...
+C 0xa48e ...0xFF cuadros...
+C 0xa493 ...todo a cero
+C 0xa4a3 el paso siguiente
+C 0xa4a8 paso 1: en el aire...
+C 0xa4ac ...en el agua cada 4 cuadros
+C 0xa4b8 hasta el suelo...
+C 0xa4ca ...la gravedad 0x80...
+C 0xa4d6 ...hasta 6...
+C 0xa4e3 ...la y, no mas arriba de 0x28...
+C 0xa4f2 ...y hacia atras, salvo en la escalera...
+C 0xa506 ...o con pared
+C 0xa518 en el suelo: la pose 0x0D o 0x0B...
+C 0xa529 ...4 cuadros y el sonido 2
+C 0xa536 paso 2: 4 cuadros...
+C 0xa540 ...y queda parpadeando 0x1E cuadros (0xE532, 0xE533)...
+C 0xa54a ...mirando al golpe...
+C 0xa553 ...en pie
+C 0xa560 0xE530 = 1
+C 0xa566 la muerte: la ultima pose 0x17 o 0x1C segun hacia donde mira...
+C 0xa570 ...paso 0: la musica 0x94...
+C 0xa589 ...paso 1: la pose 0x12 o 0x17...
+C 0xa59f ...paso 2: cada 6 cuadros la pose siguiente hasta la ultima...
+C 0xa5b2 ...paso 3: se acaba la vida
+C 0xa5ba en la figura 1 del castillo (0xEA01 = 1), con pared nada...
+C 0xa5c6 ...con 0xE529 despacio (0x100, pose cada 4 cuadros)...
+C 0xa5d1 ...si no 0x200...
+C 0xa5d6 ...hacia donde mira
+C 0xa5f4 la pose B + el bit 3 de (HL)
+C 0xa5fe NZ con el objeto 0x11 (y si no esta saltando)
+C 0xa608 en la escalera: el primer cuadro...
+C 0xa60e ...al pisar suelo se baja de ella...
+C 0xa618 ...si la figura de 0xEC0F lo pide, 0xEC07 = 1 y el sonido 0x2E...
+C 0xa635 ...en pie, como estaba antes
+C 0xa652 subiendo o bajando: el mando...
+C 0xa661 ...arriba (bit 0): sube...
+C 0xa669 ...abajo (bit 1): baja...
+C 0xa671 ...izquierda o derecha: se baja de la escalera hacia ese lado...
+C 0xa695 ...si la casilla de al lado es pared (>= 0xBA) no
+C 0xa6a7 en pie, a un lado de la escalera
+C 0xa6b2 de espaldas...
+C 0xa6b6 ...a 0x100, o 0x140 con el objeto 0x11...
+C 0xa6c2 ...hacia arriba o hacia abajo...
+C 0xa6ca ...entre la y 0x27 y la 0xC0
+C 0xa6dd la pose 0x0E (sube) o 0x10 (baja), un paso cada 8 pixeles
+C 0xa6ea temblando: un pixel a cada lado cada 2 cuadros...
+C 0xa706 ...hasta que acaba la cuenta
+C 0xa715 las armas: el boton A, la espada; el B, el arma elegida
+C 0xa71e boton A (bit 4): la espada
+C 0xa728 boton B (bit 5): el arma...
+C 0xa72b ...la 6 no se dispara...
+C 0xa731 ...la 5 por p03:A96D...
+C 0xa73a ...las demas por p03:A976
+C 0xa73d con hueco libre (IY), su tipo
+C 0xa747 la espada: no si ya esta dando...
+C 0xa74d ...ni en los estados 4 y siguientes, ni de espaldas en la escalera
+C 0xa75b el golpe: 0xE508 = 1...
+C 0xa76a ...con el sonido 0x13
+C 0xa76f la espada cada cuadro...
+C 0xa777 ...el primero: la pose de golpe (8, o 6 saltando)...
+C 0xa787 ...4 cuadros
+C 0xa78f la punta de la espada: 0x12 delante (0x15 en el suelo)...
+C 0xa7b2 ...a la altura de la y - 8...
+C 0xa7b8 ...si da en pared (> 0xB9), 0xE51B a 0
+C 0xa7c1 fuera de la pantalla: 0xE523 = 1 (el tercer sprite se esconde)
+C 0xa7c8 los siguientes cuadros...
+C 0xa7d2 ...a los 4, se acaba el golpe
+C 0xa7eb saltando: la pose 4 o 5
+C 0xa7f8 salir de la sala: no hundiendose ni en el estado 6
+C 0xa805 llevado por una de las figuras de 0xE4A0 (bit 2)...
+C 0xa80e ...las seis
+C 0xa814 saltando sin figura, o en la escalera subiendo...
+C 0xa823 ...por arriba (y < 0x28)
+C 0xa82a por abajo (y >= 0xC0)
+C 0xa831 por la izquierda (x < 0x10)
+C 0xa838 por la derecha (x >= 0xF8)...
+C 0xa83b ...si hay vecina (0xFF: no)...
+C 0xa841 ...lado 4
+C 0xa84a la figura sube o baja
+C 0xa84e arriba: la vecina 0xE648...
+C 0xa854 ...con la figura (0xE52C)...
+C 0xa85d ...lado 1
+C 0xa865 abajo: 0xE649, lado 2
+C 0xa874 izquierda: 0xE64A, lado 3
+C 0xa881 sin vecina a la derecha, tope en 0xF8
+C 0xa88b sin vecina a la izquierda, tope en 0x0F
+C 0xa897 una vecina 0xF6 o mas: fuera del mundo (estado 0x0D)
+C 0xa8a0 en el mapa 9...
+C 0xa8a6 ...sin el objeto 0x13...
+C 0xa8ab ...lo apretado...
+C 0xa8b4 ...y lo recien apretado, con izquierda y derecha cambiadas
+C 0xa8be el bit 2 al 3...
+C 0xa8c3 ...el 3 al 2...
+C 0xa8c9 ...y los demas como estaban
+C 0xa8ce NZ si el personaje esta subido a una figura que se mueve (0xEC12, 0xEC22)
+C 0xa8d9 el mando del personaje: lo apretado...
+C 0xa8e4 ...si no hay nada nuevo y ya iba en esa direccion, sigue
+C 0xa8f2 el parpadeo tras un golpe: cuenta 0xE532...
+C 0xa8fc sin parpadeo
+C 0xa904 guarda la pose...
+C 0xa90a ...la pose B, +1 mirando a la izquierda
+C 0xa916 subido a una figura que se mueve (0xEC10 y 0xEC20)...
+C 0xa930 ...la que lo lleva (bit 0)...
+C 0xa935 ...le da su y...
+C 0xa93e ...y si se mueve de lado, su velocidad
+C 0xa949 la x + BC
+C 0xa96d el arma 5: en los huecos de 0xE5A0
+C 0xa976 las demas: en los de 0xE540
+C 0xa97d sin sitio, nada
+C 0xa97e el primer hueco libre de los tres...
+C 0xa986 ...paso 1, y una mas en pantalla
+C 0xa995 sin flechas no se dispara
+C 0xa99c tres a la vez...
+C 0xa9a4 ...las armas 1 y 2 con el objeto 0x1D...
+C 0xa9ae el arma 5: sin flechas no...
+C 0xa9b7 ...tres con el objeto 0x1E
+C 0xa9c1 sin el objeto, Popolon solo dos
+C 0xa9c8 Z si ya hay tantas en pantalla
+C 0xa9cf las armas cada cuadro: los seis huecos...
+C 0xa9e6 ...y cuantas hay en cada grupo (0xE51C, 0xE51D)
+C 0xaa0a por su tipo (tabla que sigue)
+C 0xaa22 el arma 1, paso 1: sale...
+C 0xaa29 ...no en los estados 4 y siguientes ni de espaldas...
+C 0xaa39 ...velocidad 0x800, dibujo 0x44, color 15...
+C 0xaa45 ...a la izquierda -0x800 y dibujo 0x4B
+C 0xaa5d ...a la altura del personaje - 8 (desde la fila 0x20)...
+C 0xaa77 ...desde su x...
+C 0xaa81 ...el sonido 0x14 (0x15 las demas)
+C 0xaa8e gasta una flecha, salvo con el jefe y el objeto 0x09
+C 0xaaa5 volando: en pared se acaba
+C 0xaac8 el arma 2: como la 1, a 0x400, dibujos 0x46 y 0x4D
+C 0xaaf2 el arma 3: su dibujo...
+C 0xaafd ...paso 1: si hay sitio...
+C 0xab03 ...sale del personaje...
+C 0xab1e ...hacia donde mira, 4 o -4...
+C 0xab39 ...rodando por el suelo
+C 0xab47 paso 2: avanza hasta el borde del suelo...
+C 0xab6d ...y baja por el
+C 0xab81 paso 3: rodea las paredes...
+C 0xabb4 ...y da la vuelta
+C 0xabe0 paso 4: sube
+C 0xabfb el arma 4, paso 1: si hay sitio...
+C 0xac07 ...sale delante del personaje...
+C 0xac17 ...dibujo 0x30 y 4 a la derecha, o 0x88 y -4...
+C 0xac36 ...y al paso siguiente con el sonido 0x16
+C 0xac40 vuela: su dibujo segun el lado...
+C 0xac4f ...paso 2: avanza y cae hasta el suelo...
+C 0xac78 ...paso 3: rueda por el suelo
+C 0xac89 la y ajustada a la casilla
+C 0xac92 el arma 5, paso 1: si hay sitio...
+C 0xac9e ...a los pies del personaje...
+C 0xacaf ...solo con suelo debajo (las dos casillas)...
+C 0xacc6 ...queda puesta: dibujo 0x54, color 15
+C 0xacd6 el sonido 0x16 y una flecha menos
+C 0xacde paso 2: espera a que el personaje se aparte (0x15 de alto, 0x21 de lado)...
+C 0xacf9 ...y se arma
+C 0xad04 paso 3: parpadea (tabla de colores 0xAD2E) hasta que estalla
+C 0xad34 cuenta y se acaba
+C 0xad3a el arma 6: con el boton B, 0xE517 = 1
+C 0xad4c las armas se mueven: los seis huecos
+C 0xad61 la y y la x mas la velocidad...
+C 0xad69 ...fuera de la pantalla por los lados...
+C 0xad70 ...o por abajo (0xB8)...
+C 0xad76 ...se acaba: una menos en su grupo...
+C 0xad84 ...y el hueco a cero
+C 0xad92 la y (16 bits) + su velocidad y la x + la suya
+C 0xadb9 C si hay pared en la fila de debajo
+C 0xadc5 la casilla de delante (8 a la derecha o 1 a la izquierda)...
+C 0xadda ...su caracter...
+C 0xaddd ...C si pasa de 0xB9
+C 0xade1 C si hay pared en la columna (el arma 3, mas alta)
+C 0xadf7 C si hay pared delante segun la velocidad
+C 0xae15 C si la casilla (x + 4, y + B) pasa de 0xB9
+C 0xae23 el dibujo B, cambiando cada 4 cuadros...
+C 0xae27 ...o cada 8
+C 0xae3a la x ajustada a la casilla
+C 0xae4b estalla: 0x46 cuadros, el dibujo mas arriba y el sonido 0x26
+C 0xae68 rebota: la velocidad de lado al reves, -0x800 hacia arriba y el sonido 0x1D
+C 0xae8d no en el agua de 0xE52A...
+C 0xae92 ...ni en el aire, ni subido a una figura
+C 0xae9a el tope de la vida del que juega + 8, hasta 0x48...
+C 0xaeac ...la cabecera...
+C 0xaeaf ...y la vida llena
+C 0xaebc las cuatro paredes del personaje a 0xE519: suelo...
+C 0xaec7 ...techo...
+C 0xaece ...derecha...
+C 0xaed5 ...izquierda
+C 0xaee1 escalera para subir: delante y arriba del personaje
+C 0xaef2 escalera para bajar: debajo de los pies
+C 0xaf02 la casilla a C de la x...
+C 0xaf0b ...es escalera (0x9A o 0x9B)?...
+C 0xaf10 ...y la de 16 - C mas alla...
+C 0xaf22 ...el personaje ajustado a la escalera
+C 0xaf2c las escaleras de 0xE0B0 que no estan...
+C 0xaf3f C: hay escalera
+C 0xaf41 la escalera de 0xEC00, si esta...
+C 0xaf4b ...arriba o abajo de ella...
+C 0xaf6e ...y a menos de 0x11 de lado: 0xE525 = 1
+C 0xaf7d contra la pared: sin velocidad de lado...
+C 0xaf88 ...saltando, paso 1...
+C 0xaf93 ...la x ajustada a la casilla
+C 0xafb5 el suelo: la fila de los pies
+C 0xafc5 el techo: 0x10 mas arriba
+C 0xafd5 la columna de la izquierda
+C 0xafe7 la de la derecha (dos columnas)
+C 0xb005 el agua: la de antes en 0xF030...
+C 0xb012 ...la casilla de los pies (una mas arriba con suelo)...
+C 0xb028 ...0xB6: agua...
+C 0xb02d ...0xB7: agua...
+C 0xb030 ...0xB8: 2...
+C 0xb037 en el agua 0xB6, con el objeto 0x10...
+C 0xb03d ...en el mapa 6, salas 12 y 13...
+C 0xb04c ...se anda por encima: 0xE52A = 1...
+C 0xb051 ...y hace de suelo
+C 0xb058 en el agua: 0xE511 = 1
+C 0xb05d al entrar, el sonido 0x24
+C 0xb068 en los estados 4-7 nada
+C 0xb06d Popolon: cada cuadro en el agua...
+C 0xb076 ...Afrodita cada 0xFF...
+C 0xb078 ...y en el 0xB8 los dos cada 4...
+C 0xb080 ...cuenta...
+C 0xb087 ...una de vida menos con el sonido 0x25
+C 0xb095 las dos figuras que llevan (0xEC10 y 0xEC20)...
+C 0xb0a9 ...y la de sala en sala guarda si lo lleva
+C 0xb0c2 la figura: guarda sus banderas y quita el bit 0...
+C 0xb0d1 ...con el bit 3, cuenta y nada mas...
+C 0xb0e7 ...el personaje a su altura...
+C 0xb0f2 ...pegado a su izquierda, se para...
+C 0xb0fe ...pegado a su derecha, tambien...
+C 0xb105 ...encima de ella (0x25 de ancho)...
+C 0xb111 ...un poco por encima: la lleva (bit 0)...
+C 0xb12d ...un poco por debajo: le da en la cabeza (la y + 0x20)
+C 0xb147 si lo llevaba y ya no, el bit 3 y la cuenta
+C 0xb15c a su izquierda (x - 8)
+C 0xb166 a su derecha (x + 0x28)
+C 0xb16f cayendo, deja de llevarlo (bit 3)
+C 0xb17e en el agua del objeto 0x10, la x - 0x100 cada cuadro...
+C 0xb18d ...hasta la pared
+C 0xb194 el arma 6 usada...
+C 0xb19c ...con la cosa de 0xE678 en la sala...
+C 0xb1a2 ...a menos de 0x10 de alto...
+C 0xb1ae ...y de lado...
+C 0xb1ba ...pide el estado 0x0C con esa cosa
+C 0xb1c1 los choques: nada aun...
+C 0xb1c8 ...p03:B8A0...
+C 0xb1cb ...las figuras de los huecos con el bit 6...
+C 0xb1dc ...hasta el primer choque
+C 0xb1ed el tipo; los 0x5D-0x5F aparte
+C 0xb1f7 parpadeando, nada
+C 0xb1fc el tipo 8 no toca con el objeto 0x24
+C 0xb206 el 0x2A no toca con el 0x0E
+C 0xb210 el 0x28 no toca con el 0x0F
+C 0xb21a el 0x2E no toca con el 0x17
+C 0xb224 el 0x31 no toca con el 0x22
+C 0xb22e los 0x60, 0x57 y 0x62 tienen su propio tamaño
+C 0xb23b el tamaño de la figura
+C 0xb23e la otra esquina
+C 0xb24d el tipo 6 aparte
+C 0xb251 C si se tocan
+C 0xb255 chocado: 0xE61F = 1
+C 0xb25e 0x5D-0x5F: algo que se recoge
+C 0xb265 0x4F: la vida llena
+C 0xb26b 0x6B: el final
+C 0xb26f 0x23: aplasta
+C 0xb274 si el personaje lo para, la figura se va
+C 0xb27a 0x3F: paraliza
+C 0xb27f los demas: golpeado y la vida que quitan...
+C 0xb285 ...con el bit 6 la figura se va...
+C 0xb28c ...y el sonido 0x25
+C 0xb2a0 el 6 en el paso 4 toca normal; si no, p03:B99B
+C 0xb2ad el final: sus caracteres 0x7A-0x7D se quedan (0xE6A8)...
+C 0xb2c5 ...y 0xE024 = 1
+C 0xb2cb recoger: la figura se va, el sonido 0x2D...
+C 0xb2d5 ...0x5D flechas, 0x5E monedas, 0x5F llaves: (ix+0x18)
+C 0xb2e2 paralizado: en la escalera, golpeado...
+C 0xb2ed ...si no, 0x3C cuadros temblando (estado 6)
+C 0xb301 la vida del que juega, su tope...
+C 0xb30d ...entera
+C 0xb310 empujado hacia el lado contrario de la figura...
+C 0xb321 ...y a menos de 0x0F...
+C 0xb32c ...o de 5 por el otro lado...
+C 0xb337 muere: el que juega sin experiencia ni vida
+C 0xb35e estado 5, hundirse
+C 0xb366 el estado A y lo demas a cero
+C 0xb37f 0xE518 = 1
+C 0xb38d el lado del golpe: la x de la figura contra la de D
+C 0xb39a lo que quita la figura: el tipo 0x19 de la tabla 0xB3AE...
+C 0xb3b2 ...los demas de la tabla 0x64E5 (banco 4)
+C 0xb3bf con el objeto 0x19, la mitad (si es mas de 1)
+C 0xb3ce con poca vida (< 6), el sonido 0x2A
+C 0xb3e1 y se resta
+C 0xb3e7 un disparo (bit 7)...
+C 0xb3ed ...con el personaje en guardia...
+C 0xb3f2 ...y mirando hacia el...
+C 0xb405 ...lo para: el sonido 0x1D y C
+C 0xb40c la explosion del arma 5...
+C 0xb41d ...las tres de 0xE5A0
+C 0xb438 estallando (bit 0) y aun sin hacer daño (bit 3)...
+C 0xb446 ...su tamaño...
+C 0xb455 ...C si el personaje esta dentro
+C 0xb466 dentro: si aun no estalla, estalla...
+C 0xb471 ...golpeado hacia el otro lado...
+C 0xb483 ...y 2 de vida menos
+C 0xb48b ya hizo daño (bit 3)
+C 0xb492 las armas contra las figuras: los seis huecos
+C 0xb4a5 las armas 1-5 en vuelo...
+C 0xb4b2 ...su tamaño...
+C 0xb4b5 ...contra cada figura
+C 0xb4d1 las que se pueden herir (bit 5)...
+C 0xb4d7 ...en su fila...
+C 0xb4db ...y en su columna
+C 0xb500 el tipo 6 aparte
+C 0xb528 las armas 0-5 siempre...
+C 0xb531 ...las demas, si estallan, solo con el bit 4 de la figura
+C 0xb53d las armas 3 y siguientes no hieren a las de bit 5
+C 0xb54d el arma 5 aparte
+C 0xb554 la figura con escudo (bit 2) la hace rebotar...
+C 0xb55c ...o con el bit 1, si viene de frente
+C 0xb568 el arma 2 la atraviesa (bit 5); las demas se acaban
+C 0xb575 herida: los tipos que se enfadan, (ix+0x1C) = 1...
+C 0xb57b ...el sonido 0x1E...
+C 0xb580 ...una de vida menos...
+C 0xb586 ...y otra con el objeto 0x25
+C 0xb592 Z en los tipos 0x0F, 0x25, 0x49, 0x52, 0x54 y 0x27
+C 0xb5b1 la explosion: estalla si aun no...
+C 0xb5c3 ...dos de vida menos...
+C 0xb5d1 ...cuatro con el objeto 0x25
+C 0xb5ea UMBRELLA: todas las figuras de tipo 0x0E...
+C 0xb5f7 ...vencidas
+C 0xb604 vencida: el sonido 0x20...
+C 0xb60c ...el tipo 0x5C deja otra figura...
+C 0xb611 ...el 0x19, su experiencia segun (ix+0x1B)...
+C 0xb624 ...los demas, de la tabla 0xBF27...
+C 0xb62e ...el doble con el objeto 0x1B
+C 0xb639 la cuenta del castillo
+C 0xb63c se va...
+C 0xb645 ...los 0x15, 0x16, 0x40, 0x4C y 0x42 dejan algo en su sitio (0xE63F, 0xE6C0)...
+C 0xb65c ...el 0x43 se lleva a los 0x62...
+C 0xb661 ...los demas dejan la figura 0x5B (el humo)
+C 0xb663 la figura A en el sitio de IX
+C 0xb69b el 0x5C deja la figura 0x39, o la 0x6B (el final) con (ix+0x1F)
+C 0xb6aa con el bit 3, una menos...
+C 0xb6b4 ...en los mundos, p09:9D5F...
+C 0xb6bb ...en el castillo, 0xE61C = 1
+C 0xb6c1 la espada dando...
+C 0xb6c6 ...su tamaño, contra las 16 figuras
+C 0xb6e3 da: una vez...
+C 0xb6e7 ...si la figura tiene el bit 1, solo de frente...
+C 0xb6f6 ...con escudo rebota; si no, herida
+C 0xb701 la cosa de la sala: el personaje...
+C 0xb70c ...las de 1-6 son mas bajas...
+C 0xb71d ...las demas 0x17 de alto...
+C 0xb728 ...y 0x15 de ancho
+C 0xb734 tocada: el hueco vacio...
+C 0xb73b ...0x2D-0x2F aparte...
+C 0xb740 ...los objetos: su marca a 1...
+C 0xb748 ...0x2B y 0x2C: el nivel 2 o 3 de 0xE097 y su marca
+C 0xb75a cogida (bit 0 de las marcas de la sala)...
+C 0xb75f ...con el sonido 0x2D (no la 0x0C)
+C 0xb769 las marcas del mapa: 0x07 el bit 5...
+C 0xb77a ...0x08 el 6...
+C 0xb780 ...0x09 el 7...
+C 0xb786 ...0x0A el 4...
+C 0xb78c ...0x0C: en las marcas siguientes el bit 1 (la puerta del mundo siguiente se puede abrir)...
+C 0xb792 ...los sonidos 0xFC y 0x85...
+C 0xb79c ...en el castillo, mas vida...
+C 0xb7a5 ...la musica 0x88 (castillo) o 0x8B (mundo, con el estado 0x14)...
+C 0xb7b9 ...y sin la cosa del jefe vencido
+C 0xb7be 0x2E: 10 monedas
+C 0xb7ca 0x2F: 2 llaves
+C 0xb7d0 0x2D: 50 flechas
+C 0xb7d5 las armas 1-4 contra los huecos de 0xEC30
+C 0xb803 las tres tinajas
+C 0xb814 si esta entera (byte 1 a 0)...
+C 0xb81e ...su recuadro de 0x10 x 0x14...
+C 0xb830 ...C si el arma la toca
+C 0xb833 el arma 5 no; las demas se acaban al darle
+C 0xb83c el golpe: el sonido 0x1E...
+C 0xb841 ...1 menos, 5 con Popolon o con el objeto 0x1F...
+C 0xb84d ...de su vida (byte 6)
+C 0xb857 rota: el sonido 0x20...
+C 0xb85c ...el byte 1 a 1 y 10 cuadros...
+C 0xb864 ...y su bit (numero + 5) en las marcas de la sala: queda rota
+C 0xb877 la espada contra las tinajas
+C 0xb899 una vez por golpe
+C 0xb8a0 el personaje: su esquina (y - 0x0E, x - 6) y 0x0C x 0x0C
+C 0xb8b2 el arma: su sitio...
+C 0xb8bf ...las 1 y 2 ajustadas a la casilla...
+C 0xb8cb ...su tamaño de la tabla 0xB8EF...
+C 0xb8d6 ...el arma 5 estallando, mas grande (0x20 x 0x20)
+C 0xb8fb la espada: delante del personaje (8 o -0x12)...
+C 0xb910 ...0x0A x 3
+C 0xb916 el tipo 0x60: alto 7, ancho 8 x (cuantos)
+C 0xb926 el 0x57: 8 de alto, 8 x (ix+0x1F) de ancho
+C 0xb933 el 0x62: la cadena, hacia arriba o hacia abajo
+C 0xb954 el tamaño del tipo: tabla 0x9006 (banco 14)...
+C 0xb962 ...BC el desplazamiento, HL el tamaño
+C 0xb96d C si se solapan: en la y...
+C 0xb979 ...y en la x
+C 0xb9b2 con jefe...
+C 0xb9b7 ...sin parpadeo...
+C 0xb9bc ...y el jefe que hace daño (bit 6)...
+C 0xb9c5 ...si lo toca...
+C 0xb9c9 ...golpeado, el daño y el sonido
+C 0xb9d2 por el tipo de jefe (tabla que sigue)
+C 0xb9ef el jefe 2: p03:BD98
+C 0xb9fa el jefe 6: su recuadro de la tabla 0xBA12 segun el mosaico
+C 0xba1e el jefe 10: segun la cola (0xBA32)
+C 0xba42 el jefe 11: segun el mosaico (0xBA56)
+C 0xba6e golpeado: estado 4, sin daño un rato
+C 0xba82 el lado del golpe: la x del jefe mas lo del mosaico (0xBA9A)
+C 0xbaba el daño del tipo de jefe (0xBAD2)...
+C 0xbac4 ...la mitad con el objeto 0x08...
+C 0xbace ...y se resta
+C 0xbade el recuadro del mosaico...
+C 0xbaea C si la y y la x estan dentro del recuadro [dy][alto][dx][ancho]
+C 0xbb04 el recuadro: tabla 0x928A por tipo (banco 14)...
+C 0xbb17 ...4 bytes por mosaico
+C 0xbb24 las armas contra el jefe
+C 0xbb37 no hundiendose, ni con el jefe vencido...
+C 0xbb42 ...las armas 1-5 en vuelo...
+C 0xbb56 ...si le da: herido
+C 0xbb5d el jefe se puede herir (bit 5)...
+C 0xbb6b ...el arma 5 aparte...
+C 0xbb73 ...por el tipo (tabla que sigue)
+C 0xbb90 el jefe 2
+C 0xbb96 el jefe 4 solo abierto (mosaico >= 0x12)
+C 0xbb9f el jefe 7 solo con la boca abierta (>= 0x19)
+C 0xbba8 GALIOUS solo con el objeto 0x0B
+C 0xbbad su recuadro...
+C 0xbbb0 ...y si lo toca el arma
+C 0xbbbf el jefe 6: sus tres cabezas (0xBBDB, 0xBBE8, 0xBBF5)
+C 0xbc02 el jefe 9: con el mosaico de 0xE719 un momento
+C 0xbc15 el arma hacia la izquierda, 8 mas alla
+C 0xbc25 el arma 5 estallando: por el tipo de jefe
+C 0xbc69 el recuadro del mosaico
+C 0xbc75 el arma da al jefe: la 5 aparte...
+C 0xbc7d ...la 2 atraviesa, las demas se acaban
+C 0xbc90 si esa arma no le hace nada, nada...
+C 0xbc94 ...si no, el sonido 0x27 y una de vida menos...
+C 0xbc9c ...a 0, vencido
+C 0xbc9f lo herido que esta para la musica: vida < 1/4 de la de partida...
+C 0xbcb6 ...o < 1/8 (0xE1C5 = 0, 1 o 2)
+C 0xbcc1 que arma: la espada (A no 0) el bit 0...
+C 0xbcc6 ...el arma 1 el bit 5, la 2 el 4, la 3 el 2, la 4 el 3, la 5 el 1
+C 0xbce1 los bits de las armas que hieren a cada jefe (tabla 0xBD0A)...
+C 0xbcef ...si no le hace nada, rebota con el sonido 0x1D (la 5 en silencio)
+C 0xbcfb al jefe 6 se le cierra la boca (0xE71C = 1)
+C 0xbd15 el arma 5 estalla junto al jefe...
+C 0xbd21 ...si le hace algo, dos de vida menos
+C 0xbd32 vencido: 0xE02C = 1...
+C 0xbd3a ...la musica 0x84...
+C 0xbd3f ...y luego la 0x91 (0x8B en el mapa 11)
+C 0xbd4d estalla con el sonido 0x27
+C 0xbd55 la espada contra el jefe...
+C 0xbd65 ...una vez por golpe
+C 0xbd70 el recuadro del mosaico del jefe: tabla 0x91EC (banco 14)
+C 0xbd8d BC y HL del recuadro
+C 0xbd98 el jefe 2: el recuadro de 0x10 x 0x10...
+C 0xbda0 ...de alto 0x28...
+C 0xbdaf ...de ancho segun lo crecido
+C 0xbdcc la cabeza del jefe 2
+C 0xbdd7 C si toca el cuerpo crecido del jefe 2
+C 0xbe26 la pausa: la pose 0x1C (sentado en la taza) 600 cuadros...
+C 0xbe36 ...luego la 0x1E...
+C 0xbe50 ...y cada 8 cuadros la 0x1E o la 0x1F
+C 0xbe5f el estado 0x14: salta de alegria 9 veces...
+C 0xbe76 ...0xE53F = 1
+C 0xbe7a la velocidad de cada salto: -0xA00
+C 0xbe81 cada cuadro: los sprites y la VRAM...
+C 0xbe8d ...la gravedad 0x80...
+C 0xbea2 ...en el suelo...
+C 0xbea7 ...otro salto mirando al otro lado...
+C 0xbebb ...al acabar, 0x78 cuadros de rotulo
+C 0xbec7 el rotulo de 0xBF0B con el numero del mapa, encima de lo que habia...
+C 0xbee8 ...a la VRAM...
+C 0xbeeb ...y lo de debajo de vuelta
+C 0xbef7 se acabo: en pie
+C 0xbf02 la y ajustada a la casilla
+C 0xb0a4 la siguiente (16 bytes)
+C 0xb0ae la de sala en sala que esta aqui...
+C 0xb0b6 ...su ficha en 0xE4A0 + 0x10 x (6 - numero)...
+C 0xb0bd ...guarda si lo lleva
+C 0xad95 la y...
+C 0xad98 ...+ la velocidad vertical
+C 0xada5 la x...
+C 0xadab ...+ la de lado
+C 0xaa49 hacia donde mira...
+C 0xaa4c ...la velocidad de lado...
+C 0xaa52 ...en vuelo (bit 0)...
+C 0xaa57 ...su dibujo y color
+C 0xaa62 a la casilla
+C 0xb595 0x0F...
+C 0xb598 ...0x25...
+C 0xb59b ...0x49...
+C 0xb59e ...0x52...
+C 0xb5a1 ...0x54...
+C 0xb5a4 ...0x27
+C 0xbdbc ancho x 8 + H
+C 0xbdc8 C si esta dentro
+C 0xad0a cada 4 cuadros...
+C 0xad13 ...el color siguiente de 6
+C 0xb936 cuantos eslabones
+C 0xb93e hacia arriba: el desplazamiento negativo
+C 0xb14b si ha dejado de llevarlo...
+C 0xb153 ...el bit 3 y la cuenta (0x70)
+C 0xbbc5 la primera cabeza
+C 0xbbcf la segunda
+C 0xbbd6 la tercera
+C 0xbdf4 el ancho x 8
+C 0xbdf8 creciendo hacia la izquierda...
+C 0xbe0d ...o hacia la derecha
+C 0xb985 la distancia en y...
+C 0xb98c ...dentro del alto?
+C 0xb991 la distancia en x...
+C 0xb998 ...dentro del ancho?
+C 0xb99c la distancia en y...
+C 0xb9a3 ...dentro del alto?
+C 0xb9a8 la distancia en x...
+C 0xb9af ...dentro del ancho?
+C 0xb45f la distancia en x...
+C 0xb463 ...dentro del ancho?
+C 0xa921 una figura...
+C 0xa925 ...y la siguiente
+C 0xb7df un arma...
+C 0xb7e2 ...y la siguiente
+C 0xb8e7 16 mas arriba...
+C 0xb8ec ...y 0x20 x 0x20
+C 0xb94c ancho: cuantos x 8
+C 0xabd0 la vuelta: la velocidad de lado al reves...
+C 0xabdb ...y sin la vertical
+C 0xbc1f HL = el tamaño, DE' = la esquina
 
 # --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
 D 0xA134 0xA144 tabla_A134  8 destinos del despachador de 0x4140 (call en p03:A131): 0xA144, 0xA2D2, 0xA3AC, 0xA608, 0xA460, 0xA566, 0xA6EA, 0xA5BA; lo leen p03:A131 (16 bytes)
@@ -40,153 +668,506 @@ F 0xBC33 2
 # --- fin de los bloques de bloques.py ---
 
 # --- ANOTACIONES AUTOMATICAS (seccion que reescribe tools/anota.py; no editar a mano) ---
+L 0xA05A empieza_el_cierre el recuadro que se cierra en el final
+L 0xA06D cierre cada 10 cuadros el recuadro se cierra una casilla; Z al acabar
+L 0xA0BC cierre_fila una fila a 0 salvo las casillas de 0xE6A8
+L 0xA0CB cierre_columna una columna a 0 salvo las casillas de 0xE6A8
+L 0xA0E1 casilla_que_queda Z si HL es una de las 2 x 2 casillas de 0xE6A8
+L 0xA0F4 personaje el personaje cada cuadro
+L 0xA103 agua_tope en el agua no se baja de la y 0xB9 (salvo Afrodita en la sala 0x0B del mapa 8)
+L 0xA124 estado_del_personaje por el estado del personaje (0 en pie, 1 salto, 2 caida, 3 escalera...)
+L 0xA1A7 anda_a_la_izquierda anda a la izquierda (0x200, 0x280 con el objeto 0x11, 0x80 en el agua)
+L 0xA1F5 anda_a_la_derecha anda a la derecha
+L 0xA23F empujado empujado a un lado (0xE520)
+L 0xA265 a_la_escalera a la escalera: sentido A, pose B, estado 3
+L 0xA2C4 pasos cada 4 cuadros el paso siguiente de la pose
+L 0xA2D2 en_la_escalera estado 3: en la escalera
+L 0xA329 salto estado 1: el salto (control de lado, techo, caida)
+L 0xA3E3 pose_en_pie la pose 0 o 2 segun hacia donde mira
+L 0xA437 salto_derecha el salto y a la derecha
+L 0xA43D salto_izquierda el salto y a la izquierda
+L 0xA443 cuarta_parte BC / 4
+L 0xA44C mira_a mira hacia el lado A
+L 0xA458 pose_vuelta la pose con el bit 0 cambiado
+L 0xA460 golpeado golpeado: sale despedido hacia atras y parpadea
+L 0xA4A3 paso_del_personaje sube el paso 0xE50E
+L 0xA557 pasos_a_cero 0xE50E, 0xE508 y 0xE50C a cero
+L 0xA560 e530_a_uno 0xE530 = 1
+L 0xA566 muerte la muerte: la musica 0x94 y las poses de caer
+L 0xA5BA llevado llevado por la figura 1 del castillo
+L 0xA5F4 pose_b_mas_bit la pose B + el bit 3 de (HL)
+L 0xA5FE tiene_11 NZ con el objeto 0x11 (y el estado del personaje - 1)
+L 0xA608 escalera subir y bajar por la escalera, y bajarse a un lado
+L 0xA6EA tiembla un pixel a cada lado cada 2 cuadros
+L 0xA715 armas la espada (boton A) y el arma elegida (boton B)
+L 0xA71E botones boton A la espada, boton B el arma
+L 0xA747 espada empieza un golpe de espada (sonido 0x13)
+L 0xA76F golpe_de_espada el golpe de espada cada cuadro
+L 0xA78F punta_de_la_espada la punta de la espada; en pared, nada
+L 0xA7F8 sale_de_la_sala por que lado sale de la sala (0xE01A)
+L 0xA897 fuera_del_mundo vecina 0xF6 o mas: estado 0x0D
 L 0xA8A0 cambia_izquierda_derecha en el mapa 9 sin el objeto 0x13 cambia los bits 2 y 3 del mando
+L 0xA8BE cambia_bits_2_3 los bits 2 y 3 de A cambiados
+L 0xA8CE subido_a_figura NZ si el personaje esta subido a una figura que se mueve
+L 0xA8D9 mando_del_personaje el mando del personaje en 0xE52E
+L 0xA8F2 parpadeo cuenta el parpadeo tras un golpe
+L 0xA8FC sin_parpadeo 0xE533 y 0xE518 a 0
+L 0xA904 guarda_pose guarda la pose y pone la B
+L 0xA90A pose_b la pose B, +1 mirando a la izquierda
+L 0xA911 pose_a_b la pose B
+L 0xA912 pose_a la pose A
+L 0xA916 llevado_por_figura subido a una figura, se mueve con ella
+L 0xA92B llevado_por_una si la figura IX lo lleva, su y y su velocidad
+L 0xA949 x_mas_bc la x del personaje + BC
+L 0xA96D dispara_arma_5 el arma 5 en un hueco de 0xE5A0
+L 0xA976 dispara_arma las armas 1-4 en un hueco de 0xE540
+L 0xA995 cabe_arma Z si no hay flechas o ya hay tres (dos con Popolon sin el objeto 0x1D)
+L 0xA9AE cabe_arma_5 Z si no hay flechas o ya hay tres (dos con Popolon sin el objeto 0x1E)
+L 0xA9CF armas_cada_cuadro las armas en pantalla cada cuadro
+L 0xA9F7 cuenta_armas cuantas armas hay en los tres huecos de IY
+L 0xAA0A arma un arma por su tipo
+L 0xAA22 arma_1 el arma 1: vuela recta a 0x800
+L 0xAA8E gasta_flecha una flecha menos, salvo con el jefe y el objeto 0x09
+L 0xAAC8 arma_2 el arma 2: vuela recta a 0x400
+L 0xAAF2 arma_3 el arma 3: rueda por el suelo y las paredes
+L 0xABFB arma_4 el arma 4: sale delante, cae y rueda
+L 0xAC89 y_a_la_casilla la y del arma ajustada a la casilla
+L 0xAC92 arma_5 el arma 5: se pone en el suelo, se arma y estalla
+L 0xAD34 cuenta_arma cuenta (iy+8) y se acaba
+L 0xAD3A arma_6 el arma 6: con el boton B, 0xE517 = 1
+L 0xAD4C mueve_armas las armas se mueven y se acaban fuera de la pantalla
+L 0xAD61 mueve_arma un arma se mueve
+L 0xAD76 acaba_arma el arma se acaba: una menos y el hueco a cero
+L 0xAD92 arma_mas_velocidad la y y la x del arma mas su velocidad
+L 0xADB9 pared_debajo_arma C con pared debajo del arma
+L 0xADC5 pared_delante_arma C con pared delante del arma
+L 0xADDA casilla_mayor_b9 C si el caracter de la casilla (y L, x H) pasa de 0xB9
+L 0xADDD caracter_mayor_b9 C si (HL) pasa de 0xB9
+L 0xADE1 pared_columna_arma C con pared en la columna del arma
+L 0xADF7 pared_segun_velocidad C con pared delante segun la velocidad
+L 0xAE15 casilla_arma_b C si la casilla (x + 4, y + B) pasa de 0xB9
+L 0xAE23 dibujo_cada_4 el dibujo B cambiando cada 4 cuadros
+L 0xAE27 dibujo_cada_8 el dibujo B cambiando cada 8 cuadros
+L 0xAE3A x_a_la_casilla la x del arma ajustada a la casilla
+L 0xAE4B estalla el arma estalla (sonido 0x26)
+L 0xAE68 rebota el arma rebota (sonido 0x1D)
+L 0xAE8D se_puede_poner Z si se puede poner el arma (no en el agua, en el aire ni en una figura)
+L 0xAE92 en_suelo_firme Z en pie y no subido a una figura
+L 0xAE9A mas_vida el tope de la vida + 8 (hasta 0x48) y la vida llena
+L 0xAEBC paredes_del_personaje las cuatro paredes del personaje a 0xE519
+L 0xAEE1 escalera_arriba C con escalera para subir
+L 0xAEF2 escalera_abajo C con escalera para bajar
+L 0xAF02 escalera_en C si las casillas H + C y H + 16 son escalera (0x9A, 0x9B)
+L 0xAF41 escalera_ec00 mira la escalera de 0xEC00 junto al personaje
+L 0xAF7D para_contra_pared se para y se ajusta a la casilla
+L 0xAFAD salto_paso_1 0xE50E = 1
+L 0xAFB5 suelo C con suelo debajo
+L 0xAFC5 techo C con techo encima
+L 0xAFD5 pared_izquierda C con pared a la izquierda
+L 0xAFDB pared_en_x_b C con pared en la columna x + B
+L 0xAFE7 pared_derecha C con pared a la derecha (0xE51A)
+L 0xB005 agua el agua: 0xB6/0xB7 (Popolon pierde vida cada cuadro, Afrodita cada 255) y 0xB8 (los dos cada 4)
+L 0xB095 figuras_que_llevan las figuras de 0xEC10 y 0xEC20 con el personaje
+L 0xB0C2 figura_que_lleva si el personaje esta encima, al lado o debajo de la figura
+L 0xB166 a_la_derecha_de_figura el personaje en x + 0x28 de la figura
+L 0xB16F suelta_figura la figura deja de llevarlo
+L 0xB17E corriente en el agua del objeto 0x10, la x - 0x100 cada cuadro
+L 0xB194 lee_el_monumento el arma 6 junto a la cosa 0xE678 de la sala: estado 0x0C
+L 0xB1C1 choques_con_figuras el personaje contra las figuras de los huecos
+L 0xB1ED choque_con_figura el personaje contra una figura (salvo las que no tocan con ciertos objetos)
+L 0xB255 choca el personaje toca la figura IX: recoge, se cura, acaba el juego o le hace daño
+L 0xB2AD toca_el_final la figura 0x6B: el final (0xE024 = 1)
+L 0xB2CB recoge las figuras 0x5D-0x5F: flechas, monedas o llaves
+L 0xB2E2 paraliza la figura 0x3F paraliza 0x3C cuadros
+L 0xB301 vida_llena la vida del que juega a su tope
+L 0xB310 aplasta la figura 0x23 empuja y, muy cerca, mata
 L 0xB337 muere la vida y la experiencia del que juega a cero
+L 0xB366 estado_del_personaje_a el estado A del personaje y lo demas a cero
+L 0xB386 golpe_de_figura el golpe: el lado y el estado 4
+L 0xB389 estado_4 el estado 4 (golpeado)
+L 0xB38D lado_del_golpe 0xE514 = el lado de la figura
+L 0xB39A dano_de_figura resta la vida que quita la figura (p04:64E5; la mitad con el objeto 0x19)
+L 0xB3E7 para_con_escudo C si el personaje quieto para el disparo mirando hacia el (sonido 0x1D)
+L 0xB40C mina_hiere la explosion del arma 5 hiere al personaje
+L 0xB438 cerca_de_mina C si el personaje esta en la explosion
+L 0xB492 armas_contra_figuras las armas contra las figuras
+L 0xB4A5 arma_contra_figuras un arma contra las figuras
+L 0xB4D1 arma_contra_figura un arma contra una figura
+L 0xB528 arma_en_fila C si el arma alcanza a la figura en su fila
+L 0xB53D arma_en_columna C si el arma alcanza a la figura en su columna
+L 0xB54D arma_da el arma da en la figura: rebota o la hiere
+L 0xB575 hiere la figura pierde una de vida (dos con el objeto 0x25)
+L 0xB592 tipo_que_se_enfada Z en los tipos 0x0F, 0x25, 0x49, 0x52, 0x54 y 0x27
+L 0xB5A7 se_enfada (ix+0x1C) = 1
+L 0xB5AC atravesada el bit 5 de (ix+3)
+L 0xB5B1 mina_da la explosion del arma 5 quita 2 (4 con el objeto 0x25)
+L 0xB5E2 mina_estalla el arma estalla con el sonido 0x1E
 L 0xB5EA umbrella acaba con todas las figuras de tipo 0x0E (p03:B604)
+L 0xB604 vence la figura vencida: experiencia (0xBF27, doble con el objeto 0x1B) y lo que deja
+L 0xB67B acaba_los_62 acaba con las figuras de tipo 0x62
+L 0xB6AA cuenta_vencidas en el castillo, las figuras con el bit 3 cuentan 0xE622; a 0, 0xE61C = 1
+L 0xB6C1 espada_contra_figuras la espada contra las figuras
+L 0xB701 recoge_la_cosa recoger la cosa de la sala: objeto, marcas y lo del 0x0C
+L 0xB75A cosa_cogida la marca de la sala y lo de cada objeto
+L 0xB7BE cosa_de_reserva 0x2D: 50 flechas, 0x2E: 10 monedas, 0x2F: 2 llaves
+L 0xB7D5 armas_contra_ec30 las armas contra los huecos de 0xEC30
+L 0xB7EB arma_contra_ec30 un arma contra las tinajas
+L 0xB814 toca_ec30 C si el arma toca el hueco de 0xEC30
+L 0xB83C golpe_a_tinaja la tinaja pierde 1 (5 con Popolon o el objeto 0x1F)
+L 0xB85C rompe_tinaja la tinaja se rompe y queda rota en las marcas de la sala
+L 0xB877 espada_contra_tinajas la espada contra las tinajas
+L 0xB8A0 tamano_del_personaje DE = la esquina del personaje, DE' = su tamaño
+L 0xB8B2 tamano_del_arma DE = la esquina del arma, DE' = su tamaño (0xB8EF)
+L 0xB8FB tamano_de_la_espada DE = la esquina de la espada, DE' = su tamaño
+L 0xB916 tamano_60 el tamaño del tipo 0x60
+L 0xB926 tamano_57 el tamaño del tipo 0x57
+L 0xB933 tamano_62 el tamaño del tipo 0x62
+L 0xB954 tamano_de_figura BC y HL = el tamaño del tipo (tabla 0x9006, banco 14)
+L 0xB96D se_tocan C si el recuadro DE/DE' toca a la figura IX (y 5, x 7)
+L 0xB984 se_tocan_2_3 C si el recuadro toca el de (ix+2, ix+3)
+L 0xB99B se_tocan_12_13 C si el recuadro toca el de (ix+0x12, ix+0x13)
+L 0xB9B2 choque_con_el_jefe el personaje contra el jefe: golpeado y el daño de 0xBAD2
+L 0xB9D2 toca_al_jefe C si el personaje toca al jefe (por tipo)
+L 0xBA04 recuadro_jefe_6 HL = el recuadro del jefe 6 segun su mosaico (0xBA12)
+L 0xBA28 recuadro_jefe_10 HL = el recuadro del jefe 10 segun la cola (0xBA32)
+L 0xBA4C recuadro_jefe_11 HL = el recuadro del jefe 11 segun el mosaico (0xBA56)
+L 0xBA6E golpeado_por_el_jefe golpeado por el jefe
+L 0xBA82 lado_del_jefe 0xE514 = el lado del jefe
+L 0xBABA dano_del_jefe lo que quita el jefe (0xBAD2; la mitad con el objeto 0x08)
+L 0xBADE recuadro_del_jefe_toca C si toca el recuadro del mosaico del jefe
+L 0xBAEA toca_recuadro C si DE esta en el recuadro de HL
+L 0xBB04 recuadro_del_mosaico HL = el recuadro del mosaico del jefe (0x928A, banco 14)
+L 0xBB24 armas_contra_el_jefe las armas contra el jefe
+L 0xBB37 arma_contra_el_jefe un arma contra el jefe
+L 0xBB5D arma_toca_al_jefe C si el arma hiere al jefe (tabla 0xBB7A por tipo)
+L 0xBBA8 galious_se_hiere a GALIOUS solo se le hiere con el objeto 0x0B
+L 0xBBB0 arma_en_recuadro C si el arma esta en el recuadro BC/HL
+L 0xBC15 arma_desde_lado el recuadro del arma segun su lado
+L 0xBC69 recuadro_jefe_14 el recuadro del mosaico con el banco 14
+L 0xBC75 arma_da_al_jefe el arma da al jefe: si esa arma le hiere, una de vida menos
+L 0xBC90 hiere_al_jefe una de vida menos si el arma le hiere (tabla 0xBD0A)
+L 0xBC9F jefe_herido 0xE1C5 = 0, 1 o 2 segun la vida que le queda
+L 0xBCC1 arma_que_hiere C si esa arma no hiere a ese jefe (tabla 0xBD0A; rebota)
+L 0xBD15 mina_al_jefe el arma 5 estalla junto al jefe: dos de vida
+L 0xBD32 jefe_vencido el jefe vencido: 0xE02C = 1 y las musicas 0x84 y 0x91
+L 0xBD4D estalla_27 estalla con el sonido 0x27
+L 0xBD55 espada_al_jefe la espada contra el jefe
+L 0xBD70 recuadro_del_jefe el recuadro del mosaico del jefe (0x91EC, banco 14)
+L 0xBD81 recuadro_de_mosaico BC y HL del recuadro del mosaico de la tabla HL
+L 0xBD8D lee_recuadro BC y HL de (HL), y el banco 2
+L 0xBD98 toca_jefe_2 C si toca la cabeza del jefe 2
+L 0xBDCC cabeza_jefe_2 la cabeza del jefe 2
+L 0xBDD7 cuerpo_jefe_2 C si toca el cuerpo del jefe 2
+L 0xBE26 empieza_la_taza la pausa: sentado en la taza 600 cuadros
+L 0xBE36 taza las poses de la taza
+L 0xBE5F empieza_la_alegria estado 0x14: 9 saltos de alegria
+L 0xBE7A salto_de_alegria velocidad -0xA00
+L 0xBE81 alegria los saltos y el rotulo del estado 0x14
+L 0xBF02 y_a_la_casilla_del_personaje la y del personaje ajustada a la casilla
 C 0xA003 lee tiene el objeto 0x25
 C 0xA008 lee las marcas del mapa 7 (bits 7-4: objetos 09 08 07 0A; bit 2: jefe vencido)
+C 0xA013 lee vencidas las de la sala del castillo (salen los objetos escondidos)
 C 0xA01A lee tiene el objeto 0x26
+C 0xA01F subido_a_figura: NZ si el personaje esta subido a una figura que se mueve
 C 0xA033 byte_de_tabla: A = el byte HL + A
 C 0xA037 lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 C 0xA04E pon_cosa: la cosa C en la y D, x E (hueco 0xE740)
 C 0xA053 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
-C 0xA05A apunta a la pantalla de la sala en la copia (filas 4-23)
+C 0xA077 cierre_fila: una fila a 0 salvo las casillas de 0xE6A8
+C 0xA08B cierre_fila: una fila a 0 salvo las casillas de 0xE6A8
+C 0xA091 cierre_columna: una columna a 0 salvo las casillas de 0xE6A8
 C 0xA09B hl_mas_a: HL += A
+C 0xA09E cierre_columna: una columna a 0 salvo las casillas de 0xE6A8
+C 0xA0C0 casilla_que_queda: Z si HL es una de las 2 x 2 casillas de 0xE6A8
+C 0xA0D4 casilla_que_queda: Z si HL es una de las 2 x 2 casillas de 0xE6A8
 C 0xA0EC de_mas_a: DE += A
-C 0xA103 lee quien juega (0 Afrodita)
+C 0xA0F7 agua_tope: en el agua no se baja de la y 0xB9 (salvo Afrodita en la sala 0x0B del mapa 8)
+C 0xA0FA estado_del_personaje: por el estado del personaje (0 en pie, 1 salto, 2 caida, 3 escalera...)
+C 0xA0FD armas: la espada (boton A) y el arma elegida (boton B)
+C 0xA100 sale_de_la_sala: por que lado sale de la sala (0xE01A)
 C 0xA109 lee el mapa (0xE041) y la sala (0xE042) de un tiron
-C 0xA118 apunta a la y del personaje
-C 0xA12E lee el estado del personaje (5 = hundirse)
+C 0xA128 mando_del_personaje: el mando del personaje en 0xE52E
+C 0xA12B parpadeo: cuenta el parpadeo tras un golpe
 C 0xA131 despacha: salta a la entrada A de la tabla de palabras que va detras del call
-C 0xA190 lee quien juega (0 Afrodita)
+C 0xA160 anda_a_la_derecha: anda a la derecha
+C 0xA166 anda_a_la_izquierda: anda a la izquierda (0x200, 0x280 con el objeto 0x11, 0x80 en el agua)
+C 0xA17D empujado: empujado a un lado (0xE520)
+C 0xA180 lee las paredes del personaje (bit 0 derecha, bit 1 izquierda, bit 3 suelo)
+C 0xA186 para_contra_pared: se para y se ajusta a la casilla
+C 0xA189 lee el paso en la escalera
+C 0xA19D guarda la velocidad vertical del personaje y el byte siguiente (16 bits)
 C 0xA1A3 guarda el estado del personaje (5 = hundirse)
-C 0xA1AC lee la pose del personaje
+C 0xA1A9 guarda hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 C 0xA1B3 guarda la pose del personaje
+C 0xA1B6 lee empujado (1 a la izquierda, 2 a la derecha)
+C 0xA1BA empujado: empujado a un lado (0xE520)
 C 0xA1BD lee el estado del personaje (5 = hundirse)
+C 0xA1C4 lee la x del personaje con su fraccion (16 bits) y el byte siguiente (16 bits)
+C 0xA1C7 lee las paredes del personaje (bit 0 derecha, bit 1 izquierda, bit 3 suelo)
+C 0xA1CD para_contra_pared: se para y se ajusta a la casilla
+C 0xA1D0 lee empujado (1 a la izquierda, 2 a la derecha)
+C 0xA1DA para_contra_pared: se para y se ajusta a la casilla
+C 0xA1F6 guarda hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 C 0xA1F9 lee la pose del personaje
 C 0xA1FE guarda la pose del personaje
+C 0xA201 lee empujado (1 a la izquierda, 2 a la derecha)
+C 0xA205 empujado: empujado a un lado (0xE520)
 C 0xA208 lee el estado del personaje (5 = hundirse)
-C 0xA256 lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
-C 0xA272 lee la pose del personaje
+C 0xA20C pasos: cada 4 cuadros el paso siguiente de la pose
+C 0xA20F lee la x del personaje con su fraccion (16 bits) y el byte siguiente (16 bits)
+C 0xA212 lee las paredes del personaje (bit 0 derecha, bit 1 izquierda, bit 3 suelo)
+C 0xA218 para_contra_pared: se para y se ajusta a la casilla
+C 0xA21B lee empujado (1 a la izquierda, 2 a la derecha)
+C 0xA225 para_contra_pared: se para y se ajusta a la casilla
+C 0xA235 tiene_11: NZ con el objeto 0x11 (y el estado del personaje - 1)
+C 0xA245 apunta a empujado (1 a la izquierda, 2 a la derecha)
+C 0xA26F guarda el personaje en guardia (quieto, para los disparos)
+C 0xA278 lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
+C 0xA280 guarda hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 C 0xA285 guarda el estado del personaje (5 = hundirse)
-C 0xA28B lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
+C 0xA288 pose_a_b: la pose B
 C 0xA291 lee el estado del personaje (5 = hundirse)
-C 0xA29E guarda el estado del personaje (5 = hundirse)
+C 0xA297 guarda la velocidad vertical del personaje
+C 0xA29A guarda los pasos de la caida
 C 0xA2A3 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
-C 0xA2A6 lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
-C 0xA2B4 lee la y del personaje
 C 0xA2BB guarda la y del personaje
 C 0xA2C9 lee el contador de cuadros de partida
+C 0xA2CF pose_vuelta: la pose con el bit 0 cambiado
+C 0xA2DE lee el paso en la escalera
 C 0xA2E1 despacha: salta a la entrada A de la tabla de palabras que va detras del call
 C 0xA2EE lee lo apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 C 0xA310 lee la figura de sala en sala que esta en esta sala
 C 0xA313 guarda la figura que lleva al personaje
-C 0xA329 lee quien juega (0 Afrodita)
-C 0xA33A lee lo apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
-C 0xA37F lee quien juega (0 Afrodita)
-C 0xA392 lee lo apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
-C 0xA399 lee la y del personaje
-C 0xA3C8 lee el estado del personaje (5 = hundirse)
+C 0xA320 pose_b: la pose B, +1 mirando a la izquierda
+C 0xA32D lee la velocidad vertical del personaje
+C 0xA356 lee el paso en la escalera
+C 0xA370 cuarta_parte: BC / 4
+C 0xA379 lee la velocidad vertical del personaje
+C 0xA38B lee la velocidad vertical del personaje
+C 0xA3A0 lee las paredes del personaje (bit 0 derecha, bit 1 izquierda, bit 3 suelo)
+C 0xA3A8 guarda la velocidad vertical del personaje
+C 0xA3B1 lee las paredes del personaje (bit 0 derecha, bit 1 izquierda, bit 3 suelo)
+C 0xA3BB lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
+C 0xA3C5 guarda el mando del personaje (bits 0-3: arriba, abajo, izquierda, derecha)
 C 0xA3CE pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0xA3D2 guarda el estado del personaje (5 = hundirse)
-C 0xA3F0 lee quien juega (0 Afrodita)
+C 0xA3D5 guarda el paso en la escalera
+C 0xA3DB e530_a_uno: 0xE530 = 1
+C 0xA3DE lee la espada (1 empieza, 2 golpeando)
+C 0xA3E5 lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
+C 0xA3ED pose_a_b: la pose B
+C 0xA40F apunta a la velocidad vertical del personaje
 C 0xA41E byte_de_tabla: A = el byte HL + A
-C 0xA458 lee la pose del personaje
+C 0xA428 cuarta_parte: BC / 4
+C 0xA42F lee la y del personaje con su fraccion (16 bits) y el byte siguiente (16 bits)
+C 0xA433 guarda la y del personaje con su fraccion (16 bits) y el byte siguiente (16 bits)
+C 0xA44F lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
+C 0xA455 guarda hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
+C 0xA45D pose_a: la pose A
+C 0xA465 lee el paso en la escalera
+C 0xA475 pose_a_b: la pose B
+C 0xA47B guarda la velocidad vertical del golpe o la caida (16 bits) y el byte siguiente (16 bits)
+C 0xA48A guarda la velocidad hacia atras del golpe y el byte siguiente (16 bits)
+C 0xA490 guarda la cuenta del golpe
+C 0xA494 guarda la espada (1 empieza, 2 golpeando)
+C 0xA497 guarda el personaje en guardia (quieto, para los disparos)
+C 0xA49A guarda la espada da en algo
 C 0xA4B2 lee el contador de cuadros de partida
+C 0xA4BE subido_a_figura: NZ si el personaje esta subido a una figura que se mueve
+C 0xA4C3 lee las paredes del personaje (bit 0 derecha, bit 1 izquierda, bit 3 suelo)
+C 0xA4DD guarda la velocidad vertical del golpe o la caida (16 bits) y el byte siguiente (16 bits)
+C 0xA4EF guarda la y del personaje con su fraccion (16 bits) y el byte siguiente (16 bits)
+C 0xA4F7 lee el lado del golpe
+C 0xA4FB lee las paredes del personaje (bit 0 derecha, bit 1 izquierda, bit 3 suelo)
+C 0xA509 lee la x del personaje con su fraccion (16 bits) y el byte siguiente (16 bits)
+C 0xA50C lee la velocidad hacia atras del golpe y el byte siguiente (16 bits)
+C 0xA511 guarda la x del personaje con su fraccion (16 bits) y el byte siguiente (16 bits)
+C 0xA515 y_a_la_casilla_del_personaje: la y del personaje ajustada a la casilla
+C 0xA51C lee el lado del golpe
+C 0xA526 pose_a_b: la pose B
+C 0xA52B guarda la cuenta del golpe
 C 0xA530 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0xA533 paso_del_personaje: sube el paso 0xE50E
+C 0xA53B apunta a la cuenta del golpe
+C 0xA542 guarda los cuadros de parpadeo tras un golpe
+C 0xA547 guarda parpadeando
+C 0xA54D guarda hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
+C 0xA550 pose_en_pie: la pose 0 o 2 segun hacia donde mira
 C 0xA554 guarda el estado del personaje (5 = hundirse)
+C 0xA557 guarda el paso en la escalera
+C 0xA55A guarda la espada (1 empieza, 2 golpeando)
+C 0xA55D guarda el sentido en la escalera (1 sube, 2 baja)
+C 0xA562 guarda el personaje en guardia (quieto, para los disparos)
+C 0xA574 apunta a la cuenta del golpe
 C 0xA57E sin_musica_esperando: 0xE01D-0xE01E a cero
 C 0xA583 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0xA586 paso_del_personaje: sube el paso 0xE50E
+C 0xA58B lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 C 0xA595 guarda la pose del personaje
+C 0xA59A guarda la cuenta del golpe
 C 0xA5A6 apunta a la pose del personaje
 C 0xA5B5 guarda en juego (a 0 se acaba la vida: estado 6)
+C 0xA5C0 lee las paredes del personaje (bit 0 derecha, bit 1 izquierda, bit 3 suelo)
 C 0xA5E0 de_negado: DE = -DE
+C 0xA5E3 lee la x del personaje con su fraccion (16 bits) y el byte siguiente (16 bits)
+C 0xA5E7 guarda la x del personaje con su fraccion (16 bits) y el byte siguiente (16 bits)
 C 0xA5EA lee el contador de cuadros de partida
-C 0xA5FE lee tiene el objeto 0x11
+C 0xA5F1 pose_a_b: la pose B
+C 0xA5FB pose_a: la pose A
 C 0xA603 lee el estado del personaje (5 = hundirse)
+C 0xA615 y_a_la_casilla_del_personaje: la y del personaje ajustada a la casilla
+C 0xA625 apunta a el sentido en la escalera (1 sube, 2 baja)
 C 0xA632 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0xA636 guarda el sentido en la escalera (1 sube, 2 baja)
 C 0xA63C guarda el estado del personaje (5 = hundirse)
-C 0xA695 lee la y del personaje
+C 0xA642 guarda hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
+C 0xA645 e530_a_uno: 0xE530 = 1
+C 0xA64B pose_a: la pose A
+C 0xA65B lee el mando del personaje (bits 0-3: arriba, abajo, izquierda, derecha)
+C 0xA67A guarda hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
+C 0xA67D pose_en_pie: la pose 0 o 2 segun hacia donde mira
+C 0xA682 apunta a las paredes del personaje (bit 0 derecha, bit 1 izquierda, bit 3 suelo)
 C 0xA69B lee la x del personaje
 C 0xA6A0 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 C 0xA6A8 guarda el estado del personaje (5 = hundirse)
 C 0xA6AB lee la x del personaje
-C 0xA6B6 lee tiene el objeto 0x11
+C 0xA6B3 guarda hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
+C 0xA6C3 guarda el sentido en la escalera (1 sube, 2 baja)
 C 0xA6C7 de_negado: DE = -DE
+C 0xA6DA guarda la y del personaje con su fraccion (16 bits) y el byte siguiente (16 bits)
+C 0xA6E7 pose_b_mas_bit: la pose B + el bit 3 de (HL)
+C 0xA6EB guarda la espada da en algo
 C 0xA6F4 lee el contador de cuadros de partida
 C 0xA6F9 lee la x del personaje
 C 0xA703 guarda la x del personaje
 C 0xA70C guarda el estado del personaje (5 = hundirse)
-C 0xA71E lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
-C 0xA72B lee el arma elegida
+C 0xA70F guarda sin daño (tras un golpe o al entrar)
+C 0xA712 e530_a_uno: 0xE530 = 1
+C 0xA718 golpe_de_espada: el golpe de espada cada cuadro
+C 0xA71B armas_cada_cuadro: las armas en pantalla cada cuadro
+C 0xA724 espada: empieza un golpe de espada (sonido 0x13)
+C 0xA735 dispara_arma_5: el arma 5 en un hueco de 0xE5A0
 C 0xA740 lee el arma elegida
-C 0xA74D lee el estado del personaje (5 = hundirse)
+C 0xA755 lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
+C 0xA75C guarda el personaje en guardia (quieto, para los disparos)
+C 0xA761 guarda la espada da en algo
 C 0xA76C pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0xA770 guarda el tercer sprite escondido
+C 0xA773 apunta a la espada (1 empieza, 2 golpeando)
 C 0xA77C lee el estado del personaje (5 = hundirse)
-C 0xA78F lee el estado del personaje (5 = hundirse)
+C 0xA784 pose_b: la pose B, +1 mirando a la izquierda
+C 0xA789 guarda la cuenta del golpe
+C 0xA799 lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 C 0xA79F lee la x del personaje
 C 0xA7A9 lee la x del personaje
-C 0xA7B2 lee la y del personaje
-C 0xA7B8 casilla_b9: C si el caracter de la casilla de HL pasa de 0xB9
+C 0xA7BD guarda la espada da en algo
+C 0xA7C3 guarda el tercer sprite escondido
+C 0xA7CF punta_de_la_espada: la punta de la espada; en pared, nada
+C 0xA7D8 guarda la espada (1 empieza, 2 golpeando)
+C 0xA7DB guarda la espada da en algo
+C 0xA7E1 e530_a_uno: 0xE530 = 1
 C 0xA7E4 lee el estado del personaje (5 = hundirse)
+C 0xA7E8 pose_en_pie: la pose 0 o 2 segun hacia donde mira
+C 0xA7F5 pose_a_b: la pose B
+C 0xA7F9 guarda la figura que lo lleva al salir de la sala
 C 0xA7FC lee el estado del personaje (5 = hundirse)
-C 0xA823 lee la y del personaje
-C 0xA82A lee la y del personaje
-C 0xA831 lee la x del personaje
 C 0xA846 guarda el lado por el que se sale de la sala: 1 arriba, 2 abajo, 3 izquierda, 4 derecha
-C 0xA84E lee las vecinas de la sala: arriba, abajo, izquierda, derecha
+C 0xA85A guarda la figura que lo lleva al salir de la sala
+C 0xA85E fuera_del_mundo: vecina 0xF6 o mas: estado 0x0D
+C 0xA86A fuera_del_mundo: vecina 0xF6 o mas: estado 0x0D
 C 0xA871 muere: la vida y la experiencia del que juega a cero
-C 0xA881 lee la x del personaje
-C 0xA88B lee la x del personaje
+C 0xA87A fuera_del_mundo: vecina 0xF6 o mas: estado 0x0D
 C 0xA893 guarda la x del personaje
 C 0xA89C guarda 1 = estado 8, 2 = estado 0x0D
-C 0xA8A0 lee el mapa (1 el castillo, 2-11 los mundos)
-C 0xA8A6 lee tiene el objeto 0x13
-C 0xA8AB lee lo apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
+C 0xA8AE cambia_bits_2_3: los bits 2 y 3 de A cambiados
 C 0xA8B1 guarda lo apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
-C 0xA8B4 lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
+C 0xA8B7 cambia_bits_2_3: los bits 2 y 3 de A cambiados
 C 0xA8BA guarda lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
 C 0xA8DC lee lo apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
-C 0xA8E4 lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
-C 0xA904 lee la pose del personaje
+C 0xA8F7 apunta a los cuadros de parpadeo tras un golpe
+C 0xA8FD guarda parpadeando
+C 0xA900 guarda sin daño (tras un golpe o al entrar)
 C 0xA912 guarda la pose del personaje
-C 0xA916 apunta a la figura de sala en sala que esta en esta sala
-C 0xA96D apunta a tres huecos de 32 bytes de tres sprites
-C 0xA976 apunta a tres huecos de 32 bytes (armas)
-C 0xA995 lee las flechas (BCD, 16 bits)
+C 0xA93B guarda la y del personaje con su fraccion (16 bits) y el byte siguiente (16 bits)
+C 0xA94D guarda la x del personaje con su fraccion (16 bits) y el byte siguiente (16 bits)
+C 0xA971 cabe_arma_5: Z si no hay flechas o ya hay tres (dos con Popolon sin el objeto 0x1E)
+C 0xA97A cabe_arma: Z si no hay flechas o ya hay tres (dos con Popolon sin el objeto 0x1D)
 C 0xA99E apunta a tiene el objeto 0x1D
-C 0xA9A4 lee el arma elegida
-C 0xA9AE lee las flechas (BCD, 16 bits)
-C 0xA9B7 apunta a tiene el objeto 0x1E
-C 0xA9C1 lee quien juega (0 Afrodita)
+C 0xA9A1 apunta a las armas 1-4 en pantalla
+C 0xA9BA apunta a las armas 5 en pantalla
 C 0xA9D2 apunta a tres huecos de 32 bytes (armas)
-C 0xA9E6 apunta a tres huecos de 32 bytes (armas)
+C 0xA9DD arma: un arma por su tipo
+C 0xA9EA apunta a las armas 1-4 en pantalla
+C 0xA9ED cuenta_armas: cuantas armas hay en los tres huecos de IY
 C 0xA9F0 apunta a tres huecos de 32 bytes de tres sprites
+C 0xA9F4 apunta a las armas 5 en pantalla
 C 0xAA15 despacha: salta a la entrada A de la tabla de palabras que va detras del call
-C 0xAA29 lee el estado del personaje (5 = hundirse)
-C 0xAA5D lee la y del personaje
-C 0xAA77 lee la x del personaje
+C 0xAA2E acaba_arma: el arma se acaba: una menos y el hueco a cero
+C 0xAA31 lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
+C 0xAA36 acaba_arma: el arma se acaba: una menos y el hueco a cero
+C 0xAA3F lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
+C 0xAA6D lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 C 0xAA8B pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
-C 0xAA8E lee el estado del jefe
 C 0xAA94 lee tiene el objeto 0x09
 C 0xAA99 apunta a las flechas (BCD)
 C 0xAA9F resta_bcd: (HL) -= BC en BCD
 C 0xAAA2 pinta_flechas: las flechas en la fila 0, columna 24
+C 0xAAB3 casilla_mayor_b9: C si el caracter de la casilla (y L, x H) pasa de 0xB9
+C 0xAAB6 acaba_arma: el arma se acaba: una menos y el hueco a cero
+C 0xAABA caracter_mayor_b9: C si (HL) pasa de 0xB9
+C 0xAABD acaba_arma: el arma se acaba: una menos y el hueco a cero
+C 0xAAC2 caracter_mayor_b9: C si (HL) pasa de 0xB9
+C 0xAAC5 acaba_arma: el arma se acaba: una menos y el hueco a cero
 C 0xAACE lee el estado del personaje (5 = hundirse)
-C 0xAC07 lee la y del personaje
+C 0xAAD3 acaba_arma: el arma se acaba: una menos y el hueco a cero
+C 0xAAD6 lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
+C 0xAADB acaba_arma: el arma se acaba: una menos y el hueco a cero
+C 0xAAE4 lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
+C 0xAAF4 dibujo_cada_8: el dibujo B cambiando cada 8 cuadros
+C 0xAB00 acaba_arma: el arma se acaba: una menos y el hueco a cero
+C 0xAB0F lee la x del personaje con su fraccion (16 bits) y el byte siguiente (16 bits)
+C 0xAB4A pared_delante_arma: C con pared delante del arma
+C 0xAB4D acaba_arma: el arma se acaba: una menos y el hueco a cero
+C 0xAB62 acaba_arma: el arma se acaba: una menos y el hueco a cero
+C 0xAB6A acaba_arma: el arma se acaba: una menos y el hueco a cero
+C 0xAB6F pared_debajo_arma: C con pared debajo del arma
+C 0xAB73 x_a_la_casilla: la x del arma ajustada a la casilla
+C 0xAB88 acaba_arma: el arma se acaba: una menos y el hueco a cero
+C 0xAB93 casilla_arma_b: C si la casilla (x + 4, y + B) pasa de 0xB9
+C 0xAB9A casilla_arma_b: C si la casilla (x + 4, y + B) pasa de 0xB9
+C 0xAB9D acaba_arma: el arma se acaba: una menos y el hueco a cero
+C 0xABA8 pared_columna_arma: C con pared en la columna del arma
+C 0xABB0 pared_columna_arma: C con pared en la columna del arma
+C 0xABE3 acaba_arma: el arma se acaba: una menos y el hueco a cero
+C 0xABE8 pared_debajo_arma: C con pared debajo del arma
+C 0xABEC x_a_la_casilla: la x del arma ajustada a la casilla
+C 0xAC01 en_suelo_firme: Z en pie y no subido a una figura
+C 0xAC04 acaba_arma: el arma se acaba: una menos y el hueco a cero
 C 0xAC0F lee la x del personaje
-C 0xAC9E lee la y del personaje
+C 0xAC1A lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
+C 0xAC4B dibujo_cada_8: el dibujo B cambiando cada 8 cuadros
+C 0xAC52 pared_delante_arma: C con pared delante del arma
+C 0xAC55 acaba_arma: el arma se acaba: una menos y el hueco a cero
+C 0xAC6D pared_debajo_arma: C con pared debajo del arma
+C 0xAC82 pared_debajo_arma: C con pared debajo del arma
+C 0xAC98 se_puede_poner: Z si se puede poner el arma (no en el agua, en el aire ni en una figura)
+C 0xAC9B acaba_arma: el arma se acaba: una menos y el hueco a cero
 C 0xACA7 lee la x del personaje
 C 0xACB5 casilla_b9: C si el caracter de la casilla de HL pasa de 0xB9
+C 0xACB9 acaba_arma: el arma se acaba: una menos y el hueco a cero
 C 0xACC0 casilla_b9: C si el caracter de la casilla de HL pasa de 0xB9
+C 0xACC3 acaba_arma: el arma se acaba: una menos y el hueco a cero
 C 0xACD8 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0xACDB gasta_flecha: una flecha menos, salvo con el jefe y el objeto 0x09
 C 0xACE1 lee la y del personaje
 C 0xACED lee la x del personaje
-C 0xAD3A lee el arma elegida
 C 0xAD40 lee lo recien apretado (bits 0-5: arriba, abajo, izquierda, derecha, A/espacio, B/M)
-C 0xAD4C apunta a tres huecos de 32 bytes (armas)
+C 0xAD48 guarda el arma 6 usada
+C 0xAD57 mueve_arma: un arma se mueve
+C 0xAD66 arma_mas_velocidad: la y y la x del arma mas su velocidad
+C 0xAD7B apunta a las armas 1-4 en pantalla
+C 0xAD80 apunta a las armas 5 en pantalla
 C 0xADC2 pared_en_fila: C si una de las casillas (y+B, x+D) o (y+B, x+E) llega al umbral de 0xF020
-C 0xADDA casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 C 0xADEF pared_en_columna: C si una de las casillas (x+B) o (y+D) llega al umbral de 0xF020
 C 0xADF4 pared_en_columna: C si una de las casillas (x+B) o (y+D) llega al umbral de 0xF020
 C 0xAE12 pared_en: C si la casilla (y+E) llega al umbral de 0xF020
@@ -195,79 +1176,96 @@ C 0xAE29 lee el contador de cuadros de partida
 C 0xAE65 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0xAE76 de_negado: DE = -DE
 C 0xAE8A pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
-C 0xAE92 lee el estado del personaje (5 = hundirse)
-C 0xAE9A lee quien juega (0 Afrodita)
+C 0xAE97 subido_a_figura: NZ si el personaje esta subido a una figura que se mueve
 C 0xAE9E apunta a el tope de la vida de Afrodita
-C 0xAEAC cabecera: los rotulos, flechas, monedas, llaves, arma y las cuatro barras
-C 0xAEE1 lee la x del personaje
+C 0xAEB1 guarda sin el sonido del golpe
+C 0xAEB4 vida_llena: la vida del que juega a su tope
+C 0xAEB8 guarda sin el sonido del golpe
+C 0xAEC0 suelo: C con suelo debajo
+C 0xAEDC guarda las paredes del personaje (bit 0 derecha, bit 1 izquierda, bit 3 suelo)
 C 0xAEE7 lee la y del personaje
-C 0xAEF2 lee la x del personaje
 C 0xAEF8 lee la y del personaje
 C 0xAF06 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 C 0xAF18 casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 C 0xAF25 guarda la x del personaje
+C 0xAF29 guarda la escalera de 0xEC00 al lado
+C 0xAF36 escalera_ec00: la escalera de 0xEC00
 C 0xAF4F lee la y del personaje
 C 0xAF67 lee la y del personaje
-C 0xAF6E lee la x del personaje
-C 0xAF88 lee el estado del personaje (5 = hundirse)
+C 0xAF78 guarda la escalera de 0xEC00 al lado
+C 0xAF80 guarda la velocidad hacia atras del golpe y el byte siguiente (16 bits)
+C 0xAF8D salto_paso_1: 0xE50E = 1
 C 0xAF98 lee la x del personaje
+C 0xAF9E lee pared a la derecha
 C 0xAFA9 guarda la x del personaje
-C 0xAFB5 lee la x del personaje
+C 0xAFB0 guarda el paso en la escalera
 C 0xAFB9 lee la y del personaje
 C 0xAFC2 pared_en_fila: C si una de las casillas (y+B, x+D) o (y+B, x+E) llega al umbral de 0xF020
-C 0xAFC5 lee la x del personaje
 C 0xAFC9 lee la y del personaje
 C 0xAFD2 pared_en_fila: C si una de las casillas (y+B, x+D) o (y+B, x+E) llega al umbral de 0xF020
-C 0xAFD5 lee la x del personaje
 C 0xAFDB lee la y del personaje
 C 0xAFE4 pared_en_columna: C si una de las casillas (x+B) o (y+D) llega al umbral de 0xF020
+C 0xAFE8 guarda pared a la derecha
 C 0xAFEB lee la x del personaje
+C 0xAFF1 pared_en_x_b: C con pared en la columna x + B
 C 0xAFF6 lee la x del personaje
-C 0xB012 lee la x del personaje
+C 0xAFFC pared_en_x_b: C con pared en la columna x + B
+C 0xB001 guarda pared a la derecha
+C 0xB00C guarda en el agua
+C 0xB00F guarda en el agua que deja el objeto 0x10
 C 0xB016 lee la y del personaje
 C 0xB01A casilla_de_yx: HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
-C 0xB037 lee tiene el objeto 0x10
-C 0xB03D lee el mapa (0xE041) y la sala (0xE042) de un tiron
+C 0xB01D lee las paredes del personaje (bit 0 derecha, bit 1 izquierda, bit 3 suelo)
+C 0xB04E guarda en el agua que deja el objeto 0x10
+C 0xB05A guarda en el agua
 C 0xB065 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
-C 0xB068 personaje_4_a_7: C si el estado del personaje es 4-7
-C 0xB06D lee quien juega (0 Afrodita)
 C 0xB08B cambia_vida: suma A (con signo) al cambio de vida pendiente del que juega
 C 0xB090 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
-C 0xB095 apunta a la figura de sala en sala que esta en esta sala
-C 0xB0A9 lee la figura de sala en sala que esta en esta sala
-C 0xB0E7 lee la y del personaje
-C 0xB0F2 lee la x del personaje
-C 0xB105 lee la x del personaje
-C 0xB111 lee la y del personaje
+C 0xB0A0 figura_que_lleva: si el personaje esta encima, al lado o debajo de la figura
+C 0xB102 a_la_derecha_de_figura: el personaje en x + 0x28 de la figura
+C 0xB122 apunta a las paredes del personaje (bit 0 derecha, bit 1 izquierda, bit 3 suelo)
+C 0xB133 apunta a las paredes del personaje (bit 0 derecha, bit 1 izquierda, bit 3 suelo)
+C 0xB143 guarda la y del personaje con su fraccion (16 bits) y el byte siguiente (16 bits)
 C 0xB161 guarda la x del personaje
 C 0xB16B guarda la x del personaje
 C 0xB173 lee el estado del personaje (5 = hundirse)
-C 0xB19C apunta a lo de la sala del estado 0x0C (0xE678-0xE67A)
-C 0xB1A2 lee la y del personaje
-C 0xB1AE lee la x del personaje
-C 0xB1BA lee lo de la sala del estado 0x0C (0xE678-0xE67A)
+C 0xB183 lee la x del personaje con su fraccion (16 bits) y el byte siguiente (16 bits)
+C 0xB18A guarda la x del personaje con su fraccion (16 bits) y el byte siguiente (16 bits)
+C 0xB191 para_contra_pared: se para y se ajusta a la casilla
 C 0xB1BD guarda estado 0x0C pedido
-C 0xB1CB apunta a los huecos de figura (32 bytes cada uno)
+C 0xB1C2 guarda empujado (1 a la izquierda, 2 a la derecha)
+C 0xB1C5 guarda ya ha chocado este cuadro
 C 0xB1CF lee cuantos huecos de figura hay
 C 0xB1D5 mira el bit 6 de las banderas de la figura (bit 7: en pantalla)
+C 0xB1D9 choque_con_figura: el personaje contra una figura (salvo las que no tocan con ciertos objetos)
 C 0xB201 lee tiene el objeto 0x24
 C 0xB20B lee tiene el objeto 0x0E
 C 0xB215 lee tiene el objeto 0x0F
 C 0xB21F lee tiene el objeto 0x17
 C 0xB229 lee tiene el objeto 0x22
+C 0xB257 guarda ya ha chocado este cuadro
+C 0xB262 recoge: las figuras 0x5D-0x5F: flechas, monedas o llaves
+C 0xB271 aplasta: la figura 0x23 empuja y, muy cerca, mata
+C 0xB282 dano_de_figura: resta la vida que quita la figura (p04:64E5; la mitad con el objeto 0x19)
 C 0xB28E pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0xB291 tamano_60: el tamaño del tipo 0x60
+C 0xB296 tamano_57: el tamaño del tipo 0x57
+C 0xB29B tamano_62: el tamaño del tipo 0x62
+C 0xB2A7 se_tocan_12_13: C si el recuadro toca el de (ix+0x12, ix+0x13)
 C 0xB2C7 guarda el final (estado 0x11)
 C 0xB2D1 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0xB2D9 suma_flechas: suma A (BCD) a las flechas de 0xE046, hasta 999
 C 0xB2DC suma_monedas: suma A (BCD) a las monedas de 0xE048, hasta 999
 C 0xB2DF suma_llaves: suma A (BCD) a las llaves de 0xE04A, hasta 999
 C 0xB2E5 lee el estado del personaje (5 = hundirse)
-C 0xB301 lee quien juega (0 Afrodita)
+C 0xB2EA estado_4: el estado 4 (golpeado)
+C 0xB2EF guarda la cuenta del golpe
+C 0xB2F3 guarda la espada (1 empieza, 2 golpeando)
+C 0xB2F6 pose_en_pie: la pose 0 o 2 segun hacia donde mira
+C 0xB2FB estado_del_personaje_a: el estado A del personaje y lo demas a cero
 C 0xB305 apunta a el tope de la vida de Afrodita
-C 0xB30D cambia_vida: suma A (con signo) al cambio de vida pendiente del que juega
-C 0xB321 lee la x del personaje
-C 0xB32C lee la x del personaje
-C 0xB337 lee quien juega (0 Afrodita)
+C 0xB31A guarda empujado (1 a la izquierda, 2 a la derecha) y el byte siguiente (16 bits)
+C 0xB33F guarda lo herido que esta el jefe (0, 1, 2)
 C 0xB344 guarda la experiencia de Afrodita (barra)
 C 0xB347 guarda la vida de Afrodita
 C 0xB34A guarda la experiencia de Afrodita
@@ -276,150 +1274,222 @@ C 0xB352 guarda la experiencia de Popolon (barra)
 C 0xB355 guarda la vida de Popolon
 C 0xB358 guarda la experiencia de Popolon
 C 0xB35B guarda el cambio de vida pendiente de Popolon (con signo)
+C 0xB360 estado_del_personaje_a: el estado A del personaje y lo demas a cero
 C 0xB363 dibujos_de_hundirse: los dibujos de sprite de hundirse (0x7B34 en 0x1900)
-C 0xB366 guarda el estado del personaje (5 = hundirse)
+C 0xB36A guarda el paso en la escalera
+C 0xB36D guarda parpadeando
+C 0xB370 guarda la espada (1 empieza, 2 golpeando)
+C 0xB373 guarda el personaje en guardia (quieto, para los disparos)
+C 0xB376 guarda la espada da en algo
+C 0xB380 guarda sin daño (tras un golpe o al entrar)
+C 0xB383 pose_en_pie: la pose 0 o 2 segun hacia donde mira
+C 0xB386 lado_del_golpe: 0xE514 = el lado de la figura
+C 0xB396 guarda el lado del golpe
 C 0xB3A8 byte_de_tabla: A = el byte HL + A
-C 0xB3B2 p6000_banco_4: pone el banco 4 en 0x6000
 C 0xB3BC p6000_banco_1: pone el banco 1 en 0x6000
-C 0xB3BF lee tiene el objeto 0x19
-C 0xB3CE lee quien juega (0 Afrodita)
 C 0xB3D2 apunta a la vida de Afrodita
 C 0xB3DE pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0xB3E4 cambia_vida: suma A (con signo) al cambio de vida pendiente del que juega
-C 0xB3F2 lee la x del personaje
+C 0xB3FA lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
 C 0xB407 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0xB411 lee la y del personaje
 C 0xB417 lee la x del personaje
-C 0xB41D apunta a tres huecos de 32 bytes de tres sprites
+C 0xB426 cerca_de_mina: C si el personaje esta en la explosion
+C 0xB46B estalla: el arma estalla (sonido 0x26)
+C 0xB47D guarda el lado del golpe
+C 0xB480 estado_4: el estado 4 (golpeado)
 C 0xB485 cambia_vida: suma A (con signo) al cambio de vida pendiente del que juega
-C 0xB492 apunta a tres huecos de 32 bytes (armas)
-C 0xB4B5 apunta a los huecos de figura (32 bytes cada uno)
+C 0xB499 arma_contra_figuras: un arma contra las figuras
 C 0xB4B9 lee cuantos huecos de figura hay
+C 0xB4BF arma_contra_figura: un arma contra una figura
+C 0xB4C2 arma_da: el arma da en la figura: rebota o la hiere
+C 0xB4F1 tamano_de_figura: BC y HL = el tamaño del tipo (tabla 0x9006, banco 14)
+C 0xB508 se_tocan: C si el recuadro DE/DE' toca a la figura IX (y 5, x 7)
+C 0xB50B tamano_60: el tamaño del tipo 0x60
+C 0xB511 tamano_57: el tamaño del tipo 0x57
+C 0xB517 tamano_62: el tamaño del tipo 0x62
+C 0xB522 se_tocan: C si el recuadro DE/DE' toca a la figura IX (y 5, x 7)
+C 0xB525 se_tocan_12_13: C si el recuadro toca el de (ix+0x12, ix+0x13)
+C 0xB559 rebota: el arma rebota (sonido 0x1D)
+C 0xB565 rebota: el arma rebota (sonido 0x1D)
+C 0xB56E atravesada: el bit 5 de (ix+3)
+C 0xB572 acaba_arma: el arma se acaba: una menos y el hueco a cero
+C 0xB578 se_enfada: (ix+0x1C) = 1
 C 0xB57D pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
-C 0xB586 lee tiene el objeto 0x25
-C 0xB5D1 lee tiene el objeto 0x25
+C 0xB583 vence: la figura vencida: experiencia (0xBF27, doble con el objeto 0x1B) y lo que deja
+C 0xB58E vence: la figura vencida: experiencia (0xBF27, doble con el objeto 0x1B) y lo que deja
+C 0xB5B5 mina_estalla: el arma estalla con el sonido 0x1E
+C 0xB5BD tipo_que_se_enfada: Z en los tipos 0x0F, 0x25, 0x49, 0x52, 0x54 y 0x27
+C 0xB5C0 se_enfada: (ix+0x1C) = 1
+C 0xB5DF vence: la figura vencida: experiencia (0xBF27, doble con el objeto 0x1B) y lo que deja
+C 0xB5E2 estalla: el arma estalla (sonido 0x26)
 C 0xB5E7 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
-C 0xB5EA apunta a los huecos de figura (32 bytes cada uno)
 C 0xB5EE lee cuantos huecos de figura hay
 C 0xB5F2 lee el tipo de la figura
 C 0xB606 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0xB61B hl_mas_a: HL += A
-C 0xB62E lee tiene el objeto 0x1B
 C 0xB636 suma_experiencia: suma A x 256 a la experiencia del que juega
+C 0xB65E acaba_los_62: acaba con las figuras de tipo 0x62
+C 0xB66E guarda los cuadros de lo que deja la figura vencida
 C 0xB67D apunta a los huecos de figura (32 bytes cada uno)
 C 0xB684 lee cuantos huecos de figura hay
 C 0xB68A compara con el tipo de la figura
-C 0xB6B4 lee el mapa (1 el castillo, 2-11 los mundos)
+C 0xB6AF apunta a las figuras que quedan por vencer en la sala del castillo
+C 0xB6BD guarda vencidas las de la sala del castillo (salen los objetos escondidos)
 C 0xB6C9 apunta a los huecos de figura (32 bytes cada uno)
+C 0xB6D2 arma_contra_figura: un arma contra una figura
+C 0xB6E4 guarda la espada da en algo
+C 0xB6F1 lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
+C 0xB6FE hiere: la figura pierde una de vida (dos con el objeto 0x25)
 C 0xB704 apunta a el hueco de la cosa de la sala: tipo, y, x
+C 0xB73D cosa_de_reserva: 0x2D: 50 flechas, 0x2E: 10 monedas, 0x2F: 2 llaves
 C 0xB74F guarda el nivel de los objetos 0x28/0x2B/0x2C
 C 0xB752 apunta a tiene el objeto 0x29
 C 0xB755 hl_mas_a: HL += A
-C 0xB75A lee la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)
 C 0xB766 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
-C 0xB769 apunta a el cambio de vida pendiente de Popolon (con signo)
 C 0xB76C lee el mapa (1 el castillo, 2-11 los mundos)
 C 0xB76F hl_mas_a: HL += A
 C 0xB794 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0xB799 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
-C 0xB79C lee el mapa (1 el castillo, 2-11 los mundos)
-C 0xB7A5 lee el mapa (1 el castillo, 2-11 los mundos)
+C 0xB7A2 mas_vida: el tope de la vida + 8 (hasta 0x48) y la vida llena
 C 0xB7B2 musica_espera: deja esperando la musica A
 C 0xB7B6 guarda estado 0x14 pedido
 C 0xB7BA guarda la cosa del jefe vencido puesta
+C 0xB7BF cosa_cogida: la marca de la sala y lo de cada objeto
 C 0xB7C7 suma_monedas: suma A (BCD) a las monedas de 0xE048, hasta 999
 C 0xB7CD suma_llaves: suma A (BCD) a las llaves de 0xE04A, hasta 999
 C 0xB7D2 suma_flechas: suma A (BCD) a las flechas de 0xE046, hasta 999
 C 0xB7D8 apunta a tres huecos de 32 bytes (armas)
+C 0xB7F7 tamano_del_arma: DE = la esquina del arma, DE' = su tamaño (0xB8EF)
 C 0xB7FA apunta a tres huecos de 8 bytes de la lista de la sala (0xB8A2)
+C 0xB839 acaba_arma: el arma se acaba: una menos y el hueco a cero
 C 0xB83E pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
-C 0xB841 apunta a tiene el objeto 0x1F
 C 0xB844 tiene_o_popolon: NZ si la marca de HL esta puesta o se lleva a Popolon (0xE501)
 C 0xB859 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0xB871 lee la direccion de las marcas de la sala (0xE60C + 0x150) y el byte siguiente (16 bits)
+C 0xB87C tamano_de_la_espada: DE = la esquina de la espada, DE' = su tamaño
 C 0xB87F apunta a tres huecos de 8 bytes de la lista de la sala (0xB8A2)
-C 0xB8A0 lee la y del personaje
+C 0xB888 toca_ec30: C si el arma toca el hueco de 0xEC30
+C 0xB89D golpe_a_tinaja: la tinaja pierde 1 (5 con Popolon o el objeto 0x1F)
 C 0xB8A6 lee la x del personaje
 C 0xB8D2 palabra_de_tabla: DE = la palabra A de la tabla de HL
 C 0xB905 lee la x del personaje
 C 0xB90A lee la y del personaje
-C 0xB954 p8000_banco_14: pone el banco 14 en 0x8000
 C 0xB96A p8000_banco_2: pone el banco 2 en 0x8000
-C 0xB9B2 lee el tipo del jefe (el hueco 0xE700 es el jefe)
-C 0xB9D2 lee el tipo del jefe (el hueco 0xE700 es el jefe)
+C 0xB9C2 tamano_del_personaje: DE = la esquina del personaje, DE' = su tamaño
+C 0xB9CC dano_del_jefe: lo que quita el jefe (0xBAD2; la mitad con el objeto 0x08)
 C 0xB9D6 despacha: salta a la entrada A de la tabla de palabras que va detras del call
-C 0xB9EF lee la y del personaje
 C 0xB9F3 lee la x del personaje
+C 0xB9F7 toca_jefe_2: C si toca la cabeza del jefe 2
+C 0xB9FE recuadro_jefe_6: HL = el recuadro del jefe 6 segun su mosaico (0xBA12)
 C 0xBA04 lee el mosaico del jefe
 C 0xBA0F hl_mas_a: HL += A
+C 0xBA22 recuadro_jefe_10: HL = el recuadro del jefe 10 segun la cola (0xBA32)
 C 0xBA28 lee las veces que el jefe ha cambiado de sitio
+C 0xBA46 recuadro_jefe_11: HL = el recuadro del jefe 11 segun el mosaico (0xBA56)
 C 0xBA4C lee el mosaico del jefe
+C 0xBA72 guarda el paso en la escalera
+C 0xBA75 guarda la espada (1 empieza, 2 golpeando)
+C 0xBA79 guarda sin daño (tras un golpe o al entrar)
 C 0xBA7E guarda el estado del personaje (5 = hundirse)
-C 0xBA82 lee el mosaico del jefe
 C 0xBA8C lee la x del jefe
+C 0xBA96 guarda el lado del golpe
 C 0xBABD lee el tipo del jefe (el hueco 0xE700 es el jefe)
-C 0xBAC4 lee tiene el objeto 0x08
 C 0xBAD0 cambia_vida: suma A (con signo) al cambio de vida pendiente del que juega
 C 0xBAE1 p8000_banco_14: pone el banco 14 en 0x8000
+C 0xBAE4 toca_recuadro: C si DE esta en el recuadro de HL
 C 0xBAE7 p8000_banco_2: pone el banco 2 en 0x8000
-C 0xBAEA lee la y del jefe
 C 0xBAF8 lee la x del jefe
-C 0xBB04 p8000_banco_14: pone el banco 14 en 0x8000
 C 0xBB0A lee el tipo del jefe (el hueco 0xE700 es el jefe)
 C 0xBB0E hl_mas_a: HL += A
-C 0xBB17 lee el mosaico del jefe
 C 0xBB21 p8000_banco_2: pone el banco 2 en 0x8000
-C 0xBB24 apunta a tres huecos de 32 bytes (armas)
-C 0xBB37 lee el estado del personaje (5 = hundirse)
+C 0xBB2B arma_contra_el_jefe: un arma contra el jefe
 C 0xBB3D lee el jefe vencido (estado 0x13)
+C 0xBB4F tamano_del_arma: DE = la esquina del arma, DE' = su tamaño (0xB8EF)
 C 0xBB52 apunta a el tipo del jefe (el hueco 0xE700 es el jefe)
-C 0xBB73 lee el tipo del jefe (el hueco 0xE700 es el jefe)
+C 0xBB59 arma_da_al_jefe: el arma da al jefe: si esa arma le hiere, una de vida menos
+C 0xBB63 arma_en_fila: C si el arma alcanza a la figura en su fila
+C 0xBB67 arma_en_columna: C si el arma alcanza a la figura en su columna
 C 0xBB77 despacha: salta a la entrada A de la tabla de palabras que va detras del call
-C 0xBB96 lee el mosaico del jefe
-C 0xBB9F lee el mosaico del jefe
-C 0xBBA8 lee tiene el objeto 0x0B
-C 0xBC02 lee el mosaico del jefe
+C 0xBB93 cuerpo_jefe_2: C si toca el cuerpo del jefe 2
+C 0xBBBC se_tocan: C si el recuadro DE/DE' toca a la figura IX (y 5, x 7)
+C 0xBBC2 recuadro_de_mosaico: BC y HL del recuadro del mosaico de la tabla HL
+C 0xBBCC recuadro_de_mosaico: BC y HL del recuadro del mosaico de la tabla HL
 C 0xBC06 lee las veces que el jefe ha cambiado de sitio
 C 0xBC09 guarda el mosaico del jefe
+C 0xBC0C recuadro_del_jefe: en la sala del jefe sin jefe, 0xE615 = 1 y las letras a cero
 C 0xBC10 guarda el mosaico del jefe
 C 0xBC2C lee el tipo del jefe (el hueco 0xE700 es el jefe)
 C 0xBC30 despacha: salta a la entrada A de la tabla de palabras que va detras del call
+C 0xBC4E recuadro_jefe_14: el recuadro del mosaico con el banco 14
+C 0xBC52 recuadro_jefe_6: HL = el recuadro del jefe 6 segun su mosaico (0xBA12)
+C 0xBC57 recuadro_jefe_14: el recuadro del mosaico con el banco 14
+C 0xBC5B recuadro_jefe_10: HL = el recuadro del jefe 10 segun la cola (0xBA32)
+C 0xBC60 recuadro_jefe_14: el recuadro del mosaico con el banco 14
+C 0xBC64 recuadro_jefe_11: HL = el recuadro del jefe 11 segun el mosaico (0xBA56)
 C 0xBC6C p8000_banco_14: pone el banco 14 en 0x8000
+C 0xBC6F lee_recuadro: BC y HL de (HL), y el banco 2
+C 0xBC72 arma_en_recuadro: C si el arma esta en el recuadro BC/HL
+C 0xBC7A mina_al_jefe: el arma 5 estalla junto al jefe: dos de vida
+C 0xBC83 atravesada: el bit 5 de (ix+3)
+C 0xBC8B acaba_arma: el arma se acaba: una menos y el hueco a cero
 C 0xBC96 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
-C 0xBC9F lee la vida del jefe
 C 0xBCA5 lee el tipo del jefe (el hueco 0xE700 es el jefe)
 C 0xBCAB byte_de_tabla: A = el byte HL + A
-C 0xBCE1 lee el tipo del jefe (el hueco 0xE700 es el jefe)
+C 0xBCBD guarda lo herido que esta el jefe (0, 1, 2)
 C 0xBCE8 hl_mas_a: HL += A
 C 0xBCF6 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
-C 0xBCFB lee el tipo del jefe (el hueco 0xE700 es el jefe)
 C 0xBD05 guarda la fila de la cola del jefe 10
+C 0xBD19 estalla_27: estalla con el sonido 0x27
+C 0xBD23 arma_que_hiere: C si esa arma no hiere a ese jefe (tabla 0xBD0A; rebota)
+C 0xBD2F jefe_herido: 0xE1C5 = 0, 1 o 2 segun la vida que le queda
+C 0xBD33 guarda lo herido que esta el jefe (0, 1, 2)
 C 0xBD37 guarda el jefe vencido (estado 0x13)
 C 0xBD3C pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
-C 0xBD3F lee el mapa (1 el castillo, 2-11 los mundos)
 C 0xBD4A musica_espera: deja esperando la musica A
 C 0xBD52 pide_sonido: pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0xBD5A tamano_de_la_espada: DE = la esquina de la espada, DE' = su tamaño
 C 0xBD5D apunta a el tipo del jefe (el hueco 0xE700 es el jefe)
-C 0xBD70 p8000_banco_14: pone el banco 14 en 0x8000
+C 0xBD61 arma_toca_al_jefe: C si el arma hiere al jefe (tabla 0xBB7A por tipo)
+C 0xBD66 guarda la espada da en algo
+C 0xBD6D hiere_al_jefe: una de vida menos si el arma le hiere (tabla 0xBD0A)
 C 0xBD76 lee el tipo del jefe (el hueco 0xE700 es el jefe)
 C 0xBD7A hl_mas_a: HL += A
 C 0xBD83 lee el mosaico del jefe
 C 0xBD95 p8000_banco_2: pone el banco 2 en 0x8000
+C 0xBD9D cabeza_jefe_2: A = la x de la cabeza del jefe 2
 C 0xBDA4 lee la y del jefe
 C 0xBDC2 lee la x del jefe
 C 0xBDDB lee la y del jefe
 C 0xBE07 lee la x del jefe
 C 0xBE28 guarda la pose del personaje en la pausa
+C 0xBE2E guarda la cuenta de la taza y el byte siguiente (16 bits)
+C 0xBE3C lee la cuenta de la taza y el byte siguiente (16 bits)
+C 0xBE40 guarda la cuenta de la taza y el byte siguiente (16 bits)
 C 0xBE4C guarda la pose del personaje en la pausa
 C 0xBE58 lee la pose del personaje en la pausa
-C 0xBE5F lee la y del personaje
 C 0xBE67 guarda la pose del personaje
-C 0xBE81 sprites_del_personaje: 15 sprites escondidos y la pose del personaje
+C 0xBE6C guarda la cuenta del golpe
+C 0xBE70 guarda el paso en la escalera
+C 0xBE73 sin_parpadeo: 0xE533 y 0xE518 a 0
+C 0xBE77 guarda los saltos de alegria
+C 0xBE7D guarda la velocidad vertical del golpe o la caida (16 bits) y el byte siguiente (16 bits)
 C 0xBE84 vram_del_estado: lo de la VRAM en la interrupcion segun el estado (tabla 0x543B)
+C 0xBE87 lee el paso en la escalera
+C 0xBE90 lee la velocidad vertical del golpe o la caida (16 bits) y el byte siguiente (16 bits)
+C 0xBE94 guarda la velocidad vertical del golpe o la caida (16 bits) y el byte siguiente (16 bits)
+C 0xBE98 lee la y del personaje con su fraccion (16 bits) y el byte siguiente (16 bits)
+C 0xBE9E guarda la y del personaje con su fraccion (16 bits) y el byte siguiente (16 bits)
+C 0xBEAD salto_de_alegria: velocidad -0xA00
+C 0xBEB0 lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
+C 0xBEB5 guarda hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
+C 0xBEB8 pose_vuelta: la pose con el bit 0 cambiado
+C 0xBEC1 guarda la cuenta del golpe
+C 0xBEC4 pose_en_pie: la pose 0 o 2 segun hacia donde mira
 C 0xBECD apunta a el tampon de 0xEB00 (lo de debajo de las figuras; la contraseña)
 C 0xBEE2 lee el mapa (1 el castillo, 2-11 los mundos)
-C 0xBEE8 sala_a_vram: la pantalla de la sala (0xED80) a las filas 4-23
-C 0xBEEB apunta a el tampon de 0xEB00 (lo de debajo de las figuras; la contraseña)
-C 0xBF02 lee la y del personaje
+C 0xBEF8 guarda los saltos de alegria
+C 0xBEFB estado_del_personaje_a: el estado A del personaje y lo demas a cero
+C 0xBEFF guarda sin daño (tras un golpe o al entrar)
 C 0xBF07 guarda la y del personaje
 # --- fin de las anotaciones de anota.py ---

@@ -131,7 +131,9 @@ C 0x62B9 lee el mapa (0xE041) y la sala (0xE042) de un tiron
 C 0x62DB lee todo parado (objeto 0x20)
 C 0x6326 de_mas_a (por 0x4065): DE += A
 C 0x635A lee el mapa (1 el castillo, 2-11 los mundos)
+C 0x6374 lee en el agua
 C 0x6416 de_mas_a (por 0x4065): DE += A
+C 0x657A apunta a las figuras que quedan por vencer en la sala del castillo
 C 0x659F lee el nivel de los objetos 0x28/0x2B/0x2C
 C 0x65A7 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 C 0x65EE lee cuantos huecos de figura hay
@@ -139,6 +141,7 @@ C 0x66B1 despacha (por 0x4050): salta a la entrada A de la tabla de palabras que
 C 0x6794 apunta a los huecos de figura (32 bytes cada uno)
 C 0x6797 lee cuantos huecos de figura hay
 C 0x67A8 lee cuantos huecos de figura hay
+C 0x69D2 apunta a los cuadros de lo que deja la figura vencida
 C 0x6A2B byte_de_tabla (por 0x4083): A = el byte HL + A
 C 0x6A57 byte_de_tabla (por 0x4083): A = el byte HL + A
 C 0x6A86 lee el contador de cuadros de partida
@@ -218,16 +221,21 @@ C 0x7A56 lee la x del personaje
 C 0x7A5F apunta a la y del personaje
 C 0x7A76 lee la y del personaje
 C 0x7A81 lee la x del personaje
+C 0x7A8A lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
+C 0x7A8D guarda el lado del golpe
 C 0x7B2D de_negado (por 0x4068): DE = -DE
 C 0x7B64 articulo: el dibujo de un articulo
 C 0x7C42 casilla_de_yx (por 0x4056): HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
+C 0x7C5B suelta_figura: la figura deja de llevarlo
 C 0x7C84 lee la y del personaje
 C 0x7CA0 de_negado (por 0x4068): DE = -DE
 C 0x7CA9 lee la x del personaje
 C 0x7CD7 casilla_de_yx (por 0x4056): HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 C 0x7CE9 casilla_de_yx (por 0x4056): HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 C 0x7D07 apunta a el contador de cuadros de partida
+C 0x7D27 agua_tope: en el agua no se baja de la y 0xB9 (salvo Afrodita en la sala 0x0B del mapa 8)
 C 0x7D3D despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0x7DF8 suelta_figura: la figura deja de llevarlo
 C 0x7E1E casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 C 0x7E22 casilla_derecha (por 0x4071): compara 0xB9 con el caracter de HL + 1
 C 0x7E29 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL

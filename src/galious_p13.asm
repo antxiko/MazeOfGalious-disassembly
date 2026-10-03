@@ -272,13 +272,13 @@ L_6197:
 	inc a			;61ac
 	ld b,a			;61ad
 	ld e,(ix+003h)		;61ae
-	ld a,(0e1c5h)		;61b1
+	ld a,(0e1c5h)		;61b1   ; lee lo herido que esta el jefe (0, 1, 2)
 	or a			;61b4
 	jr z,L_61C6		;61b5
 	ld a,(0e1c9h)		;61b7
 	or a			;61ba
 	jr nz,L_61C6		;61bb
-	ld a,(0e1c5h)		;61bd
+	ld a,(0e1c5h)		;61bd   ; lee lo herido que esta el jefe (0, 1, 2)
 	cp 002h		;61c0
 	jr nz,L_61C5		;61c2
 	dec e			;61c4
@@ -305,13 +305,13 @@ L_61E0:
 	ld (ix+00bh),a		;61ed
 	bit 5,(ix+002h)		;61f0
 	ret nz			;61f4
-	ld a,(0e1c5h)		;61f5
+	ld a,(0e1c5h)		;61f5   ; lee lo herido que esta el jefe (0, 1, 2)
 	or a			;61f8
 	jr z,L_621E		;61f9
 	ld a,(0e1c9h)		;61fb
 	or a			;61fe
 	jr nz,L_621E		;61ff
-	ld a,(0e1c5h)		;6201
+	ld a,(0e1c5h)		;6201   ; lee lo herido que esta el jefe (0, 1, 2)
 	cp 002h		;6204
 	jr nz,L_6213		;6206
 	ld a,c			;6208
@@ -498,13 +498,13 @@ L_6318:
 	inc a			;631a
 	ld b,a			;631b
 	ld e,(ix+003h)		;631c
-	ld a,(0e1c5h)		;631f
+	ld a,(0e1c5h)		;631f   ; lee lo herido que esta el jefe (0, 1, 2)
 	or a			;6322
 	jr z,L_6334		;6323
 	ld a,(0e1c9h)		;6325
 	or a			;6328
 	jr nz,L_6334		;6329
-	ld a,(0e1c5h)		;632b
+	ld a,(0e1c5h)		;632b   ; lee lo herido que esta el jefe (0, 1, 2)
 	cp 002h		;632e
 	jr nz,L_6333		;6330
 	dec e			;6332

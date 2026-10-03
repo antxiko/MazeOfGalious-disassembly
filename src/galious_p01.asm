@@ -76,7 +76,7 @@ borra_al_entrar:		; 0xE690, 0xE603, 0xE536, 0xE539, 0xE520 y 0xE620-0xE63F a cer
 	ld (0e603h),a		;6033   ; ...0xE603, 0xE536, 0xE539 y 0xE520 a 0...
 	ld (0e536h),a		;6036
 	ld (0e539h),a		;6039
-	ld (0e520h),a		;603c
+	ld (0e520h),a		;603c   ; guarda empujado (1 a la izquierda, 2 a la derecha)
 	ld hl,0e620h		;603f   ; ...y 0xE620-0xE63F a cero
 	ld de,0e621h		;6042
 	ld bc,0001fh		;6045
@@ -643,7 +643,7 @@ L_63B4:
 	ld a,(ix+000h)		;63b4
 	or a			;63b7
 	jr z,L_63BD		;63b8
-	call 0b85ch		;63ba
+	call 0b85ch		;63ba   ; rompe_tinaja: la tinaja se rompe y queda rota en las marcas de la sala
 L_63BD:
 	add ix,de		;63bd
 	djnz L_63B4		;63bf
@@ -766,7 +766,7 @@ mueve_una:		; mueve una de 0xE4A0 y la cambia de sala por arriba o por abajo
 	ld a,(0e52dh)		;6487   ; ...si lleva al personaje (0xE52D)...
 	cp (ix+000h)		;648a
 	jr nz,L_6495		;648d
-	ld a,(0e52ch)		;648f
+	ld a,(0e52ch)		;648f   ; lee la figura que lo lleva al salir de la sala
 	dec a			;6492
 	jr z,L_649B		;6493
 L_6495:
@@ -3298,7 +3298,7 @@ L_7400:
 	ld a,b			;740d   ; el tercero se esconde con 0xE523
 	cp 003h		;740e
 	jr nz,L_741D		;7410
-	ld a,(0e523h)		;7412
+	ld a,(0e523h)		;7412   ; lee el tercer sprite escondido
 	and a			;7415
 	jr z,L_741D		;7416
 	ld a,0e0h		;7418
@@ -3321,7 +3321,7 @@ L_741D:
 	cp 004h		;742f
 	ld c,(hl)			;7431
 	jr z,L_745C		;7432
-	ld a,(0e533h)		;7434
+	ld a,(0e533h)		;7434   ; lee parpadeando
 	dec a			;7437
 	jr z,L_745C		;7438
 L_743A:
@@ -4918,7 +4918,7 @@ jefe_cada_cuadro:		; el jefe: humo, salida y lo de su tipo
 	jr z,$+75		;7f0b
 	ld ix,0e700h		;7f0d   ; ...4, en pie: p06:B3E7 y p06:B3F7
 	call 04220h		;7f11   ; a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
-	call 0b3e7h		;7f14
+	call 0b3e7h		;7f14   ; para_con_escudo: C si el personaje quieto para el disparo mirando hacia el (sonido 0x1D)
 	call 0b3f7h		;7f17
 	call 04215h		;7f1a   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 	ld a,(0e0d5h)		;7f1d   ; mientras 0xE0D5, nada mas

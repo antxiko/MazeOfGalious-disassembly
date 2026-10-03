@@ -629,7 +629,7 @@ L_636A:
 	ld (hl),a			;6372
 	ret			;6373
 L_6374:
-	ld a,(0e511h)		;6374
+	ld a,(0e511h)		;6374   ; lee en el agua
 	and a			;6377
 	ret nz			;6378
 	ld hl,0e659h		;6379
@@ -868,7 +868,7 @@ L_6573:
 	djnz L_6573		;6577
 	ret			;6579
 L_657A:
-	ld hl,0e622h		;657a
+	ld hl,0e622h		;657a   ; apunta a las figuras que quedan por vencer en la sala del castillo
 	inc (hl)			;657d
 	ld a,001h		;657e
 	ld (0e611h),a		;6580
@@ -1334,7 +1334,7 @@ DATA_fichas_de_tipo:
 
 
 L_69D2:
-	ld hl,0e63fh		;69d2
+	ld hl,0e63fh		;69d2   ; apunta a los cuadros de lo que deja la figura vencida
 	ld a,(hl)			;69d5
 	or a			;69d6
 	ret z			;69d7
@@ -3594,8 +3594,8 @@ L_7A76:
 	sub (ix+007h)		;7a84
 	cp 010h		;7a87
 	ret nc			;7a89
-	ld a,(0e503h)		;7a8a
-	ld (0e514h),a		;7a8d
+	ld a,(0e503h)		;7a8a   ; lee hacia donde mira el personaje (0 derecha, 1 izquierda, 2 de espaldas)
+	ld (0e514h),a		;7a8d   ; guarda el lado del golpe
 	jp 04092h		;7a90
 L_7A93:
 	ld (ix+008h),008h		;7a93
@@ -3806,7 +3806,7 @@ L_7C53:
 	ld a,(ix+00ah)		;7c53
 	xor 008h		;7c56
 	ld (ix+00ah),a		;7c58
-	jp 0b16fh		;7c5b
+	jp 0b16fh		;7c5b   ; suelta_figura: la figura deja de llevarlo
 L_7C5E:
 	ld (ix+014h),000h		;7c5e
 	ld bc,0ffe0h		;7c62
@@ -3918,7 +3918,7 @@ L_7D18:
 	ld (ix+018h),004h		;7d1c
 	ld (ix+016h),00bh		;7d20
 	call L_7D9E		;7d24
-	call 0a103h		;7d27
+	call 0a103h		;7d27   ; agua_tope: en el agua no se baja de la y 0xB9 (salvo Afrodita en la sala 0x0B del mapa 8)
 	call L_7E17		;7d2a
 	ret nc			;7d2d
 	call 09706h		;7d2e
@@ -4023,7 +4023,7 @@ L_7DEC:
 L_7DF0:
 	ld (ix+015h),010h		;7df0
 	ld (ix+01dh),001h		;7df4
-	call 0b16fh		;7df8
+	call 0b16fh		;7df8   ; suelta_figura: la figura deja de llevarlo
 L_7DFB:
 	ld a,(ix+007h)		;7dfb
 	bit 7,(ix+00fh)		;7dfe

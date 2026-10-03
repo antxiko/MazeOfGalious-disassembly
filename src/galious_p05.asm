@@ -554,7 +554,7 @@ L_83C2:
 	jr z,L_8418		;83c9
 	dec a			;83cb
 	jr z,L_8449		;83cc
-	ld a,(0e511h)		;83ce
+	ld a,(0e511h)		;83ce   ; lee en el agua
 	dec a			;83d1
 	jr z,$-25		;83d2
 	dec (ix+014h)		;83d4
@@ -594,7 +594,7 @@ L_8418:
 	ld a,(0e628h)		;8418
 	and a			;841b
 	jr nz,L_8440		;841c
-	ld a,(0e511h)		;841e
+	ld a,(0e511h)		;841e   ; lee en el agua
 	or a			;8421
 	jr nz,L_8440		;8422
 	ld a,(0e505h)		;8424   ; lee la y del personaje
@@ -817,7 +817,7 @@ L_85FD:
 	ret nz			;8600
 	inc (ix+001h)		;8601
 	set 4,(ix+002h)		;8604
-	jp 0b16fh		;8608
+	jp 0b16fh		;8608   ; suelta_figura: la figura deja de llevarlo
 L_860B:
 	inc (ix+018h)		;860b
 	ld a,(ix+018h)		;860e
@@ -1714,7 +1714,7 @@ L_8D4F:
 	jp 0b133h		;8d58
 L_8D5B:
 	call 0b15fh		;8d5b
-	jp 0b16fh		;8d5e
+	jp 0b16fh		;8d5e   ; suelta_figura: la figura deja de llevarlo
 L_8D61:
 	ld a,(0e604h)		;8d61   ; lee el contador de cuadros de partida
 	bit 3,a		;8d64
@@ -2349,7 +2349,7 @@ DATA_tabla_9225:
 
 L_922D:
 	bit 7,(ix+00dh)		;922d
-	call nz,0b16fh		;9231
+	call nz,0b16fh		;9231   ; suelta_figura: la figura deja de llevarlo
 	call 06bd5h		;9234
 	call L_92A1		;9237
 	ret nc			;923a
@@ -2360,10 +2360,10 @@ L_9243:
 	ld a,(0e515h)		;9243
 	dec a			;9246
 	jr nz,L_9290		;9247
-	ld a,(0e50ah)		;9249
+	ld a,(0e50ah)		;9249   ; lee los pasos de la caida
 	and a			;924c
 	jr z,L_9290		;924d
-	ld de,(0e512h)		;924f
+	ld de,(0e512h)		;924f   ; lee la velocidad vertical del golpe o la caida (16 bits) y el byte siguiente (16 bits)
 	call 0b137h		;9253
 	ld a,(ix+001h)		;9256
 	dec a			;9259
@@ -2457,11 +2457,11 @@ L_930E:
 	bit 7,(ix+00dh)		;9311
 	jr z,L_931E		;9315
 	cp 020h		;9317
-	call c,0b16fh		;9319
+	call c,0b16fh		;9319   ; suelta_figura: la figura deja de llevarlo
 	jr L_9323		;931c
 L_931E:
 	cp 0b0h		;931e
-	call nc,0b16fh		;9320
+	call nc,0b16fh		;9320   ; suelta_figura: la figura deja de llevarlo
 L_9323:
 	ld a,(ix+007h)		;9323
 	bit 7,(ix+00fh)		;9326
@@ -4202,7 +4202,7 @@ L_9FB1:
 	inc (ix+014h)		;9fc8
 L_9FCB:
 	dec (ix+014h)		;9fcb
-	call z,0b16fh		;9fce
+	call z,0b16fh		;9fce   ; suelta_figura: la figura deja de llevarlo
 	dec (ix+015h)		;9fd1
 	jp z,0b15fh		;9fd4
 	ret			;9fd7
