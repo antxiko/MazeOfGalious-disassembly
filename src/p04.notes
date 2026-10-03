@@ -1026,6 +1026,7 @@ C 0x7AFF el tamaño de la figura (tabla 0x9006, banco 14) = 0x3E
 C 0x7B04 el dibujo (o el mosaico) de la figura = 0xA8
 C 0x7B08 el tamaño de la figura (tabla 0x9006, banco 14) = 0x05
 C 0x7B12 pone a uno el bit 1 de las banderas de la figura (bit 7: en pantalla)
+C 0x7B16 espera_azar_7f: una espera al azar 0-0x7F
 C 0x7B19 lado_del_personaje_1d: (ix+0x1D) = 1 si el personaje esta a la derecha
 C 0x7B1F gravedad: la gravedad = DE
 C 0x7B2D de_negado (por 0x4068): DE = -DE
@@ -1035,10 +1036,13 @@ C 0x7B58 anda_tipo_01: anda; en el borde, da la vuelta
 C 0x7B68 dibujo_b0_c0: cada 4 cuadros el dibujo 0xB0 o 0xC0
 C 0x7B6B suelo_delante: C si hay suelo delante de los pies
 C 0x7B70 suelo_o_escalera: C si debajo hay suelo (0xBA o mas) o escalera (0xD2)
+C 0x7B7A salto_30_e0: el salto con D = 0x30, E = 0xE0
 C 0x7B80 vuelta_de_lado: la velocidad de lado al reves
+C 0x7B83 cambia_banderas_y_lado: el bit 0 de las banderas y el lado (ix+0x1D)
 C 0x7B88 mira el bit 7 de la velocidad de lado de la figura (alta)
 C 0x7B96 guarda la x de la figura
 C 0x7B9B arriba_o_abajo: (ix+0x1E) = 0 a la altura, 1 por encima, 2 por debajo
+C 0x7BB7 puede_saltar: C si (ix+0x18) deja saltar
 C 0x7BCB lee la y de la figura
 C 0x7BD0 guarda la y de la figura
 C 0x7BD5 guarda el dibujo (o el mosaico) de la figura
@@ -1048,16 +1052,20 @@ C 0x7BDF velocidad_vertical: la velocidad vertical = DE
 C 0x7BE2 el paso de la figura = 0x03
 C 0x7BE6 sin_lado: la velocidad de lado a 0
 C 0x7BE9 el paso de la figura = 0x01
+C 0x7C0D cae_hasta_6: cae hasta la velocidad 6
 C 0x7C18 anda_tipo_01: anda; en el borde, da la vuelta
+C 0x7C1B espera_azar_7f: una espera al azar 0-0x7F
 C 0x7C1E sin_vertical: la velocidad vertical a 0
 C 0x7C21 paso_0_figura: el paso a 0
 C 0x7C2B anima_cada_8: cada 8 cuadros, el dibujo XOR D
 C 0x7C2E lee la y de la figura
 C 0x7C35 cambia_dibujo_8: el dibujo XOR 8 y la vertical al reves
+C 0x7C38 suelo_delante_5: C si hay suelo delante
 C 0x7C3C lee la y de la figura
 C 0x7C3F lee la x de la figura
 C 0x7C42 casilla_de_yx (por 0x4056): HL = la casilla de la copia de nombres de 0xED00 en la y (L) y la x (H)
 C 0x7C48 cambia_dibujo_8: el dibujo XOR 8 y la vertical al reves
+C 0x7C4B y_a_la_casilla_5: la y ajustada a la casilla
 C 0x7C4E a_un_lado_70: velocidad de lado 0x70 segun (ix+0x1D)
 C 0x7C53 lee el dibujo (o el mosaico) de la figura
 C 0x7C58 guarda el dibujo (o el mosaico) de la figura
@@ -1136,6 +1144,7 @@ C 0x7EF8 velocidad_vertical: la velocidad vertical = DE
 C 0x7EFB paso_siguiente_de_figura: sube el paso (ix+1)
 C 0x7EFE pared_debajo_figura: C si debajo hay pared
 C 0x7F02 baja el paso de la figura
+C 0x7F05 y_a_la_casilla_5: la y ajustada a la casilla
 C 0x7F08 sin_vertical: la velocidad vertical a 0
 C 0x7F10 lee la x de la figura
 C 0x7F13 lee la y de la figura
@@ -1146,6 +1155,7 @@ C 0x7F35 azar_5: A = R con el contador de cuadros
 C 0x7F3C guarda la x de la figura
 C 0x7F4C velocidad_vertical: la velocidad vertical = DE
 C 0x7F52 gravedad: la gravedad = DE
+C 0x7F55 crea_6a_bajo: crea dos figuras 0x6A en y 0x90, x + 4
 C 0x7F6F dos_dibujos: (ix+0x0A) = B, (ix+0x12) = C
 C 0x7F75 despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
 C 0x7F8A byte_de_tabla (por 0x4083): A = el byte HL + A
@@ -1154,6 +1164,7 @@ C 0x7F91 paso_siguiente_de_figura: sube el paso (ix+1)
 C 0x7F9E cae: la velocidad vertical mas la gravedad
 C 0x7FA4 paso_siguiente_de_figura: sube el paso (ix+1)
 C 0x7FA7 lee la y de la figura
+C 0x7FB3 y_a_la_casilla_5: la y ajustada a la casilla
 C 0x7FB6 sin_vertical: la velocidad vertical a 0
 C 0x7FB9 lee la x de la figura
 C 0x7FC6 de_negado (por 0x4068): DE = -DE
@@ -1161,6 +1172,8 @@ C 0x7FC9 velocidad_de_lado: la velocidad de lado = DE
 C 0x7FCC paso_siguiente_de_figura: sube el paso (ix+1)
 C 0x7FD8 lee la x de la figura
 C 0x7FDB mira el bit 7 de la velocidad de lado de la figura (alta)
+C 0x7FF0 casilla_delante_abajo: HL = la casilla de delante, a los pies
+C 0x7FF5 pared_o_borde: C con pared encima de HL o en el borde
 C 0x7FF9 vuelta_de_lado: la velocidad de lado al reves
 C 0x7FFC cambia_sentido_14: cambia el bit 0 de (ix+0x14)
 # --- fin de las anotaciones de anota.py ---

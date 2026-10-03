@@ -4918,8 +4918,8 @@ jefe_cada_cuadro:		; el jefe: humo, salida y lo de su tipo
 	jr z,$+75		;7f0b
 	ld ix,0e700h		;7f0d   ; ...4, en pie: p06:B3E7 y p06:B3F7
 	call 04220h		;7f11   ; a000_banco_6: pone el banco 6 en 0xA000 (y su copia en 0xF0F3)
-	call 0b3e7h		;7f14
-	call 0b3f7h		;7f17
+	call 0b3e7h		;7f14   ; quita_bit_5_tras_16: cada 16 cuadros quita el bit 5 de (ix+3)
+	call 0b3f7h		;7f17   ; quita_bit_4_tras_32: cada 32 cuadros quita el bit 4 de (ix+3)
 	call 04215h		;7f1a   ; a000_banco_3: pone el banco 3 en 0xA000 (y su copia en 0xF0F3)
 	ld a,(0e0d5h)		;7f1d   ; mientras 0xE0D5, nada mas
 	or a			;7f20

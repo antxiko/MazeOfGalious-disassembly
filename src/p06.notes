@@ -128,33 +128,69 @@ F 0xBFD8 16
 # --- fin de los bloques de bloques.py ---
 
 # --- ANOTACIONES AUTOMATICAS (seccion que reescribe tools/anota.py; no editar a mano) ---
+L 0xA043 compara_fila_abajo compara A con la casilla de la fila de abajo
 L 0xA070 tipo_2e_entra al entrar el tipo 0x2E
 L 0xA081 tipo_2e_cuadro cada cuadro el tipo 0x2E
+L 0xA0C6 banderas_8f las banderas AND 0x8F
 L 0xA0E3 tipo_49_entra al entrar el tipo 0x49
 L 0xA0F1 tipos_52_y_mas_entra al entrar los tipos 0x52, 0x53
 L 0xA109 tipos_49_y_mas_cuadro cada cuadro los tipos 0x49, 0x52, 0x53
+L 0xA15A sonido_del_49 el tipo 0x49 cada 16 cuadros suena (0x0A)
+L 0xA16B anima_49_52 cada 8 cuadros anima segun el tipo (0x49, 0x52...)
 L 0xA198 tipo_23_entra al entrar el tipo 0x23
 L 0xA1B8 tipo_23_cuadro cada cuadro el tipo 0x23
+L 0xA24C busca_cerca Z si A - 3 ... A + B - 4 coincide con (HL)
+L 0xA24E busca_en_b Z si (HL) es uno de B valores desde A
+L 0xA258 y_y_tope A = (ix+0x16), B = 0x11, HL = la y del personaje
+L 0xA261 x_hacia_la_izquierda (ix+0x18) = 1, A = (ix+0x14), DE = -0x40, B = 6, HL = la x del personaje
+L 0xA26D x_hacia_la_derecha (ix+0x18) = 0, A = (ix+0x15), DE = 0x40, B = 6, HL = la x del personaje
+L 0xA27D tope_17_7 C si (ix+0x17) < 7
 L 0xA283 tipo_3e_entra al entrar el tipo 0x3E
 L 0xA2A4 tipo_3e_cuadro cada cuadro el tipo 0x3E
+L 0xA36A borde_segun_14 C en el borde segun el lado (ix+0x14)
+L 0xA37A tipo_13_vuelta el tamaño 0x0F y el dibujo segun el lado
+L 0xA39E niega_1a (ix+0x1A) negado
+L 0xA3A1 pon_1a_negado (ix+0x1A) = -A
+L 0xA3A7 cambia_15 el bit 0 de (ix+0x15) al reves
+L 0xA3B0 anima_1b_6 anima con D = (ix+0x1B), E = 6
 L 0xA3E2 tipo_13_entra al entrar el tipo 0x13
 L 0xA401 tipo_13_cuadro cada cuadro el tipo 0x13
 L 0xA42A tipo_26_entra al entrar el tipo 0x26
+L 0xA44D espera_10_3f (ix+0x12) = 0x10 + azar
 L 0xA458 tipo_26_cuadro cada cuadro el tipo 0x26
+L 0xA4AD suma_16_17 (ix+0x16, 0x17) + BC
+L 0xA4BB vuelta_en_17 da la vuelta en los topes de (ix+0x17)
+L 0xA4E4 acumula_velocidades cada 8 cuadros suma las velocidades a (ix+0x14, 0x15)
 L 0xA526 tipo_4b_cuadro cada cuadro el tipo 0x4B
+L 0xA527 anima_4_8 anima con D = 4, E = 8
 L 0xA548 tipo_4b_entra al entrar el tipo 0x4B
 L 0xA560 tipo_65_entra al entrar el tipo 0x65
 L 0xA5E0 tipo_67_entra al entrar el tipo 0x67
 L 0xA5F3 tipo_67_cuadro cada cuadro el tipo 0x67
+L 0xA64D copia_sitio_del_jefe (ix+0x14, 0x15) = 0xE71D, 0xE71E
+L 0xA727 lengua_del_jefe_7 la lengua del jefe 7: una menos y su sitio
+L 0xA73D tope_17_18 (ix+0x17) no baja de 0x18
+L 0xA756 dentro_de_1c C si (ix+0x1C) esta entre 8 y 0xB8
+L 0xA791 ancho_e733 el ancho = 0xE733
 L 0xA7A8 tipo_38_entra al entrar el tipo 0x38
+L 0xA7B6 a_un_lado_al_azar_6 velocidad 0x100 a un lado al azar
 L 0xA7C3 tipo_38_cuadro cada cuadro el tipo 0x38
+L 0xA7F7 cae_hasta_1e cae hasta la y (ix+0x1E) o el suelo
 L 0xA830 tipo_07_entra al entrar el tipo 0x07
 L 0xA848 tipo_07_cuadro cada cuadro el tipo 0x07
+L 0xA8D6 anima_4_a anima con D = 4, E = 0x0A
 L 0xA8DF tipo_39_entra al entrar el tipo 0x39
 L 0xA90D tipo_39_cuadro cada cuadro el tipo 0x39
+L 0xA92F orbita el angulo (ix+0x19) gira y la posicion en el circulo
+L 0xA958 seno_por_17 A = el seno de A x (ix+0x17)
 L 0xA974 tipo_2c_entra al entrar el tipo 0x2C
 L 0xA99D tipo_64_cuadro cada cuadro el tipo 0x64
 L 0xA9B3 tipo_2c_cuadro cada cuadro el tipo 0x2C
+L 0xA9E1 tipo_2c_o_vecina el tipo 0x2C o la figura de antes vacia
+L 0xAA1C anda_y_vuelve anda; en el borde o la pared da la vuelta
+L 0xAA6C dibujos_del_lado los 4 dibujos (0xA0-0xAC o los otros) segun el lado
+L 0xAA94 hl_e638 HL = 0xE638 + (ix+0x14)
+L 0xAA9E lee_e638 A = (0xE638 + (ix+0x14))
 L 0xAAA3 tipo_64_entra al entrar el tipo 0x64
 L 0xAAB5 tipo_6b_entra al entrar el tipo 0x6B
 L 0xAABD tipo_6b_cuadro cada cuadro el tipo 0x6B
@@ -162,13 +198,20 @@ L 0xAABE tipo_5c_entra al entrar el tipo 0x5C
 L 0xAAF3 tipo_5c_cuadro cada cuadro el tipo 0x5C
 L 0xAAF4 tipo_34_entra al entrar el tipo 0x34
 L 0xAAFA tipo_34_cuadro cada cuadro el tipo 0x34
+L 0xAB20 pared_vertical C con pared arriba o abajo segun va
+L 0xAB33 velocidad_por_cercania la velocidad segun lo cerca que este el personaje
 L 0xAB88 tipo_35_entra al entrar el tipo 0x35
 L 0xABA7 tipo_35_cuadro cada cuadro el tipo 0x35
+L 0xABE1 suelo_debajo_6 C con suelo debajo
+L 0xABF1 borde_al_reves NC en el borde
 L 0xABFE tipo_03_entra al entrar el tipo 0x03
 L 0xAC28 tipo_03_cuadro cada cuadro el tipo 0x03
+L 0xACAA pared_delante_6 C con pared delante
 L 0xACE8 tipo_54_cuadro cada cuadro el tipo 0x54
 L 0xAD05 tipo_55_entra al entrar el tipo 0x55
 L 0xAD13 tipo_55_cuadro cada cuadro el tipo 0x55
+L 0xAD1C cae_y_anima anima y cae
+L 0xAD22 anima_55 cada 2 cuadros el dibujo siguiente
 L 0xAD51 tipo_57_entra al entrar el tipo 0x57
 L 0xAD8C tipo_57_cuadro cada cuadro el tipo 0x57
 L 0xADB2 tipo_58_entra al entrar el tipo 0x58
@@ -178,7 +221,10 @@ L 0xAE29 tipo_59_cuadro cada cuadro el tipo 0x59
 L 0xAE4C tipo_3c_entra al entrar el tipo 0x3C
 L 0xAE58 tipo_3d_cuadro cada cuadro el tipo 0x3D
 L 0xAE59 tipo_3c_cuadro cada cuadro el tipo 0x3C
+L 0xAE9A anima_cada_6 cada 6 cuadros, dibujo XOR 4
 L 0xAEC4 tipo_3d_entra al entrar el tipo 0x3D
+L 0xB000 toca_19 si toca una figura 0x19, rebota
+L 0xB027 busca_19_6 busca una figura de tipo 0x19
 L 0xB080 tamano_b09f el tamaño (ix+0x11) del dibujo, tabla 0xB09F
 L 0xB085 tamano_b0d0 el tamaño (ix+0x11) del dibujo - 0xC4, tabla 0xB0D0
 L 0xB088 tamano_c4 el tamaño (ix+0x11) del dibujo - 0xC4 de la tabla HL
@@ -186,6 +232,8 @@ L 0xB08F tamano_del_dibujo el tamaño (ix+0x11) del dibujo - 0xA0 de la tabla HL
 L 0xB0D6 anima_cada cada (ix+8) cuadros: el dibujo XOR D y el tamaño XOR B
 L 0xB0DD anima el dibujo XOR D y el tamaño XOR B
 L 0xB0ED mueve_figura la y y la x de la figura mas sus velocidades
+L 0xB114 suma_16_bits (HL) += (DE) en 16 bits
+L 0xB117 suma_alta el byte alto con acarreo
 L 0xB124 solo_vertical sin velocidad de lado y la vertical = DE
 L 0xB129 sin_vertical la velocidad vertical a 0
 L 0xB12E sin_lado la velocidad de lado a 0
@@ -204,8 +252,17 @@ L 0xB195 hacia_el_personaje_de las velocidades desde DE hacia el personaje
 L 0xB1A3 velocidades_del_angulo las velocidades del angulo de 0xF017
 L 0xB1DB angulo_hacia 0xF018 = el angulo hacia el personaje desde la figura + DE
 L 0xB1FF cuadrante el cuadrante y el angulo de A a 0xF010 y 0xF017
+L 0xB223 angulo_al_personaje el angulo desde DE hasta el personaje
+L 0xB262 por_velocidad DE = E x 0xE609 / 32
+L 0xB3E7 quita_bit_5_tras_16 cada 16 cuadros quita el bit 5 de (ix+3)
+L 0xB3F7 quita_bit_4_tras_32 cada 32 cuadros quita el bit 4 de (ix+3)
+L 0xB407 figura_cada_cuadro una figura cada cuadro: se mueve y lo de su tipo
 L 0xB41C acaba_figura la figura se acaba: el hueco vacio y una menos
+L 0xB43D marca_vencida la marca de la figura vencida en la sala (bit 3 de (ix+3))
+L 0xB452 dentro_de_la_pantalla C si la figura esta dentro de la pantalla
 L 0xB45D tipo_66_cuadro cada cuadro el tipo 0x66
+L 0xB45E lo_del_tipo lo de su tipo (tabla 0xB472), salvo con todo parado
+L 0xB57A cuenta_de_tipo cuenta las figuras de este tipo (0xE6C2)
 C 0xA001 lee la x de la figura
 C 0xA004 casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
 C 0xA009 casilla_derecha (por 0x4071): compara 0xB9 con el caracter de HL + 1
@@ -214,9 +271,11 @@ C 0xA015 mira el bit 7 de la velocidad de lado de la figura (alta)
 C 0xA01B lee la x de la figura
 C 0xA01F lee la y de la figura
 C 0xA022 casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
+C 0xA027 compara_fila_abajo: compara A con la casilla de la fila de abajo
 C 0xA02D lee la x de la figura
 C 0xA033 lee la y de la figura
 C 0xA036 casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0xB9
+C 0xA03B compara_fila_abajo: compara A con la casilla de la fila de abajo
 C 0xA03F sube las columnas de la figura que se pintan
 C 0xA049 lee la y de la figura
 C 0xA050 lee la y de la figura
@@ -225,14 +284,17 @@ C 0xA05C lee la x de la figura
 C 0xA063 lee la x de la figura
 C 0xA06C guarda la x de la figura
 C 0xA077 guarda el paso de la figura
+C 0xA07E banderas_bajas: solo los 4 bits bajos de las banderas
 C 0xA08B sube el paso de la figura
 C 0xA094 banderas_e0: las banderas con 0xE0 y p05:96FA
+C 0xA0A2 banderas_8f: las banderas AND 0x8F
 C 0xA0BD palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 C 0xA0C7 lee las banderas de la figura (bit 7: en pantalla)
 C 0xA0CC guarda las banderas de la figura (bit 7: en pantalla)
 C 0xA0F5 pone a cero el bit 5 de las banderas de la figura (bit 7: en pantalla)
 C 0xA0F9 las columnas de la figura que se pintan = 0x01
 C 0xA100 velocidades: la de lado = DE y la vertical = HL
+C 0xA10C sonido_del_49: el tipo 0x49 cada 16 cuadros suena (0x0A)
 C 0xA112 baja las columnas de la figura que se pintan
 C 0xA117 espera_10_1f: (ix+0x15) = 0x10 + azar
 C 0xA11A azar_5: A = R con el contador de cuadros
@@ -253,7 +315,16 @@ C 0xA18B anima: el dibujo XOR D y el tamaño XOR B
 C 0xA1A0 lee la y de la figura
 C 0xA1A8 lee la x de la figura
 C 0xA1B2 guarda las columnas de la figura que se pintan
+C 0xA1B5 banderas_bajas: solo los 4 bits bajos de las banderas
 C 0xA1BB despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0xA1C4 y_y_tope: A = (ix+0x16), B = 0x11, HL = la y del personaje
+C 0xA1C7 busca_en_b: Z si (HL) es uno de B valores desde A
+C 0xA1CF x_hacia_la_izquierda: (ix+0x18) = 1, A = (ix+0x14), DE = -0x40, B = 6, HL = la x del personaje
+C 0xA1D2 busca_cerca: Z si A - 3 ... A + B - 4 coincide con (HL)
+C 0xA1DB tope_17_7: C si (ix+0x17) < 7
+C 0xA1E0 x_hacia_la_derecha: (ix+0x18) = 0, A = (ix+0x15), DE = 0x40, B = 6, HL = la x del personaje
+C 0xA1E3 busca_cerca: Z si A - 3 ... A + B - 4 coincide con (HL)
+C 0xA1EB tope_17_7: C si (ix+0x17) < 7
 C 0xA1F2 velocidad_de_lado: la velocidad de lado = DE
 C 0xA1F5 paso_siguiente_de_figura: sube el paso (ix+1)
 C 0xA1FD lee la x de la figura
@@ -263,6 +334,8 @@ C 0xA20F casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0
 C 0xA214 pared_delante: C con pared delante o en el borde
 C 0xA220 solo_vertical: sin velocidad de lado y la vertical = DE
 C 0xA223 paso_siguiente_de_figura: sube el paso (ix+1)
+C 0xA226 y_y_tope: A = (ix+0x16), B = 0x11, HL = la y del personaje
+C 0xA229 busca_en_b: Z si (HL) es uno de B valores desde A
 C 0xA231 lee la x del personaje
 C 0xA236 compara con la x de la figura
 C 0xA23F compara con la x de la figura
@@ -280,6 +353,8 @@ C 0xA2BC byte_de_tabla (por 0x4083): A = el byte HL + A
 C 0xA2C6 byte_de_tabla (por 0x4083): A = el byte HL + A
 C 0xA2C9 mira el bit 0 de las columnas de la figura que se pintan
 C 0xA2D5 byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0xA2DB borde_segun_14: C en el borde segun el lado (ix+0x14)
+C 0xA2DE tipo_13_vuelta: el tamaño 0x0F y el dibujo segun el lado
 C 0xA2E4 paso_siguiente_de_figura: sube el paso (ix+1)
 C 0xA2EA compara con la y de la figura
 C 0xA2EE sin_vertical: la velocidad vertical a 0
@@ -288,8 +363,13 @@ C 0xA2FB velocidad_de_lado: la velocidad de lado = DE
 C 0xA302 paso_siguiente_de_figura: sube el paso (ix+1)
 C 0xA30B byte_de_tabla (por 0x4083): A = el byte HL + A
 C 0xA30E mira el bit 0 de las columnas de la figura que se pintan
+C 0xA315 pon_1a_negado: (ix+0x1A) = -A
+C 0xA32B cambia_15: el bit 0 de (ix+0x15) al reves
 C 0xA336 byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0xA33C pon_1a_negado: (ix+0x1A) = -A
+C 0xA348 niega_1a: (ix+0x1A) negado
 C 0xA34B lee la y de la figura
+C 0xA354 cambia_15: el bit 0 de (ix+0x15) al reves
 C 0xA357 paso_0_figura: el paso a 0
 C 0xA35A sin_lado: la velocidad de lado a 0
 C 0xA35D mira el bit 0 de las columnas de la figura que se pintan
@@ -303,6 +383,7 @@ C 0xA3A7 lee las columnas de la figura que se pintan
 C 0xA3AC guarda las columnas de la figura que se pintan
 C 0xA3B7 anima_cada: cada (ix+8) cuadros: el dibujo XOR D y el tamaño XOR B
 C 0xA3EE las columnas de la figura que se pintan = 0x01
+C 0xA3FE espera_30_7f: (ix+0x1B) = 0x30 + azar
 C 0xA40C lee el paso de la figura
 C 0xA40F despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
 C 0xA42D el dibujo (o el mosaico) de la figura = 0xCC
@@ -314,7 +395,13 @@ C 0xA460 azar_5: A = R con el contador de cuadros
 C 0xA471 palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 C 0xA474 guarda la velocidad de lado de la figura (alta)
 C 0xA477 guarda la velocidad vertical de la figura (alta)
+C 0xA47A acumula_velocidades: cada 8 cuadros suma las velocidades a (ix+0x14, 0x15)
 C 0xA47D lee el paso de la figura
+C 0xA486 suma_16_17: (ix+0x16, 0x17) + BC
+C 0xA48B vuelta_en_17: da la vuelta en los topes de (ix+0x17)
+C 0xA493 suma_16_17: (ix+0x16, 0x17) + BC
+C 0xA498 vuelta_en_17: da la vuelta en los topes de (ix+0x17)
+C 0xA49B orbita: el angulo (ix+0x19) gira y la posicion en el circulo
 C 0xA4A1 guarda la y de la figura
 C 0xA4A7 guarda la x de la figura
 C 0xA4BB mira el bit 0 de el paso de la figura
@@ -328,6 +415,7 @@ C 0xA513 lee las columnas de la figura que se pintan
 C 0xA51A las columnas de la figura que se pintan = 0x50
 C 0xA522 las columnas de la figura que se pintan = 0x88
 C 0xA52D anima_cada: cada (ix+8) cuadros: el dibujo XOR D y el tamaño XOR B
+C 0xA534 espera_10_3f: (ix+0x12) = 0x10 + azar
 C 0xA537 lee la y de la figura
 C 0xA53D lee la x de la figura
 C 0xA545 crea_figura_hl: crea la figura A en DE con HL en 0xF014
@@ -346,13 +434,20 @@ C 0xA5AD palabra_de_tabla (por 0x4053): DE = la palabra A de la tabla de HL
 C 0xA5B0 velocidad_vertical: la velocidad vertical = DE
 C 0xA5F7 lee el suelo del jefe 11
 C 0xA5FE despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0xA60B ancho_e733: el ancho = 0xE733
 C 0xA60E lee la fila de la cola del jefe 10
+C 0xA623 tope_17_18: (ix+0x17) no baja de 0x18
 C 0xA628 OR con las banderas de la figura (bit 7: en pantalla)
 C 0xA62B guarda las banderas de la figura (bit 7: en pantalla)
+C 0xA62E orbita: el angulo (ix+0x19) gira y la posicion en el circulo
+C 0xA631 dentro_de_1c: C si (ix+0x1C) esta entre 8 y 0xB8
+C 0xA634 banderas_bajas: solo los 4 bits bajos de las banderas
 C 0xA63A guarda la y de la figura
 C 0xA640 guarda la x de la figura
+C 0xA644 banderas_bajas: solo los 4 bits bajos de las banderas
 C 0xA64D lee la espera o el sitio siguiente del jefe
 C 0xA656 guarda las columnas de la figura que se pintan
+C 0xA65A ancho_e733: el ancho = 0xE733
 C 0xA65D lee el paso de la figura
 C 0xA663 hl_mas_a (por 0x4062): HL += A
 C 0xA687 vuelta_de_lado: la velocidad de lado al reves
@@ -365,7 +460,10 @@ C 0xA6B4 lee las columnas de la figura que se pintan
 C 0xA6B7 lee la velocidad vertical de la figura
 C 0xA6BA lee la velocidad vertical de la figura (alta)
 C 0xA6C1 guarda las columnas de la figura que se pintan
+C 0xA6CB copia_sitio_del_jefe: (ix+0x14, 0x15) = 0xE71D, 0xE71E
+C 0xA6D1 ancho_e733: el ancho = 0xE733
 C 0xA6D4 lee el jefe 7 ha mordido
+C 0xA6E6 lengua_del_jefe_7: la lengua del jefe 7: una menos y su sitio
 C 0xA6F5 guarda el paso de la figura
 C 0xA706 mira el bit 7 de la velocidad de lado de la figura (alta)
 C 0xA718 byte_de_tabla (por 0x4083): A = el byte HL + A
@@ -383,6 +481,7 @@ C 0xA7D1 el dibujo (o el mosaico) de la figura = 0xC8
 C 0xA7D5 el tamaño de la figura (tabla 0x9006, banco 14) = 0x67
 C 0xA7DC velocidad_vertical: la velocidad vertical = DE
 C 0xA7DF paso_siguiente_de_figura: sube el paso (ix+1)
+C 0xA7E2 cae_hasta_1e: cae hasta la y (ix+0x1E) o el suelo
 C 0xA7E6 lee la velocidad vertical de la figura (alta)
 C 0xA7EA cae: la velocidad vertical mas la gravedad
 C 0xA7EF cae: la velocidad vertical mas la gravedad
@@ -391,6 +490,7 @@ C 0xA7F7 lee la y de la figura
 C 0xA801 suelo_en: C con suelo en la y A de la figura
 C 0xA805 lee la y de la figura
 C 0xA80C guarda la y de la figura
+C 0xA814 a_un_lado_al_azar_6: velocidad 0x100 a un lado al azar
 C 0xA817 quita_bit_4_figura: quita el bit 4 de las banderas
 C 0xA81A el dibujo (o el mosaico) de la figura = 0xC4
 C 0xA81E el tamaño de la figura (tabla 0x9006, banco 14) = 0x66
@@ -399,6 +499,7 @@ C 0xA82B pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con lo
 C 0xA833 velocidad_de_lado: la velocidad de lado = DE
 C 0xA83A vuelta_de_lado: la velocidad de lado al reves
 C 0xA83D lee la y de la figura
+C 0xA84E anima_4_a: anima con D = 4, E = 0x0A
 C 0xA851 suelo_delante: C si hay suelo delante de los pies
 C 0xA856 pared_delante: C con pared delante o en el borde
 C 0xA859 vuelta_de_lado: la velocidad de lado al reves
@@ -412,6 +513,7 @@ C 0xA886 casilla_b9 (por 0x406E): C si el caracter de la casilla de HL pasa de 0
 C 0xA889 vuelta_de_lado: la velocidad de lado al reves
 C 0xA88C casilla_derecha (por 0x4071): compara 0xB9 con el caracter de HL + 1
 C 0xA88F vuelta_de_lado: la velocidad de lado al reves
+C 0xA892 suelo_en_1e_1f: C si hay suelo en la casilla de (ix+0x1E, 0x1F)
 C 0xA895 vuelta_de_lado: la velocidad de lado al reves
 C 0xA898 sube el paso de la figura
 C 0xA89E velocidad_vertical: la velocidad vertical = DE
@@ -431,37 +533,54 @@ C 0xA8E2 lee la y de la figura
 C 0xA8E5 guarda las columnas de la figura que se pintan
 C 0xA8F7 azar_5: A = R con el contador de cuadros
 C 0xA8FF lee la x de la figura
+C 0xA91F orbita: el angulo (ix+0x19) gira y la posicion en el circulo
 C 0xA925 guarda la y de la figura
 C 0xA92B guarda la x de la figura
+C 0xA938 seno_por_17: A = el seno de A x (ix+0x17)
 C 0xA93B le suma las columnas de la figura que se pintan
+C 0xA94E seno_por_17: A = el seno de A x (ix+0x17)
 C 0xA963 hl_mas_a (por 0x4062): HL += A
 C 0xA96A multiplica (por 0x406B): HL = H x E
 C 0xA97C espera_10_1f: (ix+0x15) = 0x10 + azar
 C 0xA97F quita_bit_4_figura: quita el bit 4 de las banderas
 C 0xA991 velocidad_de_lado: la velocidad de lado = DE
+C 0xA994 dibujos_del_lado: los 4 dibujos (0xA0-0xAC o los otros) segun el lado
 C 0xA9A1 sube las columnas de la figura que se pintan
+C 0xA9A8 lee_e638: A = (0xE638 + (ix+0x14))
+C 0xA9AE anda_y_vuelve: anda; en el borde o la pared da la vuelta
 C 0xA9B7 sube las columnas de la figura que se pintan
+C 0xA9BE lee_e638: A = (0xE638 + (ix+0x14))
+C 0xA9C4 anda_y_vuelve: anda; en el borde o la pared da la vuelta
 C 0xA9C7 pon_bit_4_figura: pone el bit 4 de las banderas
+C 0xA9CA tipo_2c_o_vecina: el tipo 0x2C o la figura de antes vacia
+C 0xA9D3 anda_y_vuelve: anda; en el borde o la pared da la vuelta
 C 0xA9DE quita_bit_4_figura: quita el bit 4 de las banderas
 C 0xA9E1 lee el tipo de la figura
 C 0xAA08 mira el bit 7 de la velocidad de lado de la figura (alta)
 C 0xAA0F de_negado (por 0x4068): DE = -DE
 C 0xAA12 velocidad_de_lado: la velocidad de lado = DE
+C 0xAA17 hl_e638: HL = 0xE638 + (ix+0x14)
 C 0xAA1C pon_bit_4_figura: pone el bit 4 de las banderas
 C 0xAA1F suelo_delante: C si hay suelo delante de los pies
 C 0xAA24 pared_delante: C con pared delante o en el borde
 C 0xAA29 vuelta_de_lado: la velocidad de lado al reves
+C 0xAA2C dibujos_del_lado: los 4 dibujos (0xA0-0xAC o los otros) segun el lado
 C 0xAA3A quita_bit_4_figura: quita el bit 4 de las banderas
 C 0xAA40 guarda el dibujo (o el mosaico) de la figura
 C 0xAA53 guarda el dibujo (o el mosaico) de la figura
+C 0xAA65 lee_e638: A = (0xE638 + (ix+0x14))
 C 0xAA6C mira el bit 7 de la velocidad de lado de la figura (alta)
+C 0xAA9E hl_e638: HL = 0xE638 + (ix+0x14)
 C 0xAAAF guarda las columnas de la figura que se pintan
 C 0xAABA guarda las banderas de la figura (bit 7: en pantalla)
 C 0xAACC azar_5: A = R con el contador de cuadros
 C 0xAAD2 azar_5: A = R con el contador de cuadros
 C 0xAAF7 velocidad_vertical: la velocidad vertical = DE
+C 0xAB05 velocidad_por_cercania: la velocidad segun lo cerca que este el personaje
 C 0xAB08 velocidad_vertical: la velocidad vertical = DE
+C 0xAB0B pared_vertical: C con pared arriba o abajo segun va
 C 0xAB10 vuelta_vertical: la velocidad vertical al reves
+C 0xAB1B velocidad_por_cercania: la velocidad segun lo cerca que este el personaje
 C 0xAB20 lee la x de la figura
 C 0xAB23 lee la y de la figura
 C 0xAB26 mira el bit 7 de la velocidad vertical de la figura (alta)
@@ -479,12 +598,17 @@ C 0xAB9E de_negado (por 0x4068): DE = -DE
 C 0xABA1 velocidad_de_lado: la velocidad de lado = DE
 C 0xABA4 sin_vertical: la velocidad vertical a 0
 C 0xABAA mira el bit 0 de el paso de la figura
+C 0xABB0 borde_al_reves: NC en el borde
 C 0xABB3 vuelta_de_lado: la velocidad de lado al reves
+C 0xABB6 suelo_debajo_6: C con suelo debajo
 C 0xABBB cae: la velocidad vertical mas la gravedad
 C 0xABBE sube el paso de la figura
+C 0xABC1 y_a_la_casilla_5: la y ajustada a la casilla
 C 0xABC6 sin_vertical: la velocidad vertical a 0
 C 0xABCB pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
+C 0xABCE borde_al_reves: NC en el borde
 C 0xABD1 vuelta_de_lado: la velocidad de lado al reves
+C 0xABD4 suelo_debajo_6: C con suelo debajo
 C 0xABD8 baja el paso de la figura
 C 0xABDE gravedad: la gravedad = DE
 C 0xABE1 lee la y de la figura
@@ -499,6 +623,7 @@ C 0xAC10 el tamaño de la figura (tabla 0x9006, banco 14) = 0x66
 C 0xAC18 azar_5: A = R con el contador de cuadros
 C 0xAC25 velocidad_de_lado: la velocidad de lado = DE
 C 0xAC30 lee el paso de la figura
+C 0xAC36 pared_delante_6: C con pared delante
 C 0xAC39 vuelta_de_lado: la velocidad de lado al reves
 C 0xAC46 quita_bit_4_figura: quita el bit 4 de las banderas
 C 0xAC49 mira el bit 7 de la velocidad de lado de la figura (alta)
@@ -534,6 +659,7 @@ C 0xACFC crea_figura_hl: crea la figura A en DE con HL en 0xF014
 C 0xAD02 acaba_figura: la figura se acaba: el hueco vacio y una menos
 C 0xAD09 pone a cero el bit 5 de las banderas de la figura (bit 7: en pantalla)
 C 0xAD18 pone a uno el bit 5 de las banderas de la figura (bit 7: en pantalla)
+C 0xAD1C anima_55: cada 2 cuadros el dibujo siguiente
 C 0xAD1F cae: la velocidad vertical mas la gravedad
 C 0xAD22 lee el contador de cuadros de partida
 C 0xAD31 lee el tipo de la figura
@@ -560,8 +686,12 @@ C 0xAE1D de_negado (por 0x4068): DE = -DE
 C 0xAE20 velocidad_de_lado: la velocidad de lado = DE
 C 0xAE26 gravedad: la gravedad = DE
 C 0xAE5C despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
+C 0xAE65 anima_cada_6: cada 6 cuadros, dibujo XOR 4
 C 0xAE71 paso_siguiente_de_figura: sube el paso (ix+1)
 C 0xAE74 mira el bit 7 de las banderas de la figura (bit 7: en pantalla)
+C 0xAE7A banderas_bajas: solo los 4 bits bajos de las banderas
+C 0xAE87 banderas_bajas: solo los 4 bits bajos de las banderas
+C 0xAE8C sitio_al_azar: un sitio al azar de la tabla 0x9720
 C 0xAE97 paso_0_figura: el paso a 0
 C 0xAEA6 anima: el dibujo XOR D y el tamaño XOR B
 C 0xAEB1 lee la y de la figura
@@ -569,6 +699,8 @@ C 0xAEB7 lee la x de la figura
 C 0xAEC1 crea_figura_hl: crea la figura A en DE con HL en 0xF014
 C 0xAED1 apunta a los huecos de figura (32 bytes cada uno)
 C 0xAFED apunta a los huecos de figura (32 bytes cada uno)
+C 0xAFF4 toca_19: si toca una figura 0x19, rebota
+C 0xB009 busca_19_6: busca una figura de tipo 0x19
 C 0xB00D lee la y de la figura
 C 0xB018 lee la x de la figura
 C 0xB02C apunta a los huecos de figura (32 bytes cada uno)
@@ -584,6 +716,8 @@ C 0xB0E1 guarda el dibujo (o el mosaico) de la figura
 C 0xB0E4 lee el tamaño de la figura (tabla 0x9006, banco 14)
 C 0xB0E8 guarda el tamaño de la figura (tabla 0x9006, banco 14)
 C 0xB0FA lee el tipo de la figura
+C 0xB111 suma_16_bits: (HL) += (DE) en 16 bits
+C 0xB11F suma_alta: el byte alto con acarreo
 C 0xB124 sin_lado: la velocidad de lado a 0
 C 0xB133 velocidad_de_lado: la velocidad de lado = DE
 C 0xB137 guarda la velocidad vertical de la figura
@@ -609,10 +743,14 @@ C 0xB18A anima: el dibujo XOR D y el tamaño XOR B
 C 0xB18F lee la y de la figura
 C 0xB192 lee la x de la figura
 C 0xB196 lee la velocidad de las figuras que apuntan (y los generadores)
+C 0xB1A0 angulo_al_personaje: el angulo desde DE hasta el personaje
+C 0xB1BB por_velocidad: DE = E x 0xE609 / 32
 C 0xB1C2 de_negado (por 0x4068): DE = -DE
+C 0xB1CD por_velocidad: DE = E x 0xE609 / 32
 C 0xB1D4 de_negado (por 0x4068): DE = -DE
 C 0xB1DB lee la y de la figura
 C 0xB1E0 lee la x de la figura
+C 0xB1E5 angulo_al_personaje: el angulo desde DE hasta el personaje
 C 0xB223 lee la y del personaje
 C 0xB22B lee la x del personaje
 C 0xB25A hl_mas_a (por 0x4062): HL += A
@@ -621,12 +759,18 @@ C 0xB3B4 apunta a todo parado (objeto 0x20)
 C 0xB3C2 pide_sonido (por 0x4059): pide el sonido A al banco 13 (p00:4E6B con los bancos 13 y 14)
 C 0xB3C5 apunta a los huecos de figura (32 bytes cada uno)
 C 0xB3C9 lee cuantos huecos de figura hay
+C 0xB3CF quita_bit_4_tras_32: cada 32 cuadros quita el bit 4 de (ix+3)
+C 0xB3D2 quita_bit_5_tras_16: cada 16 cuadros quita el bit 5 de (ix+3)
+C 0xB3D5 lo_del_tipo: lo de su tipo (tabla 0xB472), salvo con todo parado
+C 0xB3D8 figura_cada_cuadro: una figura cada cuadro: se mueve y lo de su tipo
 C 0xB3EC lee el contador de cuadros de partida
 C 0xB3FC lee el contador de cuadros de partida
 C 0xB407 lee todo parado (objeto 0x20)
 C 0xB40C lee el tipo de la figura
 C 0xB411 mira el bit 4 de las banderas de la figura (bit 7: en pantalla)
 C 0xB415 mueve_figura: la y y la x de la figura mas sus velocidades
+C 0xB418 dentro_de_la_pantalla: C si la figura esta dentro de la pantalla
+C 0xB41C marca_vencida: la marca de la figura vencida en la sala (bit 3 de (ix+3))
 C 0xB41F lee el tipo de la figura
 C 0xB422 ficha_del_tipo: HL = la ficha de 5 bytes del tipo L (0x67B6 + 5 x tipo)
 C 0xB427 guarda el tipo de la figura
@@ -639,6 +783,7 @@ C 0xB45E lee el tipo de la figura
 C 0xB468 lee todo parado (objeto 0x20)
 C 0xB46F despacha (por 0x4050): salta a la entrada A de la tabla de palabras que va detras del call
 C 0xB54E byte_de_tabla (por 0x4083): A = el byte HL + A
+C 0xB556 cuenta_de_tipo: cuenta las figuras de este tipo (0xE6C2)
 C 0xB560 byte_de_tabla (por 0x4083): A = el byte HL + A
 C 0xB5B0 apunta a los huecos de figura (32 bytes cada uno)
 C 0xB5B6 lee cuantos huecos de figura hay

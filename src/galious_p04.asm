@@ -3657,7 +3657,7 @@ tipo_0a_entra:		; al entrar el tipo 0x0A
 	ld a,001h		;7b0d   ; El tipo 0x0A: al entrar
 	ld (0e62eh),a		;7b0f
 	set 1,(ix+002h)		;7b12   ; pone a uno el bit 1 de las banderas de la figura (bit 7: en pantalla)
-	call 09af2h		;7b16
+	call 09af2h		;7b16   ; espera_azar_7f: una espera al azar 0-0x7F
 	call lado_del_personaje_1d		;7b19   ; lado_del_personaje_1d: (ix+0x1D) = 1 si el personaje esta a la derecha
 	ld de,00050h		;7b1c
 	call 0b145h		;7b1f   ; gravedad: la gravedad = DE
@@ -3701,10 +3701,10 @@ anda_tipo_01:		; anda; en el borde, da la vuelta
 L_7B74:
 	bit 0,(ix+014h)		;7b74
 	jr nz,L_7B88		;7b78
-	call 09a74h		;7b7a
+	call 09a74h		;7b7a   ; salto_30_e0: el salto con D = 0x30, E = 0xE0
 	jp c,L_7BFA		;7b7d
 	call 0b15fh		;7b80   ; vuelta_de_lado: la velocidad de lado al reves
-	call 09b01h		;7b83
+	call 09b01h		;7b83   ; cambia_banderas_y_lado: el bit 0 de las banderas y el lado (ix+0x1D)
 	jr L_7B33		;7b86
 L_7B88:
 	bit 7,(ix+00fh)		;7b88   ; mira el bit 7 de la velocidad de lado de la figura (alta)
@@ -3731,7 +3731,7 @@ L_7BAE:
 	call tipo_01_escalera		;7bae   ; p04:7CB7...
 	jp c,L_7BBD		;7bb1
 	call anda_tipo_01		;7bb4   ; ...p04:7B68 y p05:94FF
-	call 094ffh		;7bb7
+	call 094ffh		;7bb7   ; puede_saltar: C si (ix+0x18) deja saltar
 	jr nc,L_7C1B		;7bba
 	ret			;7bbc
 L_7BBD:
@@ -3771,7 +3771,7 @@ L_7C07:
 L_7C0A:
 	dec a			;7c0a   ; paso 1: p05:9B1D...
 	jr nz,L_7C27		;7c0b
-	call 09b1dh		;7c0d
+	call 09b1dh		;7c0d   ; cae_hasta_6: cae hasta la velocidad 6
 	ret nz			;7c10
 	call 099c9h		;7c11   ; ...p05:99C9...
 	ret nc			;7c14
@@ -3779,7 +3779,7 @@ L_7C0A:
 L_7C18:
 	call anda_tipo_01		;7c18   ; anda_tipo_01: anda; en el borde, da la vuelta
 L_7C1B:
-	call 09af2h		;7c1b
+	call 09af2h		;7c1b   ; espera_azar_7f: una espera al azar 0-0x7F
 	call 0b129h		;7c1e   ; sin_vertical: la velocidad vertical a 0
 	call paso_0_figura		;7c21   ; paso_0_figura: el paso a 0
 	jp L_7B22		;7c24
@@ -3791,7 +3791,7 @@ L_7C27:
 	sub 020h		;7c31
 	cp 090h		;7c33
 	call nc,cambia_dibujo_8		;7c35   ; cambia_dibujo_8: el dibujo XOR 8 y la vertical al reves
-	call 099c9h		;7c38
+	call 099c9h		;7c38   ; suelo_delante_5: C si hay suelo delante
 	ret nc			;7c3b
 	ld l,(ix+005h)		;7c3c   ; lee la y de la figura
 	ld h,(ix+007h)		;7c3f   ; lee la x de la figura
@@ -3799,7 +3799,7 @@ L_7C27:
 	ld a,(hl)			;7c45
 	cp 0bah		;7c46
 	jp nc,cambia_dibujo_8		;7c48   ; cambia_dibujo_8: el dibujo XOR 8 y la vertical al reves
-	call 09b15h		;7c4b
+	call 09b15h		;7c4b   ; y_a_la_casilla_5: la y ajustada a la casilla
 	call a_un_lado_70		;7c4e   ; a_un_lado_70: velocidad de lado 0x70 segun (ix+0x1D)
 	jr L_7C18		;7c51
 cambia_dibujo_8:		; el dibujo XOR 8 y la vertical al reves
@@ -4179,7 +4179,7 @@ L_7EFE:
 	call pared_debajo_figura		;7efe   ; pared_debajo_figura: C si debajo hay pared
 	ret nc			;7f01
 	dec (ix+001h)		;7f02   ; baja el paso de la figura
-	call 09b15h		;7f05
+	call 09b15h		;7f05   ; y_a_la_casilla_5: la y ajustada a la casilla
 	call 0b129h		;7f08   ; sin_vertical: la velocidad vertical a 0
 	jp L_7E9F		;7f0b
 pared_debajo_figura:		; C si debajo hay pared
@@ -4217,7 +4217,7 @@ L_7F46:
 	call 0b137h		;7f4c   ; velocidad_vertical: la velocidad vertical = DE
 	ld de,00080h		;7f4f
 	call 0b145h		;7f52   ; gravedad: la gravedad = DE
-	call 0801ch		;7f55
+	call 0801ch		;7f55   ; crea_6a_bajo: crea dos figuras 0x6A en y 0x90, x + 4
 	ld (ix+018h),002h		;7f58
 	call 080b7h		;7f5c
 L_7F5F:
@@ -4272,7 +4272,7 @@ L_7FA7:
 	jp nc,08016h		;7fac
 	call 08087h		;7faf
 	ret c			;7fb2
-	call 09b15h		;7fb3
+	call 09b15h		;7fb3   ; y_a_la_casilla_5: la y ajustada a la casilla
 	call 0b129h		;7fb6   ; sin_vertical: la velocidad vertical a 0
 	ld a,(ix+007h)		;7fb9   ; lee la x de la figura
 	ld (ix+01ah),a		;7fbc
@@ -4299,9 +4299,9 @@ L_7FE8:
 	jr nc,$+26		;7feb
 L_7FED:
 	call 08029h		;7fed
-	call 0804ch		;7ff0
+	call 0804ch		;7ff0   ; casilla_delante_abajo: HL = la casilla de delante, a los pies
 	jr nc,L_7FF9		;7ff3
-	call 0806fh		;7ff5
+	call 0806fh		;7ff5   ; pared_o_borde: C con pared encima de HL o en el borde
 	ret nc			;7ff8
 L_7FF9:
 	call 0b15fh		;7ff9   ; vuelta_de_lado: la velocidad de lado al reves
