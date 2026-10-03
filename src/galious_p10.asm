@@ -1477,521 +1477,585 @@ DATA_rle_7BB2:
 	defb 0ebh,07eh,0fbh,07eh,0fbh,07eh	; 7d42
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_01: la pieza de decoracion 0x01: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_01: el juego de sprites 0x01: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7d48..0x7d50  (8 bytes)
-DATA_pieza_01:
+DATA_sprites_01:
 	defb 0a0h,0fbh,080h,000h,0b4h,0a0h,005h,0ffh	; 7d48  ........
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_02: la pieza de decoracion 0x02: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (5 bytes)
+; DATOS sprites_02: el juego de sprites 0x02: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (5 bytes)
 ;   0x7d50..0x7d55  (5 bytes)
-DATA_pieza_02:
+DATA_sprites_02:
 	defb 0a0h,0c8h,080h,000h,0ffh	; 7d50
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_03: la pieza de decoracion 0x03: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_03: el juego de sprites 0x03: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7d55..0x7d5d  (8 bytes)
-DATA_pieza_03:
+DATA_sprites_03:
 	defb 0c4h,039h,088h,000h,0d0h,0cch,001h,0ffh	; 7d55  .9......
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_05: la pieza de decoracion 0x05: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_05: el juego de sprites 0x05: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7d5d..0x7d65  (8 bytes)
-DATA_pieza_05:
+DATA_sprites_05:
 	defb 0a0h,0fbh,081h,000h,0b0h,0a0h,004h,0ffh	; 7d5d  ........
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_06: la pieza de decoracion 0x06: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (5 bytes)
+; DATOS sprites_06: el juego de sprites 0x06: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (5 bytes)
 ;   0x7d65..0x7d6a  (5 bytes)
-DATA_pieza_06:
+DATA_sprites_06:
 	defb 0a0h,0edh,08dh,000h,0ffh	; 7d65
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_07: la pieza de decoracion 0x07: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (5 bytes)
+; DATOS sprites_07: el juego de sprites 0x07: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (5 bytes)
 ;   0x7d6a..0x7d6f  (5 bytes)
-DATA_pieza_07:
+DATA_sprites_07:
 	defb 0a0h,0d4h,085h,000h,0ffh	; 7d6a
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_08: la pieza de decoracion 0x08: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_08: el juego de sprites 0x08: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7d6f..0x7d77  (8 bytes)
-DATA_pieza_08:
+DATA_sprites_08:
 	defb 0c4h,08eh,081h,0c8h,0d0h,088h,000h,0ffh	; 7d6f  ........
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_09: la pieza de decoracion 0x09: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (5 bytes)
+; DATOS sprites_09: el juego de sprites 0x09: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (5 bytes)
 ;   0x7d77..0x7d7c  (5 bytes)
-DATA_pieza_09:
+DATA_sprites_09:
 	defb 0c4h,010h,080h,000h,0ffh	; 7d77
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_0A: la pieza de decoracion 0x0A: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_0A: el juego de sprites 0x0A: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7d7c..0x7d84  (8 bytes)
-DATA_pieza_0A:
+DATA_sprites_0A:
 	defb 0a0h,028h,084h,000h,0c0h,0b0h,004h,0ffh	; 7d7c  .(......
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_0B: la pieza de decoracion 0x0B: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_0B: el juego de sprites 0x0B: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7d84..0x7d8c  (8 bytes)
-DATA_pieza_0B:
+DATA_sprites_0B:
 	defb 0a0h,026h,08dh,000h,0a8h,0a0h,002h,0ffh	; 7d84  .&......
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_0C: la pieza de decoracion 0x0C: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_0C: el juego de sprites 0x0C: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7d8c..0x7d94  (8 bytes)
-DATA_pieza_0C:
+DATA_sprites_0C:
 	defb 0a0h,04bh,089h,000h,0bch,0b4h,002h,0ffh	; 7d8c  .K......
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_0D: la pieza de decoracion 0x0D: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_0D: el juego de sprites 0x0D: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7d94..0x7d9c  (8 bytes)
-DATA_pieza_0D:
+DATA_sprites_0D:
 	defb 0c4h,08eh,081h,000h,0d0h,0c8h,002h,0ffh	; 7d94  ........
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_0E: la pieza de decoracion 0x0E: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_0E: el juego de sprites 0x0E: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7d9c..0x7da4  (8 bytes)
-DATA_pieza_0E:
+DATA_sprites_0E:
 	defb 0a0h,014h,085h,000h,0bch,0b4h,002h,0ffh	; 7d9c  ........
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_0F: la pieza de decoracion 0x0F: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_0F: el juego de sprites 0x0F: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7da4..0x7dac  (8 bytes)
-DATA_pieza_0F:
+DATA_sprites_0F:
 	defb 0a0h,0fdh,07eh,000h,0c0h,0a0h,008h,0ffh	; 7da4  ..~.....
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_10: la pieza de decoracion 0x10: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (5 bytes)
+; DATOS sprites_10: el juego de sprites 0x10: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (5 bytes)
 ;   0x7dac..0x7db1  (5 bytes)
-DATA_pieza_10:
+DATA_sprites_10:
 	defb 0a0h,07bh,088h,000h,0ffh	; 7dac
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_11: la pieza de decoracion 0x11: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_11: el juego de sprites 0x11: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7db1..0x7db9  (8 bytes)
-DATA_pieza_11:
+DATA_sprites_11:
 	defb 0a0h,036h,083h,000h,0b4h,0a4h,004h,0ffh	; 7db1  .6......
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_12: la pieza de decoracion 0x12: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_12: el juego de sprites 0x12: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7db9..0x7dc1  (8 bytes)
-DATA_pieza_12:
+DATA_sprites_12:
 	defb 0a0h,0ffh,085h,000h,0b8h,0b0h,002h,0ffh	; 7db9  ........
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_13: la pieza de decoracion 0x13: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_13: el juego de sprites 0x13: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7dc1..0x7dc9  (8 bytes)
-DATA_pieza_13:
+DATA_sprites_13:
 	defb 0a0h,0cah,08eh,000h,0c0h,0b8h,002h,0ffh	; 7dc1  ........
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_14: la pieza de decoracion 0x14: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_14: el juego de sprites 0x14: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7dc9..0x7dd1  (8 bytes)
-DATA_pieza_14:
+DATA_sprites_14:
 	defb 0a0h,0b7h,083h,000h,0b4h,0ach,002h,0ffh	; 7dc9  ........
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_15: la pieza de decoracion 0x15: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_15: el juego de sprites 0x15: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7dd1..0x7dd9  (8 bytes)
-DATA_pieza_15:
+DATA_sprites_15:
 	defb 0a0h,0b3h,092h,000h,0b4h,0a4h,004h,0ffh	; 7dd1  ........
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_16: la pieza de decoracion 0x16: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_16: el juego de sprites 0x16: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7dd9..0x7de1  (8 bytes)
-DATA_pieza_16:
+DATA_sprites_16:
 	defb 0a0h,06eh,094h,000h,0c4h,0a4h,008h,0ffh	; 7dd9  .n......
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_17: la pieza de decoracion 0x17: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_17: el juego de sprites 0x17: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7de1..0x7de9  (8 bytes)
-DATA_pieza_17:
+DATA_sprites_17:
 	defb 0a0h,01dh,090h,000h,0d0h,0c8h,002h,0ffh	; 7de1  ........
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_18: la pieza de decoracion 0x18: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_18: el juego de sprites 0x18: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7de9..0x7df1  (8 bytes)
-DATA_pieza_18:
+DATA_sprites_18:
 	defb 0a0h,098h,07fh,000h,0b0h,0a8h,002h,0ffh	; 7de9  ........
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_19: la pieza de decoracion 0x19: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (5 bytes)
+; DATOS sprites_19: el juego de sprites 0x19: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (5 bytes)
 ;   0x7df1..0x7df6  (5 bytes)
-DATA_pieza_19:
+DATA_sprites_19:
 	defb 0a0h,04fh,093h,000h,0ffh	; 7df1
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_1F: la pieza de decoracion 0x1F: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_1F: el juego de sprites 0x1F: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7df6..0x7dfe  (8 bytes)
-DATA_pieza_1F:
+DATA_sprites_1F:
 	defb 0a0h,0c4h,08ch,000h,0ach,0a0h,003h,0ffh	; 7df6  ........
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_20: la pieza de decoracion 0x20: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (5 bytes)
+; DATOS sprites_20: el juego de sprites 0x20: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (5 bytes)
 ;   0x7dfe..0x7e03  (5 bytes)
-DATA_pieza_20:
+DATA_sprites_20:
 	defb 0a0h,061h,087h,000h,0ffh	; 7dfe
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_21: la pieza de decoracion 0x21: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_21: el juego de sprites 0x21: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7e03..0x7e0b  (8 bytes)
-DATA_pieza_21:
+DATA_sprites_21:
 	defb 0a0h,006h,088h,000h,0a8h,0a0h,002h,0ffh	; 7e03  ........
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_22: la pieza de decoracion 0x22: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (5 bytes)
+; DATOS sprites_22: el juego de sprites 0x22: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (5 bytes)
 ;   0x7e0b..0x7e10  (5 bytes)
-DATA_pieza_22:
+DATA_sprites_22:
 	defb 0c4h,0d5h,08fh,000h,0ffh	; 7e0b
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_23: la pieza de decoracion 0x23: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (5 bytes)
+; DATOS sprites_23: el juego de sprites 0x23: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (5 bytes)
 ;   0x7e10..0x7e15  (5 bytes)
-DATA_pieza_23:
+DATA_sprites_23:
 	defb 0a0h,030h,087h,000h,0ffh	; 7e10
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_24: la pieza de decoracion 0x24: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_24: el juego de sprites 0x24: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7e15..0x7e1d  (8 bytes)
-DATA_pieza_24:
+DATA_sprites_24:
 	defb 0a0h,0fah,089h,000h,0ach,0a0h,003h,0ffh	; 7e15  ........
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_25: la pieza de decoracion 0x25: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_25: el juego de sprites 0x25: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7e1d..0x7e25  (8 bytes)
-DATA_pieza_25:
+DATA_sprites_25:
 	defb 0a0h,052h,08dh,000h,0b8h,0ach,003h,0ffh	; 7e1d  .R......
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_26: la pieza de decoracion 0x26: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (5 bytes)
+; DATOS sprites_26: el juego de sprites 0x26: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (5 bytes)
 ;   0x7e25..0x7e2a  (5 bytes)
-DATA_pieza_26:
+DATA_sprites_26:
 	defb 0c4h,05eh,08bh,000h,0ffh	; 7e25
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_27: la pieza de decoracion 0x27: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (5 bytes)
+; DATOS sprites_27: el juego de sprites 0x27: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (5 bytes)
 ;   0x7e2a..0x7e2f  (5 bytes)
-DATA_pieza_27:
+DATA_sprites_27:
 	defb 0c4h,05bh,08ah,000h,0ffh	; 7e2a
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_28: la pieza de decoracion 0x28: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_28: el juego de sprites 0x28: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7e2f..0x7e37  (8 bytes)
-DATA_pieza_28:
+DATA_sprites_28:
 	defb 0c4h,078h,087h,000h,0d8h,0cch,003h,0ffh	; 7e2f  .x......
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_29: la pieza de decoracion 0x29: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (5 bytes)
+; DATOS sprites_29: el juego de sprites 0x29: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (5 bytes)
 ;   0x7e37..0x7e3c  (5 bytes)
-DATA_pieza_29:
+DATA_sprites_29:
 	defb 0c4h,093h,080h,000h,0ffh	; 7e37
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_2A: la pieza de decoracion 0x2A: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (5 bytes)
+; DATOS sprites_2A: el juego de sprites 0x2A: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (5 bytes)
 ;   0x7e3c..0x7e41  (5 bytes)
-DATA_pieza_2A:
+DATA_sprites_2A:
 	defb 0c4h,02dh,093h,000h,0ffh	; 7e3c
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_2B: la pieza de decoracion 0x2B: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_2B: el juego de sprites 0x2B: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7e41..0x7e49  (8 bytes)
-DATA_pieza_2B:
+DATA_sprites_2B:
 	defb 0c4h,0aah,08ah,000h,0cch,0c4h,002h,0ffh	; 7e41  ........
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_2C: la pieza de decoracion 0x2C: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_2C: el juego de sprites 0x2C: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7e49..0x7e51  (8 bytes)
-DATA_pieza_2C:
+DATA_sprites_2C:
 	defb 0a0h,056h,08ch,000h,0b0h,0a0h,004h,0ffh	; 7e49  .V......
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_2D: la pieza de decoracion 0x2D: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_2D: el juego de sprites 0x2D: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7e51..0x7e59  (8 bytes)
-DATA_pieza_2D:
+DATA_sprites_2D:
 	defb 0a0h,082h,08fh,000h,0ach,0a0h,003h,0ffh	; 7e51  ........
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_2E: la pieza de decoracion 0x2E: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (5 bytes)
+; DATOS sprites_2E: el juego de sprites 0x2E: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (5 bytes)
 ;   0x7e59..0x7e5e  (5 bytes)
-DATA_pieza_2E:
+DATA_sprites_2E:
 	defb 0c4h,0a9h,086h,000h,0ffh	; 7e59
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_2F: la pieza de decoracion 0x2F: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (5 bytes)
+; DATOS sprites_2F: el juego de sprites 0x2F: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (5 bytes)
 ;   0x7e5e..0x7e63  (5 bytes)
-DATA_pieza_2F:
+DATA_sprites_2F:
 	defb 0c4h,0b2h,085h,000h,0ffh	; 7e5e
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_30: la pieza de decoracion 0x30: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (11 bytes)
+; DATOS sprites_30: el juego de sprites 0x30: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (11 bytes)
 ;   0x7e63..0x7e6e  (11 bytes)
-DATA_pieza_30:
+DATA_sprites_30:
 	defb 0c0h,08eh,081h,0c4h,045h,092h,000h,0d4h,0c4h,004h,0ffh	; 7e63  ....E......
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_31: la pieza de decoracion 0x31: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (5 bytes)
+; DATOS sprites_31: el juego de sprites 0x31: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (5 bytes)
 ;   0x7e6e..0x7e73  (5 bytes)
-DATA_pieza_31:
+DATA_sprites_31:
 	defb 0c4h,06ah,082h,000h,0ffh	; 7e6e
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_32: la pieza de decoracion 0x32: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_32: el juego de sprites 0x32: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7e73..0x7e7b  (8 bytes)
-DATA_pieza_32:
+DATA_sprites_32:
 	defb 0c4h,018h,08bh,000h,0c8h,0c4h,001h,0ffh	; 7e73  ........
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_36: la pieza de decoracion 0x36: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (5 bytes)
+; DATOS sprites_36: el juego de sprites 0x36: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (5 bytes)
 ;   0x7e7b..0x7e80  (5 bytes)
-DATA_pieza_36:
+DATA_sprites_36:
 	defb 0c4h,071h,095h,000h,0ffh	; 7e7b
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_38: la pieza de decoracion 0x38: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (5 bytes)
+; DATOS sprites_38: el juego de sprites 0x38: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (5 bytes)
 ;   0x7e80..0x7e85  (5 bytes)
-DATA_pieza_38:
+DATA_sprites_38:
 	defb 0c4h,0e3h,07fh,000h,0ffh	; 7e80
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_39: la pieza de decoracion 0x39: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (5 bytes)
+; DATOS sprites_39: el juego de sprites 0x39: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (5 bytes)
 ;   0x7e85..0x7e8a  (5 bytes)
-DATA_pieza_39:
+DATA_sprites_39:
 	defb 0c4h,0c2h,08bh,000h,0ffh	; 7e85
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_3A: la pieza de decoracion 0x3A: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (5 bytes)
+; DATOS sprites_3A: el juego de sprites 0x3A: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (5 bytes)
 ;   0x7e8a..0x7e8f  (5 bytes)
-DATA_pieza_3A:
+DATA_sprites_3A:
 	defb 0c4h,0a7h,08bh,000h,0ffh	; 7e8a
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_3C: la pieza de decoracion 0x3C: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_3C: el juego de sprites 0x3C: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7e8f..0x7e97  (8 bytes)
-DATA_pieza_3C:
+DATA_sprites_3C:
 	defb 0c4h,0ech,08ah,000h,0cch,0c8h,001h,0ffh	; 7e8f  ........
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_3E: la pieza de decoracion 0x3E: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_3E: el juego de sprites 0x3E: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7e97..0x7e9f  (8 bytes)
-DATA_pieza_3E:
+DATA_sprites_3E:
 	defb 0c4h,025h,08bh,000h,0cch,0c4h,002h,0ffh	; 7e97  .%......
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_40: la pieza de decoracion 0x40: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_40: el juego de sprites 0x40: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7e9f..0x7ea7  (8 bytes)
-DATA_pieza_40:
+DATA_sprites_40:
 	defb 0a0h,009h,096h,000h,0c0h,0b4h,003h,0ffh	; 7e9f  ........
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_42: la pieza de decoracion 0x42: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (11 bytes)
+; DATOS sprites_42: el juego de sprites 0x42: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (11 bytes)
 ;   0x7ea7..0x7eb2  (11 bytes)
-DATA_pieza_42:
+DATA_sprites_42:
 	defb 0c4h,0b1h,095h,0d0h,0d9h,095h,000h,0cch,0c8h,001h,0ffh	; 7ea7  ...........
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_43: la pieza de decoracion 0x43: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_43: el juego de sprites 0x43: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7eb2..0x7eba  (8 bytes)
-DATA_pieza_43:
+DATA_sprites_43:
 	defb 0c4h,0e3h,08bh,000h,0d8h,0d0h,002h,0ffh	; 7eb2  ........
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_4C: la pieza de decoracion 0x4C: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (5 bytes)
+; DATOS sprites_4C: el juego de sprites 0x4C: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (5 bytes)
 ;   0x7eba..0x7ebf  (5 bytes)
-DATA_pieza_4C:
+DATA_sprites_4C:
 	defb 0a0h,044h,091h,000h,0ffh	; 7eba
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_4F: la pieza de decoracion 0x4F: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); NINGUNA
-;   SALA LA PIDE; lo leen p00:59A6 (8 bytes)
+; DATOS sprites_4F: el juego de sprites 0x4F: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); NINGUNA SALA LO PIDE; lo leen p00:59A6 (8 bytes)
 ;   0x7ebf..0x7ec7  (8 bytes)
-DATA_pieza_4F:
+DATA_sprites_4F:
 	defb 0a0h,0b5h,096h,000h,0b8h,0ach,003h,0ffh	; 7ebf  ........
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_34: la pieza de decoracion 0x34: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (5 bytes)
+; DATOS sprites_34: el juego de sprites 0x34: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (5 bytes)
 ;   0x7ec7..0x7ecc  (5 bytes)
-DATA_pieza_34:
+DATA_sprites_34:
 	defb 0c4h,0efh,081h,000h,0ffh	; 7ec7
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_4E: la pieza de decoracion 0x4E: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_4E: el juego de sprites 0x4E: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7ecc..0x7ed4  (8 bytes)
-DATA_pieza_4E:
+DATA_sprites_4E:
 	defb 0a0h,0b5h,096h,000h,0b8h,0ach,003h,0ffh	; 7ecc  ........
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_54: la pieza de decoracion 0x54: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_54: el juego de sprites 0x54: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7ed4..0x7edc  (8 bytes)
-DATA_pieza_54:
+DATA_sprites_54:
 	defb 0a0h,0cdh,0b5h,000h,0b8h,0b0h,002h,0ffh	; 7ed4  ........
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_58: la pieza de decoracion 0x58: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (5 bytes)
+; DATOS sprites_58: el juego de sprites 0x58: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (5 bytes)
 ;   0x7edc..0x7ee1  (5 bytes)
-DATA_pieza_58:
+DATA_sprites_58:
 	defb 0a0h,035h,0b6h,000h,0ffh	; 7edc
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_67: la pieza de decoracion 0x67: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (5 bytes)
+; DATOS sprites_67: el juego de sprites 0x67: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (5 bytes)
 ;   0x7ee1..0x7ee6  (5 bytes)
-DATA_pieza_67:
+DATA_sprites_67:
 	defb 0a0h,06eh,0b6h,000h,0ffh	; 7ee1
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_5A: la pieza de decoracion 0x5A: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (5 bytes)
+; DATOS sprites_5A: el juego de sprites 0x5A: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (5 bytes)
 ;   0x7ee6..0x7eeb  (5 bytes)
-DATA_pieza_5A:
+DATA_sprites_5A:
 	defb 0a0h,090h,0b6h,000h,0ffh	; 7ee6
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_68: la pieza de decoracion 0x68: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (5 bytes)
+; DATOS sprites_68: el juego de sprites 0x68: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (5 bytes)
 ;   0x7eeb..0x7ef0  (5 bytes)
-DATA_pieza_68:
+DATA_sprites_68:
 	defb 0a0h,0adh,0b6h,000h,0ffh	; 7eeb
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_65: la pieza de decoracion 0x65: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen
-;   p00:59A6 (8 bytes)
+; DATOS sprites_65: el juego de sprites 0x65: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); lo leen p00:59A6 (8 bytes)
 ;   0x7ef0..0x7ef8  (8 bytes)
-DATA_pieza_65:
+DATA_sprites_65:
 	defb 0a0h,0e1h,0b6h,000h,0b4h,0a8h,003h,0ffh	; 7ef0  ........
 
 ; ----------------------------------------------------------------------
-; DATOS pieza_59: la pieza de decoracion 0x59: [caracter][rle] acabadas en 0
-;   (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); se
-;   solapan 2 bloques (0x7EF8-0x7EFD, 0x7EFB-0x7EFD); lo leen p00:59A6 (5
-;   bytes)
+; DATOS sprites_59: el juego de sprites 0x59: [dibujo][rle] acabadas en 0, que
+;   p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos]
+;   acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al
+;   otro lado); se solapan 2 bloques (0x7EF8-0x7EFD, 0x7EFB-0x7EFD); lo leen
+;   p00:59A6 (5 bytes)
 ;   0x7ef8..0x7efd  (5 bytes)
-DATA_pieza_59:
+DATA_sprites_59:
 	defb 0a0h,0cah,0b6h,000h,0ffh	; 7ef8
 
 ; ----------------------------------------------------------------------
-; DATOS rle_7EFD: rle a la VRAM (0x5C46) de la pieza de decoracion 0x0F; lo
-;   leen p00:59B9 (155 bytes)
+; DATOS rle_7EFD: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x0F; lo leen p00:59B9 (155 bytes)
 ;   0x7efd..0x7f98  (155 bytes)
 DATA_rle_7EFD:
 	defb 00ch,000h,084h,060h,0f0h,0f0h,060h,01ch,000h,084h,060h,090h,010h,060h,018h,000h	; 7efd  ...`..`...`..`..
@@ -2006,8 +2070,8 @@ DATA_rle_7EFD:
 	defb 0bdh,039h,015h,015h,01dh,03ah,076h,0fch,0f8h,0e0h,000h	; 7f8d  .9...:v....
 
 ; ----------------------------------------------------------------------
-; DATOS rle_7F98: rle a la VRAM (0x5C46) de la pieza de decoracion 0x18; lo
-;   leen p00:59B9 (75 bytes)
+; DATOS rle_7F98: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x18; lo leen p00:59B9 (75 bytes)
 ;   0x7f98..0x7fe3  (75 bytes)
 DATA_rle_7F98:
 	defb 00ch,000h,084h,07fh,0ffh,0ffh,07fh,00ch,000h,08bh,0feh,0ffh,0ffh,0feh,007h,01fh	; 7f98  ................
@@ -2017,8 +2081,8 @@ DATA_rle_7F98:
 	defb 03fh,07eh,078h,0f8h,0f0h,0e0h,0c0h,080h,006h,000h,000h	; 7fd8  ?~x........
 
 ; ----------------------------------------------------------------------
-; DATOS rle_7FE3: rle a la VRAM (0x5C46) de la pieza de decoracion 0x38; lo
-;   leen p00:59B9 (29 bytes)
+; DATOS rle_7FE3: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x38; lo leen p00:59B9 (29 bytes)
 ;   0x7fe3..0x8000  (29 bytes)
 DATA_rle_7FE3:
 	defb 086h,03fh,07fh,067h,03dh,007h,003h,00ah,000h,086h,0fch,0feh,0feh,0fch,0e0h,0c0h	; 7fe3  .?.g=...........

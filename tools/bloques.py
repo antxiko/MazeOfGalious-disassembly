@@ -410,7 +410,7 @@ def mapas(rom, t, bl):
 
 
 
-# ------------------------------------------------------------------ la decoracion de las salas
+# ------------------------------------------------------------------ los sprites de cada sala
 S_10 = (10, 11, 12)
 
 
@@ -439,17 +439,18 @@ def listas_por_sala(rom, s, tabla, n_mapas, bl, nom, que, quien, mapa0=1, paso=1
     return vistos
 
 
-def decoracion(rom, t, bl):
-    """p00:595F: por sala, las piezas de decoracion (0x9737, banco 11); cada
-    pieza (0x7C72, banco 10) es una lista de [caracter][rle] acabada en 0 que
-    p00:59A6 escribe en la tabla de nombres desde 0x1800 + 8 x caracter, y
-    detras ternas [desde][hasta][cuantos] que p00:59BF copia, acabadas en 0xFF."""
-    piezas = listas_por_sala(rom, S_10, 0x9737, 11, bl, "decoracion",
-                             "las piezas de decoracion de cada sala", "p00:5972")
+def sprites_de_sala(rom, t, bl):
+    """p00:595F: por sala, los juegos de sprites (0x9737, banco 11); cada
+    juego (0x7C72, banco 10) es una lista de [dibujo][rle] acabada en 0 que
+    p00:59A6 escribe en la tabla de dibujos de sprite, 0x1800 + 8 x dibujo
+    (R6 = 3), y detras ternas [desde][hasta][cuantos] que p00:59BF copia
+    dadas la vuelta, acabadas en 0xFF."""
+    piezas = listas_por_sala(rom, S_10, 0x9737, 11, bl, "sprites_de_sala",
+                             "los juegos de sprites que carga cada sala", "p00:5972")
     primera = min(palabra(rom, S_10, 0x7C72 + 2 * k) for k in piezas)
     n = (primera - 0x7C72) // 2
-    bl.anota(S_10, 0x7C72, primera, "tabla_de_piezas",
-             "%d punteros a las piezas de decoracion (p00:598D), hasta la primera pieza; la 0 no se "
+    bl.anota(S_10, 0x7C72, primera, "tabla_de_juegos_de_sprites",
+             "%d punteros a los juegos de sprites (p00:598D), hasta el primero; la 0 no se "
              "usa (el 0 acaba la lista de la sala) y las salas piden %d distintas, la mas alta la "
              "0x%02X" % (n, len(piezas), max(piezas)), "p00:598D", ancho=2)
     for k in range(1, n):
@@ -458,15 +459,15 @@ def decoracion(rom, t, bl):
         while byte(rom, S_10, i) != 0:
             p = palabra(rom, S_10, i + 1)
             bl.anota(S_10, p, fin_rle(rom, S_10, p, False), "rle_%04X" % p,
-                     "rle a la VRAM (0x5C46) de la pieza de decoracion 0x%02X" % k, "p00:59B9")
+                     "rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del juego de sprites 0x%02X" % k, "p00:59B9")
             i += 3
         i += 1
         while byte(rom, S_10, i) != 0xFF:
             i += 3
-        bl.anota(S_10, a, i + 1, "pieza_%02X" % k,
-                 "la pieza de decoracion 0x%02X: [caracter][rle] acabadas en 0 (p00:59A6) y "
-                 "[desde][hasta][cuantos] acabadas en 0xFF (p00:59BF)%s"
-                 % (k, "" if k in piezas else "; NINGUNA SALA LA PIDE"), "p00:59A6")
+        bl.anota(S_10, a, i + 1, "sprites_%02X" % k,
+                 "el juego de sprites 0x%02X: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y "
+                 "[desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado)%s"
+                 % (k, "" if k in piezas else "; NINGUNA SALA LO PIDE"), "p00:59A6")
 
 
 
@@ -791,7 +792,7 @@ def cabecera(rom, t, bl):
              "propio cartucho no la lee", "el Game Master", ancho=8)
 
 
-RECORRIDOS = [partidas, llamadas_a_lectores, listas_por_ix, mapas, decoracion, objetos, banco9_por_sala, sonido, graficos_banco10, textos_que_suben, mosaicos, rellenos, tablas_del_despachador, cabecera]
+RECORRIDOS = [partidas, llamadas_a_lectores, listas_por_ix, mapas, sprites_de_sala, objetos, banco9_por_sala, sonido, graficos_banco10, textos_que_suben, mosaicos, rellenos, tablas_del_despachador, cabecera]
 
 
 # ------------------------------------------------------------------ escritura

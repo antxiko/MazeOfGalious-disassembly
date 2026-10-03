@@ -229,138 +229,138 @@ D 0x7B34 0x7BB2 rle_7B34  rle a la VRAM (0x5C46); lo leen p00:583B (126 bytes)
 F 0x7B34 16
 D 0x7BB2 0x7D48 rle_7BB2  rle a la VRAM (0x5C46); se solapan 2 bloques (0x7BB2-0x7C74, 0x7C72-0x7D48); lo leen p00:5953, p00:598D (406 bytes)
 F 0x7BB2 16
-D 0x7D48 0x7D50 pieza_01  la pieza de decoracion 0x01: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7D48 0x7D50 sprites_01  el juego de sprites 0x01: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7D48 16
-D 0x7D50 0x7D55 pieza_02  la pieza de decoracion 0x02: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+D 0x7D50 0x7D55 sprites_02  el juego de sprites 0x02: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (5 bytes)
 F 0x7D50 16
-D 0x7D55 0x7D5D pieza_03  la pieza de decoracion 0x03: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7D55 0x7D5D sprites_03  el juego de sprites 0x03: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7D55 16
-D 0x7D5D 0x7D65 pieza_05  la pieza de decoracion 0x05: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7D5D 0x7D65 sprites_05  el juego de sprites 0x05: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7D5D 16
-D 0x7D65 0x7D6A pieza_06  la pieza de decoracion 0x06: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+D 0x7D65 0x7D6A sprites_06  el juego de sprites 0x06: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (5 bytes)
 F 0x7D65 16
-D 0x7D6A 0x7D6F pieza_07  la pieza de decoracion 0x07: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+D 0x7D6A 0x7D6F sprites_07  el juego de sprites 0x07: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (5 bytes)
 F 0x7D6A 16
-D 0x7D6F 0x7D77 pieza_08  la pieza de decoracion 0x08: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7D6F 0x7D77 sprites_08  el juego de sprites 0x08: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7D6F 16
-D 0x7D77 0x7D7C pieza_09  la pieza de decoracion 0x09: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+D 0x7D77 0x7D7C sprites_09  el juego de sprites 0x09: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (5 bytes)
 F 0x7D77 16
-D 0x7D7C 0x7D84 pieza_0A  la pieza de decoracion 0x0A: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7D7C 0x7D84 sprites_0A  el juego de sprites 0x0A: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7D7C 16
-D 0x7D84 0x7D8C pieza_0B  la pieza de decoracion 0x0B: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7D84 0x7D8C sprites_0B  el juego de sprites 0x0B: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7D84 16
-D 0x7D8C 0x7D94 pieza_0C  la pieza de decoracion 0x0C: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7D8C 0x7D94 sprites_0C  el juego de sprites 0x0C: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7D8C 16
-D 0x7D94 0x7D9C pieza_0D  la pieza de decoracion 0x0D: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7D94 0x7D9C sprites_0D  el juego de sprites 0x0D: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7D94 16
-D 0x7D9C 0x7DA4 pieza_0E  la pieza de decoracion 0x0E: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7D9C 0x7DA4 sprites_0E  el juego de sprites 0x0E: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7D9C 16
-D 0x7DA4 0x7DAC pieza_0F  la pieza de decoracion 0x0F: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7DA4 0x7DAC sprites_0F  el juego de sprites 0x0F: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7DA4 16
-D 0x7DAC 0x7DB1 pieza_10  la pieza de decoracion 0x10: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+D 0x7DAC 0x7DB1 sprites_10  el juego de sprites 0x10: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (5 bytes)
 F 0x7DAC 16
-D 0x7DB1 0x7DB9 pieza_11  la pieza de decoracion 0x11: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7DB1 0x7DB9 sprites_11  el juego de sprites 0x11: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7DB1 16
-D 0x7DB9 0x7DC1 pieza_12  la pieza de decoracion 0x12: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7DB9 0x7DC1 sprites_12  el juego de sprites 0x12: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7DB9 16
-D 0x7DC1 0x7DC9 pieza_13  la pieza de decoracion 0x13: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7DC1 0x7DC9 sprites_13  el juego de sprites 0x13: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7DC1 16
-D 0x7DC9 0x7DD1 pieza_14  la pieza de decoracion 0x14: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7DC9 0x7DD1 sprites_14  el juego de sprites 0x14: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7DC9 16
-D 0x7DD1 0x7DD9 pieza_15  la pieza de decoracion 0x15: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7DD1 0x7DD9 sprites_15  el juego de sprites 0x15: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7DD1 16
-D 0x7DD9 0x7DE1 pieza_16  la pieza de decoracion 0x16: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7DD9 0x7DE1 sprites_16  el juego de sprites 0x16: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7DD9 16
-D 0x7DE1 0x7DE9 pieza_17  la pieza de decoracion 0x17: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7DE1 0x7DE9 sprites_17  el juego de sprites 0x17: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7DE1 16
-D 0x7DE9 0x7DF1 pieza_18  la pieza de decoracion 0x18: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7DE9 0x7DF1 sprites_18  el juego de sprites 0x18: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7DE9 16
-D 0x7DF1 0x7DF6 pieza_19  la pieza de decoracion 0x19: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+D 0x7DF1 0x7DF6 sprites_19  el juego de sprites 0x19: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (5 bytes)
 F 0x7DF1 16
-D 0x7DF6 0x7DFE pieza_1F  la pieza de decoracion 0x1F: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7DF6 0x7DFE sprites_1F  el juego de sprites 0x1F: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7DF6 16
-D 0x7DFE 0x7E03 pieza_20  la pieza de decoracion 0x20: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+D 0x7DFE 0x7E03 sprites_20  el juego de sprites 0x20: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (5 bytes)
 F 0x7DFE 16
-D 0x7E03 0x7E0B pieza_21  la pieza de decoracion 0x21: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7E03 0x7E0B sprites_21  el juego de sprites 0x21: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7E03 16
-D 0x7E0B 0x7E10 pieza_22  la pieza de decoracion 0x22: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+D 0x7E0B 0x7E10 sprites_22  el juego de sprites 0x22: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (5 bytes)
 F 0x7E0B 16
-D 0x7E10 0x7E15 pieza_23  la pieza de decoracion 0x23: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+D 0x7E10 0x7E15 sprites_23  el juego de sprites 0x23: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (5 bytes)
 F 0x7E10 16
-D 0x7E15 0x7E1D pieza_24  la pieza de decoracion 0x24: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7E15 0x7E1D sprites_24  el juego de sprites 0x24: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7E15 16
-D 0x7E1D 0x7E25 pieza_25  la pieza de decoracion 0x25: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7E1D 0x7E25 sprites_25  el juego de sprites 0x25: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7E1D 16
-D 0x7E25 0x7E2A pieza_26  la pieza de decoracion 0x26: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+D 0x7E25 0x7E2A sprites_26  el juego de sprites 0x26: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (5 bytes)
 F 0x7E25 16
-D 0x7E2A 0x7E2F pieza_27  la pieza de decoracion 0x27: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+D 0x7E2A 0x7E2F sprites_27  el juego de sprites 0x27: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (5 bytes)
 F 0x7E2A 16
-D 0x7E2F 0x7E37 pieza_28  la pieza de decoracion 0x28: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7E2F 0x7E37 sprites_28  el juego de sprites 0x28: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7E2F 16
-D 0x7E37 0x7E3C pieza_29  la pieza de decoracion 0x29: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+D 0x7E37 0x7E3C sprites_29  el juego de sprites 0x29: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (5 bytes)
 F 0x7E37 16
-D 0x7E3C 0x7E41 pieza_2A  la pieza de decoracion 0x2A: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+D 0x7E3C 0x7E41 sprites_2A  el juego de sprites 0x2A: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (5 bytes)
 F 0x7E3C 16
-D 0x7E41 0x7E49 pieza_2B  la pieza de decoracion 0x2B: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7E41 0x7E49 sprites_2B  el juego de sprites 0x2B: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7E41 16
-D 0x7E49 0x7E51 pieza_2C  la pieza de decoracion 0x2C: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7E49 0x7E51 sprites_2C  el juego de sprites 0x2C: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7E49 16
-D 0x7E51 0x7E59 pieza_2D  la pieza de decoracion 0x2D: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7E51 0x7E59 sprites_2D  el juego de sprites 0x2D: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7E51 16
-D 0x7E59 0x7E5E pieza_2E  la pieza de decoracion 0x2E: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+D 0x7E59 0x7E5E sprites_2E  el juego de sprites 0x2E: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (5 bytes)
 F 0x7E59 16
-D 0x7E5E 0x7E63 pieza_2F  la pieza de decoracion 0x2F: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+D 0x7E5E 0x7E63 sprites_2F  el juego de sprites 0x2F: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (5 bytes)
 F 0x7E5E 16
-D 0x7E63 0x7E6E pieza_30  la pieza de decoracion 0x30: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (11 bytes)
+D 0x7E63 0x7E6E sprites_30  el juego de sprites 0x30: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (11 bytes)
 F 0x7E63 16
-D 0x7E6E 0x7E73 pieza_31  la pieza de decoracion 0x31: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+D 0x7E6E 0x7E73 sprites_31  el juego de sprites 0x31: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (5 bytes)
 F 0x7E6E 16
-D 0x7E73 0x7E7B pieza_32  la pieza de decoracion 0x32: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7E73 0x7E7B sprites_32  el juego de sprites 0x32: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7E73 16
-D 0x7E7B 0x7E80 pieza_36  la pieza de decoracion 0x36: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+D 0x7E7B 0x7E80 sprites_36  el juego de sprites 0x36: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (5 bytes)
 F 0x7E7B 16
-D 0x7E80 0x7E85 pieza_38  la pieza de decoracion 0x38: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+D 0x7E80 0x7E85 sprites_38  el juego de sprites 0x38: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (5 bytes)
 F 0x7E80 16
-D 0x7E85 0x7E8A pieza_39  la pieza de decoracion 0x39: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+D 0x7E85 0x7E8A sprites_39  el juego de sprites 0x39: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (5 bytes)
 F 0x7E85 16
-D 0x7E8A 0x7E8F pieza_3A  la pieza de decoracion 0x3A: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+D 0x7E8A 0x7E8F sprites_3A  el juego de sprites 0x3A: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (5 bytes)
 F 0x7E8A 16
-D 0x7E8F 0x7E97 pieza_3C  la pieza de decoracion 0x3C: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7E8F 0x7E97 sprites_3C  el juego de sprites 0x3C: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7E8F 16
-D 0x7E97 0x7E9F pieza_3E  la pieza de decoracion 0x3E: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7E97 0x7E9F sprites_3E  el juego de sprites 0x3E: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7E97 16
-D 0x7E9F 0x7EA7 pieza_40  la pieza de decoracion 0x40: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7E9F 0x7EA7 sprites_40  el juego de sprites 0x40: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7E9F 16
-D 0x7EA7 0x7EB2 pieza_42  la pieza de decoracion 0x42: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (11 bytes)
+D 0x7EA7 0x7EB2 sprites_42  el juego de sprites 0x42: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (11 bytes)
 F 0x7EA7 16
-D 0x7EB2 0x7EBA pieza_43  la pieza de decoracion 0x43: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7EB2 0x7EBA sprites_43  el juego de sprites 0x43: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7EB2 16
-D 0x7EBA 0x7EBF pieza_4C  la pieza de decoracion 0x4C: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+D 0x7EBA 0x7EBF sprites_4C  el juego de sprites 0x4C: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (5 bytes)
 F 0x7EBA 16
-D 0x7EBF 0x7EC7 pieza_4F  la pieza de decoracion 0x4F: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); NINGUNA SALA LA PIDE; lo leen p00:59A6 (8 bytes)
+D 0x7EBF 0x7EC7 sprites_4F  el juego de sprites 0x4F: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); NINGUNA SALA LO PIDE; lo leen p00:59A6 (8 bytes)
 F 0x7EBF 16
-D 0x7EC7 0x7ECC pieza_34  la pieza de decoracion 0x34: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+D 0x7EC7 0x7ECC sprites_34  el juego de sprites 0x34: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (5 bytes)
 F 0x7EC7 16
-D 0x7ECC 0x7ED4 pieza_4E  la pieza de decoracion 0x4E: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7ECC 0x7ED4 sprites_4E  el juego de sprites 0x4E: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7ECC 16
-D 0x7ED4 0x7EDC pieza_54  la pieza de decoracion 0x54: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7ED4 0x7EDC sprites_54  el juego de sprites 0x54: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7ED4 16
-D 0x7EDC 0x7EE1 pieza_58  la pieza de decoracion 0x58: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+D 0x7EDC 0x7EE1 sprites_58  el juego de sprites 0x58: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (5 bytes)
 F 0x7EDC 16
-D 0x7EE1 0x7EE6 pieza_67  la pieza de decoracion 0x67: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+D 0x7EE1 0x7EE6 sprites_67  el juego de sprites 0x67: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (5 bytes)
 F 0x7EE1 16
-D 0x7EE6 0x7EEB pieza_5A  la pieza de decoracion 0x5A: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+D 0x7EE6 0x7EEB sprites_5A  el juego de sprites 0x5A: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (5 bytes)
 F 0x7EE6 16
-D 0x7EEB 0x7EF0 pieza_68  la pieza de decoracion 0x68: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (5 bytes)
+D 0x7EEB 0x7EF0 sprites_68  el juego de sprites 0x68: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (5 bytes)
 F 0x7EEB 16
-D 0x7EF0 0x7EF8 pieza_65  la pieza de decoracion 0x65: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); lo leen p00:59A6 (8 bytes)
+D 0x7EF0 0x7EF8 sprites_65  el juego de sprites 0x65: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); lo leen p00:59A6 (8 bytes)
 F 0x7EF0 16
-D 0x7EF8 0x7EFD pieza_59  la pieza de decoracion 0x59: [caracter][rle] acabadas en 0 (p00:59A6) y [desde][hasta][cuantos] acabadas en 0xFF (p00:59BF); se solapan 2 bloques (0x7EF8-0x7EFD, 0x7EFB-0x7EFD); lo leen p00:59A6 (5 bytes)
+D 0x7EF8 0x7EFD sprites_59  el juego de sprites 0x59: [dibujo][rle] acabadas en 0, que p00:59A6 escribe en 0x1800 + 8 x dibujo, y [desde][hasta][cuantos] acabadas en 0xFF, que p00:59BF copia dados la vuelta (el sprite mirando al otro lado); se solapan 2 bloques (0x7EF8-0x7EFD, 0x7EFB-0x7EFD); lo leen p00:59A6 (5 bytes)
 F 0x7EF8 16
-D 0x7EFD 0x7F98 rle_7EFD  rle a la VRAM (0x5C46) de la pieza de decoracion 0x0F; lo leen p00:59B9 (155 bytes)
+D 0x7EFD 0x7F98 rle_7EFD  rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del juego de sprites 0x0F; lo leen p00:59B9 (155 bytes)
 F 0x7EFD 16
-D 0x7F98 0x7FE3 rle_7F98  rle a la VRAM (0x5C46) de la pieza de decoracion 0x18; lo leen p00:59B9 (75 bytes)
+D 0x7F98 0x7FE3 rle_7F98  rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del juego de sprites 0x18; lo leen p00:59B9 (75 bytes)
 F 0x7F98 16
-D 0x7FE3 0x8000 rle_7FE3  rle a la VRAM (0x5C46) de la pieza de decoracion 0x38; lo leen p00:59B9 (29 bytes)
+D 0x7FE3 0x8000 rle_7FE3  rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del juego de sprites 0x38; lo leen p00:59B9 (29 bytes)
 F 0x7FE3 16
 # --- fin de los bloques de bloques.py ---

@@ -10,15 +10,16 @@
 
 
 ; ----------------------------------------------------------------------
-; DATOS rle_7FE3_cola: rle a la VRAM (0x5C46) de la pieza de decoracion 0x38
-;   (sigue del banco anterior, 0x7FE3); lo leen p00:59B9 (16 bytes)
+; DATOS rle_7FE3_cola: rle a la tabla de dibujos de sprite (0x1800, R6 = 3)
+;   del juego de sprites 0x38 (sigue del banco anterior, 0x7FE3); lo leen
+;   p00:59B9 (16 bytes)
 ;   0x8000..0x8010  (16 bytes)
 DATA_rle_7FE3_cola:
 	defb 003h,005h,000h,083h,0c0h,0f0h,0f0h,005h,0f8h,002h,0f0h,081h,0c0h,005h,000h,000h	; 8000  ................
 
 ; ----------------------------------------------------------------------
-; DATOS rle_8010: rle a la VRAM (0x5C46) de la pieza de decoracion 0x09; lo
-;   leen p00:59B9 (131 bytes)
+; DATOS rle_8010: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x09; lo leen p00:59B9 (131 bytes)
 ;   0x8010..0x8093  (131 bytes)
 DATA_rle_8010:
 	defb 0c0h,000h,003h,00fh,03fh,05bh,06fh,0f6h,0bbh,0e8h,0bbh,0f6h,077h,02dh,01fh,00fh	; 8010  ....?[o.....w-..
@@ -32,8 +33,8 @@ DATA_rle_8010:
 	defb 0d8h,0f0h,000h	; 8090
 
 ; ----------------------------------------------------------------------
-; DATOS rle_8093: rle a la VRAM (0x5C46) de la pieza de decoracion 0x29; lo
-;   leen p00:59B9 (53 bytes)
+; DATOS rle_8093: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x29; lo leen p00:59B9 (53 bytes)
 ;   0x8093..0x80c8  (53 bytes)
 DATA_rle_8093:
 	defb 083h,001h,03bh,077h,003h,0ffh,085h,0f7h,0efh,06fh,00fh,007h,005h,000h,084h,0e0h	; 8093  ...w.....o......
@@ -42,8 +43,8 @@ DATA_rle_8093:
 	defb 0d8h,080h,007h,000h,000h	; 80c3
 
 ; ----------------------------------------------------------------------
-; DATOS rle_80C8: rle a la VRAM (0x5C46) de la pieza de decoracion 0x02; lo
-;   leen p00:59B9 (51 bytes)
+; DATOS rle_80C8: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x02; lo leen p00:59B9 (51 bytes)
 ;   0x80c8..0x80fb  (51 bytes)
 DATA_rle_80C8:
 	defb 002h,000h,08bh,020h,011h,009h,005h,003h,01eh,003h,005h,009h,011h,020h,005h,000h	; 80c8  ... ......... ..
@@ -52,8 +53,8 @@ DATA_rle_80C8:
 	defb 006h,000h,000h	; 80f8
 
 ; ----------------------------------------------------------------------
-; DATOS rle_80FB: rle a la VRAM (0x5C46) de la pieza de decoracion 0x01; lo
-;   leen p00:59B9 (147 bytes)
+; DATOS rle_80FB: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x01; lo leen p00:59B9 (147 bytes)
 ;   0x80fb..0x818e  (147 bytes)
 DATA_rle_80FB:
 	defb 0ffh,000h,00fh,03fh,07fh,07fh,0ffh,0ffh,0fbh,0fdh,0fch,0edh,07eh,016h,03dh,028h	; 80fb  ...?........~.=(
@@ -68,8 +69,8 @@ DATA_rle_80FB:
 	defb 01fh,01fh,000h	; 818b
 
 ; ----------------------------------------------------------------------
-; DATOS rle_818E: rle a la VRAM (0x5C46) de la pieza de decoracion 0x08; lo
-;   leen p00:59B9 (97 bytes)
+; DATOS rle_818E: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x08; lo leen p00:59B9 (97 bytes)
 ;   0x818e..0x81ef  (97 bytes)
 DATA_rle_818E:
 	defb 003h,000h,002h,006h,0b8h,000h,00ah,001h,001h,000h,00dh,004h,072h,07ah,00eh,0c3h	; 818e  ............rz..
@@ -81,15 +82,15 @@ DATA_rle_818E:
 	defb 000h	; 81ee
 
 ; ----------------------------------------------------------------------
-; DATOS rle_81EF: rle a la VRAM (0x5C46) de la pieza de decoracion 0x34; lo
-;   leen p00:59B9 (12 bytes)
+; DATOS rle_81EF: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x34; lo leen p00:59B9 (12 bytes)
 ;   0x81ef..0x81fb  (12 bytes)
 DATA_rle_81EF:
 	defb 088h,03ch,07eh,0dfh,0bfh,0bfh,0ffh,07eh,03ch,018h,000h,000h	; 81ef  .<~....~<...
 
 ; ----------------------------------------------------------------------
-; DATOS rle_81FB: rle a la VRAM (0x5C46) de la pieza de decoracion 0x05; lo
-;   leen p00:59B9 (111 bytes)
+; DATOS rle_81FB: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x05; lo leen p00:59B9 (111 bytes)
 ;   0x81fb..0x826a  (111 bytes)
 DATA_rle_81FB:
 	defb 0a3h,00fh,03bh,038h,07ch,07fh,07fh,03fh,03fh,01eh,007h,001h,01eh,03fh,0bfh,0f7h	; 81fb  ...8|..??....?..
@@ -101,8 +102,8 @@ DATA_rle_81FB:
 	defb 0fch,000h,004h,001h,00dh,000h,085h,00eh,0bfh,07fh,0bfh,00eh,00bh,000h,000h	; 825b  ...............
 
 ; ----------------------------------------------------------------------
-; DATOS rle_826A: rle a la VRAM (0x5C46) de la pieza de decoracion 0x31; lo
-;   leen p00:59B9 (204 bytes)
+; DATOS rle_826A: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x31; lo leen p00:59B9 (204 bytes)
 ;   0x826a..0x8336  (204 bytes)
 DATA_rle_826A:
 	defb 009h,000h,087h,003h,005h,00fh,00fh,005h,001h,001h,00ah,000h,084h,0c0h,0e0h,0a0h	; 826a  ................
@@ -120,8 +121,8 @@ DATA_rle_826A:
 	defb 0fch,0fah,0dch,0eeh,0eeh,0ech,01ah,0feh,07ch,078h,000h,000h	; 832a  ........|x..
 
 ; ----------------------------------------------------------------------
-; DATOS rle_8336: rle a la VRAM (0x5C46) de la pieza de decoracion 0x11; lo
-;   leen p00:59B9 (129 bytes)
+; DATOS rle_8336: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x11; lo leen p00:59B9 (129 bytes)
 ;   0x8336..0x83b7  (129 bytes)
 DATA_rle_8336:
 	defb 083h,003h,000h,03fh,003h,000h,081h,007h,009h,000h,087h,0f0h,000h,080h,000h,07eh	; 8336  ...?...........~
@@ -135,8 +136,8 @@ DATA_rle_8336:
 	defb 000h	; 83b6
 
 ; ----------------------------------------------------------------------
-; DATOS rle_83B7: rle a la VRAM (0x5C46) de la pieza de decoracion 0x14; lo
-;   leen p00:59B9 (113 bytes)
+; DATOS rle_83B7: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x14; lo leen p00:59B9 (113 bytes)
 ;   0x83b7..0x8428  (113 bytes)
 DATA_rle_83B7:
 	defb 00dh,000h,083h,003h,00fh,01fh,00dh,000h,083h,0c0h,0f0h,0f8h,00ch,000h,084h,006h	; 83b7  ................
@@ -149,8 +150,8 @@ DATA_rle_83B7:
 	defb 000h	; 8427
 
 ; ----------------------------------------------------------------------
-; DATOS rle_8428: rle a la VRAM (0x5C46) de la pieza de decoracion 0x0A; lo
-;   leen p00:59B9 (236 bytes)
+; DATOS rle_8428: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x0A; lo leen p00:59B9 (236 bytes)
 ;   0x8428..0x8514  (236 bytes)
 DATA_rle_8428:
 	defb 0ffh,000h,00eh,01eh,05eh,05eh,01eh,00fh,030h,037h,00fh,001h,00eh,017h,00ah,00eh	; 8428  ....^^..07......
@@ -170,8 +171,8 @@ DATA_rle_8428:
 	defb 010h,00ah,000h,003h,07fh,00eh,000h,081h,0c0h,005h,000h,000h	; 8508  ............
 
 ; ----------------------------------------------------------------------
-; DATOS rle_8514: rle a la VRAM (0x5C46) de la pieza de decoracion 0x0E; lo
-;   leen p00:59B9 (158 bytes)
+; DATOS rle_8514: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x0E; lo leen p00:59B9 (158 bytes)
 ;   0x8514..0x85b2  (158 bytes)
 DATA_rle_8514:
 	defb 002h,001h,002h,003h,088h,007h,00fh,00eh,00dh,00dh,006h,001h,002h,004h,000h,002h	; 8514  ................
@@ -186,8 +187,8 @@ DATA_rle_8514:
 	defb 007h,003h,075h,0eeh,0edh,0f2h,0ddh,0deh,0ebh,081h,0c0h,080h,0e0h,000h	; 85a4  ..u...........
 
 ; ----------------------------------------------------------------------
-; DATOS rle_85B2: rle a la VRAM (0x5C46) de la pieza de decoracion 0x2F; lo
-;   leen p00:59B9 (34 bytes)
+; DATOS rle_85B2: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x2F; lo leen p00:59B9 (34 bytes)
 ;   0x85b2..0x85d4  (34 bytes)
 DATA_rle_85B2:
 	defb 0a0h,000h,00dh,005h,039h,016h,01bh,00dh,0e6h,0d9h,06eh,076h,01bh,01dh,066h,030h	; 85b2  ....9.....nv..f0
@@ -195,8 +196,8 @@ DATA_rle_85B2:
 	defb 0e0h,000h	; 85d2
 
 ; ----------------------------------------------------------------------
-; DATOS rle_85D4: rle a la VRAM (0x5C46) de la pieza de decoracion 0x07; lo
-;   leen p00:59B9 (43 bytes)
+; DATOS rle_85D4: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x07; lo leen p00:59B9 (43 bytes)
 ;   0x85d4..0x85ff  (43 bytes)
 DATA_rle_85D4:
 	defb 00ah,000h,086h,016h,02dh,06dh,0edh,0edh,056h,00ah,000h,086h,0d0h,0b8h,0b6h,0afh	; 85d4  ....-m..V.......
@@ -204,8 +205,8 @@ DATA_rle_85D4:
 	defb 089h,080h,0e0h,0c0h,0b0h,060h,0d8h,0bch,0bch,058h,000h	; 85f4  .....`...X.
 
 ; ----------------------------------------------------------------------
-; DATOS rle_85FF: rle a la VRAM (0x5C46) de la pieza de decoracion 0x12; lo
-;   leen p00:59B9 (170 bytes)
+; DATOS rle_85FF: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x12; lo leen p00:59B9 (170 bytes)
 ;   0x85ff..0x86a9  (170 bytes)
 DATA_rle_85FF:
 	defb 085h,078h,0fch,0f4h,0bch,070h,01ch,000h,0ffh,003h,00fh,01fh,033h,03bh,07dh,0ffh	; 85ff  .x...p......3.}.
@@ -221,8 +222,8 @@ DATA_rle_85FF:
 	defb 0a0h,0d3h,0dfh,0e7h,068h,028h,0c0h,040h,0b0h,000h	; 869f  ....h(.@..
 
 ; ----------------------------------------------------------------------
-; DATOS rle_86A9: rle a la VRAM (0x5C46) de la pieza de decoracion 0x2E; lo
-;   leen p00:59B9 (135 bytes)
+; DATOS rle_86A9: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x2E; lo leen p00:59B9 (135 bytes)
 ;   0x86a9..0x8730  (135 bytes)
 DATA_rle_86A9:
 	defb 00ah,000h,086h,002h,015h,02ah,02ah,037h,03fh,00ah,000h,086h,020h,050h,0a8h,0a8h	; 86a9  .....**7?... P..
@@ -236,8 +237,8 @@ DATA_rle_86A9:
 	defb 0b0h,0d0h,0a8h,0a8h,078h,0f8h,000h	; 8729
 
 ; ----------------------------------------------------------------------
-; DATOS rle_8730: rle a la VRAM (0x5C46) de la pieza de decoracion 0x23; lo
-;   leen p00:59B9 (49 bytes)
+; DATOS rle_8730: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x23; lo leen p00:59B9 (49 bytes)
 ;   0x8730..0x8761  (49 bytes)
 DATA_rle_8730:
 	defb 093h,02fh,05fh,0d7h,0dfh,0ddh,0dfh,0dfh,0d7h,0dfh,0dah,0dfh,0dfh,0d7h,0deh,0dbh	; 8730  ./_.............
@@ -246,16 +247,16 @@ DATA_rle_8730:
 	defb 000h	; 8760
 
 ; ----------------------------------------------------------------------
-; DATOS rle_8761: rle a la VRAM (0x5C46) de la pieza de decoracion 0x20; lo
-;   leen p00:59B9 (23 bytes)
+; DATOS rle_8761: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x20; lo leen p00:59B9 (23 bytes)
 ;   0x8761..0x8778  (23 bytes)
 DATA_rle_8761:
 	defb 008h,000h,088h,003h,00fh,01bh,037h,037h,03fh,07fh,0ffh,008h,000h,083h,0c0h,0f0h	; 8761  ......77?.......
 	defb 0f8h,003h,0fch,082h,0feh,0ffh,000h	; 8771
 
 ; ----------------------------------------------------------------------
-; DATOS rle_8778: rle a la VRAM (0x5C46) de la pieza de decoracion 0x28; lo
-;   leen p00:59B9 (142 bytes)
+; DATOS rle_8778: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x28; lo leen p00:59B9 (142 bytes)
 ;   0x8778..0x8806  (142 bytes)
 DATA_rle_8778:
 	defb 094h,001h,003h,006h,005h,00dh,00dh,00fh,00dh,007h,007h,003h,005h,001h,002h,002h	; 8778  ................
@@ -269,8 +270,8 @@ DATA_rle_8778:
 	defb 08ch,080h,0e0h,0b0h,0f8h,0e8h,0f4h,0fch,0f4h,0fch,078h,000h,000h,000h	; 87f8  ..........x...
 
 ; ----------------------------------------------------------------------
-; DATOS rle_8806: rle a la VRAM (0x5C46) de la pieza de decoracion 0x21; lo
-;   leen p00:59B9 (51 bytes)
+; DATOS rle_8806: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x21; lo leen p00:59B9 (51 bytes)
 ;   0x8806..0x8839  (51 bytes)
 DATA_rle_8806:
 	defb 006h,000h,08ah,001h,006h,00dh,01dh,01dh,02dh,06dh,06dh,0f6h,029h,006h,000h,08ah	; 8806  ........-mm.)...
@@ -279,8 +280,8 @@ DATA_rle_8806:
 	defb 0afh,054h,000h	; 8836
 
 ; ----------------------------------------------------------------------
-; DATOS rle_8839: rle a la VRAM (0x5C46) de la pieza de decoracion 0x03; lo
-;   leen p00:59B9 (66 bytes)
+; DATOS rle_8839: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x03; lo leen p00:59B9 (66 bytes)
 ;   0x8839..0x887b  (66 bytes)
 DATA_rle_8839:
 	defb 086h,03fh,07fh,067h,03dh,007h,003h,00ah,000h,086h,0fch,0feh,0feh,0fch,0e0h,0c0h	; 8839  .?.g=...........
@@ -290,8 +291,8 @@ DATA_rle_8839:
 	defb 000h,000h	; 8879
 
 ; ----------------------------------------------------------------------
-; DATOS rle_887B: rle a la VRAM (0x5C46) de la pieza de decoracion 0x10; lo
-;   leen p00:59B9 (85 bytes)
+; DATOS rle_887B: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x10; lo leen p00:59B9 (85 bytes)
 ;   0x887b..0x88d0  (85 bytes)
 DATA_rle_887B:
 	defb 005h,000h,08ah,00ch,01eh,03eh,03bh,073h,071h,0e4h,085h,009h,012h,006h,000h,082h	; 887b  .....>.sq.......
@@ -302,8 +303,8 @@ DATA_rle_887B:
 	defb 071h,020h,020h,010h,000h	; 88cb
 
 ; ----------------------------------------------------------------------
-; DATOS rle_88D0: rle a la VRAM (0x5C46) de la pieza de decoracion 0x08; lo
-;   leen p00:59B9 (123 bytes)
+; DATOS rle_88D0: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x08; lo leen p00:59B9 (123 bytes)
 ;   0x88d0..0x894b  (123 bytes)
 DATA_rle_88D0:
 	defb 089h,02eh,018h,0a6h,0bdh,05eh,0beh,04dh,073h,01ch,008h,000h,087h,080h,000h,040h	; 88d0  .....^.Ms......@
@@ -316,8 +317,8 @@ DATA_rle_88D0:
 	defb 0f0h,0f4h,0e0h,0e8h,0f0h,0f0h,0e0h,080h,000h,000h,000h	; 8940  ...........
 
 ; ----------------------------------------------------------------------
-; DATOS rle_894B: rle a la VRAM (0x5C46) de la pieza de decoracion 0x0C; lo
-;   leen p00:59B9 (175 bytes)
+; DATOS rle_894B: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x0C; lo leen p00:59B9 (175 bytes)
 ;   0x894b..0x89fa  (175 bytes)
 DATA_rle_894B:
 	defb 088h,020h,000h,020h,068h,078h,0bch,0fch,078h,018h,000h,0cdh,002h,014h,004h,016h	; 894b  . . hx..x.......
@@ -333,8 +334,8 @@ DATA_rle_894B:
 	defb 048h,0d8h,0f0h,0f8h,094h,0d4h,0feh,0f6h,0f6h,078h,080h,0a0h,020h,0d8h,000h	; 89eb  H........x.. ..
 
 ; ----------------------------------------------------------------------
-; DATOS rle_89FA: rle a la VRAM (0x5C46) de la pieza de decoracion 0x24; lo
-;   leen p00:59B9 (97 bytes)
+; DATOS rle_89FA: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x24; lo leen p00:59B9 (97 bytes)
 ;   0x89fa..0x8a5b  (97 bytes)
 DATA_rle_89FA:
 	defb 0ddh,000h,010h,037h,07ch,07fh,0feh,07dh,0bfh,07fh,07bh,004h,05fh,080h,0beh,020h	; 89fa  ...7|..}..{._..
@@ -346,8 +347,8 @@ DATA_rle_89FA:
 	defb 000h	; 8a5a
 
 ; ----------------------------------------------------------------------
-; DATOS rle_8A5B: rle a la VRAM (0x5C46) de la pieza de decoracion 0x27; lo
-;   leen p00:59B9 (79 bytes)
+; DATOS rle_8A5B: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x27; lo leen p00:59B9 (79 bytes)
 ;   0x8a5b..0x8aaa  (79 bytes)
 DATA_rle_8A5B:
 	defb 084h,00ch,01eh,01ah,00ch,00ch,000h,084h,030h,058h,078h,030h,00dh,000h,0bfh,06ah	; 8a5b  ........0Xx0...j
@@ -357,8 +358,8 @@ DATA_rle_8A5B:
 	defb 0fch,008h,034h,078h,058h,0b4h,048h,074h,08eh,07fh,0f7h,0e3h,0d9h,034h,000h	; 8a9b  ..4xX.Ht.....4.
 
 ; ----------------------------------------------------------------------
-; DATOS rle_8AAA: rle a la VRAM (0x5C46) de la pieza de decoracion 0x2B; lo
-;   leen p00:59B9 (66 bytes)
+; DATOS rle_8AAA: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x2B; lo leen p00:59B9 (66 bytes)
 ;   0x8aaa..0x8aec  (66 bytes)
 DATA_rle_8AAA:
 	defb 0c0h,000h,007h,00dh,00bh,017h,007h,0ffh,000h,00ah,01ah,075h,00fh,0f3h,06dh,031h	; 8aaa  ...........u..m1
@@ -368,8 +369,8 @@ DATA_rle_8AAA:
 	defb 000h,000h	; 8aea
 
 ; ----------------------------------------------------------------------
-; DATOS rle_8AEC: rle a la VRAM (0x5C46) de la pieza de decoracion 0x3C; lo
-;   leen p00:59B9 (44 bytes)
+; DATOS rle_8AEC: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x3C; lo leen p00:59B9 (44 bytes)
 ;   0x8aec..0x8b18  (44 bytes)
 DATA_rle_8AEC:
 	defb 088h,024h,018h,0a5h,05ah,05ah,0a5h,018h,024h,019h,000h,09fh,006h,00fh,01fh,03fh	; 8aec  .$..ZZ..$......?
@@ -377,15 +378,15 @@ DATA_rle_8AEC:
 	defb 037h,06eh,0feh,0f4h,0f4h,0f8h,0fah,0f6h,0eeh,0dch,018h,000h	; 8b0c  7n..........
 
 ; ----------------------------------------------------------------------
-; DATOS rle_8B18: rle a la VRAM (0x5C46) de la pieza de decoracion 0x32; lo
-;   leen p00:59B9 (13 bytes)
+; DATOS rle_8B18: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x32; lo leen p00:59B9 (13 bytes)
 ;   0x8b18..0x8b25  (13 bytes)
 DATA_rle_8B18:
 	defb 083h,02ah,01fh,02ah,00dh,000h,083h,004h,0ffh,004h,00dh,000h,000h	; 8b18  .*.*.........
 
 ; ----------------------------------------------------------------------
-; DATOS rle_8B25: rle a la VRAM (0x5C46) de la pieza de decoracion 0x3E; lo
-;   leen p00:59B9 (57 bytes)
+; DATOS rle_8B25: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x3E; lo leen p00:59B9 (57 bytes)
 ;   0x8b25..0x8b5e  (57 bytes)
 DATA_rle_8B25:
 	defb 08ah,010h,018h,029h,02dh,03ch,09dh,07fh,0ffh,07fh,09ch,007h,000h,089h,0a0h,040h	; 8b25  ...)-<.........@
@@ -394,8 +395,8 @@ DATA_rle_8B25:
 	defb 0f0h,0f8h,00ch,000h,000h,080h,003h,000h,000h	; 8b55  .........
 
 ; ----------------------------------------------------------------------
-; DATOS rle_8B5E: rle a la VRAM (0x5C46) de la pieza de decoracion 0x26; lo
-;   leen p00:59B9 (73 bytes)
+; DATOS rle_8B5E: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x26; lo leen p00:59B9 (73 bytes)
 ;   0x8b5e..0x8ba7  (73 bytes)
 DATA_rle_8B5E:
 	defb 084h,060h,0f0h,0f0h,060h,01ch,000h,0c0h,001h,021h,021h,067h,05fh,020h,01fh,06ah	; 8b5e  .`..`....!!g_ .j
@@ -405,16 +406,16 @@ DATA_rle_8B5E:
 	defb 0ach,0f0h,088h,010h,028h,0d8h,038h,0c0h,000h	; 8b9e  ....(.8..
 
 ; ----------------------------------------------------------------------
-; DATOS rle_8BA7: rle a la VRAM (0x5C46) de la pieza de decoracion 0x3A; lo
-;   leen p00:59B9 (27 bytes)
+; DATOS rle_8BA7: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x3A; lo leen p00:59B9 (27 bytes)
 ;   0x8ba7..0x8bc2  (27 bytes)
 DATA_rle_8BA7:
 	defb 084h,00eh,031h,06eh,05fh,003h,0bfh,084h,05fh,06eh,031h,00eh,006h,000h,083h,080h	; 8ba7  ..1n_..._n1.....
 	defb 0c0h,040h,003h,0a0h,083h,040h,0c0h,080h,006h,000h,000h	; 8bb7  .@...@.....
 
 ; ----------------------------------------------------------------------
-; DATOS rle_8BC2: rle a la VRAM (0x5C46) de la pieza de decoracion 0x39; lo
-;   leen p00:59B9 (33 bytes)
+; DATOS rle_8BC2: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x39; lo leen p00:59B9 (33 bytes)
 ;   0x8bc2..0x8be3  (33 bytes)
 DATA_rle_8BC2:
 	defb 08dh,015h,04fh,03fh,0bfh,07fh,0efh,07fh,0dfh,07bh,0afh,035h,04fh,015h,003h,000h	; 8bc2  ..O?.....{.5O...
@@ -422,8 +423,8 @@ DATA_rle_8BC2:
 	defb 000h	; 8be2
 
 ; ----------------------------------------------------------------------
-; DATOS rle_8BE3: rle a la VRAM (0x5C46) de la pieza de decoracion 0x43; lo
-;   leen p00:59B9 (115 bytes)
+; DATOS rle_8BE3: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x43; lo leen p00:59B9 (115 bytes)
 ;   0x8be3..0x8c56  (115 bytes)
 DATA_rle_8BE3:
 	defb 081h,060h,003h,0f0h,084h,0b0h,0f0h,0f0h,0b0h,004h,0f0h,003h,0b0h,081h,0f0h,010h	; 8be3  .`..............
@@ -436,8 +437,8 @@ DATA_rle_8BE3:
 	defb 01fh,087h,000h	; 8c53
 
 ; ----------------------------------------------------------------------
-; DATOS rle_8C56: rle a la VRAM (0x5C46) de la pieza de decoracion 0x2C; lo
-;   leen p00:59B9 (110 bytes)
+; DATOS rle_8C56: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x2C; lo leen p00:59B9 (110 bytes)
 ;   0x8c56..0x8cc4  (110 bytes)
 DATA_rle_8C56:
 	defb 005h,000h,082h,01fh,023h,003h,03fh,086h,02fh,07eh,0ffh,0edh,0bfh,079h,006h,000h	; 8c56  ....#.?./~...y..
@@ -449,8 +450,8 @@ DATA_rle_8C56:
 	defb 01eh,07eh,0f6h,0fch,0d8h,0f0h,0e0h,060h,0c0h,0c0h,080h,000h,000h,000h	; 8cb6  .~.....`......
 
 ; ----------------------------------------------------------------------
-; DATOS rle_8CC4: rle a la VRAM (0x5C46) de la pieza de decoracion 0x1F; lo
-;   leen p00:59B9 (98 bytes)
+; DATOS rle_8CC4: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x1F; lo leen p00:59B9 (98 bytes)
 ;   0x8cc4..0x8d26  (98 bytes)
 DATA_rle_8CC4:
 	defb 09eh,007h,004h,026h,01bh,07fh,03fh,07fh,07fh,07eh,0ffh,0bfh,03fh,0feh,0ddh,062h	; 8cc4  ...&..?..~..?..b
@@ -462,8 +463,8 @@ DATA_rle_8CC4:
 	defb 040h,000h	; 8d24
 
 ; ----------------------------------------------------------------------
-; DATOS rle_8D26: rle a la VRAM (0x5C46) de la pieza de decoracion 0x0B; lo
-;   leen p00:59B9 (44 bytes)
+; DATOS rle_8D26: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x0B; lo leen p00:59B9 (44 bytes)
 ;   0x8d26..0x8d52  (44 bytes)
 DATA_rle_8D26:
 	defb 002h,000h,087h,003h,01fh,066h,019h,063h,00ch,031h,009h,000h,087h,0f6h,0cbh,0a9h	; 8d26  .....f.c.1......
@@ -471,8 +472,8 @@ DATA_rle_8D26:
 	defb 088h,006h,0ebh,0c9h,0a6h,020h,040h,034h,00ah,008h,000h,000h	; 8d46  ..... @4....
 
 ; ----------------------------------------------------------------------
-; DATOS rle_8D52: rle a la VRAM (0x5C46) de la pieza de decoracion 0x25; lo
-;   leen p00:59B9 (155 bytes)
+; DATOS rle_8D52: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x25; lo leen p00:59B9 (155 bytes)
 ;   0x8d52..0x8ded  (155 bytes)
 DATA_rle_8D52:
 	defb 002h,000h,09eh,01fh,03fh,030h,026h,039h,08fh,0c9h,0c6h,0c1h,0e1h,067h,068h,063h	; 8d52  ....?0&9.....ghc
@@ -487,8 +488,8 @@ DATA_rle_8D52:
 	defb 008h,0c2h,00bh,000h,083h,0feh,0ffh,0feh,012h,000h,000h	; 8de2  ...........
 
 ; ----------------------------------------------------------------------
-; DATOS rle_8DED: rle a la VRAM (0x5C46) de la pieza de decoracion 0x06; lo
-;   leen p00:59B9 (221 bytes)
+; DATOS rle_8DED: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x06; lo leen p00:59B9 (221 bytes)
 ;   0x8ded..0x8eca  (221 bytes)
 DATA_rle_8DED:
 	defb 004h,002h,081h,00ch,004h,010h,002h,028h,002h,044h,002h,080h,081h,040h,010h,000h	; 8ded  .......(.D...@..
@@ -507,8 +508,8 @@ DATA_rle_8DED:
 	defb 089h,0e0h,0f0h,0fch,0feh,0deh,03eh,0fch,0e0h,0c0h,007h,000h,000h	; 8ebd  ......>......
 
 ; ----------------------------------------------------------------------
-; DATOS rle_8ECA: rle a la VRAM (0x5C46) de la pieza de decoracion 0x13; lo
-;   leen p00:59B9 (184 bytes)
+; DATOS rle_8ECA: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x13; lo leen p00:59B9 (184 bytes)
 ;   0x8eca..0x8f82  (184 bytes)
 DATA_rle_8ECA:
 	defb 083h,003h,037h,06fh,003h,0ffh,083h,06fh,01fh,00fh,007h,000h,088h,0c0h,020h,0d8h	; 8eca  ..7o...o...... .
@@ -525,8 +526,8 @@ DATA_rle_8ECA:
 	defb 0a0h,008h,0c4h,070h,088h,004h,000h,000h	; 8f7a  ...p....
 
 ; ----------------------------------------------------------------------
-; DATOS rle_8F82: rle a la VRAM (0x5C46) de la pieza de decoracion 0x2D; lo
-;   leen p00:59B9 (83 bytes)
+; DATOS rle_8F82: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x2D; lo leen p00:59B9 (83 bytes)
 ;   0x8f82..0x8fd5  (83 bytes)
 DATA_rle_8F82:
 	defb 085h,000h,007h,01fh,03fh,03fh,004h,07fh,09dh,07dh,03eh,01fh,00fh,00fh,01eh,01fh	; 8f82  ....??...}>.....
@@ -537,8 +538,8 @@ DATA_rle_8F82:
 	defb 008h,000h,000h	; 8fd2
 
 ; ----------------------------------------------------------------------
-; DATOS rle_8FD5: rle a la VRAM (0x5C46) de la pieza de decoracion 0x22; lo
-;   leen p00:59B9 (72 bytes)
+; DATOS rle_8FD5: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x22; lo leen p00:59B9 (72 bytes)
 ;   0x8fd5..0x901d  (72 bytes)
 DATA_rle_8FD5:
 	defb 0c4h,01ch,00eh,002h,01eh,007h,07bh,0ceh,096h,0cfh,07bh,006h,01eh,00fh,003h,000h	; 8fd5  ......{...{.....
@@ -548,8 +549,8 @@ DATA_rle_8FD5:
 	defb 000h,070h,0b0h,0f0h,0e0h,01ch,000h,000h	; 9015  .p......
 
 ; ----------------------------------------------------------------------
-; DATOS rle_901D: rle a la VRAM (0x5C46) de la pieza de decoracion 0x17; lo
-;   leen p00:59B9 (295 bytes)
+; DATOS rle_901D: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x17; lo leen p00:59B9 (295 bytes)
 ;   0x901d..0x9144  (295 bytes)
 DATA_rle_901D:
 	defb 00ch,000h,081h,001h,003h,003h,007h,000h,085h,001h,037h,077h,07fh,067h,003h,0dfh	; 901d  ..........7w.g..
@@ -573,8 +574,8 @@ DATA_rle_901D:
 	defb 0e0h,0f0h,0e0h,0c0h,004h,000h,000h	; 913d
 
 ; ----------------------------------------------------------------------
-; DATOS rle_9144: rle a la VRAM (0x5C46) de la pieza de decoracion 0x4C; lo
-;   leen p00:59B9 (257 bytes)
+; DATOS rle_9144: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x4C; lo leen p00:59B9 (257 bytes)
 ;   0x9144..0x9245  (257 bytes)
 DATA_rle_9144:
 	defb 007h,000h,089h,002h,001h,002h,008h,007h,000h,00dh,002h,00dh,004h,000h,08ch,004h	; 9144  ................
@@ -596,8 +597,8 @@ DATA_rle_9144:
 	defb 000h	; 9244
 
 ; ----------------------------------------------------------------------
-; DATOS rle_9245: rle a la VRAM (0x5C46) de la pieza de decoracion 0x30; lo
-;   leen p00:59B9 (110 bytes)
+; DATOS rle_9245: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x30; lo leen p00:59B9 (110 bytes)
 ;   0x9245..0x92b3  (110 bytes)
 DATA_rle_9245:
 	defb 00ah,000h,0a5h,001h,007h,08ch,09bh,07eh,038h,000h,000h,002h,005h,002h,001h,004h	; 9245  .......~8.......
@@ -609,8 +610,8 @@ DATA_rle_9245:
 	defb 0f9h,007h,000h,089h,0c0h,070h,038h,0eeh,0c5h,0c2h,000h,0c0h,0a0h,000h	; 92a5  .....p8.......
 
 ; ----------------------------------------------------------------------
-; DATOS rle_92B3: rle a la VRAM (0x5C46) de la pieza de decoracion 0x15; lo
-;   leen p00:59B9 (122 bytes)
+; DATOS rle_92B3: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x15; lo leen p00:59B9 (122 bytes)
 ;   0x92b3..0x932d  (122 bytes)
 DATA_rle_92B3:
 	defb 086h,0b4h,078h,0fch,0fch,078h,0b4h,020h,000h,082h,03ch,07fh,003h,0ffh,085h,0f0h	; 92b3  ..x..x. ..<.....
@@ -623,8 +624,8 @@ DATA_rle_92B3:
 	defb 0cdh,0eeh,054h,0a8h,01eh,00eh,00ch,058h,030h,000h	; 9323  ..T....X0.
 
 ; ----------------------------------------------------------------------
-; DATOS rle_932D: rle a la VRAM (0x5C46) de la pieza de decoracion 0x2A; lo
-;   leen p00:59B9 (34 bytes)
+; DATOS rle_932D: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x2A; lo leen p00:59B9 (34 bytes)
 ;   0x932d..0x934f  (34 bytes)
 DATA_rle_932D:
 	defb 0a0h,003h,02fh,00eh,09dh,039h,016h,037h,07bh,07dh,0ech,05dh,0beh,07fh,0feh,03dh	; 932d  ../..9.7{}.]...=
@@ -632,8 +633,8 @@ DATA_rle_932D:
 	defb 0f2h,000h	; 934d
 
 ; ----------------------------------------------------------------------
-; DATOS rle_934F: rle a la VRAM (0x5C46) de la pieza de decoracion 0x19; lo
-;   leen p00:59B9 (287 bytes)
+; DATOS rle_934F: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x19; lo leen p00:59B9 (287 bytes)
 ;   0x934f..0x946e  (287 bytes)
 DATA_rle_934F:
 	defb 007h,000h,089h,038h,0c7h,038h,0ffh,0c3h,07ch,073h,03eh,03fh,005h,000h,08bh,010h	; 934f  ...8.8..|s>?....
@@ -656,8 +657,8 @@ DATA_rle_934F:
 	defb 083h,020h,050h,050h,01bh,000h,085h,020h,070h,0f8h,070h,020h,01bh,000h,000h	; 945f  . PP... p.p ...
 
 ; ----------------------------------------------------------------------
-; DATOS rle_946E: rle a la VRAM (0x5C46) de la pieza de decoracion 0x16; lo
-;   leen p00:59B9 (259 bytes)
+; DATOS rle_946E: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x16; lo leen p00:59B9 (259 bytes)
 ;   0x946e..0x9571  (259 bytes)
 DATA_rle_946E:
 	defb 086h,078h,0dch,0bch,0bch,0fch,078h,01dh,000h,0adh,00fh,03fh,07fh,07fh,0f8h,0f0h	; 946e  .x....x....?....
@@ -679,8 +680,8 @@ DATA_rle_946E:
 	defb 003h,000h,000h	; 956e
 
 ; ----------------------------------------------------------------------
-; DATOS rle_9571: rle a la VRAM (0x5C46) de la pieza de decoracion 0x36; lo
-;   leen p00:59B9 (64 bytes)
+; DATOS rle_9571: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x36; lo leen p00:59B9 (64 bytes)
 ;   0x9571..0x95b1  (64 bytes)
 DATA_rle_9571:
 	defb 0aah,002h,001h,007h,01fh,01ch,03bh,03ah,038h,01ch,01fh,067h,09ah,085h,069h,009h	; 9571  .......:8..g..i.
@@ -689,8 +690,8 @@ DATA_rle_9571:
 	defb 0c0h,0f0h,070h,0b8h,038h,038h,070h,0f0h,0c0h,080h,004h,040h,082h,080h,000h,000h	; 95a1  ..p.88p....@....
 
 ; ----------------------------------------------------------------------
-; DATOS rle_95B1: rle a la VRAM (0x5C46) de la pieza de decoracion 0x42; lo
-;   leen p00:59B9 (40 bytes)
+; DATOS rle_95B1: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x42; lo leen p00:59B9 (40 bytes)
 ;   0x95b1..0x95d9  (40 bytes)
 DATA_rle_95B1:
 	defb 083h,004h,044h,0eeh,00dh,0ffh,083h,004h,044h,0eeh,00dh,0ffh,006h,000h,002h,001h	; 95b1  ..D.....D.......
@@ -698,8 +699,8 @@ DATA_rle_95B1:
 	defb 07ah,0bdh,0e7h,0c2h,0cdh,0efh,078h,000h	; 95d1  z.....x.
 
 ; ----------------------------------------------------------------------
-; DATOS rle_95D9: rle a la VRAM (0x5C46) de la pieza de decoracion 0x42; lo
-;   leen p00:59B9 (48 bytes)
+; DATOS rle_95D9: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x42; lo leen p00:59B9 (48 bytes)
 ;   0x95d9..0x9609  (48 bytes)
 DATA_rle_95D9:
 	defb 020h,0ffh,090h,07eh,06eh,07eh,056h,0fch,0ech,0bch,0fch,06eh,07eh,05eh,076h,0dch	; 95d9   ..~n~V....n~^v.
@@ -707,8 +708,8 @@ DATA_rle_95D9:
 	defb 076h,05eh,0fch,0ech,0bch,0fch,010h,000h,084h,060h,0d0h,0f0h,060h,01ch,000h,000h	; 95f9  v^.......`..`...
 
 ; ----------------------------------------------------------------------
-; DATOS rle_9609: rle a la VRAM (0x5C46) de la pieza de decoracion 0x40; lo
-;   leen p00:59B9 (172 bytes)
+; DATOS rle_9609: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x40; lo leen p00:59B9 (172 bytes)
 ;   0x9609..0x96b5  (172 bytes)
 DATA_rle_9609:
 	defb 085h,078h,0bch,0cch,0fch,078h,01bh,000h,083h,022h,0d5h,008h,00dh,000h,083h,020h	; 9609  .x...x...".....
@@ -724,8 +725,8 @@ DATA_rle_9609:
 	defb 000h,087h,004h,008h,010h,070h,040h,080h,080h,007h,000h,000h	; 96a9  .....p@.....
 
 ; ----------------------------------------------------------------------
-; DATOS rle_96B5: rle a la VRAM (0x5C46) de la pieza de decoracion 0x4E; lo
-;   leen p00:59B9 (132 bytes)
+; DATOS rle_96B5: rle a la tabla de dibujos de sprite (0x1800, R6 = 3) del
+;   juego de sprites 0x4E; lo leen p00:59B9 (132 bytes)
 ;   0x96b5..0x9739  (132 bytes)
 DATA_rle_96B5:
 	defb 084h,060h,090h,090h,060h,020h,000h,002h,001h,085h,003h,00fh,003h,001h,001h,00bh	; 96b5  .`..` ..........
@@ -739,11 +740,11 @@ DATA_rle_96B5:
 	defb 080h,007h,000h,000h	; 9735
 
 ; ----------------------------------------------------------------------
-; DATOS tabla_decoracion: 11 punteros, uno por mapa (0xE041) desde el 1, a las
-;   piezas de decoracion de cada sala; la tabla se lee desde 0x9737, pero el
-;   mapa 0 no existe; lo leen p00:5972 (22 bytes)
+; DATOS tabla_sprites_de_sala: 11 punteros, uno por mapa (0xE041) desde el 1,
+;   a los juegos de sprites que carga cada sala; la tabla se lee desde 0x9737,
+;   pero el mapa 0 no existe; lo leen p00:5972 (22 bytes)
 ;   0x9739..0x974f  (22 bytes)
-DATA_tabla_decoracion:
+DATA_tabla_sprites_de_sala:
 	defb 04fh,097h	; 9739
 	defb 0a9h,098h	; 973b
 	defb 0cah,098h	; 973d
@@ -757,10 +758,10 @@ DATA_tabla_decoracion:
 	defb 009h,09ah	; 974d
 
 ; ----------------------------------------------------------------------
-; DATOS decoracion_mapa_1: las piezas de decoracion de cada sala del mapa 1:
-;   una lista por sala (147); lo leen p00:5972 (346 bytes)
+; DATOS sprites_de_sala_mapa_1: los juegos de sprites que carga cada sala del
+;   mapa 1: una lista por sala (147); lo leen p00:5972 (346 bytes)
 ;   0x974f..0x98a9  (346 bytes)
-DATA_decoracion_mapa_1:
+DATA_sprites_de_sala_mapa_1:
 	defb 000h,032h,023h,000h,018h,03ah,000h,026h	; 974f  .2#..:.&
 	defb 000h,011h,02eh,000h,03ch,025h,000h,002h	; 9757  ....<%..
 	defb 000h,026h,000h,032h,025h,000h,021h,000h	; 975f  .&.2%.!.
@@ -807,10 +808,10 @@ DATA_decoracion_mapa_1:
 	defb 008h,000h	; 98a7
 
 ; ----------------------------------------------------------------------
-; DATOS decoracion_mapa_2: las piezas de decoracion de cada sala del mapa 2:
-;   una lista por sala (15); lo leen p00:5972 (33 bytes)
+; DATOS sprites_de_sala_mapa_2: los juegos de sprites que carga cada sala del
+;   mapa 2: una lista por sala (15); lo leen p00:5972 (33 bytes)
 ;   0x98a9..0x98ca  (33 bytes)
-DATA_decoracion_mapa_2:
+DATA_sprites_de_sala_mapa_2:
 	defb 000h,02fh,000h,02fh,000h,010h,000h,010h	; 98a9  ././....
 	defb 000h,028h,000h,009h,00eh,000h,028h,00eh	; 98b1  .(....(.
 	defb 000h,010h,009h,000h,02fh,000h,02fh,010h	; 98b9  ...././.
@@ -818,20 +819,20 @@ DATA_decoracion_mapa_2:
 	defb 000h	; 98c9
 
 ; ----------------------------------------------------------------------
-; DATOS decoracion_mapa_3: las piezas de decoracion de cada sala del mapa 3:
-;   una lista por sala (15); lo leen p00:5972 (30 bytes)
+; DATOS sprites_de_sala_mapa_3: los juegos de sprites que carga cada sala del
+;   mapa 3: una lista por sala (15); lo leen p00:5972 (30 bytes)
 ;   0x98ca..0x98e8  (30 bytes)
-DATA_decoracion_mapa_3:
+DATA_sprites_de_sala_mapa_3:
 	defb 000h,020h,000h,020h,000h,02ah,000h,02dh	; 98ca  . . .*.-
 	defb 000h,02dh,000h,02ah,000h,02ah,020h,000h	; 98d2  .-.*.* .
 	defb 059h,000h,009h,02ch,000h,000h,02ah,02ch	; 98da  Y..,..*,
 	defb 000h,02ah,000h,02dh,000h,000h	; 98e2
 
 ; ----------------------------------------------------------------------
-; DATOS decoracion_mapa_4: las piezas de decoracion de cada sala del mapa 4:
-;   una lista por sala (16); lo leen p00:5972 (33 bytes)
+; DATOS sprites_de_sala_mapa_4: los juegos de sprites que carga cada sala del
+;   mapa 4: una lista por sala (16); lo leen p00:5972 (33 bytes)
 ;   0x98e8..0x9909  (33 bytes)
-DATA_decoracion_mapa_4:
+DATA_sprites_de_sala_mapa_4:
 	defb 000h,02fh,000h,023h,003h,000h,02fh,000h	; 98e8  ./.#../.
 	defb 003h,000h,024h,003h,000h,024h,000h,00eh	; 98f0  ..$..$..
 	defb 000h,02fh,024h,000h,00eh,000h,023h,003h	; 98f8  ./$...#.
@@ -839,10 +840,10 @@ DATA_decoracion_mapa_4:
 	defb 000h	; 9908
 
 ; ----------------------------------------------------------------------
-; DATOS decoracion_mapa_5: las piezas de decoracion de cada sala del mapa 5:
-;   una lista por sala (17); lo leen p00:5972 (35 bytes)
+; DATOS sprites_de_sala_mapa_5: los juegos de sprites que carga cada sala del
+;   mapa 5: una lista por sala (17); lo leen p00:5972 (35 bytes)
 ;   0x9909..0x992c  (35 bytes)
-DATA_decoracion_mapa_5:
+DATA_sprites_de_sala_mapa_5:
 	defb 000h,017h,000h,014h,000h,017h,000h,021h	; 9909  .......!
 	defb 029h,000h,00eh,000h,014h,000h,017h,000h	; 9911  ).......
 	defb 014h,000h,021h,029h,000h,00eh,000h,021h	; 9919  ..!)...!
@@ -850,10 +851,10 @@ DATA_decoracion_mapa_5:
 	defb 029h,000h,000h	; 9929
 
 ; ----------------------------------------------------------------------
-; DATOS decoracion_mapa_6: las piezas de decoracion de cada sala del mapa 6:
-;   una lista por sala (18); lo leen p00:5972 (36 bytes)
+; DATOS sprites_de_sala_mapa_6: los juegos de sprites que carga cada sala del
+;   mapa 6: una lista por sala (18); lo leen p00:5972 (36 bytes)
 ;   0x992c..0x9950  (36 bytes)
-DATA_decoracion_mapa_6:
+DATA_sprites_de_sala_mapa_6:
 	defb 000h,007h,000h,007h,000h,007h,000h,036h	; 992c  .......6
 	defb 000h,04ch,000h,030h,000h,007h,030h,000h	; 9934  .L.0..0.
 	defb 007h,030h,000h,030h,000h,007h,000h,00bh	; 993c  .0.0....
@@ -861,10 +862,10 @@ DATA_decoracion_mapa_6:
 	defb 000h,000h,05ah,000h	; 994c
 
 ; ----------------------------------------------------------------------
-; DATOS decoracion_mapa_7: las piezas de decoracion de cada sala del mapa 7:
-;   una lista por sala (19); lo leen p00:5972 (42 bytes)
+; DATOS sprites_de_sala_mapa_7: los juegos de sprites que carga cada sala del
+;   mapa 7: una lista por sala (19); lo leen p00:5972 (42 bytes)
 ;   0x9950..0x997a  (42 bytes)
-DATA_decoracion_mapa_7:
+DATA_sprites_de_sala_mapa_7:
 	defb 000h,00eh,03eh,000h,03eh,000h,00eh,03eh	; 9950  ..>.>..>
 	defb 000h,012h,000h,00eh,000h,021h,03eh,000h	; 9958  .....!>.
 	defb 021h,03eh,000h,00fh,000h,00fh,000h,016h	; 9960  !>......
@@ -873,10 +874,10 @@ DATA_decoracion_mapa_7:
 	defb 000h,000h	; 9978
 
 ; ----------------------------------------------------------------------
-; DATOS decoracion_mapa_8: las piezas de decoracion de cada sala del mapa 8:
-;   una lista por sala (20); lo leen p00:5972 (43 bytes)
+; DATOS sprites_de_sala_mapa_8: los juegos de sprites que carga cada sala del
+;   mapa 8: una lista por sala (20); lo leen p00:5972 (43 bytes)
 ;   0x997a..0x99a5  (43 bytes)
-DATA_decoracion_mapa_8:
+DATA_sprites_de_sala_mapa_8:
 	defb 000h,00eh,000h,00eh,000h,027h,000h,027h	; 997a  .....'.'
 	defb 000h,00eh,027h,000h,01fh,000h,01fh,000h	; 9982  ..'.....
 	defb 00eh,000h,065h,000h,01fh,028h,000h,00eh	; 998a  ..e..(..
@@ -885,10 +886,10 @@ DATA_decoracion_mapa_8:
 	defb 01fh,000h,000h	; 99a2
 
 ; ----------------------------------------------------------------------
-; DATOS decoracion_mapa_9: las piezas de decoracion de cada sala del mapa 9:
-;   una lista por sala (21); lo leen p00:5972 (44 bytes)
+; DATOS sprites_de_sala_mapa_9: los juegos de sprites que carga cada sala del
+;   mapa 9: una lista por sala (21); lo leen p00:5972 (44 bytes)
 ;   0x99a5..0x99d1  (44 bytes)
-DATA_decoracion_mapa_9:
+DATA_sprites_de_sala_mapa_9:
 	defb 000h,035h,000h,013h,000h,02bh,000h,013h	; 99a5  .5...+..
 	defb 000h,00ch,02bh,000h,068h,000h,00ch,000h	; 99ad  ..+.h...
 	defb 00ch,000h,02bh,000h,02bh,000h,013h,000h	; 99b5  ..+.+...
@@ -897,10 +898,10 @@ DATA_decoracion_mapa_9:
 	defb 040h,000h,068h,000h	; 99cd
 
 ; ----------------------------------------------------------------------
-; DATOS decoracion_mapa_10: las piezas de decoracion de cada sala del mapa 10:
-;   una lista por sala (27); lo leen p00:5972 (56 bytes)
+; DATOS sprites_de_sala_mapa_10: los juegos de sprites que carga cada sala del
+;   mapa 10: una lista por sala (27); lo leen p00:5972 (56 bytes)
 ;   0x99d1..0x9a09  (56 bytes)
-DATA_decoracion_mapa_10:
+DATA_sprites_de_sala_mapa_10:
 	defb 00eh,000h,00eh,000h,008h,00eh,000h,00eh	; 99d1  ........
 	defb 008h,000h,00eh,008h,000h,043h,000h,006h	; 99d9  .....C..
 	defb 000h,043h,000h,006h,000h,043h,000h,001h	; 99e1  .C...C..
@@ -910,10 +911,10 @@ DATA_decoracion_mapa_10:
 	defb 000h,00eh,000h,006h,000h,015h,000h,000h	; 9a01  ........
 
 ; ----------------------------------------------------------------------
-; DATOS decoracion_mapa_11: las piezas de decoracion de cada sala del mapa 11:
-;   una lista por sala (6); lo leen p00:5972 (12 bytes)
+; DATOS sprites_de_sala_mapa_11: los juegos de sprites que carga cada sala del
+;   mapa 11: una lista por sala (6); lo leen p00:5972 (12 bytes)
 ;   0x9a09..0x9a15  (12 bytes)
-DATA_decoracion_mapa_11:
+DATA_sprites_de_sala_mapa_11:
 	defb 000h,008h,000h,008h,00eh,000h,00eh,000h	; 9a09  ........
 	defb 067h,000h,039h,000h	; 9a11
 

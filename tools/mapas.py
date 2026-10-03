@@ -52,7 +52,7 @@ def n_salas(rom, m):
 
     El mapa 11 es el ultimo y no tiene siguiente: son 6 salas. La 6 no tiene
     salidas (sus vecinas, 0xAF07, son FF FF FF FF) y estan su dibujo (40 bytes
-    en 0x9BBE, detras de la sala 5), su lista de decoracion (p11:9A13) y la
+    en 0x9BBE, detras de la sala 5), su lista de juegos de sprites (p11:9A13) y la
     de objetos (p06:BFC3), cada una la sexta de su mapa.
     """
     if m == 11:
