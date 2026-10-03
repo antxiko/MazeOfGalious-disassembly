@@ -2,7 +2,9 @@
 """Dibuja salas y mapas de The Maze of Galious desde la ROM (tools/vram.py).
 
 Uso: dibuja.py sala <mapa> <sala> <png>
-     dibuja.py mapa <mapa> <png>          el mapa entero, colocado por sus vecinas
+     dibuja.py mapa <mapa> <png> [--numeros]
+                                          el mapa entero, colocado por sus vecinas
+                                          (con --numeros, el numero de cada sala)
      dibuja.py coteja <dir de volcados>   compara cada volcado vMMSS.vram con el modelo
 """
 import glob
@@ -60,14 +62,43 @@ def rejilla(rom, m):
     return pos
 
 
-def mapa_png(rom, m):
+def mapa_png(rom, m, numeros=False):
+    """El mapa entero colocado por vecinas (rejilla). Las salas que no se
+    alcanzan por vecinas van aparte, en una fila debajo. Con numeros, cada sala
+    lleva el suyo en la esquina de arriba a la izquierda."""
     pos = rejilla(rom, m)
     xs = [p[0] for p in pos.values()]
     ys = [p[1] for p in pos.values()]
     x0, y0 = min(xs), min(ys)
-    im = Image.new("RGB", ((max(xs) - x0 + 1) * 256, (max(ys) - y0 + 1) * 160), (16, 16, 16))
-    for s, (x, y) in pos.items():
-        im.paste(sala_png(rom, m, s), ((x - x0) * 256, (y - y0) * 160))
+    sueltas = [s for s in range(1, M.n_salas(rom.d, m) + 1) if s not in pos]
+    # Las salas se numeran en orden de lectura (salvo la entrada del castillo):
+    # una sala sin vecinas va al hueco que dejan la anterior y la siguiente si
+    # estan en la misma fila con un solo hueco libre entre ellas (la 94 del
+    # castillo, entre la 93 y la 95). Es una deduccion, no una vecina.
+    por_numero = {}
+    for s in list(sueltas):
+        a, b = pos.get(s - 1), pos.get(s + 1)
+        if a and b and a[1] == b[1] and b[0] - a[0] == 2 and (a[0] + 1, a[1]) not in pos.values():
+            por_numero[s] = (a[0] + 1, a[1])
+            sueltas.remove(s)
+    filas = max(ys) - y0 + 1 + (2 if sueltas else 0)
+    im = Image.new("RGB", ((max(xs) - x0 + 1) * 256, filas * 160), (16, 16, 16))
+    sitios = {s: ((x - x0) * 256, (y - y0) * 160) for s, (x, y) in list(pos.items()) + list(por_numero.items())}
+    for k, s in enumerate(sueltas):
+        sitios[s] = (k * 256, (filas - 1) * 160)
+    for s, xy in sitios.items():
+        im.paste(sala_png(rom, m, s), xy)
+    if numeros:
+        from PIL import ImageDraw, ImageFont
+        dr = ImageDraw.Draw(im)
+        try:
+            letra = ImageFont.truetype("arial.ttf", 22)
+        except OSError:
+            letra = ImageFont.load_default()
+        for s, (x, y) in sitios.items():
+            texto = "%d" % s + (" (sin vecinas)" if s in sueltas else "") +                 (" (sin vecinas)" if s in por_numero else "")
+            dr.rectangle((x + 2, y + 2, x + 8 + 14 * len(texto), y + 28), fill=(0, 0, 0))
+            dr.text((x + 5, y + 3), texto, fill=(255, 230, 90), font=letra)
     return im, pos
 
 
@@ -110,7 +141,7 @@ def main(argv):
     if argv[1] == "sala":
         sala_png(rom, int(argv[2]), int(argv[3])).save(argv[4])
     elif argv[1] == "mapa":
-        im, pos = mapa_png(rom, int(argv[2]))
+        im, pos = mapa_png(rom, int(argv[2]), "--numeros" in argv)
         im.save(argv[3])
         print("%d salas colocadas" % len(pos))
     elif argv[1] == "coteja":

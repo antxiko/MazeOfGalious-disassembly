@@ -1,0 +1,14 @@
+# tools/omsx_bordes.tcl en partida (work/v_bordes): la sala de salida, el lado (d/i), las vecinas
+# cargadas en 0xE648-0xE64B y la sala de llegada, sin tocar las vecinas.
+313 sale 01:01 por d vecinas 5D 77 69 6B
+316 llega 01:6B
+406 sale 01:6B por d vecinas FF 78 01 6A
+409 llega 01:6A
+499 sale 01:6A por i vecinas 5F 79 6B 6D
+501 llega 01:6B
+591 sale 01:6B por i vecinas FF 78 01 6A
+594 llega 01:01
+684 sale 01:01 por i vecinas 5D 77 69 6B
+686 llega 01:69
+776 sale 01:69 por d vecinas 5C 76 68 01
+779 llega 01:01
