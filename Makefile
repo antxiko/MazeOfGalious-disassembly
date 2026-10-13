@@ -190,5 +190,12 @@ clean:
 	rm -f $(WORK)/p*.trace.json $(WORK)/p*.blocks $(WORK)/p*.out.bin \
 	      $(WORK)/galious_reensamblada.rom $(WORK)/pasmo.err
 
-.PHONY: all comprueba reconoce paginas semillas trace listado verify \
+
+PYMUS ?= python3     # el que tenga numpy y lameenc
+# La musica: el motor del cartucho ejecutado (tools/musica.py) a MP3
+musica: $(ROM)
+	$(PYMUS) tools/musica.py todas docs/audio
+	$(PYMUS) tools/pagina_musica.py
+
+.PHONY: musica all comprueba reconoce paginas semillas trace listado verify \
         sanity densidad test imagenes web clean
