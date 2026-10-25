@@ -121,3 +121,30 @@ cuando le queda poca vida.
 
 La densidad: **40,1 %** de las 25.226 instrucciones llevan comentario, y las
 3.423 rutinas pasan todas del 10 % (`make densidad`).
+
+## Código compartido con otros cartuchos de Konami
+
+Este desensamblado se ha comparado, instrucción por instrucción, con
+todos los demás de Konami de la serie. Cuenta un bloque cuando las
+mismas instrucciones, al menos seis desde una etiqueta hasta su `ret`
+o su salto sin condición, están en los dos cartuchos; las direcciones
+no se miran, porque cambian de un cartucho a otro. De los otros 57,
+**47** tienen al menos un bloque en común con este; estos son los
+que más comparten:
+
+| Cartucho | Bloques | Instrucciones | Por ejemplo (aquí = allí) |
+|---|---:|---:|---|
+| [Nemesis 2](https://antxiko.github.io/Nemesis2-disassembly/es/) | 49 | 612 | `lee_caracteres` (p00:5B66) |
+| [Salamander - Operation X](https://antxiko.github.io/Salamander-disassembly/es/) | 41 | 447 | `rle_con_destino` (p00:5C40) = `rachas_con_destino` |
+| [Parodius](https://antxiko.github.io/Parodius-disassembly/es/) | 31 | 343 | `rle_con_destino` (p00:5C40) = `rachas_con_destino` |
+| [Nemesis 3 - The Eve of Destruction](https://antxiko.github.io/Nemesis3-disassembly/es/) | 30 | 312 | `rle_con_destino` (p00:5C40) = `rle_con_direccion` |
+| [Nemesis / Gradius](https://antxiko.github.io/Nemesis-disassembly/es/) | 28 | 380 | `lee_caracteres` (p00:5B66) = `baja_el_caracter_a_la_ram` |
+| [Ganbare Goemon! Karakuri Dōchū](https://antxiko.github.io/GanbareGoemon-disassembly/es/) | 23 | 312 | `paso_de_envolvente` (p13:64B0) = `cuadro_del_efecto` |
+| [Vampire Killer](https://antxiko.github.io/VampireKiller-disassembly/es/) | 22 | 320 | `paso_de_envolvente` (p13:64B0) = `cuenta_del_paso` |
+| [Shalom: Knightmare III](https://antxiko.github.io/Shalom-disassembly/es/) | 21 | 235 | `logotipo_de_konami` (p01:6957) = `rotulo_konami` |
+| [King's Valley II](https://antxiko.github.io/KingsValley2-disassembly/es/) | 19 | 238 | `mando` (p00:4C75) |
+| [King Kong 2: Yomigaeru Densetsu](https://antxiko.github.io/KingKong2-disassembly/es/) | 17 | 197 | `sonido_a_cero` (p00:4DED) = `el_sonido_desde_cero` |
+
+La matriz entera, los 58 cartuchos entre sí, está en
+[Las rutinas](https://antxiko.github.io/MSX-disassembly-database/es/LAS-RUTINAS.html) de la base de datos de la
+serie, con el método y el programa que la mide.

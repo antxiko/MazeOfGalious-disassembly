@@ -117,3 +117,30 @@ on life.
 
 The density: **40.1%** of the 25,226 instructions carry a comment, and all
 3,423 routines are above 10% (`make densidad`).
+
+## Code shared with other Konami cartridges
+
+This disassembly has been compared, instruction by instruction, with
+every other Konami one in the series. A block counts when the same
+instructions, at least six of them from a label to its `ret` or its
+unconditional jump, are in both cartridges; the addresses are left
+aside, because they change from one cartridge to the next. Of the
+other 57, **47** have at least one block in common with this one;
+these are the ones that share the most:
+
+| Cartridge | Blocks | Instructions | For example (here = there) |
+|---|---:|---:|---|
+| [Nemesis 2](https://antxiko.github.io/Nemesis2-disassembly/) | 49 | 612 | `lee_caracteres` (p00:5B66) |
+| [Salamander - Operation X](https://antxiko.github.io/Salamander-disassembly/) | 41 | 447 | `rle_con_destino` (p00:5C40) = `rachas_con_destino` |
+| [Parodius](https://antxiko.github.io/Parodius-disassembly/) | 31 | 343 | `rle_con_destino` (p00:5C40) = `rachas_con_destino` |
+| [Nemesis 3 - The Eve of Destruction](https://antxiko.github.io/Nemesis3-disassembly/) | 30 | 312 | `rle_con_destino` (p00:5C40) = `rle_con_direccion` |
+| [Nemesis / Gradius](https://antxiko.github.io/Nemesis-disassembly/) | 28 | 380 | `lee_caracteres` (p00:5B66) = `baja_el_caracter_a_la_ram` |
+| [Ganbare Goemon! Karakuri Dōchū](https://antxiko.github.io/GanbareGoemon-disassembly/) | 23 | 312 | `paso_de_envolvente` (p13:64B0) = `cuadro_del_efecto` |
+| [Vampire Killer](https://antxiko.github.io/VampireKiller-disassembly/) | 22 | 320 | `paso_de_envolvente` (p13:64B0) = `cuenta_del_paso` |
+| [Shalom: Knightmare III](https://antxiko.github.io/Shalom-disassembly/) | 21 | 235 | `logotipo_de_konami` (p01:6957) = `rotulo_konami` |
+| [King's Valley II](https://antxiko.github.io/KingsValley2-disassembly/) | 19 | 238 | `mando` (p00:4C75) |
+| [King Kong 2: Yomigaeru Densetsu](https://antxiko.github.io/KingKong2-disassembly/) | 17 | 197 | `sonido_a_cero` (p00:4DED) = `el_sonido_desde_cero` |
+
+The whole matrix, the 58 cartridges against each other, is on
+[The routines](https://antxiko.github.io/MSX-disassembly-database/THE-ROUTINES.html) in the series database, along
+with the method and the program that measures it.
