@@ -24,6 +24,9 @@ INSTRUCCIONES = 25226
 COMENTARIOS = 10114
 
 # Los bancos con codigo, para volver a medir la densidad (tests/test_web.py)
+# El rotulo de la cifra de rutinas en la portada
+RUTINAS_ROTULO = {"es": "rutinas con nombre", "en": "named routines"}
+
 BANCOS_CON_CODIGO = ("00", "01", "02", "03", "04", "05", "06", "08", "09", "13", "15")
 
 

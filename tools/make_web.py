@@ -15,8 +15,13 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from estilo_web import ESTILO                                   # noqa: E402
+import contenido_web as CW                                      # noqa: E402
 from contenido_web import (NOMBRE, PORTADA, PAGINAS, LOGOTIPO,  # noqa: E402
                            CODIGO, DATOS, RUTINAS, densidad)
+
+# El rotulo de la cifra de rutinas: el de la serie, o el que ponga el juego
+ROT_RUTINAS = getattr(CW, "RUTINAS_ROTULO", {"es": "rutinas y etiquetas",
+                                             "en": "routines and labels"})
 
 
 def mil(n, idioma):
@@ -29,7 +34,7 @@ TXT = {
         h_num="El cartucho en cifras", h_pag="Lo que hay dentro",
         bloques=["El juego", "Curiosidades", "Por dentro"],
         cifras=[("100 %", "del binario explicado"),
-                (mil(RUTINAS, "es"), "rutinas y etiquetas"),
+                (mil(RUTINAS, "es"), ROT_RUTINAS["es"]),
                 (densidad("es") + " %", "del listado comentado"),
                 (mil(CODIGO, "es"), "bytes de código"),
                 (mil(DATOS, "es"), "bytes de datos"),
@@ -43,7 +48,7 @@ TXT = {
         h_num="The cartridge in numbers", h_pag="What is inside",
         bloques=["The game", "Curiosities", "Under the hood"],
         cifras=[("100%", "of the binary explained"),
-                (mil(RUTINAS, "en"), "routines and labels"),
+                (mil(RUTINAS, "en"), ROT_RUTINAS["en"]),
                 (densidad("en") + "%", "of the listing commented"),
                 (mil(CODIGO, "en"), "bytes of code"),
                 (mil(DATOS, "en"), "bytes of data"),
