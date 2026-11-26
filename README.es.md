@@ -36,7 +36,7 @@ sha256  420c42c18006eb5dbb25efa5b83e340d740824c15a714929a945c0db51f97280
 make
 ```
 
-Los detalles, en [Empezar](docs/es/EMPEZAR.md).
+Los detalles, en [Por dentro](docs/es/POR-DENTRO.md).
 
 ## Aviso
 

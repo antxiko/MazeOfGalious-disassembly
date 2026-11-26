@@ -1,0 +1,23 @@
+# Lo escribe tools/jekyll.py: no se toca a mano.
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+  auto_ids: true
+  # el texto tal cual: ni comillas tipograficas ni ... convertidos en un signo
+  smart_quotes: ["apos", "apos", "quot", "quot"]
+  typographic_symbols: {hellip: "...", mdash: "---", ndash: "--"}
+plugins:
+  - jekyll-optional-front-matter
+  - jekyll-titles-from-headings
+# GitHub Pages lo trae puesto y vuelve absolutas las rutas de las imagenes
+relative_links:
+  enabled: false
+titles_from_headings:
+  strip_title: false
+defaults:
+  - scope: {path: ""}
+    values: {layout: en}
+  - scope: {path: "es"}
+    values: {layout: es}
+exclude: [README.md]

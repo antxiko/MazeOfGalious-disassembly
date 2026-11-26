@@ -87,135 +87,48 @@ PORTADA = {
     ),
 }
 
-HALLAZGOS = {
-    "es": [
-        ("F2: el personaje se sienta en una taza",
-         "<p>F2 en plena partida (<code>p02:9E07</code>) pone el estado 9 y el "
-         "personaje sale sentado en una taza blanca, con los dibujos del banco "
-         "15 (<code>p00:5917</code>, <code>p03:BE36</code>).</p><p>Visto en "
-         "openMSX.</p>"),
-        ("ZEUS en la pausa: continuar",
-         "<p>Tecleado en la pausa de F2 en la sala 1 del castillo "
-         "(<code>p01:7E57</code>), al perder sale GAME OVER y F5 CONTINUE; F5 "
-         "sigue en la sala 1 con la vida en 8 (<code>p01:7EF1</code>).</p><p>Visto "
-         "en openMSX.</p>"),
-        ("Las salas negras son pistas y tiendas",
-         "<p>Nueve mundos tienen una sala especial (<code>0x8F0A</code>) que "
-         "el juego no monta: sale en negro. No son jefes: son Demeter con una "
-         "pista o su tienda, con el mensaje en ingl&eacute;s o en japon&eacute;s "
-         "seg&uacute;n la m&aacute;quina (<code>p02:94F0</code>).</p><p>Las dos "
-         "salas y los dos idiomas, vistos en openMSX.</p>"),
-        ("El jefe se llama por su nombre",
-         "<p>En su sala se teclea su nombre (<code>p02:9B18</code>, tabla "
-         "<code>0x9B4F</code>): YOMAR, ELOHIM... HAMALECH. Sale un humo y "
-         "despu&eacute;s el jefe, con el fondo en negro.</p><p>Visto en openMSX "
-         "forzando la marca de acertado.</p>"),
-        ("Los jefes no son sprites",
-         "<p>Son mosaicos de caracteres (61 en <code>0x9E0A</code>) que se "
-         "cambian para moverlos. Los gr&aacute;ficos del jefe del mundo 3 se "
-         "cargan por pasos con una direcci&oacute;n calculada, y por eso "
-         "ninguna palabra de la ROM los nombra.</p><p>Medido en partida, "
-         "cuadro a cuadro.</p>"),
-        ("Con otro cartucho al lado",
-         "<p><code>p00:5F0C</code> mira la otra ranura: con Q*bert se empieza "
-         "con 100 flechas, 100 monedas y 100 llaves; con Knightmare cambia "
-         "0xE05A y 0xE05B; con el Game Master, un bit.</p><p>Le&iacute;do en el "
-         "c&oacute;digo.</p>"),
-        ("Objetos escondidos en el castillo",
-         "<p>Cinco objetos salen al vencer a las figuras de ciertas salas "
-         "(<code>p02:9F82</code>); el 0x26 pide adem&aacute;s derecha, abajo, "
-         "izquierda y arriba (<code>p03:A056</code>).</p><p>Le&iacute;do en el "
-         "c&oacute;digo.</p>"),
-        ("La marca de Konami",
-         "<p>Al final del banco 3: &#12460;&#12522;&#12454;&#12473; &#12494; "
-         "&#12513;&#12452;&#12461;&#12517;&#12454; y el RC-749. El formato de "
-         "la marca lo destap&oacute; Manuel Pazos.</p>"),
-    ],
-    "en": [
-        ("F2: the character sits on a cup",
-         "<p>F2 in the middle of a game (<code>p02:9E07</code>) sets state 9 "
-         "and the character appears sitting on a white cup, with patterns from "
-         "bank 15 (<code>p00:5917</code>, <code>p03:BE36</code>).</p><p>Seen in "
-         "openMSX.</p>"),
-        ("ZEUS in the pause: continue",
-         "<p>Typed in the F2 pause in room 1 of the castle "
-         "(<code>p01:7E57</code>), losing shows GAME OVER and F5 CONTINUE; F5 "
-         "carries on in room 1 with life at 8 (<code>p01:7EF1</code>).</p><p>Seen "
-         "in openMSX.</p>"),
-        ("The black rooms are hints and shops",
-         "<p>Nine worlds have a special room (<code>0x8F0A</code>) the game "
-         "does not build: it comes out black. They are not bosses: they are "
-         "Demeter with a hint or her shop, with the message in English or "
-         "Japanese depending on the machine (<code>p02:94F0</code>).</p><p>Both "
-         "rooms and both languages, seen in openMSX.</p>"),
-        ("The boss is called by its name",
-         "<p>In its room you type its name (<code>p02:9B18</code>, table "
-         "<code>0x9B4F</code>): YOMAR, ELOHIM... HAMALECH. Smoke comes out and "
-         "then the boss, with the background in black.</p><p>Seen in openMSX "
-         "by forcing the guessed flag.</p>"),
-        ("The bosses are not sprites",
-         "<p>They are character mosaics (61 at <code>0x9E0A</code>) swapped to "
-         "move them. World 3's boss graphics are loaded in steps through a "
-         "computed address, which is why no word in the ROM names them.</p>"
-         "<p>Measured in game, frame by frame.</p>"),
-        ("With another cartridge next to it",
-         "<p><code>p00:5F0C</code> looks at the other slot: with Q*bert you "
-         "start with 100 arrows, 100 coins and 100 keys; with Knightmare it "
-         "changes 0xE05A and 0xE05B; with the Game Master, a bit.</p><p>Read in "
-         "the code.</p>"),
-        ("Hidden items in the castle",
-         "<p>Five items come out when the figures of certain rooms are defeated "
-         "(<code>p02:9F82</code>); 0x26 also asks for right, down, left and up "
-         "(<code>p03:A056</code>).</p><p>Read in the code.</p>"),
-        ("Konami's mark",
-         "<p>At the end of bank 3: &#12460;&#12522;&#12454;&#12473; &#12494; "
-         "&#12513;&#12452;&#12461;&#12517;&#12454; and the RC-749. The format "
-         "of the mark was uncovered by Manuel Pazos.</p>"),
-    ],
+# Las paginas, en tres bloques: lo del juego, las curiosidades y lo tecnico.
+# Cada una: (ingles, castellano, rotulo en, rotulo es, de que va en, de que va es).
+PAGINAS = [
+    [("THE-WORLDS.html", "LOS-MUNDOS.html", "The castle and the worlds",
+      "El castillo y los mundos",
+      "the title screen, the castle and the ten worlds, room by room",
+      "la pantalla de t&iacute;tulo, el castillo y los diez mundos, sala por sala"),
+     ("THE-HEROES.html", "LOS-PROTAGONISTAS.html", "Popolon and Aphrodite",
+      "Popolon y Afrodita",
+      "the 32 poses of the two heroes",
+      "las 32 poses de los dos h&eacute;roes"),
+     ("THE-ENEMIES.html", "LOS-ENEMIGOS.html", "The enemies", "Los enemigos",
+      "the sprite sets each room loads",
+      "los juegos de sprites que carga cada sala"),
+     ("THE-BOSSES.html", "LOS-JEFES.html", "The bosses", "Los jefes",
+      "the boss room and the ten bosses made of characters",
+      "la sala del jefe y los diez jefes hechos de caracteres"),
+     ("THE-ITEMS.html", "LOS-OBJETOS.html", "The items and the shops",
+      "Los objetos y las tiendas",
+      "the 47 items and the 13 shop entries",
+      "los 47 objetos y las 13 entradas de tienda"),
+     ("THE-MUSIC.html", "LA-MUSICA.html", "The music", "La m&uacute;sica",
+      "the tunes, from its own sound engine",
+      "las m&uacute;sicas, de su propio motor de sonido")],
+    [("CURIOSITIES.html", "CURIOSIDADES.html", "Curiosities", "Curiosidades",
+      "the findings and what is still open",
+      "los hallazgos y lo que queda abierto")],
+    [("UNDER-THE-HOOD.html", "POR-DENTRO.html", "Under the hood", "Por dentro",
+      "getting started, the mapper, the banks, the interrupt, the code and the emulator",
+      "empezar, el mapper, los bancos, la interrupci&oacute;n, el c&oacute;digo y el emulador")],
+]
+
+# Las paginas de antes y a donde llevan ahora (los feeds y otras webs las enlazan).
+VIEJAS = {
+    "GETTING-STARTED.html": "UNDER-THE-HOOD.html", "THE-GAME.html": "THE-WORLDS.html",
+    "THE-CARTRIDGE.html": "UNDER-THE-HOOD.html", "THE-CODE.html": "UNDER-THE-HOOD.html",
+    "IN-THE-EMULATOR.html": "UNDER-THE-HOOD.html",
+    "FINDINGS.html": "CURIOSITIES.html", "OPEN-QUESTIONS.html": "CURIOSITIES.html",
+    "EMPEZAR.html": "POR-DENTRO.html", "EL-JUEGO.html": "LOS-MUNDOS.html",
+    "EL-CARTUCHO.html": "POR-DENTRO.html", "EL-CODIGO.html": "POR-DENTRO.html",
+    "HALLAZGOS.html": "CURIOSIDADES.html", "PREGUNTAS-ABIERTAS.html": "CURIOSIDADES.html",
+    "EN-EL-EMULADOR.html": "POR-DENTRO.html",
 }
 
-# (imagen, pie en castellano, pie en ingles). El logotipo de la cabecera es
-# LOGOTIPO: el titulo que pinta el cartucho, no un montaje.
 LOGOTIPO = "titulo.png"
-GALERIA = [
-    ("titulo.png",
-     "La pantalla de t&iacute;tulo, montada desde la ROM: coincide con openMSX "
-     "en los 16 KB de la VRAM (<code>titulo.py coteja</code>).",
-     "The title screen, built from the ROM: it matches openMSX in all 16 KB of "
-     "VRAM (<code>titulo.py coteja</code>)."),
-    ("mapa_1.png",
-     "El castillo: sus 147 salas con su n&uacute;mero, colocadas por sus "
-     "vecinas (<code>0xA9EF</code>). Las 321 salas del juego, cotejadas "
-     "car&aacute;cter a car&aacute;cter contra openMSX.",
-     "The castle: its 147 rooms with their numbers, laid out by their "
-     "neighbours (<code>0xA9EF</code>). All 321 rooms in the game, checked "
-     "character for character against openMSX."),
-    ("mapa_10.png",
-     "El mundo 9, sus 27 salas. Las negras son pistas y tiendas; la del sello, "
-     "la del jefe.",
-     "World 9, its 27 rooms. The black ones are hints and shops; the one with "
-     "the seal, the boss's."),
-    ("sala_del_jefe.png",
-     "La sala del jefe del mundo 1 con el sello: una mitad de "
-     "<code>0xB760</code> y la otra, la misma dada la vuelta.",
-     "The boss room of world 1 with the seal: one half from "
-     "<code>0xB760</code> and the other, the same flipped."),
-    ("jefes.png",
-     "Los diez jefes enteros: mosaicos de caracteres (<code>0x9E0A</code>), "
-     "medidos en partida y a cero contra openMSX.",
-     "The ten bosses in full: character mosaics (<code>0x9E0A</code>), "
-     "measured in game and down to zero against openMSX."),
-    ("poses.png",
-     "Las 32 poses de Popolon y de Afrodita (<code>0x7529</code>), que comparten "
-     "dibujos y cambian de color.",
-     "Popolon's and Aphrodite's 32 poses (<code>0x7529</code>), which share "
-     "patterns and change colour."),
-    ("objetos.png",
-     "Los 47 objetos (<code>0x6E34</code>, <code>0x6E80</code>). El juego no "
-     "los nombra: solo los dibuja.",
-     "The 47 items (<code>0x6E34</code>, <code>0x6E80</code>). The game never "
-     "names them: it only draws them."),
-    ("logotipo.png",
-     "El logotipo de Konami, a cero contra openMSX.",
-     "The Konami logo, down to zero against openMSX."),
-]

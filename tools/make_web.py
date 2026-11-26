@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Genera la portada de la web, en los dos idiomas.
 
-La maquinaria no nombra ningun juego: el nombre, la cabecera, las cifras, los
-hallazgos y la galeria salen de tools/contenido_web.py. Aqui solo van los
+La maquinaria no nombra ningun juego: el nombre, la cabecera, las cifras y
+la lista de paginas salen de tools/contenido_web.py. Aqui solo van los
 rotulos de la pagina. El diseno es el compartido por la serie
 (tools/estilo_web.py) y la pagina sale autocontenida, con las imagenes
 embebidas como data URI.
@@ -11,12 +11,11 @@ Uso: make_web.py <docs/imagenes> <salida.html> <idioma>
 """
 import base64
 import os
-import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from estilo_web import ESTILO                                   # noqa: E402
-from contenido_web import (NOMBRE, PORTADA, HALLAZGOS, GALERIA, LOGOTIPO,  # noqa: E402
+from contenido_web import (NOMBRE, PORTADA, PAGINAS, LOGOTIPO,  # noqa: E402
                            CODIGO, DATOS, RUTINAS, densidad)
 
 
@@ -26,50 +25,29 @@ def mil(n, idioma):
 
 TXT = {
     "es": dict(
-        nav=[("#numbers", "Las cifras"), ("#findings", "Hallazgos"),
-             ("#screens", "Lo que dibuja")],
-        docnav=[("EMPEZAR.html", "Empezar"), ("EL-JUEGO.html", "El juego"),
-                ("EL-CARTUCHO.html", "El cartucho"),
-                ("EL-CODIGO.html", "El código"),
-                ("LA-MUSICA.html", "La música"), ("HALLAZGOS.html", "Hallazgos"),
-                ("EN-EL-EMULADOR.html", "En el emulador"),
-                ("PREGUNTAS-ABIERTAS.html", "Preguntas abiertas")],
         otro=("../", "In English"),
-        h_num="El cartucho en cifras", h_find="Lo que apareció al desmontarlo",
-        h_scr="Lo que el cartucho dibuja",
+        h_num="El cartucho en cifras", h_pag="Lo que hay dentro",
+        bloques=["El juego", "Curiosidades", "Por dentro"],
         cifras=[("100 %", "del binario explicado"),
-                (mil(RUTINAS, "es"), "rutinas con nombre"),
+                (mil(RUTINAS, "es"), "rutinas y etiquetas"),
                 (densidad("es") + " %", "del listado comentado"),
                 (mil(CODIGO, "es"), "bytes de código"),
                 (mil(DATOS, "es"), "bytes de datos"),
                 ("0", "bytes sin identificar")],
-        nota_scr="Debajo de cada imagen está de dónde sale y qué se está "
-                 "viendo.",
         pie_leg="Esto es trabajo de documentación y preservación: el código y "
                 "los gráficos siguen siendo de sus autores y de Konami, y la "
                 "imagen del cartucho no se distribuye.",
     ),
     "en": dict(
-        nav=[("#numbers", "The numbers"), ("#findings", "What turned up"),
-             ("#screens", "What it draws")],
-        docnav=[("GETTING-STARTED.html", "Getting started"),
-                ("THE-GAME.html", "The game"),
-                ("THE-CARTRIDGE.html", "The cartridge"),
-                ("THE-CODE.html", "The code"),
-                ("THE-MUSIC.html", "The music"), ("FINDINGS.html", "Findings"),
-                ("IN-THE-EMULATOR.html", "In the emulator"),
-                ("OPEN-QUESTIONS.html", "Open questions")],
         otro=("es/", "En castellano"),
-        h_num="The cartridge in numbers",
-        h_find="What turned up when we took it apart",
-        h_scr="What the cartridge draws",
+        h_num="The cartridge in numbers", h_pag="What is inside",
+        bloques=["The game", "Curiosities", "Under the hood"],
         cifras=[("100%", "of the binary explained"),
-                (mil(RUTINAS, "en"), "named routines"),
+                (mil(RUTINAS, "en"), "routines and labels"),
                 (densidad("en") + "%", "of the listing commented"),
                 (mil(CODIGO, "en"), "bytes of code"),
                 (mil(DATOS, "en"), "bytes of data"),
                 ("0", "bytes unidentified")],
-        nota_scr="Under each picture is where it comes from and what is on it.",
         pie_leg="This is documentation and preservation work: the code and "
                 "artwork still belong to their authors and to Konami, and the "
                 "cartridge image is not distributed.",
@@ -98,32 +76,20 @@ def main(argv):
                 if os.path.exists(ruta_logo)
                 else f"<h1>{NOMBRE}</h1>")
 
-    nav = "".join(f'<a href="{h}">{x}</a>' for h, x in t["nav"])
-    nav += "".join(f'<a href="{h}">{x}</a>' for h, x in t["docnav"])
+    # el menu y la lista de paginas, en los tres bloques de PAGINAS
+    k_h, k_t, k_d = (0, 2, 4) if idioma == "en" else (1, 3, 5)
+    sep = '<span style="opacity:.35">|</span>'
+    nav = sep.join("".join(f'<a href="{p[k_h]}">{p[k_t]}</a>' for p in b) for b in PAGINAS)
     nav += (f'<a href="{t["otro"][0]}" style="margin-left:auto;color:var(--oro)">'
             f'{t["otro"][1]}</a>')
 
     cifras = "".join(f'<div class="cifra"><b>{v}</b><span>{e}</span></div>'
                      for v, e in t["cifras"])
-    halls = "".join(f'<div class="hall"><h3>{tit}</h3>{cuerpo}</div>'
-                    for tit, cuerpo in HALLAZGOS[idioma])
-    imgs = ""
-    faltan = []
-    for fich, es, en in GALERIA:
-        # un "{}" en el nombre se sustituye por el idioma: asi la lamina de
-        # figuras sale rotulada en el idioma de la pagina
-        if "{}" in fich:
-            fich = fich.format("" if idioma == "es" else "_" + idioma)
-        ruta = os.path.join(imgdir, fich)
-        if not os.path.exists(ruta):
-            faltan.append(fich)
-            continue
-        pie = es if idioma == "es" else en
-        alt = re.sub(r"<[^>]+>", "", pie)
-        imgs += (f'<figure><img src="{img64(ruta)}" alt="{alt}">'
-                 f'<figcaption>{pie}</figcaption></figure>')
-    if faltan:
-        print("  (faltan %d imagenes: %s)" % (len(faltan), " ".join(faltan)))
+    paginas = "".join(
+        f'<div class="hall"><h3>{tit}</h3><ul>'
+        + "".join(f'<li><a href="{p[k_h]}">{p[k_t]}</a>: {p[k_d]}.</li>' for p in b)
+        + "</ul></div>"
+        for tit, b in zip(t["bloques"], PAGINAS))
 
     html = f"""<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -141,12 +107,7 @@ def main(argv):
   <h2>{t['h_num']}</h2>
   <div class="cifras">{cifras}</div>
 </section>
-<section id="findings"><h2>{t['h_find']}</h2>{halls}</section>
-<section id="screens">
-  <h2>{t['h_scr']}</h2>
-  <p class="n">{t['nota_scr']}</p>
-  <div class="galeria">{imgs}</div>
-</section>
+<section id="pages"><h2>{t['h_pag']}</h2>{paginas}</section>
 <footer><p>{t['pie_leg']}</p></footer>
 """
     with open(salida, "w", encoding="utf-8") as f:
